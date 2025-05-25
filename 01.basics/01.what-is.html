@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>01. What is Generative AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caesar+Dressing&family=Frijole&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+
+<div id="progress"></div>
+
+<div id="slides-container">
+  <div class="slide" style="display: block;">
+    <h2>What is AI?</h2>    
+  </div>
+  <div class="slide">
+    Artificial Intelligence (AI) is the field of technology <br>where machines and systems are developed<br> to perform tasks requiring human-like intelligence.
+  </div>
+  <div class="slide">
+    AI can be trained to perform tasks
+    <!-- <br>like speech and image recognition, <br>text and speech generation, <br>making decisions, and even playing chess <br>at a level that no human can match. -->
+  </div>
+  <div class="slide">
+    <h4>Examples of AI in Daily Life</h4>
+  </div>
+  <div class="slide">
+    <img src="https://eu-images.contentstack.com/v3/assets/blt10e444bce2d36aa8/bltbd063975e7aff634/66215342253a301c253bc2cb/Ai_Everywhere.jpg" alt=""><br>
+    AI is everywhere around us
+    <!-- and many of us use it without even thinking about it: -->
+  </div>
+  <div class="slide">
+    Voice assistants: <img src="https://i0.wp.com/macdailynews.com/wp-content/uploads/2020/12/201216_siri_icon.png?fit=207%2C207&ssl=1" height="100" alt=""> <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT31ha2eHHHRl8672obrkY_Ckw-j5Byk_yIYglTeyIikMgzzGtW5M5v8rKcf0Aa6E-zqGM&usqp=CAU" height="100" alt=""> <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Google_Assistant_logo_circle.png" height="100" alt="">
+    <!-- use AI to understand your voice commands and respond appropriately. They can help you set reminders, play music, or even tell jokes. -->
+  </div>
+  <div class="slide">
+    Recommendation systems: Platforms like Netflix, YouTube, and Spotify 
+    <!-- use AI to suggest videos, movies, and music based on your preferences and past behavior. -->
+  </div>
+  <div class="slide">
+    Social media: AI helps filter content on social media
+    <!-- showing you posts that are most likely to interest you, such as friends’ updates or advertisements that match your interests. -->
+  </div>
+  <div class="slide">
+    <img src="https://media.tenor.com/lDb-t04RX_4AAAAM/robots-come-on.gif" alt="">
+    <h4>How AI Works</h4>
+  </div>
+  <div class="slide">
+    <!-- While AI systems can be created using several approaches,  -->
+    Machine Learning (ML) is one of the most popular and efficient methods.
+  </div>
+  <div class="slide">
+    <blockquote>Note: <small>Machine Learning (ML) is a subset of artificial intelligence that allows a machine or system to automatically learn and improve from large datasets without being explicitly programmed.</small><img src="https://communities.sas.com/t5/image/serverpage/image-id/93362i9D7F79AA3B09013B/image-dimensions/393x380?v=v2" align="left" alt=""></blockquote>
+  </div>
+  <div class="slide">
+    You can think of ML as a process similar <br>to how humans learn from experience.  <img src="https://media.istockphoto.com/id/1404040282/photo/new-boy-playing-with-multi-colored-wooden-block-toys.jpg?s=612x612&w=0&k=20&c=_jo-lF3VH31RtgHGy8sDiSj5fPFDu9cMmCJ3zGOOWvQ=" height="200" alt="">
+    <!-- Instead of relying on explicit programming, where a human defines strict, deterministic rules for the machine to follow, ML uses algorithms to analyze large volumes of data. These algorithms identify patterns or trends that the machine can then use to make predictions on unseen data, classify images, or perform other tasks. -->
+  </div>
+  <div class="slide">
+    Machine learning algorithms improve over time <br>as they are exposed to more data. 
+    <!-- The result of this process is a machine learning model that captures the machine’s learned representation of the data based on the algorithm’s exposure to training data. The more data the model is trained on, the better it becomes at its task. -->
+  </div>
+  <div class="slide">
+    While ML is a common approach, another <br>widely used method in AI is Deep Learning.
+  </div>
+  <div class="slide">
+<blockquote>Note: <br>
+    Deep Learning is a subset of machine learning <img src="https://communities.sas.com/t5/image/serverpage/image-id/93362i9D7F79AA3B09013B/image-dimensions/393x380?v=v2" align="right" alt=""></blockquote>
+    <!-- that uses neural networks with multiple layers to learn from and make decisions based on complex data patterns. These layers allow the model to decompose the problem into features that each layer processes individually. -->
+  </div>
+  <div class="slide">
+Deep learning models rely on neural networks<br>made up of layers of nodes<br><img src="https://www.imsl.com/sites/default/files/image/2021-01/social-blog-neural-networks-november.jpg" height="300" alt="">
+<!-- , or "neurons," that process information by passing it from one layer to the next. As the information flows through these layers, each layer applies a transformation to the data, and influences the final result. -->
+  </div>
+  <div class="slide">
+    <h4>How Does AI Learn?</h4>
+  </div>
+  <div class="slide">
+    As we mentioned before, when using ML, <br>AI learns by training on large datasets. 
+    <!-- For example, an AI might be trained to recognize animals by showing it thousands of pictures of cats, dogs, and other animals, along with labels (like “cat” or “dog”). Over time, the AI learns to identify the features of a cat or a dog (like shape, size, fur type) that distinguish them from other animals. -->
+  </div>
+
+  <div class="slide">
+    <blockquote>Note: <hr>Training data is key for AI to learn. <br>The more relevant examples it receives, <br>the better it becomes at understanding patterns and making accurate predictions.</blockquote>
+  </div>
+  <div class="slide">
+    The AI's learning process can be broken down into four steps:
+  </div>
+  <div class="slide">
+    <table>
+        <tr><td>Data collection</td><td>Model training</td><td>Evaluation and Tuning</td><td>Inference</td></tr>
+    </table>
+  </div>
+<!-- <div class="slide">
+Data collection: Gather large datasets, which can be anything from images to text, or audio.
+Model training: Use algorithms to adjust the internal parameters of the AI system (often neural networks) so it can accurately predict or classify data.
+Evaluation and tuning: After training, the AI is tested to see how accurately it performs the task. If the AI's predictions or classifications aren’t accurate, its parameters are adjusted to improve performance.
+Inference: Once the AI is well-trained, it can be used to make predictions on new, unseen data.
+</div> -->
+  <div class="slide">
+    <h4>What is Generative AI?</h4>
+  </div>
+  <div class="slide">
+    Generative AI (GenAI) is a subset of artificial intelligence that focuses on creating new content <img src="https://communities.sas.com/t5/image/serverpage/image-id/93362i9D7F79AA3B09013B/image-dimensions/393x380?v=v2" align="right" alt="">
+    <!-- such as text, images, audio, and video, based on patterns and data it has been trained on. -->
+  </div>
+  <div class="slide">
+    
+Generative AI goes beyond traditional machine learning. <hr>
+<!-- Instead of only analyzing data or recognizing patterns, generative AI systems also actively create new data that is similar to what they’ve learned from vast datasets, drawing from patterns within those data to produce something new. -->
+Generative AI systems also actively create new data
+  </div>
+<div class="slide">
+Types of generated content
+<table>
+    <tr><td><img src="https://cdn.pixabay.com/photo/2017/01/18/08/25/social-media-1989152_640.jpg" height="100" alt=""></td><th><img src="https://www.adobe.com/in/creativecloud/photography/discover/media_190fe059034957a13092d986eacaf7679e1a9510c.png?width=750&format=png&optimize=medium" height="100" alt=""></th><th><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR87kvycZcBQLnn6QHAW94WtjmBuTlkBDQovOc_aZJTvRNb-FYHPpa8l45ZsHOKQtayfeY&usqp=CAU" height="100" alt=""></th><th><img src="https://www.open.edu.au/-/media/blog/2023/10-october/learn-how-to-code.jpg?h=477&iar=0&w=715&rev=27fd8b9e501e49bd9722ac012f5336ce&hash=04367A2B2E4D8A637C76FBEB4DEDBF9A" height="100" alt=""></th></tr>
+</table>
+<!-- Text: Like writing essays, articles, or even poetry.
+Images: Creating realistic pictures from text prompts.
+Audio: Composing songs that resemble the style of specific genres or artists.
+Code: Generating code snippets based on natural language descriptions. -->
+</div>
+  <div class="slide">
+    <h4>How Generative AI Works</h4>
+  </div>
+  <div class="slide">
+Generative AI models build on the foundations of deep learning to extract patterns within data and then use this learned information to create entirely new outputs.
+  </div>
+  <div class="slide">
+    <img src="https://w0.peakpx.com/wallpaper/239/628/HD-wallpaper-cat-collage-beautiful-collage-pets-animal-feline-graphy-wide-screen-cats.jpg" alt="">
+    <!-- For instance, imagine a model trained on millions of images of cats. It learns the defining features of a cat, like pointy ears, whiskers, and fur textures, through its exposure to these examples. When tasked with generating a new image of a cat, the model combines these learned features in new ways to create an entirely unique cat that has never existed before, but still appears realistic. -->
+  </div>
+  <div class="slide">
+The same principle applies to the model generating text, code, audio, or other content: <hr>
+it learns the underlying patterns and rules from its training data
+ <!-- then uses those to create new examples that feel authentic. -->
+  </div>
+  <div class="slide">
+    <h4>Examples of Generative AI</h4>
+  </div>
+  <div class="slide">
+    Real-world examples of Generative AI tools that leverage these techniques
+  </div>
+  <div class="slide">
+    <table>
+        <tr><th>OpenAI ChatGPT</th><th>DALL-E</th><th>Github Copilot</th></tr>
+    </table>
+<!-- ChatGPT: A large language model (LLM) developed by OpenAI that generates human-like text based on prompts. It can answer questions, hold conversations, and even generate stories or code.
+DALL-E: Another tool by OpenAI that generates highly detailed and contextually relevant images from text descriptions.
+GitHub Copilot: This tool helps developers write code faster by suggesting code snippets and entire functions based on natural language or existing code. -->
+  </div>
+  <div class="slide">
+    <h4>Get Started with Generative AI</h4><hr>
+<b>Follow this guide</b><br> which provides a structured introduction to Gen AI
+  </div>
+  <div class="slide">
+    <ul>
+        <li>Core concepts and terminology</li>
+        <li>Step-by-step prompting strategies</li>
+        <li>Best practices and common pitfalls</li>
+        <li>Real-world applications and examples</li>
+    </ul>
+  </div>
+  <div class="slide">
+    Fundamentals of ChatGPT <br>Practical applications in various fields <br>Integration strategies for daily workflows
+  </div>
+  <div class="slide">
+<!-- There are several ways to start learning about and using Generative AI: -->
+<!-- <b>Practice with tools:</b>  -->
+Start experimenting with popular Generative AI tools:
+
+<table>
+    <tr><td><u>ChatGPT</u> for text generation and conversations <br></td><td><u>DALL-E</u> / Midjourney for image creation</td><td><u>GitHub Copilot</u> for coding assistance</td></tr>
+</table>
+  </div>
+  <div class="slide"><img src="https://t3.ftcdn.net/jpg/05/61/61/36/360_F_561613631_mVmmaQn83oibz1ZzIiOfGBFv7CUp3ucw.jpg" height="200" alt=""></div>
+  <div class="slide">
+    @sasban9
+  </div>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const progressBar = document.getElementById('progress');
+  const animations = [
+    'fadeIn', 'slideLeft', 'slideRight', 'zoomIn', 'rotateIn',
+    'bounceIn', 'flipIn', 'dropIn', 'swingIn', 'growIn',
+    'fadeIn', 'slideLeft', 'slideRight', 'zoomIn', 'rotateIn',
+    'bounceIn', 'flipIn', 'dropIn', 'swingIn', 'growIn'
+  ];
+
+  let currentSlide = 0;
+
+  function showSlidesUpTo(index) {
+    slides.forEach((slide, i) => {
+      if (i <= index) {
+        slide.classList.add('visible');
+        slide.classList.remove('hidden');
+        if (!slide.classList.contains('animated')) {
+          slide.classList.add(animations[i % animations.length], 'animated');
+        }
+      } else {
+        slide.classList.remove('visible');
+        slide.classList.add('hidden');
+      }
+    });
+    updateProgress(index);
+    setTimeout(() => {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }, 100);
+  }
+
+  function hideAllSlides() {
+    slides.forEach(slide => {
+      slide.classList.remove('visible', 'animated');
+      slide.classList.add('hidden');
+    });
+    progressBar.style.width = '0%';
+    currentSlide = 0;
+  }
+
+  function updateProgress(index) {
+    const percent = ((index + 1) / slides.length) * 100;
+    progressBar.style.width = percent + '%';
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') {
+      if (currentSlide < slides.length) {
+        showSlidesUpTo(currentSlide);
+        currentSlide++;
+      } else {
+        hideAllSlides();
+      }
+    } else if (e.key === 'ArrowLeft') {
+      if (currentSlide > 0) {
+        currentSlide--;
+        showSlidesUpTo(currentSlide - 1);
+      }
+    }
+  });
+
+  // Initialize first slide
+  showSlidesUpTo(currentSlide - 1);
+</script>
+
+</body>
+</html>
