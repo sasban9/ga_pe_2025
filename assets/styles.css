@@ -23,6 +23,7 @@ a{text-decoration: none;font-family: monospace;color: khaki;}
 img{max-width: 600px;vertical-align: middle;}
 figcaption{color: yellow;font-size: 20px;font-family: monospace;}
 h1{font-family: Frijole,sans-serif;font-size: 3.2rem;}
+hr{margin-top: 2rem;}
 .slide {
   display: none;
   font-size: 1.6em;
@@ -36,19 +37,21 @@ h1{font-family: Frijole,sans-serif;font-size: 3.2rem;}
   /* border-bottom: solid 1px #222; */
   margin: 0px auto 80px;
 }
-.slide:nth-of-type(even){transform: skew(1deg);}
+.slide:nth-of-type(even){transform: skew(0);}
+.slide:has(h4){background: #0008;text-align: center;}
 blockquote{
     padding: 40px;background-color: #0004;border-left: solid 10px #666;text-align: left;width: 800px;margin: 0 auto;transform: rotate(-3deg);
 }
 table{width: 100%;border-collapse: collapse;}
 th,td{border: solid 1px lightblue;padding: 1rem;}
 .code{background: #0009;padding: 1rem;color: yellowgreen;}
+.prompt{background: #00fa;padding: 1rem;color: #fff;}
 .visible {
   display: block;
 }
 
 .hidden {
-  display: hidden;
+  display: block;
 }
 
 /* Animations */

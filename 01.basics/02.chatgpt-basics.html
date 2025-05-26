@@ -19,7 +19,7 @@
     <h2>02. ChatGPT Basics</h2>    
   </div>
   <div class="slide">Throughout this Basics Guide, we'll be using ChatGPT, one of the most popular and accessible AI chatbots. 
-    <img src="https://learnprompting.org/_next/image?url=%2Fdocs%2Fassets%2Fbasics%2Fchatgpt_interface.webp&w=3840&q=75&dpl=dpl_4u8z838L4BDH3iR6Tf7vV6nUYSXy" alt=""><figcaption>ChatGPT's user interface features a clean, conversation-style layout where you can type prompts and receive AI-generated responses.
+    <img src="https://images.ctfassets.net/kftzwdyauwt9/2TGxQkhDFLiCHyxUZZKzC/5c0aa7b1c3424a6c3f1ab291c3e7b8f7/Summarize.jpg?w=1920&q=90&fm=webp" alt=""><figcaption>ChatGPT's user interface features a clean, conversation-style layout where you can type prompts and receive AI-generated responses.
 
     </figcaption></div>
   <div class="slide">
@@ -62,7 +62,7 @@ Keep in mind that <b>prompt</b> can be a verb or a noun.
 <!-- You can prompt a model, or you can give a model a prompt. Both mean the same thing, and the process of interacting with the model this way is called prompting. We'll dive deeper into prompt engineering techniques in next lessons. -->
   </div>
   <div class="slide">
-    <h4>Simple Query: Color of Grass</h4><img src="https://www.alphaaromatics.com/wp-content/uploads/2024/03/Fresh-Cut-Grass-Fragrances.jpg" alt="">
+    <h4>Simple Query: Color of Grass</h4><img src="https://www.alphaaromatics.com/wp-content/uploads/2024/03/Fresh-Cut-Grass-Fragrances.jpg" alt="" height="200">
   </div>
   <div class="slide">
     <table>
@@ -70,14 +70,14 @@ Keep in mind that <b>prompt</b> can be a verb or a noun.
     </table>
   </div>
   <div class="slide"><h4>Summarizing an Article</h4></div>
-  <div class="slide">    Now, let's try something more practical: summarizing a paragraph. Say you're reading an article about snowfall in Florida and want to quickly grasp the main points.</div>
+  <div class="slide"><img src="https://people.com/thmb/WlLg6YXoEMyTJUfpu0g5vjvbhr8=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():focal(722x610:724x612)/florida-snow-012125-2-ff61ca177722466daf8dbf517b008137.jpg" height="220" align="right" alt="">    Now, let's try something more practical: summarizing a paragraph. Say you're reading an article about snowfall in Florida and want to quickly grasp the main points.</div>
   <div class="slide">
 
 <!-- You can paste the paragraph into ChatGPT and ask for a summary 1 -->
 <figcaption>This paragraph is from https://en.wikipedia.org/wiki/Snow_in_Florida</figcaption>
 <table>
     <tr>
-        <td><img src="https://static.vecteezy.com/system/resources/thumbnails/004/607/791/small_2x/man-face-emotive-icon-smiling-male-character-in-blue-shirt-flat-illustration-isolated-on-white-happy-human-psychological-portrait-positive-emotions-user-avatar-for-app-web-design-vector.jpg" height="100" alt=""><br><code style="font-family:cursive;font-size: 12pt;">
+        <td><img src="https://static.vecteezy.com/system/resources/thumbnails/004/607/791/small_2x/man-face-emotive-icon-smiling-male-character-in-blue-shirt-flat-illustration-isolated-on-white-happy-human-psychological-portrait-positive-emotions-user-avatar-for-app-web-design-vector.jpg" height="100" alt=""><br><code style="font-family:cursive;font-size: ;">
             <u>Summarize this paragraph in a single sentence:</u> It is very rare for snow to fall in the U.S. state of Florida, especially in the central and southern portions of the state. Except for the far northern areas of the state, most of the major cities in Florida have never recorded measurable snowfall, though trace amounts have been recorded, or flurries in the air observed a few times each century. According to the National Weather Service, in the Florida Keys and Key West, there is no known occurrence of snow flurries since the European colonization of the region more than 300 years ago. In Miami, Fort Lauderdale, and Palm Beach there has been only one known report of snow flurries observed in the air in more than 200 years; this occurred in January 1977. In any event, Miami, Fort Lauderdale, and Palm Beach have not seen snow flurries before or since this 1977 event.</code></td>
     </tr>
 </table>
@@ -117,12 +117,12 @@ It's that simple! ChatGPT can handle both basic and more advanced math problems
     
 <!-- Here are some helpful tips for writing prompts to get better results from ChatGPT: -->
 
-1. <u>Be specific and clear</u>:
+1. <u>Be specific and clear</u>:<br>
 <!-- Provide detailed context and use actionable verbs in your prompts. -->
 Instead of vague prompts like "Tell me about grass", try:
 <table>
     <tr>
-        <td><div class="code"><code>Analyze the characteristics of grass in temperate regions, focusing on: <br>
+        <td><div class="code"><code>Analyze the characteristics of grass<br>in temperate regions, focusing on: <br>
             - Typical color variations by season <br>
             - Average height <br>
             - Common species <br>Format the response as bullet points.</code></div></td>
@@ -137,10 +137,119 @@ Instead of vague prompts like "Tell me about grass", try:
             - Include relevant context <br>
             - Define any constraints
   </div>
-  <div class="slide">Next: 03. Introduction to Prompt Engineering<br>
+  <div class="slide">
+    2. <u>Structure your prompts</u>: 
+    <!-- Use clear formatting and organization. -->
+    <table>
+      <tr>
+        <td><div class="code"><code>Context: Analyzing a scientific research paper <br>
+
+          Task: Create a summary <br>
+          
+          Constraints: Maximum 100 words <br>
+          
+          Format: Use the following structure: <br>
+          
+          - Main finding <br>
+          - Key methodology <br>
+          - Implications</code></div></td>
+      </tr>
+    </table>
+
+  </div>
+  <div class="slide">
+    
+Tips for structuring prompts: <br>
+
+- Use prefixes to label different parts (Input:, Context:, Task:, Format:) <br>
+- Break complex requirements into numbered lists <br>
+- Specify output format explicitly
+  </div>
+  <div class="slide">
+    3. <u>Include necessary context</u>: 
+    <!-- Provide background information and specify how it should be used. -->
+
+    <table>
+      <tr>
+        <td><div class="code"><code>Context: I'm a high school teacher<br>preparing a lesson on photosynthesis <br>
+
+          Audience: 10th-grade students <br>
+          
+          Task: Create an explanation of<br>photosynthesis that: <br>
+          
+          - Uses simple analogies <br>
+          - Includes 3 key concepts <br>
+          - Avoids technical jargon <br>
+          Length: 2-3 paragraphs</code></div></td>
+      </tr>
+    </table>
+  </div>
+  <div class="slide">
+    4. <u>Use few-shot examples</u>: 
+    <!-- When needed, provide examples to guide the output format. -->
+    <table>
+      <tr>
+        <td><div class="code"><code>
+          Convert these dates to ISO format. <br>Follow these examples: <br>
+          
+          Input: March 15, 2024 <br>
+          
+          Output: 2024-03-15 <br>
+          
+          Input: December 31, 2023 <br>
+          
+          Output: 2023-12-31 <br>
+          
+          Now convert: January 1, 2025</code></div></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="slide">
+    5. <u>Iterate and refine</u>:
+    <!-- Don't hesitate to refine your prompts based on responses. -->
+    <ul>
+      <li>Start with clear, specific instructions</li>
+      <li>Use structured formatting with prefixes</li>
+      <li>Include relevant context and constraints</li>
+      <li>Provide examples when format is important</li>
+      <li>Iterate and refine based on responses</li>
+      <li>Break complex tasks into smaller steps</li>
+    </ul>
+  </div>
+  <div class="slide">
+    <h4>Conclusion</h4><hr>
+You should now be comfortable with what a prompt is <br>and how to do some basic prompting with ChatGPT.
+<!-- Remember that prompts are the core of how you interact with AI models like ChatGPT, and effective prompting can lead to more accurate and useful responses. -->
+  </div>
+  <div class="slide">
+    <h4>Solving Common Issues</h4>
+  </div>
+  <div class="slide">
+1. What if ChatGPT's response is too vague? <hr>
+Rephrase your prompt to provide<br>more specific instructions. 
+<!-- For example, instead of asking "What is an apple?" try "What are the nutritional benefits of an apple?" -->
+  </div>
+  <div class="slide">
+    2. What if ChatGPT misunderstands my question? <hr>
+Break the task down into smaller parts 
+<!-- or <br>provide more context to help ChatGPT <br>understand the question better.  -->
+<!-- You can also ask follow-up questions to clarify the output. -->
+  </div>
+  <div class="slide">
+    3. What if ChatGPT keeps repeating information? <hr>
+Try adding constraints to your prompt
+ <!-- such as "Do not repeat previous details," to encourage a more focused response. -->
+  </div>
+  
+  <div class="slide">Next: 03. Introduction to Prompt <a href="03.intro-to-prompting.html">Engineering</a><br>
   </div>
 </div>
 <a href="#" style="position: fixed;right: 20px;bottom: 0;transform: rotate(0);font-size: 20px;">@sasban9</a>
+
+
+
+
 <script>
   const slides = document.querySelectorAll('.slide');
   const progressBar = document.getElementById('progress');

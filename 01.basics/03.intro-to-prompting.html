@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>03. Introduction to Prompt Engineering</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caesar+Dressing&family=Frijole&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <!-- <link rel="stylesheet" href="../assets/print.css"> -->
+   <style>
+    li{display: inline;}
+   </style>
+</head>
+<body>
+    <img src="https://sasban.online/sasban.jpg" alt="" style="position: fixed;top: 20px;left: 20px;height: 100px;border-radius: 100px;">
+    <div id="progress"></div>
+    
+    <div id="slides-container">
+        <div class="slide" style="display: block;">
+            <h2>03. Introduction to Prompt Engineering</h2>
+        </div>
+        <div class="slide">
+            <h4>What is Prompt Engineering?</h4>
+        </div>
+        <div class="slide">
+Prompt engineering is the process of crafting and refining prompts to improve the performance of generative AI models. 
+<!-- It involves providing specific inputs to tools like ChatGPT, Midjourney, or Gemini, guiding the AI to deliver more accurate and contextually relevant outputs. -->
+        </div>
+        <div class="slide">
+When an AI model doesn't produce the desired response, prompt engineering is used to iterate and adjust the prompt to optimize the output. 
+<!-- This method is particularly useful for overcoming limitations of generative models, such as logical errors or insufficient context in responses. -->
+        </div>
+        <div class="slide">
+            <h4>Why Prompt Engineering is Important?</h4>
+        </div>
+        <div class="slide">
+Generative AI models rely heavily on the input (or "prompt") provided by users. 
+<!-- A well-structured prompt is key to leveraging the model's capabilities and ensuring it provides relevant, precise answers. -->
+
+        </div>
+        <div class="slide">
+Prompt engineering is important because:
+        </div>
+        <div class="slide">
+            o It bridges the gap between vague, general queries <br>and specific, actionable results.    
+        </div>
+        <div class="slide">
+            o It helps mitigate errors, such as generating irrelevant content or <br>incorrect responses.
+        </div>
+        <div class="slide">
+<li>It ensures that the AI can handle various tasks 
+    <!-- like creative writing, image generation, or even code development with minimal post-processing needed. -->
+        </div>
+        <div class="slide">
+            <h4>What is a Prompt?</h4>
+        </div>
+        <div class="slide">
+A prompt is the input or instruction given to an AI model to generate a response. <hr>
+Prompts can be simple (a question) or complex (detailed instructions with context, tone, style, and format specifications). <hr>
+The quality of the AI's response depends directly on how clear, detailed, and structured the prompt is.
+
+        </div>
+        <div class="slide">
+Here's an example of a simple prompt:
+<div class="prompt"><code>Explain to me what is prompt engineering <br> like I'm 5.</code></div>
+        </div>
+        <div class="slide">
+            And here is the response: 
+            <div class="code"><code class="">Sure! Imagine you have a toy robot that listens to what you say and does things like answering questions or telling stories. But, this robot doesn't always understand exactly what you want unless you say it in a certain way. <br>
+                Prompt engineering is like figuring out the best way to talk to the robot so it does exactly what you want. For example, if you want the robot to tell a funny story about a cat, you might need to say, "Tell me a funny story about a cat," instead of just "Tell me a story." <br>
+                In short, prompt engineering is about asking the right questions or giving the right instructions to make sure the robot gives you the best answers!</code></div>
+        </div>
+        <div class="slide"></div>
+    </div>
+<a href="#" style="position: fixed;right: 20px;bottom: 0;transform: rotate(0);font-size: 20px;">@sasban9</a>
+
+
+
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const progressBar = document.getElementById('progress');
+  const animations = [
+    'fadeIn', 'slideLeft', 'slideRight', 'zoomIn', 'rotateIn',
+    'bounceIn', 'flipIn', 'dropIn', 'swingIn', 'growIn',
+    'fadeIn', 'slideLeft', 'slideRight', 'zoomIn', 'rotateIn',
+    'bounceIn', 'flipIn', 'dropIn', 'swingIn', 'growIn'
+  ];
+
+  let currentSlide = 0;
+
+  function showSlidesUpTo(index) {
+    slides.forEach((slide, i) => {
+      if (i <= index) {
+        slide.classList.add('visible');
+        slide.classList.remove('hidden');
+        if (!slide.classList.contains('animated')) {
+          slide.classList.add(animations[i % animations.length], 'animated');
+        }
+      } else {
+        slide.classList.remove('visible');
+        slide.classList.add('hidden');
+      }
+    });
+    updateProgress(index);
+    setTimeout(() => {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }, 100);
+  }
+
+  function hideAllSlides() {
+    slides.forEach(slide => {
+      slide.classList.remove('visible', 'animated');
+      slide.classList.add('hidden');
+    });
+    progressBar.style.width = '0%';
+    currentSlide = 0;
+  }
+
+  function updateProgress(index) {
+    const percent = ((index + 1) / slides.length) * 100;
+    progressBar.style.width = percent + '%';
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') {
+      if (currentSlide < slides.length) {
+        showSlidesUpTo(currentSlide);
+        currentSlide++;
+      } else {
+        hideAllSlides();
+      }
+    } else if (e.key === 'ArrowLeft') {
+      if (currentSlide > 0) {
+        currentSlide--;
+        showSlidesUpTo(currentSlide - 1);
+      }
+    }
+  });
+
+  // Initialize first slide
+  showSlidesUpTo(currentSlide - 1);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        svg{display: none;}
+    </style>
+</head>
+<body>
+    <div class="w-[300px] fixed left-0 top-0  
+           
+          z-10
+          md:static transition-transform md:translate-x-0 dark:bg-black bg-white"><div class="h-full border-r dark:border-gray-700 border-gray-200"><div class="flex justify-between text-gray-900 dark:text-white p-4 gap-3 md:hidden"><a href="/"><div class="flex items-center gap-2 font-semibold"><img alt="Sitting astronaut" loading="lazy" width="32" height="32" decoding="async" data-nimg="1" style="color:transparent" srcset="/_next/image?url=%2Fimg%2Fsimple_ai.webp&amp;w=32&amp;q=75&amp;dpl=dpl_4u8z838L4BDH3iR6Tf7vV6nUYSXy 1x, /_next/image?url=%2Fimg%2Fsimple_ai.webp&amp;w=64&amp;q=75&amp;dpl=dpl_4u8z838L4BDH3iR6Tf7vV6nUYSXy 2x" src="/_next/image?url=%2Fimg%2Fsimple_ai.webp&amp;w=64&amp;q=75&amp;dpl=dpl_4u8z838L4BDH3iR6Tf7vV6nUYSXy">Learn Prompting</div></a><button><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="xmark" class="svg-inline--fa fa-xmark fa-lg " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"></path></svg></button></div><div class="relative h-full flex flex-col"><div class="sticky left-0" style="height: calc(-96px + 100vh); top: 96px;"><div class="h-full flex flex-col"><div class="flex-1 overflow-y-auto py-4 [&amp;::-webkit-scrollbar]:w-1.5 [&amp;::-webkit-scrollbar]:bg-transparent [&amp;::-webkit-scrollbar-track]:bg-transparent [&amp;::-webkit-scrollbar-thumb]:rounded-full [&amp;::-webkit-scrollbar-thumb]:bg-gray-300 [&amp;::-webkit-scrollbar-thumb:hover]:bg-gray-400 " style="height: calc(-96px + 100vh);"><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    
+    
+    
+    text-gossamer bg-[#1D977410] dark:bg-gray-800
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/introduction"><span class="flex-1">Prompt Engineering Guide</span></a></div><div><div class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  "><span class="flex-1">😃 Basics</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" class="svg-inline--fa fa-chevron-right text-gray-400 dark:text-gray-500 transition-transform duration-300 ease-in-out " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path></svg></div><div class="pl-2.5 overflow-hidden" style=" opacity: 1;"><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basics/introduction"><span class="flex-1">🟢 Basics Guide Overview</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basics/generative_ai"><span class="flex-1">🟢 What is Generative AI?</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basics/chatgpt_basics_prompt"><span class="flex-1">🟢 ChatGPT Basics</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basics/embeds"><span class="flex-1">🟢 Testing Prompts with Interactive Learn Prompting Embeds</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basics/prompt_engineering"><span class="flex-1">🟢 Introduction to Prompt Engineering</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basics/prompt_structure"><span class="flex-1">🟢 Basic Prompt Structure and Key Parts</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basics/instructions"><span class="flex-1">🟢 Technique #1: Instructions in Prompts</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basics/roles"><span class="flex-1">🟢 Technique #2: Roles in Prompts</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basics/few_shot"><span class="flex-1">🟢 Technique #3: Examples in Prompts: From Zero-Shot to Few-Shot</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basics/combining_techniques"><span class="flex-1">🟢 Combining Prompting Techniques</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basics/ai_prompt_tips"><span class="flex-1">🟢 Tips for Writing Better Prompts</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basics/priming_prompt"><span class="flex-1">🟢 Prompt Priming: Setting Context for AI</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basics/chatbot_basics"><span class="flex-1">🟢 Differences Between Chatbots and LLMs</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basics/pitfalls"><span class="flex-1">🟢 LLM Limitations: When Models and Chatbots Make Mistakes</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basics/generative_ai_applications"><span class="flex-1">🟢 What Can Generative AI Create Beyond Text?</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basics/learn_prompting_method"><span class="flex-1">🟢 How to Solve Problems Using Generative AI: A Simple Method</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basics/beyond_basics"><span class="flex-1">🟢 Next Steps: Where to Go From Here</span></a></div></div></div><div><div class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  "><span class="flex-1">💼 Applications</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" class="svg-inline--fa fa-chevron-right text-gray-400 dark:text-gray-500 transition-transform duration-300 ease-in-out " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path></svg></div><div class="pl-2.5 overflow-hidden" style=" opacity: 1;"><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basic_applications/introduction"><span class="flex-1">🟢 Introduction</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basic_applications/summarize"><span class="flex-1">🟢 Text Summarization</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basic_applications/table_generation"><span class="flex-1">🟢 Table Generation</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basic_applications/mc_tutorial"><span class="flex-1">🟢 Multiple Choice Questions</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basic_applications/short_response"><span class="flex-1">🟢 Short-Form Content</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basic_applications/writing_in_diff_voices"><span class="flex-1">🟢 Writing in Different Styles</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basic_applications/emojis"><span class="flex-1">🟢 Finding Emojis</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basic_applications/writing_emails"><span class="flex-1">🟢 Writing Emails</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basic_applications/blog_generation"><span class="flex-1">🟢 Blog Writing</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basic_applications/contracts"><span class="flex-1">🟢 Legal Documents</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basic_applications/study_tool"><span class="flex-1">🟢 Study Buddy</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basic_applications/digital_marketing"><span class="flex-1">🟦 Digital Marketing</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basic_applications/coding_assistance"><span class="flex-1">🟦 Coding Assistance</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basic_applications/build_chatbot_from_kb"><span class="flex-1">🟦 Knowledge Base Chatbot</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basic_applications/build_chatgpt"><span class="flex-1">🟦 How to Build a Chatbot Using LLMs</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/basic_applications/zapier_for_emails"><span class="flex-1">🟦 Zapier for Emails</span></a></div></div></div><div><div class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  "><span class="flex-1">🧙‍♂️ Intermediate</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" class="svg-inline--fa fa-chevron-right text-gray-400 dark:text-gray-500 transition-transform duration-300 ease-in-out " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path></svg></div><div class="pl-2.5 overflow-hidden" style=" opacity: 1;"><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/intermediate/introduction"><span class="flex-1">🟢 Introduction</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/intermediate/chain_of_thought"><span class="flex-1">🟢 Chain-of-Thought Prompting</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/intermediate/zero_shot_cot"><span class="flex-1">🟢 Zero-Shot Chain-of-Thought</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/intermediate/self_consistency"><span class="flex-1">🟦 Self-Consistency</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/intermediate/generated_knowledge"><span class="flex-1">🟦 Generated Knowledge</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/intermediate/least_to_most"><span class="flex-1">🟦 Least-to-Most Prompting</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/intermediate/long_form_content"><span class="flex-1">🟦 Dealing With Long Form Content</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/intermediate/revisiting_roles"><span class="flex-1">🟦 Revisiting Roles</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/intermediate/whats_in_a_prompt"><span class="flex-1">🟦 More About Prompt Elements</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/intermediate/configuration_hyperparameters"><span class="flex-1">🟦 Basic LLM Settings</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/intermediate/openai_playground"><span class="flex-1">🟦 OpenAI Playground</span></a></div></div></div><div><div class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  "><span class="flex-1">🧠 Advanced</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" class="svg-inline--fa fa-chevron-right text-gray-400 dark:text-gray-500 transition-transform duration-300 ease-in-out " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path></svg></div><div class="pl-2.5 overflow-hidden" style=" opacity: 1;"><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/introduction"><span class="flex-1">🟢 Introduction</span></a></div><div><div class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  "><span class="flex-1">Zero-Shot</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" class="svg-inline--fa fa-chevron-right text-gray-400 dark:text-gray-500 transition-transform duration-300 ease-in-out " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path></svg></div><div class="pl-2.5 overflow-hidden" style=" opacity: 1;"><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/zero_shot/introduction"><span class="flex-1">🟢 Introduction</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/zero_shot/emotion_prompting"><span class="flex-1">🟢 Emotion Prompting</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/zero_shot/role_prompting"><span class="flex-1">🟢 Role Prompting</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/zero_shot/re_reading"><span class="flex-1">🟢 Re-reading (RE2)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/zero_shot/rephrase_and_respond"><span class="flex-1">🟢 Rephrase and Respond (RaR)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/zero_shot/simtom"><span class="flex-1">🟦 SimToM</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/zero_shot/s2a"><span class="flex-1">◆ System 2 Attention (S2A)</span></a></div></div></div><div><div class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  "><span class="flex-1">Few-Shot</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" class="svg-inline--fa fa-chevron-right text-gray-400 dark:text-gray-500 transition-transform duration-300 ease-in-out " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path></svg></div><div class="pl-2.5 overflow-hidden" style=" opacity: 1;"><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/few_shot/introduction"><span class="flex-1">🟢 Introduction</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/few_shot/self_ask"><span class="flex-1">🟢 Self-Ask</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/few_shot/self_generated_icl"><span class="flex-1">🟢 Self Generated In-Context Learning (SG-ICL)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/few_shot/chain-of-dictionary"><span class="flex-1">🟢 Chain-of-Dictionary (CoD)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/few_shot/cue-based-chain-of-thought"><span class="flex-1">🟢 Cue-CoT</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/few_shot/chain-of-knowledge"><span class="flex-1">🟦 Chain of Knowledge (CoK)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/few_shot/k_nearest_neighbor_knn"><span class="flex-1">◆ K-Nearest Neighbor (KNN)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/few_shot/vote-k"><span class="flex-1">◆◆ Vote-K</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/few_shot/prompt_mining"><span class="flex-1">◆◆ Prompt Mining</span></a></div></div></div><div><div class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  "><span class="flex-1">Thought Generation</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" class="svg-inline--fa fa-chevron-right text-gray-400 dark:text-gray-500 transition-transform duration-300 ease-in-out " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path></svg></div><div class="pl-2.5 overflow-hidden" style=" opacity: 1;"><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/thought_generation/introduction"><span class="flex-1">🟢 Introduction</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/thought_generation/chain-of-draft"><span class="flex-1">🟢 Chain of Draft (CoD)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/thought_generation/contrastive_cot"><span class="flex-1">🟦 Contrastive Chain-of-Thought</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/thought_generation/automatic_chain_of_thought"><span class="flex-1">🟦 Automatic Chain of Thought (Auto-CoT)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/thought_generation/tabular_chain_of_thought_tab_cot"><span class="flex-1">🟦 Tabular Chain-of-Thought (Tab-CoT)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/thought_generation/memory_of_thought"><span class="flex-1">🟦 Memory-of-Thought (MoT)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/thought_generation/active_prompting"><span class="flex-1">🟦 Active Prompting</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/thought_generation/analogical_prompting"><span class="flex-1">🟦 Analogical Prompting</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/thought_generation/complexity_based_prompting"><span class="flex-1">🟦 Complexity-Based Prompting</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/thought_generation/step_back_prompting"><span class="flex-1">🟦 Step-Back Prompting</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/thought_generation/thread_of_thought"><span class="flex-1">🟦 Thread of Thought (ThoT)</span></a></div></div></div><div><div class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  "><span class="flex-1">Ensembling</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" class="svg-inline--fa fa-chevron-right text-gray-400 dark:text-gray-500 transition-transform duration-300 ease-in-out " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path></svg></div><div class="pl-2.5 overflow-hidden" style=" opacity: 1;"><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/ensembling/introduction"><span class="flex-1">🟢 Introduction</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/ensembling/universal_self_consistency"><span class="flex-1">🟢 Universal Self-Consistency</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/ensembling/mixture_of_reasoning_experts_more"><span class="flex-1">🟦 Mixture of Reasoning Experts (MoRE)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/ensembling/max_mutual_information_method"><span class="flex-1">🟦 Max Mutual Information (MMI) Method</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/ensembling/prompt_paraphrasing"><span class="flex-1">🟦 Prompt Paraphrasing</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/ensembling/diverse_verifier_on_reasoning_step"><span class="flex-1">🟦 DiVeRSe (Diverse Verifier on Reasoning Step)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/ensembling/universal_self_adaptive_prompting"><span class="flex-1">🟦 Universal Self-Adaptive Prompting (USP)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/ensembling/consistency_based_self_adaptive_prompting"><span class="flex-1">🟦 Consistency-based Self-adaptive Prompting (COSP)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/ensembling/multi-chain-reasoning"><span class="flex-1">🟦 Multi-Chain Reasoning (MCR)</span></a></div></div></div><div><div class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  "><span class="flex-1">Self-Criticism</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" class="svg-inline--fa fa-chevron-right text-gray-400 dark:text-gray-500 transition-transform duration-300 ease-in-out " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path></svg></div><div class="pl-2.5 overflow-hidden" style=" opacity: 1;"><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/self_criticism/introduction"><span class="flex-1">🟢 Introduction</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/self_criticism/self_calibration"><span class="flex-1">🟢 Self-Calibration</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/self_criticism/chain-of-density"><span class="flex-1">🟢 Chain of Density (CoD)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/self_criticism/chain_of_verification"><span class="flex-1">🟢 Chain-of-Verification (CoVe)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/self_criticism/self_refine"><span class="flex-1">🟦 Self-Refine</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/self_criticism/cumulative_reasoning"><span class="flex-1">🟦 Cumulative Reasoning</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/self_criticism/rcot"><span class="flex-1">🟦 Reversing Chain-of-Thought (RCoT)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/self_criticism/self_verification"><span class="flex-1">◆ Self-Verification</span></a></div></div></div><div><div class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  "><span class="flex-1">Decomposition</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" class="svg-inline--fa fa-chevron-right text-gray-400 dark:text-gray-500 transition-transform duration-300 ease-in-out " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path></svg></div><div class="pl-2.5 overflow-hidden" style=" opacity: 1;"><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/decomposition/introduction"><span class="flex-1">🟢 Introduction</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/decomposition/chain-of-logic"><span class="flex-1">🟢 Chain-of-Logic</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/decomposition/decomp"><span class="flex-1">🟦 Decomposed Prompting</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/decomposition/plan_and_solve"><span class="flex-1">🟦 Plan-and-Solve Prompting</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/decomposition/program_of_thoughts"><span class="flex-1">🟦 Program of Thoughts</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/decomposition/tree_of_thoughts"><span class="flex-1">🟦 Tree of Thoughts</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/decomposition/chain-of-code"><span class="flex-1">🟦 Chain of Code (CoC)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/decomposition/duty-distinct-chain-of-thought"><span class="flex-1">🟦 Duty-Distinct Chain-of-Thought (DDCoT)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/decomposition/faithful_cot"><span class="flex-1">◆ Faithful Chain-of-Thought</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/decomposition/recursion_of_thought"><span class="flex-1">◆ Recursion of Thought</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/advanced/decomposition/skeleton_of_thoughts"><span class="flex-1">◆ Skeleton-of-Thought</span></a></div></div></div></div></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    
+    pt-4
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/new_techniques/introduction"><span class="flex-1">Special Topics</span></a></div><div><div class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  "><span class="flex-1">⚖️ Reliability</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" class="svg-inline--fa fa-chevron-right text-gray-400 dark:text-gray-500 transition-transform duration-300 ease-in-out " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path></svg></div><div class="pl-2.5 overflow-hidden" style=" opacity: 1;"><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/reliability/introduction"><span class="flex-1">🟢 Introduction</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/reliability/debiasing"><span class="flex-1">🟢 Prompt Debiasing</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/reliability/ensembling"><span class="flex-1">🟦 Prompt Ensembling</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/reliability/lm_self_eval"><span class="flex-1">🟦 LLM Self-Evaluation</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/reliability/calibration"><span class="flex-1">🟦 Calibrating LLMs</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/reliability/math"><span class="flex-1">🟦 Math</span></a></div></div></div><div><div class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  "><span class="flex-1">🔓 Prompt Hacking</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" class="svg-inline--fa fa-chevron-right text-gray-400 dark:text-gray-500 transition-transform duration-300 ease-in-out " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path></svg></div><div class="pl-2.5 overflow-hidden" style=" opacity: 1;"><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/introduction"><span class="flex-1">🟢 Introduction</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/injection"><span class="flex-1">🟢 Prompt Injection</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/leaking"><span class="flex-1">🟢 Prompt Leaking</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/jailbreaking"><span class="flex-1">🟢 Jailbreaking</span></a></div><div><div class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  "><span class="flex-1">🟢 Defensive Measures</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" class="svg-inline--fa fa-chevron-right text-gray-400 dark:text-gray-500 transition-transform duration-300 ease-in-out " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path></svg></div><div class="pl-2.5 overflow-hidden" style=" opacity: 1;"><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/defensive_measures/introduction"><span class="flex-1">🟢 Introduction</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/defensive_measures/filtering"><span class="flex-1">🟢 Filtering</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/defensive_measures/instruction"><span class="flex-1">🟢 Instruction Defense</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/defensive_measures/post_prompting"><span class="flex-1">🟢 Post-Prompting</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/defensive_measures/random_sequence"><span class="flex-1">🟢 Random Sequence Enclosure</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/defensive_measures/sandwich_defense"><span class="flex-1">🟢 Sandwich Defense</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/defensive_measures/xml_tagging"><span class="flex-1">🟢 XML Tagging</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/defensive_measures/llm_eval"><span class="flex-1">🟢 Separate LLM Evaluation</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/defensive_measures/other"><span class="flex-1">🟢 Other Approaches</span></a></div></div></div><div><div class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  "><span class="flex-1">🟢 Offensive Measures</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" class="svg-inline--fa fa-chevron-right text-gray-400 dark:text-gray-500 transition-transform duration-300 ease-in-out " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path></svg></div><div class="pl-2.5 overflow-hidden" style=" opacity: 1;"><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/offensive_measures/introduction"><span class="flex-1">🟢 Introduction</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/offensive_measures/simple-instruction-attack"><span class="flex-1">🟢 Simple Instruction Attack</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/offensive_measures/context-ignoring-attack"><span class="flex-1">🟢 Context Ignoring Attack</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/offensive_measures/compound-instruction-attack"><span class="flex-1">🟢 Compound Instruction Attack</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/offensive_measures/special-case-attack"><span class="flex-1">🟢 Special Case Attack</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/offensive_measures/few-shot-attack"><span class="flex-1">🟢 Few-Shot Attack</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/offensive_measures/refusal-suppresion"><span class="flex-1">🟢 Refusal Suppression</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/offensive_measures/context-switching"><span class="flex-1">🟢 Context Switching Attack</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/offensive_measures/obfuscation"><span class="flex-1">🟢 Obfuscation/Token Smuggling</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/offensive_measures/task-deflection-attack"><span class="flex-1">🟢 Task Deflection Attack</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/offensive_measures/payload_splitting"><span class="flex-1">🟢 Payload Splitting</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/offensive_measures/defined_dictionary"><span class="flex-1">🟢 Defined Dictionary Attack</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/offensive_measures/indirect_injection"><span class="flex-1">🟢 Indirect Injection</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/offensive_measures/recursive_attack"><span class="flex-1">🟢 Recursive Injection</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/offensive_measures/code_injection"><span class="flex-1">🟢 Code Injection</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/offensive_measures/virtualization"><span class="flex-1">🟢 Virtualization</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/offensive_measures/pretending"><span class="flex-1">🟢 Pretending</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/offensive_measures/alignment-hacking"><span class="flex-1">🟢 Alignment Hacking</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/offensive_measures/authorized-user"><span class="flex-1">🟢 Authorized User</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/offensive_measures/dan"><span class="flex-1">🟢 DAN (Do Anything Now)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/prompt_hacking/offensive_measures/badchain"><span class="flex-1">🟢 Bad Chain</span></a></div></div></div></div></div><div><div class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  "><span class="flex-1">🖼️ Image Prompting</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" class="svg-inline--fa fa-chevron-right text-gray-400 dark:text-gray-500 transition-transform duration-300 ease-in-out " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path></svg></div><div class="pl-2.5 overflow-hidden" style=" opacity: 1;"><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/image_prompting/introduction"><span class="flex-1">🟢 Introduction</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/image_prompting/style_modifiers"><span class="flex-1">🟢 Style Modifiers</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/image_prompting/quality_boosters"><span class="flex-1">🟢 Quality Boosters</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/image_prompting/repetition"><span class="flex-1">🟢 Repetition</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/image_prompting/weighted_terms"><span class="flex-1">🟢 Weighted Terms</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/image_prompting/fix_deformed_generations"><span class="flex-1">🟢 Fix Deformed Generations</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/image_prompting/shot_type"><span class="flex-1">🟢 Shot type</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/image_prompting/midjourney"><span class="flex-1">🟢 Midjourney</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/image_prompting/resources"><span class="flex-1">🟢 Resources</span></a></div></div></div><div><div class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  "><span class="flex-1">🌱 New Techniques</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" class="svg-inline--fa fa-chevron-right text-gray-400 dark:text-gray-500 transition-transform duration-300 ease-in-out " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path></svg></div><div class="pl-2.5 overflow-hidden" style=" opacity: 1;"><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/new_techniques/introduction"><span class="flex-1">🟢 Introduction</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/new_techniques/aligned_cot"><span class="flex-1">🟢 Aligned Chain-of-Thought (AlignedCoT)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/new_techniques/self_harmonized_chain_of_thought"><span class="flex-1">🟦 Self-Harmonized Chain-of-Thought (ECHO)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/new_techniques/logic_of_thought"><span class="flex-1">🟦 Logic-of-Thought (LoT)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/new_techniques/narrative_of_thought"><span class="flex-1">🟦 Narrative-of-Thought (NoT)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/new_techniques/code_prompting"><span class="flex-1">🟦 Code Prompting</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/new_techniques/end_to_end_dag_path_prompting"><span class="flex-1">◆ End-to-End DAG-Path (EEDP) Prompting</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/new_techniques/instance_adaptive_zero_shot_chain_of_thought"><span class="flex-1">◆ Instance-adaptive Zero-Shot Chain-of-Thought Prompting (IAP)</span></a></div></div></div><div><div class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  "><span class="flex-1">🔧 Models</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" class="svg-inline--fa fa-chevron-right text-gray-400 dark:text-gray-500 transition-transform duration-300 ease-in-out " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path></svg></div><div class="pl-2.5 overflow-hidden" style=" opacity: 1;"><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/models/introduction"><span class="flex-1">🟢 Introduction</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/models/openai_o1"><span class="flex-1">🟢 OpenAI o1</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/models/fluid"><span class="flex-1">🟢 FLUID</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/models/stable_diffusion_3_5"><span class="flex-1">🟢 Stable Diffusion 3.5</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/models/dalle_3"><span class="flex-1">🟢 DALL-E 3</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/models/claude"><span class="flex-1">🟢 Anthropic Claude</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/models/apple_foundation_models"><span class="flex-1">🟦 Apple Intelligence Models</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/models/google-gemini-1.5"><span class="flex-1">🟢 Google Gemini 1.5</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/models/gemini-1.5-flash"><span class="flex-1">🟢 Gemini 1.5 Flash</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/models/gemini-1.5-pro"><span class="flex-1">🟢 Gemini 1.5 Pro</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/models/gemma"><span class="flex-1">🟢 Gemma</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/models/janus"><span class="flex-1">🟢 Janus</span></a></div></div></div><div><div class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  "><span class="flex-1">🗂️ RAG</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" class="svg-inline--fa fa-chevron-right text-gray-400 dark:text-gray-500 transition-transform duration-300 ease-in-out " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path></svg></div><div class="pl-2.5 overflow-hidden" style=" opacity: 1;"><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/retrieval_augmented_generation/introduction"><span class="flex-1">🟢 Introduction</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/retrieval_augmented_generation/rag"><span class="flex-1">🟦 Retrieval-Augmented Generation (RAG)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/retrieval_augmented_generation/auto-rag"><span class="flex-1">🟦 Auto-RAG</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/retrieval_augmented_generation/self-rag"><span class="flex-1">🟦 Self-RAG</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/retrieval_augmented_generation/flare-active-rag"><span class="flex-1">🟦 FLARE / Active RAG</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/retrieval_augmented_generation/r2ag"><span class="flex-1">🟦 R^2AG</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/retrieval_augmented_generation/graphrag"><span class="flex-1">🟦 GraphRAG</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/retrieval_augmented_generation/info-rag"><span class="flex-1">🟦 InFO-RAG</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/retrieval_augmented_generation/hybridrag"><span class="flex-1">🟦 HybridRAG</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/retrieval_augmented_generation/corrective-rag"><span class="flex-1">🟦 Corrective RAG</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/retrieval_augmented_generation/speculative-rag"><span class="flex-1">🟦 Speculative RAG</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/retrieval_augmented_generation/reliability-aware-rag"><span class="flex-1">🟦 Reliability-Aware RAG (RA-RAG)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/retrieval_augmented_generation/multi_fusion_rag"><span class="flex-1">🟦 Multi-Fusion Retrieval Augmented Generation (MoRAG)</span></a></div></div></div><div><div class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  "><span class="flex-1">🤖 Agents</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" class="svg-inline--fa fa-chevron-right text-gray-400 dark:text-gray-500 transition-transform duration-300 ease-in-out " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path></svg></div><div class="pl-2.5 overflow-hidden" style=" opacity: 1;"><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/agents/introduction"><span class="flex-1">🟢 Introduction</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/agents/mrkl"><span class="flex-1">🟦 LLMs Using Tools</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/agents/react"><span class="flex-1">🟦 LLMs that Reason and Act</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/agents/pal"><span class="flex-1">🟦 Code as Reasoning</span></a></div></div></div><div><div class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  "><span class="flex-1">💪 Prompt Tuning</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" class="svg-inline--fa fa-chevron-right text-gray-400 dark:text-gray-500 transition-transform duration-300 ease-in-out " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path></svg></div><div class="pl-2.5 overflow-hidden" style=" opacity: 1;"><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/trainable/introduction"><span class="flex-1">🟢 Introduction</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/trainable/soft_prompting"><span class="flex-1">🟦 Prompt Tuning with Soft Prompts</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/trainable/discretized"><span class="flex-1">🟦 Interpretable Soft Prompts</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/trainable/prefix-tuning"><span class="flex-1">🟦 Prefix-Tuning</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/trainable/prompt-tuning-with-perturbation-based-regularizer"><span class="flex-1">🟦 Prompt-Tuning with Perturbation-Based Regularizer</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/trainable/low-rank-prompt-tuning"><span class="flex-1">🟦 Low-Rank Prompt Tuning (LoPT)</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/trainable/dynamic-prompting"><span class="flex-1">🟦 Dynamic Prompting</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/trainable/gradient-free-prompt-tuning"><span class="flex-1">🟦 Gradient-Free Prompt Tuning</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/trainable/multitask-prompt-tuning"><span class="flex-1">🟦 Multitask Prompt Tuning</span></a></div></div></div><div><div class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  "><span class="flex-1">🔁 Language Model Inversion</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" class="svg-inline--fa fa-chevron-right text-gray-400 dark:text-gray-500 transition-transform duration-300 ease-in-out " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path></svg></div><div class="pl-2.5 overflow-hidden" style=" opacity: 1;"><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/language-model-inversion/introduction"><span class="flex-1">🟢 Introduction</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/language-model-inversion/logit2prompt"><span class="flex-1">🟢 logit2prompt</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/language-model-inversion/output2prompt"><span class="flex-1">🟢 output2prompt</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/language-model-inversion/reverse-prompt-engineering"><span class="flex-1">🟢 Reverse Prompt Engineering (RPE)</span></a></div></div></div><div><div class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  "><span class="flex-1">🔨 Tooling</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" class="svg-inline--fa fa-chevron-right text-gray-400 dark:text-gray-500 transition-transform duration-300 ease-in-out " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path></svg></div><div class="pl-2.5 overflow-hidden" style=" opacity: 1;"><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/introduction"><span class="flex-1">🟢 Introduction</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/tools"><span class="flex-1">Prompt Engineering Tools</span></a></div><div><div class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  "><span class="flex-1">Prompt Engineering IDEs</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" class="svg-inline--fa fa-chevron-right text-gray-400 dark:text-gray-500 transition-transform duration-300 ease-in-out " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path></svg></div><div class="pl-2.5 overflow-hidden" style=" opacity: 1;"><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/IDEs/introduction"><span class="flex-1">🟢 Introduction</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/IDEs/playground"><span class="flex-1">GPT-3 Playground</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/IDEs/dust"><span class="flex-1">Dust</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/IDEs/soaked"><span class="flex-1">Soaked</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/IDEs/everyprompt"><span class="flex-1">Everyprompt</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/IDEs/promptide"><span class="flex-1">Prompt IDE</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/IDEs/prompttools"><span class="flex-1">PromptTools</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/IDEs/promptsource"><span class="flex-1">PromptSource</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/IDEs/promptchainer"><span class="flex-1">PromptChainer</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/IDEs/promptsai"><span class="flex-1">Prompts.ai</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/IDEs/snorkel"><span class="flex-1">Snorkel 🚧</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/IDEs/humanloop"><span class="flex-1">Human Loop</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/IDEs/spellbook"><span class="flex-1">Spellbook 🚧</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/IDEs/kollaprompt"><span class="flex-1">Kolla Prompt 🚧</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/IDEs/langchain"><span class="flex-1">Lang Chain</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/IDEs/openprompt"><span class="flex-1">OpenPrompt</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/IDEs/DALLE"><span class="flex-1">OpenAI DALLE IDE</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/IDEs/dream_studio"><span class="flex-1">Dream Studio</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/IDEs/patience"><span class="flex-1">Patience</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/IDEs/promptmetheus"><span class="flex-1">Promptmetheus</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/IDEs/promptsandbox"><span class="flex-1">PromptSandbox.io</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/IDEs/theforgeai"><span class="flex-1">The Forge AI</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/IDEs/anysolve"><span class="flex-1">AnySolve</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/tooling/IDEs/conclusion"><span class="flex-1">Conclusion</span></a></div></div></div></div></div><div><div class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  "><span class="flex-1">🎲 Miscellaneous</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" class="svg-inline--fa fa-chevron-right text-gray-400 dark:text-gray-500 transition-transform duration-300 ease-in-out " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path></svg></div><div class="pl-2.5 overflow-hidden" style=" opacity: 1;"><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/miscl/introduction"><span class="flex-1">🟢 Introduction</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/miscl/trickery"><span class="flex-1">🟢 Detection Trickery</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/miscl/music"><span class="flex-1">🟢 Music Generation</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    ml-4
+    
+    ml-2 border-l-[1px] border-gray-200 dark:border-gray-400 hover:border-l-[2px] hover:border-gossamer
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/miscl/detect"><span class="flex-1">🟢 Detecting AI Generated Text</span></a></div></div></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    
+    pt-4
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/bibliography"><span class="flex-1">Resources</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/bibliography"><span class="flex-1">📚 Bibliography</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/products"><span class="flex-1">📦 Prompted Products</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/additional"><span class="flex-1">🛸 Additional Resources</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/hot_topics"><span class="flex-1">🔥 Hot Topics</span></a></div><div><a class="
+    px-4 py-2 cursor-pointer
+    flex items-center
+    transition-colors duration-200
+    
+    
+    
+    dark:text-gray-300 hover:dark:text-gray-200
+    
+    mt-4 pt-4 border-t border-gray-200 dark:border-gray-700
+    hover:bg-gray-100 dark:hover:bg-gray-700
+  " href="/docs/credits"><span class="flex-1">✨ Credits</span></a></div></div><div class="sticky bottom-0 left-0 right-0 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-black p-4"><div class="flex items-center justify-between gap-4"><div class="relative" id="language-dropdown"><div class="relative inline-block text-left" data-headlessui-state=""><button class="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md" id="headlessui-menu-button-:R1d5mfkq:" type="button" aria-haspopup="menu" aria-expanded="false" data-headlessui-state=""><img alt="language symbol" loading="lazy" width="16" height="16" decoding="async" data-nimg="1" class="block" style="color:transparent" src="/_next/static/media/language_symbol-dark.dbdbe5cb.svg"><span>English</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-up" class="svg-inline--fa fa-chevron-up fa-xs transition-transform duration-200 " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"></path></svg></button></div></div><button class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"><img alt="Dark Mode Icon" loading="lazy" width="16" height="16" decoding="async" data-nimg="1" class="cursor-pointer" style="color:transparent" src="/_next/static/media/light_mode_icon.1fa0f776.svg"></button></div></div></div></div></div></div></div>
+</body>
+</html>
