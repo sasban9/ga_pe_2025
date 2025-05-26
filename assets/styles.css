@@ -45,7 +45,7 @@ blockquote{
 table{width: 100%;border-collapse: collapse;}
 th,td{border: solid 1px lightblue;padding: 1rem;}
 .code{background: #0009;padding: 1rem;color: yellowgreen;}
-.prompt{background: #00fa;padding: 1rem;color: #fff;}
+.prompt{background: #00fa;padding: 1rem;color: #fff;width: 500px;}
 .visible {
   display: block;
 }

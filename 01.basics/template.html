@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>03. Template</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caesar+Dressing&family=Frijole&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/styles.css">
+    <!-- <link rel="stylesheet" href="../assets/print.css"> -->
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <img src="https://sasban.online/sasban.jpg" alt=""
+        style="position: fixed;top: 20px;left: 20px;height: 100px;border-radius: 100px;">
+    <div id="progress"></div>
+
+    <div id="slides-container">
+        <div class="slide">
+
+
+        </div>
+    </div>
+<a href="#" style="position: fixed;right: 20px;bottom: 0;transform: rotate(0);font-size: 20px;">@sasban9</a>
+
+
+
+
+<script>
+    const slides = document.querySelectorAll('.slide');
+    const progressBar = document.getElementById('progress');
+    const animations = [
+        'fadeIn', 'slideLeft', 'slideRight', 'zoomIn', 'rotateIn',
+        'bounceIn', 'flipIn', 'dropIn', 'swingIn', 'growIn',
+        'fadeIn', 'slideLeft', 'slideRight', 'zoomIn', 'rotateIn',
+        'bounceIn', 'flipIn', 'dropIn', 'swingIn', 'growIn'
+    ];
+
+    let currentSlide = 0;
+
+    function showSlidesUpTo(index) {
+        slides.forEach((slide, i) => {
+            if (i <= index) {
+                slide.classList.add('visible');
+                slide.classList.remove('hidden');
+                if (!slide.classList.contains('animated')) {
+                    slide.classList.add(animations[i % animations.length], 'animated');
+                }
+            } else {
+                slide.classList.remove('visible');
+                slide.classList.add('hidden');
+            }
+        });
+        updateProgress(index);
+        setTimeout(() => {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }, 100);
+    }
+
+    function hideAllSlides() {
+        slides.forEach(slide => {
+            slide.classList.remove('visible', 'animated');
+            slide.classList.add('hidden');
+        });
+        progressBar.style.width = '0%';
+        currentSlide = 0;
+    }
+
+    function updateProgress(index) {
+        const percent = ((index + 1) / slides.length) * 100;
+        progressBar.style.width = percent + '%';
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') {
+            if (currentSlide < slides.length) {
+                showSlidesUpTo(currentSlide);
+                currentSlide++;
+            } else {
+                hideAllSlides();
+            }
+        } else if (e.key === 'ArrowLeft') {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlidesUpTo(currentSlide - 1);
+            }
+        }
+    });
+
+    // Initialize first slide
+    showSlidesUpTo(currentSlide - 1);
+</script>
+
+</body>
+
+</html>

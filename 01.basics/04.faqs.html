@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>03. Introduction to Prompt Engineering</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caesar+Dressing&family=Frijole&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/styles.css">
+    <!-- <link rel="stylesheet" href="../assets/print.css"> -->
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <img src="https://sasban.online/sasban.jpg" alt=""
+        style="position: fixed;top: 20px;left: 20px;height: 100px;border-radius: 100px;">
+    <div id="progress"></div>
+
+    <div id="slides-container">
+        <div class="slide" style="display: block;">
+            <h2>FAQs</h2>
+        </div>
+        <div class="slide">
+            <h4>What is prompt engineering?</h4>
+        </div>
+        <div class="slide">
+            Prompt engineering is the art of writing and refining your prompts to get better results from generative AI
+            models. It means providing clear, detailed inputs so the AI can produce more accurate and useful outputs.
+        </div>
+        <div class="slide">
+            <h4>What is a prompt?</h4>
+        </div>
+        <div class="slide">
+            A prompt is the instruction or input you give to an AI model. It can be a simple question or a detailed
+            command that sets the tone, style, or format of the output.
+        </div>
+        <div class="slide">
+            <h4>How does prompt engineering work?</h4>
+        </div>
+        <div class="slide">
+            Prompt engineering works by:
+
+            <ul>
+                <li>Creating clear and specific instructions</li>
+                <li>Providing the relevant context or background information</li>
+                <li>Breaking down complex tasks into smaller, manageable steps</li>
+                <li>Testing and refining the prompt based on the AI’s responses</li>
+                <li>Adjusting the prompt until you achieve the desired output</li>
+            </ul>
+        </div>
+        <div class="slide">
+            <h4>Why is prompt engineering important?</h4>
+        </div>
+        <div class="slide">
+            Prompt engineering is important because:
+
+            <ul>
+                <li>Basic prompts can lead to vague or incorrect answers</li>
+                <li>It bridges the gap between your ideas and the AI’s output</li>
+                <li>It can help protect against security risks like prompt injection</li>
+                <li>It ensures the AI’s answers meet the desired quality and style</li>
+                <li>It improves overall accuracy and relevance of the responses</li>
+            </ul>
+        </div>
+        <div class="slide">
+            <h4>How can I improve my prompts?</h4>
+        </div>
+        <div class="slide">
+            To improve your prompts:
+
+            <ul>
+                <li>Add specific details and context to guide the AI</li>
+                <li>Give clear instructions and break tasks into steps</li>
+                <li>Specify the format or style you expect in the output</li>
+                <li>Test your prompts and tweak them based on the results</li>
+            </ul>
+        </div>
+        <div class="slide">
+            <h4>What types of tasks can prompt engineering help with?</h4>
+        </div>
+        <div class="slide">
+            Prompt engineering can help with a wide range of tasks, including:
+            <ul>
+                <li>Writing and text generation</li>
+                <li>Image creation with models like DALL-E</li>
+                <li>Generating and optimizing code</li>
+                <li>Creative tasks, such as composing tweets or stories</li>
+                <li>Solving mathematical problems</li>
+            </ul>
+        </div>
+        <div class="slide">
+            <h4>How can I become a better prompt engineer?</h4>
+        </div>
+        <div class="slide">
+            Getting better at prompt engineering takes practice. Experiment with different prompts, learn from mistakes,
+            study examples, and continuously refine your approach based on feedback from the AI.
+        </div>
+        <div class="slide">
+            <h4>Why was prompt engineering effective in the math example?</h4>
+        </div>
+        <div class="slide">
+            In the math example (923 * 99), adding step-by-step instructions helped the AI break down the problem. This
+            guided it to use logical reasoning, resulting in a correct answer rather than an error.
+        </div>
+        <div class="slide">
+            <h4>What makes a good prompt?</h4>
+        </div>
+        <div class="slide">
+            A good prompt usually has:
+
+            <ul>
+                <li>Clear and specific instructions</li>
+                <li>Relevant context and details</li>
+                <li>A defined output format or style</li>
+                <li>Step-by-step guidance for complex tasks</li>
+                <li>Any necessary constraints to guide the response</li>
+            </ul>
+        </div>
+        <div class="slide">
+            <h4>What is deterministic prompting?</h4>
+        </div>
+        <div class="slide">
+            Deterministic prompting is a method where prompts are crafted to produce consistent and predictable outputs.
+            This is done by using very specific formats, instructions, and constraints, so that the AI returns the same
+            result every time for the same input.
+        </div>
+        <div class="slide">
+            <h4>How can user feedback help improve prompt engineering?</h4>
+        </div>
+        <div class="slide">
+            User feedback is valuable because it shows where the AI’s responses fall short. You can use this feedback to
+            adjust and refine your prompts—adding missing context or clarifying instructions—to make the outputs more
+            accurate and useful over time.
+        </div>
+    </div>
+    <a href="#" style="position: fixed;right: 20px;bottom: 0;transform: rotate(0);font-size: 20px;">@sasban9</a>
+
+
+
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progress');
+        const animations = [
+            'fadeIn', 'slideLeft', 'slideRight', 'zoomIn', 'rotateIn',
+            'bounceIn', 'flipIn', 'dropIn', 'swingIn', 'growIn',
+            'fadeIn', 'slideLeft', 'slideRight', 'zoomIn', 'rotateIn',
+            'bounceIn', 'flipIn', 'dropIn', 'swingIn', 'growIn'
+        ];
+
+        let currentSlide = 0;
+
+        function showSlidesUpTo(index) {
+            slides.forEach((slide, i) => {
+                if (i <= index) {
+                    slide.classList.add('visible');
+                    slide.classList.remove('hidden');
+                    if (!slide.classList.contains('animated')) {
+                        slide.classList.add(animations[i % animations.length], 'animated');
+                    }
+                } else {
+                    slide.classList.remove('visible');
+                    slide.classList.add('hidden');
+                }
+            });
+            updateProgress(index);
+            setTimeout(() => {
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }, 100);
+        }
+
+        function hideAllSlides() {
+            slides.forEach(slide => {
+                slide.classList.remove('visible', 'animated');
+                slide.classList.add('hidden');
+            });
+            progressBar.style.width = '0%';
+            currentSlide = 0;
+        }
+
+        function updateProgress(index) {
+            const percent = ((index + 1) / slides.length) * 100;
+            progressBar.style.width = percent + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                if (currentSlide < slides.length) {
+                    showSlidesUpTo(currentSlide);
+                    currentSlide++;
+                } else {
+                    hideAllSlides();
+                }
+            } else if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlidesUpTo(currentSlide - 1);
+                }
+            }
+        });
+
+        // Initialize first slide
+        showSlidesUpTo(currentSlide - 1);
+    </script>
+
+</body>
+
+</html>

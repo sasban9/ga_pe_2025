@@ -20,7 +20,7 @@ a{text-decoration: none;font-family: monospace;color: khaki;}
   z-index: 10;
 }
 #slides-container{margin-bottom: 200px;display: flex;flex-direction: column;}
-img{max-width: 600px;vertical-align: middle;display: none;}
+/* img{max-width: 600px;vertical-align: middle;display: none;} */
 figcaption{color: yellow;font-size: 20px;font-family: monospace;}
 h1{font-family: Frijole,sans-serif;font-size: 3.2rem;}
 .slide {

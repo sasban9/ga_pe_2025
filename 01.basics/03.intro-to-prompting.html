@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>03. Introduction to Prompt Engineering</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caesar+Dressing&family=Frijole&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/styles.css">
-  <!-- <link rel="stylesheet" href="../assets/print.css"> -->
-   <style>
-    li{display: inline;}
-   </style>
+    <meta charset="UTF-8">
+    <title>03. Introduction to Prompt Engineering</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caesar+Dressing&family=Frijole&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/styles.css">
+    <!-- <link rel="stylesheet" href="../assets/print.css"> -->
+    <style>
+        
+    </style>
 </head>
+
 <body>
-    <img src="https://sasban.online/sasban.jpg" alt="" style="position: fixed;top: 20px;left: 20px;height: 100px;border-radius: 100px;">
+    <img src="https://sasban.online/sasban.jpg" alt=""
+        style="position: fixed;top: 20px;left: 20px;height: 100px;border-radius: 100px;">
     <div id="progress"></div>
-    
+
     <div id="slides-container">
         <div class="slide" style="display: block;">
             <h2>03. Introduction to Prompt Engineering</h2>
@@ -24,124 +27,335 @@
             <h4>What is Prompt Engineering?</h4>
         </div>
         <div class="slide">
-Prompt engineering is the process of crafting and refining prompts to improve the performance of generative AI models. 
-<!-- It involves providing specific inputs to tools like ChatGPT, Midjourney, or Gemini, guiding the AI to deliver more accurate and contextually relevant outputs. -->
+            Prompt engineering is the process of crafting and refining prompts to improve the performance of generative
+            AI models.
+            <!-- It involves providing specific inputs to tools like ChatGPT, Midjourney, or Gemini, guiding the AI to deliver more accurate and contextually relevant outputs. -->
         </div>
         <div class="slide">
-When an AI model doesn't produce the desired response, prompt engineering is used to iterate and adjust the prompt to optimize the output. 
-<!-- This method is particularly useful for overcoming limitations of generative models, such as logical errors or insufficient context in responses. -->
+            When an AI model doesn't produce the desired response, prompt engineering is used to iterate and adjust the
+            prompt to optimize the output.
+            <!-- This method is particularly useful for overcoming limitations of generative models, such as logical errors or insufficient context in responses. -->
         </div>
         <div class="slide">
             <h4>Why Prompt Engineering is Important?</h4>
         </div>
         <div class="slide">
-Generative AI models rely heavily on the input (or "prompt") provided by users. 
-<!-- A well-structured prompt is key to leveraging the model's capabilities and ensuring it provides relevant, precise answers. -->
+            Generative AI models rely heavily on the input (or "prompt") provided by users.
+            <!-- A well-structured prompt is key to leveraging the model's capabilities and ensuring it provides relevant, precise answers. -->
 
         </div>
         <div class="slide">
-Prompt engineering is important because:
+            Prompt engineering is important because:
         </div>
         <div class="slide">
-            o It bridges the gap between vague, general queries <br>and specific, actionable results.    
+            o It bridges the gap between vague, general queries <br>and specific, actionable results.
         </div>
         <div class="slide">
             o It helps mitigate errors, such as generating irrelevant content or <br>incorrect responses.
         </div>
         <div class="slide">
-<li>It ensures that the AI can handle various tasks 
-    <!-- like creative writing, image generation, or even code development with minimal post-processing needed. -->
+            <li>It ensures that the AI can handle various tasks
+                <!-- like creative writing, image generation, or even code development with minimal post-processing needed. -->
         </div>
         <div class="slide">
             <h4>What is a Prompt?</h4>
         </div>
         <div class="slide">
-A prompt is the input or instruction given to an AI model to generate a response. <hr>
-Prompts can be simple (a question) or complex (detailed instructions with context, tone, style, and format specifications). <hr>
-The quality of the AI's response depends directly on how clear, detailed, and structured the prompt is.
+            A prompt is the input or instruction given to an AI model to generate a response.
+            <hr>
+            Prompts can be simple (a question) or complex (detailed instructions with context, tone, style, and format
+            specifications).
+            <hr>
+            The quality of the AI's response depends directly on how clear, detailed, and structured the prompt is.
 
         </div>
         <div class="slide">
-Here's an example of a simple prompt:
-<div class="prompt"><code>Explain to me what is prompt engineering <br> like I'm 5.</code></div>
+            Here's an example of a simple prompt:
+            <div class="prompt"><code>Explain to me what is prompt engineering <br> like I'm 5.</code></div>
         </div>
         <div class="slide">
-            And here is the response: 
-            <div class="code"><code class="">Sure! Imagine you have a toy robot that listens to what you say and does things like answering questions or telling stories. But, this robot doesn't always understand exactly what you want unless you say it in a certain way. <br>
+            And here is the response:
+            <div class="code"><code
+                    class="">Sure! Imagine you have a toy robot that listens to what you say and does things like answering questions or telling stories. But, this robot doesn't always understand exactly what you want unless you say it in a certain way. <br>
                 Prompt engineering is like figuring out the best way to talk to the robot so it does exactly what you want. For example, if you want the robot to tell a funny story about a cat, you might need to say, "Tell me a funny story about a cat," instead of just "Tell me a story." <br>
-                In short, prompt engineering is about asking the right questions or giving the right instructions to make sure the robot gives you the best answers!</code></div>
+                In short, prompt engineering is about asking the right questions or giving the right instructions to make sure the robot gives you the best answers!</code>
+            </div>
         </div>
-        <div class="slide"></div>
+        <div class="slide">
+            <h4>Applying Prompt Engineering to Improve the Prompt</h4>
+        </div>
+        <div class="slide">
+            Generative AI models, like ChatGPT, can sometimes produce incorrect or misleading outputs.
+            <!-- This often happens when a prompt is too vague, lacks necessary details, or doesn't provide clear instructions. -->
+        </div>
+        <div class="slide">
+            Let's try to refine the prompt and encourage step-by-step <br>reasoning to improve model's output:
+        </div>
+        <div class="slide">
+
+            <b>Improved Prompt</b><br>
+            <div class="prompt"><code>What is 923 * 99? <br>
+
+    Let's go step by step. <br>
+    
+    Always write out the full number of 0s for each term.</code></div>
+        </div>
+        <div class="slide">
+            <!-- What model outputs: <hr> -->
+
+            <b>AI Output</b>
+            <div class="code"><code>
+    To multiply 923 by 99, we can break it down into smaller steps: <br>
+
+Step 1:<br> Write out the full number of 0s for each term: 923 * 99 = 923 * 990 <br>
+
+Step 2:<br> Multiply the first term by 9: 923 * 9 = 8307 <br>
+
+Step 3:<br> Multiply the first term by 90 (adding one 0): 923 * 90 = 83070 <br>
+
+Step 4:<br> Add the results from step 2 and step 3: 8307 + 83070 = 91377 <br>
+
+Therefore, 923 multiplied by 99 is equal to 91,377.
+</code></div>
+        </div>
+        <div class="slide">
+
+
+            Interestingly, with these additional instructions, ChatGPT provides the correct answer by walking through
+            the steps.
+
+        </div>
+        <div class="slide">
+            This process of editing and refining the prompt is what we call <u>Prompt Engineering</u>.
+            <!-- Adding specificity and guidance to the prompt improves the output and guides the model apply logical reasoning more effectively. -->
+        </div>
+        <div class="slide">
+            <h4>Why Did This Updated Prompt Work?</h4>
+        </div>
+        <div class="slide">
+            Generative AI models are trained to predict text based on patterns instead of deep reasoning or factual
+            accuracy.
+        </div>
+        <div class="slide">
+            By prompting the model to explicitly think through its steps and break down the problem, we reduce the
+            chance of mistakes and make the task easier for the model to handle.
+        </div>
+        <div class="slide">
+            <h4>Examples of Prompt Engineering in Action <br>(Text, Image, and Code)</h4>
+        </div>
+        <!-- <div class="slide">
+Prompt engineering is versatile and can be applied to many use cases across text, image, and code generation.
+<hr>Here are some examples to illustrate its range:
+        </div> -->
+        <div class="slide">
+            <h3>Text</h3>
+            <hr>
+            <!-- Let's start with text-based models like ChatGPT. Suppose you need help writing a marketing summary: <br> -->
+
+            <b>Initial Prompt</b>
+            <div class="prompt">
+                <code>Write a marketing summary for a new AI tool that helps companies automate tasks.</code></div>
+
+        </div>
+        <div class="slide">
+            The output might be too generic, so you refine it:
+            <!-- <h4>Refined Prompt</h4> -->
+            <div class="prompt">
+                <code>Write a 100-word marketing summary for an AI tool called TaskBot, which automates repetitive tasks for small businesses in industries like retail and healthcare. Highlight efficiency and cost savings.</code>
+            </div>
+        </div>
+        <!-- <div class="slide">
+This provides clearer instructions and results in a more targeted response.
+        </div> -->
+
+        <div class="slide">
+            <h3>Image Generation</h3>
+            <hr>
+            For models like Midjourney or DALL-E, prompts are crafted to generate specific imagery. <br>
+            <table>
+                <tr>
+                    <td>
+                        <b>Initial Prompt</b>
+                        <div class="prompt"><code>A cat sitting on a chair.</code></div>
+                    </td>
+                    <td>
+                        <b>Refined Prompt</b>
+                        <div class="prompt">
+                            <code>Generate an image of a tabby cat sitting on a wooden chair in a cozy, sunlit room, with soft shadows and warm lighting.</code>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div class="slide">
+            By adding more details, you guide the model to generate an image that aligns with your vision. <br>
+
+        </div>
+        <div class="slide">
+            <h3>Code Generation</h3>
+            <hr>Prompts can help generate or optimize code:
+        </div>
+        <div class="slide">
+            <table>
+                <tr>
+                    <td><b>Initial Prompt</b>
+                        <div class="prompt"><code>Write a Python function to multiply two numbers.</code></div>
+                    </td>
+                    <td><b>Refined Prompt</b>
+                        <div class="prompt">
+                            <code>Write a Python function that multiplies two integers and returns the result. Include error handling for cases where inputs are not integers.</code>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+
+            <!-- This ensures the AI writes robust, real-world-ready code. -->
+        </div>
+        <div class="slide">
+            <h3>Prompt Engineering for Creative Tasks:</h3>
+            Writing Tweets
+            <hr>
+            Next, let's apply prompt engineering in a creative context. Imagine we are developing a fictional AI product
+            called "ArchaeologistAI," which tells stories about famous archaeologists.
+        </div>
+        <div class="slide">
+            Let's ask ChatGPT to write a marketing tweet about it.
+            <div class="prompt"><code>Write a tweet about ArchaeologistAI.</code></div>
+        </div>
+        <div class="slide">
+            <b>AI Output</b>
+            <div class="code"><code>🔍 Exciting times ahead with #ArchaeologistAI!
+    <br>This cutting-edge technology is revolutionizing the field of archaeology, helping us uncover ancient mysteries and piece together our past like never before.
+    <br>Can't wait to see what hidden treasures and insights it unveils!
+    <br>#AI #Archaeology</code></div>
+        </div>
+        <div class="slide">
+            <h4>Including Relevant Information in the Prompt</h4>
+        </div>
+        <div class="slide">
+            This Tweet is inaccurate because ArchaeologistAI doesn't discover new things—it only tells stories. This
+            isn't ChatGPT's fault, as it wasn't given enough context.
+        </div>
+        <div class="slide">Let's refine the prompt by including more specific details:
+        </div>
+        <div class="slide">
+            <div class="prompt">
+                <code>Write a tweet about ArchaeologistAI.<br>ArchaeologistAI tells stories about famous archaeologists.</code>
+            </div>
+        </div>
+        <div class="slide">
+            <b>AI Output</b>
+            <div class="code"><code>
+    🔍 Unearth the captivating tales of legendary archaeologists with #ArchaeologistAI!
+    <br>From Indiana Jones to Mary Leakey, this AI-powered storyteller brings their adventures to life, shedding light on their groundbreaking discoveries and inspiring the next generation of explorers.
+    <br>🌍 #Archaeology</code></div>Much better now!
+    <!-- This is a much more accurate output because we added key details about the product's functionality. -->
+        </div>
+        <div class="slide">
+            <h4>Changing Style of the AI Output with the Prompt</h4>
+        </div>
+        <div class="slide">
+            Now, let's refine it further by asking ChatGPT to write the tweet in the style of Indiana Jones:
+        </div>
+        <div class="slide">
+            <div class="prompt"><code>Write a tweet about ArchaeologistAI, in the style of Indiana Jones.<br>ArchaeologistAI tells stories about famous archaeologists.</code></div>
+        </div>
+        <!-- <div class="slide"></div> -->
+        <div class="slide">
+            <div class="code"><code>Grab your fedora and whip, folks! 🎩🔥 <br>
+                ArchaeologistAI is like having a personal Sallah by your side, sharing captivating tales of legendary archaeologists who've braved ancient tombs and unearthed hidden treasures! 🗺️💎 <br>
+                Get ready to embark on a digital adventure through history! <br>
+                #ArchaeologistAI #UnearthTheLegends</code></div>
+        </div>
+        <div class="slide">
+            <!-- Alright, that may be the message we need to target archaeology fans!  -->
+            This version adds a fun, thematic spin to the message, making it more engaging. 
+            <!-- By iterating and refining the prompt, we were able to achieve the desired result. -->
+        </div>
+        <div class="slide">
+            <h3>Conclusion</h3><hr>
+            Prompt engineering is an iterative process. <br>
+            The perfect prompt rarely happens on the first try.<br>
+            <!-- , so it's essential to practice refining your inputs to get the best possible output from generative AI models. <br> -->
+        </div>
+        <div class="slide">
+            Adding specificity, providing context, and guiding the model with detailed instructions can significantly improve its responses.
+        </div>
+        <div class="slide">Next, we'll explore different prompting strategies that will help us get better at crafting prompts for a variety of AI applications.
+        </div>
     </div>
-<a href="#" style="position: fixed;right: 20px;bottom: 0;transform: rotate(0);font-size: 20px;">@sasban9</a>
+    <a href="#" style="position: fixed;right: 20px;bottom: 0;transform: rotate(0);font-size: 20px;">@sasban9</a>
 
 
 
 
-<script>
-  const slides = document.querySelectorAll('.slide');
-  const progressBar = document.getElementById('progress');
-  const animations = [
-    'fadeIn', 'slideLeft', 'slideRight', 'zoomIn', 'rotateIn',
-    'bounceIn', 'flipIn', 'dropIn', 'swingIn', 'growIn',
-    'fadeIn', 'slideLeft', 'slideRight', 'zoomIn', 'rotateIn',
-    'bounceIn', 'flipIn', 'dropIn', 'swingIn', 'growIn'
-  ];
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progress');
+        const animations = [
+            'fadeIn', 'slideLeft', 'slideRight', 'zoomIn', 'rotateIn',
+            'bounceIn', 'flipIn', 'dropIn', 'swingIn', 'growIn',
+            'fadeIn', 'slideLeft', 'slideRight', 'zoomIn', 'rotateIn',
+            'bounceIn', 'flipIn', 'dropIn', 'swingIn', 'growIn'
+        ];
 
-  let currentSlide = 0;
+        let currentSlide = 0;
 
-  function showSlidesUpTo(index) {
-    slides.forEach((slide, i) => {
-      if (i <= index) {
-        slide.classList.add('visible');
-        slide.classList.remove('hidden');
-        if (!slide.classList.contains('animated')) {
-          slide.classList.add(animations[i % animations.length], 'animated');
+        function showSlidesUpTo(index) {
+            slides.forEach((slide, i) => {
+                if (i <= index) {
+                    slide.classList.add('visible');
+                    slide.classList.remove('hidden');
+                    if (!slide.classList.contains('animated')) {
+                        slide.classList.add(animations[i % animations.length], 'animated');
+                    }
+                } else {
+                    slide.classList.remove('visible');
+                    slide.classList.add('hidden');
+                }
+            });
+            updateProgress(index);
+            setTimeout(() => {
+                  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }, 100);
         }
-      } else {
-        slide.classList.remove('visible');
-        slide.classList.add('hidden');
-      }
-    });
-    updateProgress(index);
-    setTimeout(() => {
-      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    }, 100);
-  }
 
-  function hideAllSlides() {
-    slides.forEach(slide => {
-      slide.classList.remove('visible', 'animated');
-      slide.classList.add('hidden');
-    });
-    progressBar.style.width = '0%';
-    currentSlide = 0;
-  }
+        function hideAllSlides() {
+            slides.forEach(slide => {
+                slide.classList.remove('visible', 'animated');
+                slide.classList.add('hidden');
+            });
+            progressBar.style.width = '0%';
+            currentSlide = 0;
+        }
 
-  function updateProgress(index) {
-    const percent = ((index + 1) / slides.length) * 100;
-    progressBar.style.width = percent + '%';
-  }
+        function updateProgress(index) {
+            const percent = ((index + 1) / slides.length) * 100;
+            progressBar.style.width = percent + '%';
+        }
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight') {
-      if (currentSlide < slides.length) {
-        showSlidesUpTo(currentSlide);
-        currentSlide++;
-      } else {
-        hideAllSlides();
-      }
-    } else if (e.key === 'ArrowLeft') {
-      if (currentSlide > 0) {
-        currentSlide--;
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                if (currentSlide < slides.length) {
+                    showSlidesUpTo(currentSlide);
+                    currentSlide++;
+                } else {
+                    hideAllSlides();
+                }
+            } else if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlidesUpTo(currentSlide - 1);
+                }
+            }
+        });
+
+        // Initialize first slide
         showSlidesUpTo(currentSlide - 1);
-      }
-    }
-  });
-
-  // Initialize first slide
-  showSlidesUpTo(currentSlide - 1);
-</script>
+    </script>
 
 </body>
+
 </html>
