@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>05. Instructions in Prompts</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caesar+Dressing&family=Frijole&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/styles.css">
+    <!-- <link rel="stylesheet" href="../assets/print.css"> -->
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <img src="https://sasban.online/sasban.jpg" alt=""
+        style="position: fixed;top: 20px;left: 20px;height: 100px;border-radius: 100px;">
+    <div id="progress"></div>
+
+    <div id="slides-container">
+        <div class="slide" style="display: block;">
+            <h2>05. Instructions in Prompts</h2>
+            <!-- 🟢This article is rated easy |
+            Reading Time: 6 minutes <br>
+            Last updated on March 6th, 2025 <br> Sander Schulhoff -->
+        </div>
+        <div class="slide">
+            <img src="https://learnprompting.org/docs/assets/basics/instruction_prompt.svg" alt="">
+        </div>
+        <div class="slide">
+            In this section, we cover our first prompting technique, <u>Instruction Prompting</u>. It consists in providing
+            clear instructions or directives to the AI model.
+        </div>
+        <div class="slide">We have already seen simple instructions used in the doc about prompt engineering like
+            getting an AI to solve the math problem. However, we can instruct Gen AIs to do much more complex tasks.
+        </div>
+        <div class="slide">
+            <h4>What is Instruction Prompting?</h4>
+            <!-- 1.Efrat, A., & Levy, O. (2020). The Turking Test: Can Language Models Understand Instructions? -->
+            <!-- 2.Mishra, S., Khashabi, D., Baral, C., Choi, Y., & Hajishirzi, H. (2022). Reframing Instructional Prompts to GPTk’s Language. Findings of the Association for Computational Linguistics: ACL 2022. https://doi.org/10.18653/v1/2022.findings-acl.50 -->
+        </div>
+        <div class="slide">
+            <b>Instruction Prompting </b> centers around the ability of Generative AI models, particularly large language models
+            (LLMs), to follow natural language instructions.
+        </div>
+        <div class="slide">
+            Instruction Prompting aims to allow models to work with new, previously unseen tasks by understanding and executing instructions expressed in natural language, without requiring task-specific training data.
+        </div>
+        <div class="slide"> For example, instead of training a model on multiple examples of extracting the fourth word
+            from a sentence, you can simply instruct it: "Write the fourth word of the sentence."
+        </div>
+        <div class="slide">
+            <h4>Why Instruction Prompting is Important</h4>
+        </div>
+        <div class="slide">
+            Generative AI models rely on well-crafted instructions to understand tasks and deliver accurate results.
+            <!-- Instruction Prompting enables users to guide AI through complex tasks—like text formatting, PII removal, and essay evaluation—without needing vast labeled datasets or pre-programmed rules. -->
+        </div>
+        <div class="slide">This method is flexible and scalable, making it particularly useful for adapting AI to new tasks. 
+            <!-- It also helps mitigate the risks of incorrect outputs by enabling prompt iterations and adjustments. -->
+        </div>
+        <div class="slide">
+            <h3>Examples of Instruction Prompting</h3>
+        </div>
+        <div class="slide">
+            Name Parsing <hr>
+            One common task in data processing is formatting names correctly, especially when users input names in
+            different orders (e.g., "John Smith" or "Smith John"). Instruction Prompting allows you to automate this
+            task effortlessly.
+        </div>
+        <div class="slide">
+            <div class="prompt"><code>A user has input their first and last name into a form. We don't know in which order their first name and last name are, but we need it to be in this format '[Last name], [First name]'.<br>Please convert the following name in the expected format: John Smith</code></div>
+        </div>
+        <div class="slide">
+            <!-- <div class="code"><code>Smith, John</code></div> -->
+        </div>
+        <div class="slide">Try changing the name until you find one that the prompt does not properly handle. If you can
+            do this, perhaps you will be able to improve to prompt as well! This is a fun exercise to improve your
+            Prompt Engineering skills.
+        </div>
+        <div class="slide">
+            <h4>Removing Personally Identifiable Information (PII)</h4>
+        </div>
+        <div class="slide">
+            Organizations often need to redact personal information from documents. 
+            <!-- With Instruction Prompting, Generative AI can automatically identify and replace PII, saving time and reducing manual effort  -->
+            <!-- 3 Allowing AI to remove PII from text is a promising approach, but it should be used with extraordinary caution as it may make mistakes. -->
+            <!-- 4 It should also be noted in this example that you are sending PII to a third party (e.g. OpenAI if you are using ChatGPT), and these services may record and use your prompts for their own needs. -->
+        </div>
+        
+        <div class="slide">
+            <div class="prompt"><code>Read the following sales email. Remove any personally identifiable information (PII), and replace it with
+                the appropriate placeholder. For example, replace the name "John Doe" with "[NAME]".
+            <br>Hi John,
+            <br>I'm writing to you because I noticed you recently purchased a new car. I'm a salesperson at a
+                local dealership (Cheap Dealz), and I wanted to let you know that we have a great deal on a new car. If
+                you're interested, please let me know.
+            <br>Thanks,
+            <br>Jimmy Smith
+            <br>Phone: 410-805-2345 Email: jimmysmith@cheapdealz.com</code></div>
+        </div>
+        <div class="slide">AI Response:
+            <!-- 5 We used a different GenAI, GPT-3, for this example. -->
+            <div class="code">
+                <code>Hi [NAME],<br>
+                    I'm writing to you because I noticed you recently purchased a new car. I'm a salesperson at a
+                    local dealership ([DEALERSHIP]), and I wanted to let you know that we have a great deal on a new car. If
+                    you're interested, please let me know. <br>
+                    Thanks, <br>
+                    [SALESPERSON] <br>
+                    Phone: [PHONE NUMBER] Email: [EMAIL ADDRESS]</code>
+            </div>
+        </div>
+        <div class="slide">It is very exciting to see how the model can extrapolate from the instructions. For example,
+            it knows to replace <u>Cheap Dealz</u> with <code>[DEALERSHIP]</code> and <u>Jimmy Smith</u> with <code>[SALESPERSON]</code>, even though we did not
+            explicitly tell it to do so.
+        </div>
+        <div class="slide">
+            <h4>Essay Evaluation and Feedback</h4>
+        </div>
+        <div class="slide">
+            Instruction Prompting can also be used to evaluate essays based on various criteria like grammar, coherence,
+            and argument quality. The model can provide detailed feedback and scores, simulating the task of a human
+            reviewer.
+        </div>
+        <div class="slide">
+            <div class="prompt">
+                <code>Read the following excerpt from an essay and provide feedback based on the following criteria: grammar,
+                    clarity, coherence, argument quality, and use of evidence. Provide a score from 1-10 for each attribute,
+                    along with reasoning for your score.<br>
+                    "Despite the popular belief, there's no solid evidence supporting the idea that video games
+                    lead to violent behavior. Research on the topic is often contradictory and inconclusive. Some studies found
+                    a correlation, but correlation doesn't imply causation. So, it's premature to blame video games for violence
+                    in society."</code>
+            </div>
+        </div>
+        <div class="slide">The AI's response:
+            <div class="code">
+                <code>Attribute: Grammar Score: 9 Reasoning: The essay is mostly grammatically correct, but there is a minor error
+                    - 'correlation doesn't imply causation' should be 'correlation doesn't imply causation'.
+                <br>Attribute: Clarity Score: 8 Reasoning: The essay is generally clear, but could provide more
+                    detail or explanation about the contradictory and inconclusive nature of the research.
+                <br>Attribute: Coherence Score: 8 Reasoning: The arguments are coherent and related, but the
+                    transition between them could be smoother.
+                <br>Attribute: Argument Quality Score: 7 Reasoning: The argument presented is logical and
+                    well-reasoned, but it could be strengthened with a clearer statement of the writer's position on the issue.</code>
+            </div>
+        </div>
+        <div class="slide">
+            <h3>Conclusion</h3>
+        </div>
+        <div class="slide">
+            Instruction Prompting is a powerful technique that allows Generative AI models to handle complex tasks by providing clear, concise directions.
+        </div>
+        <div class="slide">
+            Through examples like name parsing, PII removal, and essay evaluation, we can see how flexible and scalable this method is. 
+            <!-- Instruction Prompting will be a key tool as you continue exploring AI capabilities. -->
+        </div>
+    </div>
+    <a href="#" style="position: fixed;right: 20px;bottom: 0;transform: rotate(0);font-size: 20px;">@sasban9</a>
+
+
+
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progress');
+        const animations = [
+            'fadeIn', 'slideLeft', 'slideRight', 'zoomIn', 'rotateIn',
+            'bounceIn', 'flipIn', 'dropIn', 'swingIn', 'growIn',
+            'fadeIn', 'slideLeft', 'slideRight', 'zoomIn', 'rotateIn',
+            'bounceIn', 'flipIn', 'dropIn', 'swingIn', 'growIn'
+        ];
+
+        let currentSlide = 0;
+
+        function showSlidesUpTo(index) {
+            slides.forEach((slide, i) => {
+                if (i <= index) {
+                    slide.classList.add('visible');
+                    slide.classList.remove('hidden');
+                    if (!slide.classList.contains('animated')) {
+                        slide.classList.add(animations[i % animations.length], 'animated');
+                    }
+                } else {
+                    slide.classList.remove('visible');
+                    slide.classList.add('hidden');
+                }
+            });
+            updateProgress(index);
+            setTimeout(() => {
+                // window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }, 100);
+        }
+
+        function hideAllSlides() {
+            slides.forEach(slide => {
+                slide.classList.remove('visible', 'animated');
+                slide.classList.add('hidden');
+            });
+            progressBar.style.width = '0%';
+            currentSlide = 0;
+        }
+
+        function updateProgress(index) {
+            const percent = ((index + 1) / slides.length) * 100;
+            progressBar.style.width = percent + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                if (currentSlide < slides.length) {
+                    showSlidesUpTo(currentSlide);
+                    currentSlide++;
+                } else {
+                    hideAllSlides();
+                }
+            } else if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlidesUpTo(currentSlide - 1);
+                }
+            }
+        });
+
+        // Initialize first slide
+        showSlidesUpTo(currentSlide - 1);
+    </script>
+
+</body>
+
+</html>

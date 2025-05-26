@@ -51,6 +51,7 @@ th,td{border: solid 1px lightblue;padding: 1rem;}
 }
 
 .hidden {
+  display: hidden;
   display: block;
 }
 

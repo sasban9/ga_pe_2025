@@ -24,13 +24,13 @@
             <h2>05. Basic Prompt Structure and Key Parts</h2>
         </div>
         <div class="slide">
+            <img src="https://learnprompting.org/docs/assets/basics/formal_prompt.svg" align="right" width="200" alt="">
             Prompts are made up of several key components that work together to guide the AI. While not every prompt
             will contain all these elements, understanding how each part functions can help you create more targeted and
-            effective inputs. <hr>
-
-            The key parts of a prompt are:
+            effective inputs.
         </div>
         <div class="slide">
+            The key parts of a prompt are: <hr>
             - The Directive <br>
             - Examples <br>
             - Role (Persona) <br>
@@ -70,14 +70,14 @@
             <h4>Best Practices for Directives:</h4>
         </div>
         <div class="slide">
-            - Be clear and concise.
-            - Avoid ambiguous or vague instructions.
-            - When possible, use action verbs to indicate the specific task <br>(e.g., "write," "list," "translate").
+            - Be clear and concise. <br>
+            - Avoid ambiguous or vague instructions. <br>
+            - When possible, use action verbs to indicate <br>the specific task (e.g., "write," "list," "translate").
         </div>
         <div class="slide">
             <h3>2. Examples</h3><hr>
-            When the task is more complex, providing Examples can help guide the AI in producing more accurate responses. 
-            This technique is especially useful in few-shot and one-shot prompting, where a model is given one or more examples of what you expect in the output.
+            When the task is more complex, providing Examples can help guide the AI in producing more accurate responses.  <br>
+            <figcaption>This technique is especially useful in few-shot and one-shot prompting, where a model is given one or more examples of what you expect in the output.</figcaption>
         </div>
         <div class="slide">
             <h4>Why Use Examples?</h4>
@@ -108,19 +108,16 @@
             <h4>What is a Role?</h4>
         </div>
         <div class="slide">
-            The role element in a prompt assigns a specific persona or perspective to the AI, encouraging it to tailor its response according to the designated role. This can greatly enhance the accuracy and relevance of the response, especially for tasks requiring domain-specific knowledge or a particular tone.
+            The role element in a prompt assigns a specific persona or perspective to the AI, encouraging it to tailor its response according to the designated role. 
+            <!-- This can greatly enhance the accuracy and relevance of the response, especially for tasks requiring domain-specific knowledge or a particular tone. -->
         </div>
         <div class="slide">
             Here, the AI is instructed to respond as if it were a medical professional:
-        </div>
-        <div class="slide">
             <div class="prompt"><code>You are a doctor. Based on the following symptoms, diagnose the patient: <br>Fever, cough, and fatigue.</code></div>
         </div>
         <div class="slide">
             The AI will assume the role of a customer service agent, ensuring the tone is appropriate for business
             communication:
-        </div>
-        <div class="slide">
             <div class="prompt"><code>You are a customer service agent. Write an email apologizing for a delayed order.</code></div>
         </div>
         <div class="slide">
@@ -133,22 +130,24 @@
         </div>
         <div class="slide">
             <h3>4. Output Formatting</h3><hr>
-            Sometimes, it's important to specify the format in which you want the AI to present its output. Output Formatting ensures that the response follows a particular structure—whether it's a list, a table, or a paragraph. Specifying the format can help prevent misunderstandings and reduce the need for additional post-processing.
+            <!-- Sometimes, it's important to specify the format in which you want the AI to present its output.  -->
+            Output Formatting ensures that the response follows a particular structure—whether it's a list, a table, or a paragraph. 
+            <!-- Specifying the format can help prevent misunderstandings and reduce the need for additional post-processing. -->
         </div>
         <div class="slide">
             <h4>Why Output Formatting Matters</h4>
+        </div>
+        <div class="slide">
             Without clear formatting instructions, the AI may provide a response that is technically correct but not in
-            the desired format. Specifying the structure makes the output easier to use.
+            the desired format. <br>Specifying the structure makes the output easier to use.
         </div>
         <div class="slide">
             It is often desirable for the GenAI to output information in certain formats, for example, CSVs or markdown
-            formats. To facilitate this, you can simply add instructions to do so as seen below: 
+            formats. 
             <!-- 3. Xia, C., Xing, C., Du, J., Yang, X., Feng, Y., Xu, R., Yin, W., & Xiong, C. (2024). FOFO: A Benchmark to Evaluate LLMs’ Format-Following Capability. In L.-W. Ku, A. Martins, & V. Srikumar (Eds.), Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers) (pp. 680–699). Association for Computational Linguistics. https://doi.org/10.18653/v1/2024.acl-long.40 -->
         </div>
         <div class="slide">
-            
-        </div>
-        <div class="slide">
+            To facilitate this, you can simply add instructions to do so as seen below: 
             <div class="prompt"><code>Case: 2024_ABC_International Client: XYZ Corporation Jurisdiction: EU & USA Filed Date: 2024-09-01 Status:
                 Active Lead Attorney: John Doe Next Hearing: 2024-10-15<br>Output this information as a CSV.</code></div>
             <div class="code">
@@ -158,6 +157,8 @@
         </div>
         <div class="slide">
             <h4>Style Instructions</h4>
+        </div>
+        <div class="slide">            
             You can also specify stylistic preferences, such as tone or length, within the output formatting. This
             allows you to control not just the content but how it's presented.
         </div>
@@ -168,15 +169,20 @@
         <div class="slide">
             <h3>5. Additional Information</h3><hr>
             Additional Information, sometimes referred to as context, though we discourage the use of this term as it is
-            overloaded with other meanings in the prompting space[^b]. It provides the background details the AI needs
-            to generate a relevant response. Including this information ensures that the AI has a comprehensive
-            understanding of the task and the necessary data to complete it.
+            overloaded with other meanings in the prompting space[^b]. 
+        </div>
+        <div class="slide">
+            It provides the background details the AI needs to generate a relevant response. <br>
+            Including this information ensures that the AI has a comprehensive understanding of the task and the necessary data to complete it.
         </div>
         <div class="slide">
             <h4>What is Additional Information?</h4>
-            Additional information can include relevant facts, data, or other background information that helps the AI
-            generate a more accurate and contextually appropriate response. This element is especially important for
-            complex tasks that require specific knowledge.
+        </div>
+        <div class="slide">            
+            Additional information can include relevant facts, data, or other background information that helps the AI generate a more accurate and contextually appropriate response. 
+        </div>
+        <div class="slide">
+            This element is especially important for complex tasks that require specific knowledge.
         </div>
         <div class="slide">
             <div class="prompt"><code>
@@ -197,14 +203,21 @@
         <div class="slide">
             <h3>How to Order Parts of the Prompt</h3>
             There is no single "correct" order for arranging the elements of a prompt, but there are guidelines that can
-            help improve clarity and prevent misunderstandings. In general, starting with examples or context and ending
+            help improve clarity and prevent misunderstandings. 
+        </div>
+        <div class="slide">
+            In general, starting with examples or context and ending
             with the directive ensures the AI focuses on the task after processing the relevant information.
         </div>
         <div class="slide">
-            Now that you understand the different parts of a prompt, you may wonder if there is a common order in which
-            you should arrange them. You should first note that not all of these occur in every prompt, and when they do
-            there is no standard order for them. However, we do have a suggested order. To understand our order, first
-            consider the following two prompts, which each contain a role, an instruction (the directive), and
+            Now that you understand the different parts of a prompt, you may wonder if there is a common order in which you should arrange them. 
+            <!-- You should first note that not all of these occur in every prompt, and when they do there is no standard order for them.  -->
+        </div>
+        <div class="slide">
+            <h4>However, we do have a suggested order.</h4>
+        </div>
+        <div class="slide">
+            To understand our order, first consider the following two prompts, which each contain a role, an instruction (the directive), and
             additional information.
         </div>
         <div class="slide">
@@ -223,8 +236,10 @@
         </div>
         <div class="slide">
             Although usually both prompts would give approximately the same output, <u>we prefer the second prompt</u>, since
-            the instruction is the last part of the prompt. This is preferable, since with the first prompt, the large
-            language model (LLM) might just start writing more context instead of following the instruction.
+            the instruction is the last part of the prompt.
+        </div>
+        <div class="slide">
+            This is preferable, since with the first prompt, the Large Language Model (LLM) might just start writing more context instead of following the instruction.
         </div>
         <div class="slide">
             If given the first prompt, the LLM might add a new line:
@@ -299,7 +314,7 @@
                 });
                 updateProgress(index);
                 setTimeout(() => {
-                    // window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
                 }, 100);
             }
 

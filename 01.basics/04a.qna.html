@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>04a. Q&A</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caesar+Dressing&family=Frijole&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/styles.css">
+    <!-- <link rel="stylesheet" href="../assets/print.css"> -->
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <img src="https://sasban.online/sasban.jpg" alt=""
+        style="position: fixed;top: 20px;left: 20px;height: 100px;border-radius: 100px;">
+    <div id="progress"></div>
+
+    <div id="slides-container">
+        <div class="slide" style="display: block;">
+            <h2>04a. Questions & Anwsers</h2>
+        </div>
+        <div class="slide">
+            <h4>Why formalize the language used to discuss prompting?</h4>
+        </div>
+        <div class="slide">
+            Using formal language when discussing prompts helps you create more effective inputs and engage in clear, precise prompt engineering conversations. It establishes a common vocabulary, making it easier to share strategies and best practices.
+        </div>
+        <div class="slide">
+            <h4>What are the key components of a prompt?</h4>
+        </div>
+        <div class="slide">
+            A well-crafted prompt typically consists of: <hr>
+            <ul>
+            <li>The Directive:<br> The main instruction or task.</li>
+            <li>Examples:<br> Sample inputs/outputs to guide the expected response.</li>
+            <li>Role (Persona):<br> The perspective or tone the AI should adopt.</li>
+            <li>Output Formatting:<br> Specifications for how the response should be structured.</li>
+            <li>Additional Information:<br> Background or context that informs the task.</li>
+            </ul>
+        </div>
+        <div class="slide">
+            <h4>How should the parts of a prompt be ordered?</h4>
+        </div>
+        <div class="slide">
+            A recommended order for <br>arranging prompt elements is: <hr>
+            <ul>
+                <li>Examples (if needed)</li>
+                <li>Additional Information</li>
+                <li>Role (if applicable)</li>
+                <li>Directive</li>
+                <li>Output Formatting</li>
+            </ul>
+        </div>
+        <div class="slide">
+            Ending with the directive helps ensure the AI focuses on the task rather than continuing the context.
+        </div>
+        <div class="slide">
+            <h4></h4>What makes a good directive?</h4>
+        </div>
+        <div class="slide">
+            A good directive is clear, concise, and uses action verbs. It should specify exactly what you want the AI to do without ambiguity.            
+        </div>
+        <div class="slide">
+            <h4>How does output formatting improve AI responses?</h4>
+        </div>
+        <div class="slide">
+            Output formatting instructs the AI to present its response in a specific structure.
+            <!-- —such as a list, table, or paragraph—making the result immediately usable and reducing the need for further editing. -->
+        </div>
+        <div class="slide">
+            <h4>Are examples necessary in a prompt?</h4>
+        </div>
+        <div class="slide">
+            Examples aren’t always required, especially for simple tasks. However, for more complex or nuanced tasks, including examples helps the AI understand the expected output and improves accuracy.
+        </div>
+        <div class="slide">
+            <h4>Why should the directive often come last?</h4>
+        </div>
+        <div class="slide">
+            Placing the directive at the end helps ensure the AI processes all the context before generating its response. This minimizes the risk of the AI continuing to add context instead of focusing on the specified task.
+        </div>
+        <div class="slide">
+            <h4>What is the role of context in a prompt?</h4>
+        </div>
+        <div class="slide">
+            Context provides background information that helps the AI understand the task more fully. It frames the directive by supplying relevant details or scenarios, leading to more accurate and context-aware outputs.
+        </div>
+        <div class="slide">
+            <h4>How can I ensure my prompts are effective?</h4>
+        </div>
+        <div class="slide">
+            Effective prompts are clear and specific. They define the task, provide necessary context and examples, and specify the desired output format. This precision guides the AI to produce accurate and relevant responses.
+        </div>
+        <div class="slide">
+            <h4>What is role-based prompting?</h4>
+        </div>
+        <div class="slide">
+            Role-based prompting assigns a specific persona to the AI, such as a doctor or historian, to tailor the response’s tone, style, and content. This helps ensure the output matches the intended context or professional setting.
+        </div>
+        <div class="slide">
+            <h4>What does one-shot prompting mean?</h4>
+        </div>
+        <div class="slide">
+            One-shot prompting involves giving the AI a single example before the task. This clarifies the expected output and can improve accuracy for tasks that benefit from a sample demonstration.
+        </div>
+        <div class="slide">
+            <h4>How can user feedback improve prompts?</h4>
+        </div>
+        <div class="slide">
+            User feedback highlights where the AI’s responses may fall short, allowing you to refine prompts by adding more context, clarifying instructions, or adjusting the format to better meet the task requirements.
+
+        </div>
+    </div>
+<a href="#" style="position: fixed;right: 20px;bottom: 0;transform: rotate(0);font-size: 20px;">@sasban9</a>
+
+
+
+
+<script>
+    const slides = document.querySelectorAll('.slide');
+    const progressBar = document.getElementById('progress');
+    const animations = [
+        'fadeIn', 'slideLeft', 'slideRight', 'zoomIn', 'rotateIn',
+        'bounceIn', 'flipIn', 'dropIn', 'swingIn', 'growIn',
+        'fadeIn', 'slideLeft', 'slideRight', 'zoomIn', 'rotateIn',
+        'bounceIn', 'flipIn', 'dropIn', 'swingIn', 'growIn'
+    ];
+
+    let currentSlide = 0;
+
+    function showSlidesUpTo(index) {
+        slides.forEach((slide, i) => {
+            if (i <= index) {
+                slide.classList.add('visible');
+                slide.classList.remove('hidden');
+                if (!slide.classList.contains('animated')) {
+                    slide.classList.add(animations[i % animations.length], 'animated');
+                }
+            } else {
+                slide.classList.remove('visible');
+                slide.classList.add('hidden');
+            }
+        });
+        updateProgress(index);
+        setTimeout(() => {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }, 100);
+    }
+
+    function hideAllSlides() {
+        slides.forEach(slide => {
+            slide.classList.remove('visible', 'animated');
+            slide.classList.add('hidden');
+        });
+        progressBar.style.width = '0%';
+        currentSlide = 0;
+    }
+
+    function updateProgress(index) {
+        const percent = ((index + 1) / slides.length) * 100;
+        progressBar.style.width = percent + '%';
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') {
+            if (currentSlide < slides.length) {
+                showSlidesUpTo(currentSlide);
+                currentSlide++;
+            } else {
+                hideAllSlides();
+            }
+        } else if (e.key === 'ArrowLeft') {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlidesUpTo(currentSlide - 1);
+            }
+        }
+    });
+
+    // Initialize first slide
+    showSlidesUpTo(currentSlide - 1);
+</script>
+
+</body>
+
+</html>

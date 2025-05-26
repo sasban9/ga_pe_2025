@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Technology Disrupting Creativity</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caesar+Dressing&family=Frijole&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0d0d0d;
+      color: #fff;
+      overflow: hidden;
+    }
+    .slideshow {
+      position: relative;
+      width: 100vw;
+      height: 80vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 40px;
+      box-sizing: border-box;
+      background: linear-gradient(135deg, #1e1e2f, #3a3a5f);
+      perspective: 1200px;
+    }
+    .slide {
+      position: absolute;
+      opacity: 0;
+      transform: rotateY(90deg) scale(0.8);
+      transition: all 1s ease-in-out;
+      max-width: 400px;
+      padding: 40px;
+      border-radius: 15px;
+      background: linear-gradient(145deg, #4b0082, #8a2be2);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+    }
+    .slide.active {
+      opacity: 1;
+      transform: rotateY(0) scale(1.05);
+      z-index: 1;
+    }
+    h1 {
+      font-size: 2.2em;
+      margin-bottom: 0.5em;
+      color: #ffd700;
+    }
+    p {
+      font-size: 1.3em;
+      color: #f8f8f8;
+    }
+    .icon {
+      font-size: 3em;
+      margin-bottom: 0.5em;
+      display: block;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.6; }
+    }
+    .timeline {
+      height: 10vh;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      background: #111;
+      width: 100%;
+      /* overflow-x: auto; */
+      white-space: nowrap;
+    }
+    .timeline button {
+      background: #444;
+      border: none;
+      color: #fff;
+      padding: 10px 15px;
+      margin: 0 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+      font-size: 0.9em;
+    }
+    .timeline button:hover, .timeline button.active {
+      background: #ffd700;
+      color: #000;
+    }
+  </style>
+  <!-- <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> -->
+</head><script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js" integrity="sha512-b+nQTCdtTBIRIbraqNEwsjB6UvL3UEMkXnhzd8awtCYh0Kcsjl9uEgwVFVbhoj3uu1DO1ZMacNvLoyJJiNfcvg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<body>
+  <div class="slideshow" id="slideshow"></div>
+  <div class="timeline" id="timeline"></div>
+
+  <script>
+    const slidesData = [
+      { icon: "fa-print", title: "Printing Press (1440s)", desc: "Scribes and religious institutions feared the democratization of knowledge and loss of control over copying and distribution of texts." },
+      { icon: "fa-music", title: "Player Pianos (1800s)", desc: "Live musicians, especially in bars and restaurants, were threatened by automated piano performances." },
+      { icon: "fa-camera", title: "Photography (1839)", desc: "Portrait painters feared losing commissions and declared photography mechanical and unartistic." },
+      { icon: "fa-clone", title: "Lithographic Reproduction of Art (1800s)", desc: "Mass production of famous artworks through lithography sparked fears of devaluing originals and diminishing the aura of art." },
+      { icon: "fa-compact-disc", title: "Phonograph (1877)", desc: "Musicians and performers were worried that recorded music would reduce the demand for live shows and degrade sound quality." },
+      { icon: "fa-film", title: "Motion Pictures (1890s)", desc: "Theater actors and vaudeville performers argued that film would destroy the theater tradition and reduce performance to mere recording." },
+      { icon: "fa-tshirt", title: "Sewing Machine (1846)", desc: "Tailors and garment workers feared mass production and deskilling of the craft." },
+      { icon: "fa-broadcast-tower", title: "Radio (1920s)", desc: "Performers and print journalists saw radio as a threat to their audiences and livelihoods." },
+      { icon: "fa-tv", title: "Television (1950s)", desc: "Film studios and radio stations feared the drop in attendance and advertising revenue." },
+      { icon: "fa-copy", title: "Photocopiers (1960s)", desc: "Publishers and copyright holders worried about mass duplication of printed materials without control or compensation." },
+      { icon: "fa-record-vinyl", title: "Sampling in Music (1980s)", desc: "Musicians accused samplers of theft and plagiarism, leading to legal battles and debates about creativity." },
+      { icon: "fa-desktop", title: "Desktop Publishing (1980s)", desc: "Graphic designers saw amateur tools as a threat to professionalism and quality of printed media." },
+      { icon: "fa-gamepad", title: "Video Games (1990s)", desc: "Critics claimed games were not real art and corrupted youth, competing with books and film for attention." },
+      { icon: "fa-brush", title: "Photoshop (1990s)", desc: "Photographers and visual artists argued that photo manipulation destroyed authenticity and viewer trust." },
+      { icon: "fa-network-wired", title: "Napster and MP3 Sharing (1999)", desc: "Record companies launched major lawsuits and claimed piracy would destroy the music industry." },
+      { icon: "fa-camera-retro", title: "Smartphone Cameras (2010s)", desc: "Professional photographers warned that the ubiquity of high-quality phone cameras diminished appreciation of real photography." },
+      { icon: "fa-book-open", title: "Self-Publishing Platforms (2010s)", desc: "Established publishers and authors worried about the flood of low-quality, unedited work." },
+      { icon: "fa-robot", title: "AI-Generated Art (2020s)", desc: "Artists accused AI companies of stealing their work to train models, and feared being replaced." },
+      { icon: "fa-keyboard", title: "AI Writing Tools (2020s)", desc: "Writers protested the automation of content creation, from journalism to fiction and marketing copy." },
+      { icon: "fa-theater-masks", title: "AI Actors and Deepfakes (2020s)", desc: "Actors and voice performers feared digital doubles, cloning of voices, and loss of control over likeness." }
+    ];
+
+    const slideshow = document.getElementById("slideshow");
+    const timeline = document.getElementById("timeline");
+
+    slidesData.forEach((slide, index) => {
+      const div = document.createElement("div");
+      div.className = "slide";
+      div.innerHTML = `<span class='icon'><i class='fas ${slide.icon}'></i></span><h1>${slide.title}</h1><p>${slide.desc}</p>`;
+      if (index === 0) div.classList.add("active");
+      slideshow.appendChild(div);
+
+      const button = document.createElement("button");
+      button.textContent = slide.title.split("(")[0].trim();
+      button.onclick = () => {
+        current = index;
+        showSlide(index);
+        updateTimeline();
+      };
+      timeline.appendChild(button);
+    });
+
+    let current = 0;
+    const slides = document.querySelectorAll(".slide");
+    const buttons = document.querySelectorAll(".timeline button");
+
+    function showSlide(index) {
+      slides.forEach(slide => slide.classList.remove("active"));
+      slides[index].classList.add("active");
+    }
+
+    function updateTimeline() {
+      buttons.forEach(btn => btn.classList.remove("active"));
+      buttons[current].classList.add("active");
+    }
+
+    function nextSlide() {
+      current = (current + 1) % slides.length;
+      showSlide(current);
+      updateTimeline();
+    }
+
+    function prevSlide() {
+      current = (current - 1 + slides.length) % slides.length;
+      showSlide(current);
+      updateTimeline();
+    }
+
+    setInterval(nextSlide, 10000);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') nextSlide();
+      else if (e.key === 'ArrowLeft') prevSlide();
+    });
+
+    updateTimeline();
+  </script>
+</body>
+</html>
