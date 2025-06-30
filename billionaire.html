@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billionaire Business Customer & Profit Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Visualization & Content Choices:
+        - Overview: Text summaries (Executive Summary, Key Findings). Goal: Inform. Method: HTML text.
+        - Explore Data (Table 1 data + Section III details): Interactive HTML table. Goal: Inform, Compare, Organize. Interaction: Filter, Sort, Click for details modal. Method: JS DOM manipulation.
+        - Industry Deep Dive (Section III per industry): Dropdown to select industry, displays relevant companies & text. Goal: Focused Compare. Interaction: Selection. Method: JS filtering, Chart.js for optional intra-sector bar charts (customer count & profit/customer).
+        - Comparative Insights (Section IV & VI): Scatter plot (Customers vs. Profit/Customer), Bar charts (Top N by Customers, Top N by Profit/Customer), summary text. Goal: Compare, Show Relationships. Interaction: Chart tooltips, potential chart filters. Method: Chart.js.
+        - Report Summary (Conclusion, Data Challenges - Section V): Text. Goal: Inform. Method: HTML text.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. All charts via Chart.js (Canvas). -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .tab-button { transition: all 0.3s ease; }
+        .tab-button.active { border-color: #0D9488; color: #0D9488; background-color: #F0FDFA; }
+        .tab-button:not(.active):hover { background-color: #F3F4F6; }
+        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); }
+        .modal-content { background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 800px; border-radius: 0.5rem; position: relative; }
+        .close-button { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; position: absolute; top: 10px; right: 20px; }
+        .close-button:hover, .close-button:focus { color: black; text-decoration: none; }
+        .chart-container { position: relative; width: 100%; max-width: 700px; margin-left: auto; margin-right: auto; height: 350px; max-height: 450px; }
+        @media (min-width: 768px) { .chart-container { height: 400px; } }
+        th { cursor: pointer; }
+        .sort-asc::after { content: ' ▲'; }
+        .sort-desc::after { content: ' ▼'; }
+        /* Ensure table cells don't break words mid-way unnecessarily and allow wrapping */
+        td, th { word-wrap: break-word; overflow-wrap: break-word; hyphens: auto; }
+        table { table-layout: fixed; width: 100%; } /* Helps with column width consistency */
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-stone-100 text-neutral-800">
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-teal-700">Customer Scale & Profitability Dynamics</h1>
+            <p class="text-lg text-neutral-600">Interactive Analysis of Top Billionaire-Led Global Enterprises (2024 Fiscal Year)</p>
+        </header>
+
+        <nav class="mb-8 flex flex-wrap justify-center gap-2 md:gap-4">
+            <button data-tab="overview" class="tab-button active text-sm md:text-base font-medium py-2 px-3 md:px-4 border-b-2 border-transparent rounded-t-lg">Overview</button>
+            <button data-tab="explore" class="tab-button text-sm md:text-base font-medium py-2 px-3 md:px-4 border-b-2 border-transparent rounded-t-lg">Explore Data</button>
+            <button data-tab="industry" class="tab-button text-sm md:text-base font-medium py-2 px-3 md:px-4 border-b-2 border-transparent rounded-t-lg">Industry Deep Dive</button>
+            <button data-tab="comparative" class="tab-button text-sm md:text-base font-medium py-2 px-3 md:px-4 border-b-2 border-transparent rounded-t-lg">Comparative Insights</button>
+            <button data-tab="summary" class="tab-button text-sm md:text-base font-medium py-2 px-3 md:px-4 border-b-2 border-transparent rounded-t-lg">Report Summary</button>
+        </nav>
+
+        <main id="contentArea" class="bg-white p-4 md:p-6 rounded-lg shadow-lg min-h-[60vh]">
+            </main>
+    </div>
+
+    <div id="detailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <h3 id="modalTitle" class="text-2xl font-semibold mb-4 text-teal-600">Details</h3>
+            <div id="modalBody" class="text-neutral-700 prose max-w-none"></div>
+        </div>
+    </div>
+
+    <script>
+        const billionaireData = [
+            { rank: 1, billionaireName: "Bernard Arnault & family", primaryBusiness: "LVMH", industry: "Fashion & Retail", customers: null, customersUnit: "N/A", netProfit: 13.59 * 1e9, avgProfitPerCustomer: null, notes: "No consolidated customer count available.", details: "LVMH, the world's leading luxury conglomerate, does not publicly disclose a consolidated customer count. The group operates 75 prestigious fashion and cosmetics brands across a retail network of over 6,300 stores worldwide. LVMH's annual net profit for 2024 was €12.55 billion, which translates to approximately $13.59 billion. Due to the absence of a consolidated customer count, an average profit per customer cannot be calculated. LVMH's substantial net profit, despite not having a mass-market customer base, underscores the profound profitability of the luxury goods sector. Value in this industry is primarily derived from high average transaction values, strong brand loyalty, and an emphasis on exclusivity, which collectively enable the maintenance of high profit margins (e.g., a 67% gross margin in 2024). This model stands in stark contrast to volume-driven retail, prioritizing brand equity and perceived value over sheer transactional volume." },
+            { rank: 2, billionaireName: "Elon Musk", primaryBusiness: "Tesla", industry: "Automotive", customers: 1.79 * 1e6, customersUnit: "vehicles delivered", netProfit: 7.13 * 1e9, avgProfitPerCustomer: 3983, notes: "Units delivered.", details: "Tesla: Tesla, the electric vehicle manufacturer, reported 1.79 million vehicles delivered in 2024. This metric directly represents the number of units sold to end-users, serving as a clear indicator of its customer base. The company's annual net profit for 2024 was $7.13 billion. This translates to an estimated average profit of approximately $3,983 per vehicle. This high profit per vehicle signifies strong brand value, a premium pricing strategy, and efficient operational execution. Tesla's direct-to-consumer sales model, which bypasses traditional dealership networks, allows the company to retain a larger portion of the revenue generated from each vehicle, thereby contributing to a higher per-unit profitability compared to conventional automotive manufacturers." },
+            { rank: 2.1, billionaireName: "Elon Musk", primaryBusiness: "SpaceX (Starlink)", industry: "Aerospace/Telecom", customers: 4.6 * 1e6, customersUnit: "subscribers", netProfit: 4.5 * 1e9, avgProfitPerCustomer: 978, notes: "Starlink subscribers.", details: "SpaceX (Starlink): SpaceX, primarily through its Starlink satellite internet service, expanded its customer base to 4.6 million subscribers in 2024. This represents a direct count of individuals or entities subscribing to their internet service. SpaceX's estimated annual net profit for 2024 was $4.5 billion. Based on this, the estimated average profit per Starlink customer is approximately $978. The rapid growth in Starlink's customer count, which doubled in 2024, and its significant contribution to SpaceX's overall revenue underscore the scalability of satellite internet services. The strategy of offering discounted terminal prices appears to be an effective method for accelerating market penetration, prioritizing subscriber growth and recurring service revenue over immediate hardware profits." },
+            { rank: 3, billionaireName: "Jeff Bezos", primaryBusiness: "Amazon", industry: "Technology/E-commerce", customers: 200 * 1e6, customersUnit: "Prime subscribers (2022)", netProfit: 59.25 * 1e9, avgProfitPerCustomer: 296.24, notes: "2022 Prime subscribers used as proxy.", details: "Amazon, the e-commerce and cloud computing giant, had approximately 200 million global Amazon Prime subscribers in 2022. While this data is from 2022, it serves as a robust proxy for Amazon's highly engaged customer base, acknowledging that its broader active user base is even larger. Amazon's annual net profit for 2024 was $59.248 billion. This results in an estimated average profit of approximately $296.24 per Prime subscriber (based on 2022 data). The substantial profit generated per Prime subscriber highlights the effectiveness of Amazon's ecosystem model. Prime members exhibit higher spending habits, averaging $1,400 annually, and engage with multiple Amazon services, including e-commerce, streaming, and cloud services (AWS, which significantly contributes to revenue). This multi-faceted engagement fosters high customer lifetime value, a direct outcome of Amazon's bundled service offerings and customer loyalty." },
+            { rank: 4, billionaireName: "Mark Zuckerberg", primaryBusiness: "Meta Platforms", industry: "Technology/Social Media", customers: 3.98 * 1e9, customersUnit: "monthly active people (Jan 2025)", netProfit: 62.36 * 1e9, avgProfitPerCustomer: 15.67, notes: "Jan 2025 data for monthly active people.", details: "Meta Platforms, a dominant force in social media, reported 3.98 billion monthly active people (MAP) across its Family of Apps (Facebook, WhatsApp, Instagram) as of January 2025. This figure represents the immense global reach of Meta's platforms. The company's annual net profit for 2024 was $62.36 billion. This yields an estimated average profit of approximately $15.67 per monthly active person. Although the per-user profit may appear modest when compared to businesses selling high-value physical goods, Meta's unparalleled scale allows it to generate colossal aggregate profits primarily through advertising. The high degree of user overlap across Meta's various platforms creates a powerful data network effect, enhancing the precision of ad targeting and increasing the value proposition for advertisers, which is the core driver of Meta's revenue." },
+            { rank: 5, billionaireName: "Larry Ellison", primaryBusiness: "Oracle", industry: "Technology/Software", customers: null, customersUnit: "N/A", netProfit: 10.47 * 1e9, avgProfitPerCustomer: null, notes: "B2B enterprise, no consolidated customer count.", details: "Oracle, a leading enterprise software and cloud services provider, does not publicly disclose a direct, consumer-like customer count. Its customer base primarily comprises large corporations and governmental entities. Oracle's annual net profit for 2024 was $10.467 billion. Given the nature of its B2B client relationships, calculating an average profit per customer is not directly applicable. Oracle's significant net profit, achieved without a high-volume customer base, underscores the inherent profitability of high-value B2B enterprise software and cloud solutions. The company's revenue is driven by substantial, long-term contracts, as evidenced by its 'Remaining Performance Obligations' exceeding $130 billion. This model emphasizes deep client relationships and recurring revenue streams from mission-critical systems, where the value of each client relationship is exceptionally high." },
+            { rank: 6, billionaireName: "Warren Buffett", primaryBusiness: "Berkshire Hathaway", industry: "Finance & Investments", customers: null, customersUnit: "N/A", netProfit: 88.99 * 1e9, avgProfitPerCustomer: null, notes: "Diversified holding company, no single customer count.", details: "Berkshire Hathaway, a prominent diversified holding company, does not have a single, meaningful customer count given its vast and varied portfolio of businesses, which span insurance, railways, energy, and consumer goods. Berkshire Hathaway's annual net profit for 2024 was $88.995 billion. Due to its nature as a holding company, an average profit per customer is not applicable. The company's extraordinary net profit underscores the efficacy of its diversified investment and strategic acquisition model. Its aggregate profitability is a direct function of the collective performance of its extensive portfolio of subsidiaries, many of which are market leaders in their respective industries. This model emphasizes long-term value creation through disciplined capital allocation and allowing operational autonomy for its acquired entities." },
+            { rank: 7, billionaireName: "Bill Gates / Steve Ballmer", primaryBusiness: "Microsoft", industry: "Technology/Software", customers: 300 * 1e6, customersUnit: "Teams MAU (2023)", netProfit: 88.14 * 1e9, avgProfitPerCustomer: 293.79, notes: "2023 Teams MAU used as proxy.", details: "Microsoft, a diversified technology leader, reported approximately 300 million monthly active users for Microsoft Teams in 2023. While this is a 2023 figure and Microsoft serves numerous diverse customer segments (including Azure, GitHub Copilot, and Power Platform), it serves as a broad proxy for a large, engaged user base. Microsoft's annual net profit for 2024 was $88.136 billion. This results in an estimated average profit of approximately $293.79 per Teams monthly active user (based on 2023 data). Microsoft's substantial overall net profit, combined with its varied customer metrics across different product lines, demonstrates the strength of its hybrid business model. The company effectively combines high-volume consumer and productivity software with high-value enterprise cloud services. The increasing adoption of AI-powered tools across its offerings, such as Copilot and Azure AI, indicates a strategic focus on enhancing per-user value by monetizing advanced features in both its business-to-consumer and business-to-business segments." },
+            { rank: 9, billionaireName: "Mukesh Ambani", primaryBusiness: "Reliance Industries (Jio)", industry: "Diversified/Telecom", customers: 481.8 * 1e6, customersUnit: "subscribers", netProfit: 9.5 * 1e9, avgProfitPerCustomer: 19.72, notes: "Digital Services (Jio) subscribers.", details: "Reliance Industries, a major Indian conglomerate, reported 481.8 million subscribers for its Digital Services (Jio) segment in 2024. The group's interests are highly diversified, including petrochemicals, oil and gas, telecom, retail, and financial services. Reliance Industries' annual net profit for 2024 was $9.5 billion. This results in an estimated average profit of approximately $19.72 per Digital Services subscriber. Reliance Industries' significant profit, derived from its diverse operations, highlights the strategic advantage of extensive vertical and horizontal integration within emerging markets. The massive subscriber base of Jio underscores a successful digital transformation strategy aimed at capturing a dominant share of the Indian consumer market. This large digital footprint then provides substantial cross-selling opportunities for its other segments, such as retail and digital content (e.g., JioCinema with over 100 million paid users), thereby creating a powerful, interconnected ecosystem and fostering customer loyalty within the Indian market." },
+            { rank: 10, billionaireName: "Larry Page / Sergey Brin", primaryBusiness: "Alphabet (Google)", industry: "Technology/Internet", customers: 1.5 * 1e9, customersUnit: "AI Overviews MAU (Q1 2025)", netProfit: 100.12 * 1e9, avgProfitPerCustomer: 66.75, notes: "Q1 2025 AI Overviews MAU used as proxy.", details: "Alphabet, the parent company of Google, reported 1.5 billion monthly users for its AI Overviews feature in Q1 2025. This specific product metric serves as an indicator of Google's immense reach across its ecosystem, which includes Search, YouTube, and Android. Alphabet's annual net profit for 2024 was $100.118 billion. This leads to an estimated average profit of approximately $66.75 per AI Overviews monthly user (based on Q1 2025 data). Google's extraordinary net profit is fueled by its vast user base, highlighting the unparalleled monetization capability of digital advertising, which is intrinsically linked to user engagement and data. The rapid adoption of AI Overviews by billions of users demonstrates Google's successful integration of advanced AI into its core products, ensuring sustained user engagement and continuous data collection, which directly feeds its advertising revenue engine." },
+            { rank: 12, billionaireName: "Michael Bloomberg", primaryBusiness: "Bloomberg LP", industry: "Finance/Media", customers: 320000, customersUnit: "subscribers", netProfit: null, avgProfitPerCustomer: null, notes: "No net profit publicly disclosed.", details: "Bloomberg LP, a financial information and media company, serves approximately 320,000 subscribers to its Bloomberg Terminal worldwide. This represents a direct count of its core product's users. However, Bloomberg LP is a privately held company and does not publicly disclose its net profit. Its estimated annual revenue is reported to be north of $13 billion. Due to the lack of publicly available net profit data, an average profit per customer cannot be calculated. Bloomberg LP's high revenue, generated from a relatively small customer base, highlights the extreme profitability of specialized, high-value information services. The Bloomberg Terminal is considered an indispensable tool in the financial industry, which creates strong pricing power and customer stickiness. The high monthly subscription fee ($2,000 per month) translates to a substantial annual revenue per subscriber, indicating a very high average revenue per user (ARPU) model, which likely underpins significant, albeit undisclosed, profit margins." },
+            { rank: 13, billionaireName: "Amancio Ortega", primaryBusiness: "Inditex (Zara)", industry: "Fashion & Retail", customers: 218 * 1e6, customersUnit: "active app users (FY24)", netProfit: 6.39 * 1e9, avgProfitPerCustomer: 29.31, notes: "FY2024 (ends Jan 2025) active app users.", details: "Inditex, the parent company of Zara, reported 218 million active app users for its fiscal year 2024 (ending January 2025). This metric serves as a significant indicator of its engaged digital customer base. Inditex's annual net profit for FY2024 was $6.39 billion. This translates to an estimated average profit of approximately $29.31 per active app user. Inditex's ability to generate a strong profit per active app user, alongside robust growth in online sales (12% increase to €10.2 billion in 2024), underscores the effectiveness of its fast-fashion business model. This model is characterized by rapid inventory turnover and strong digital engagement. The seamless integration of its online platforms and physical stores facilitates broad customer reach and efficient service delivery, allowing for quick responses to evolving fashion trends and optimized inventory management." },
+            { rank: 14, billionaireName: "Carlos Slim Helu & family", primaryBusiness: "América Móvil", industry: "Telecom", customers: 401 * 1e6, customersUnit: "subscribers/units", netProfit: 1.37 * 1e9, avgProfitPerCustomer: 3.42, notes: "Wireless subscribers + fixed revenue units.", details: "América Móvil, a major telecommunications provider in Latin America and Europe, reported a total of 401 million wireless subscribers and fixed revenue-generating units as of December 31, 2024. The company's annual net profit for 2024 was $1.373 billion. This results in an estimated average profit of approximately $3.42 per subscriber/unit. América Móvil's relatively low profit per customer, despite its massive subscriber base, is characteristic of the highly competitive telecommunications industry, particularly in emerging markets. Profitability in this sector heavily relies on achieving sheer volume and maintaining efficient network operations. The reported decline in net profit by 62.8% in 2024 suggests significant market pressures, intense competition, or substantial capital expenditures related to network upgrades (e.g., 5G rollout) impacting its margins." },
+            { rank: 15, billionaireName: "Francoise Bettencourt Meyers & family", primaryBusiness: "L'Oreal", industry: "Fashion & Retail", customers: null, customersUnit: "N/A", netProfit: 6.92 * 1e9, avgProfitPerCustomer: null, notes: "No consolidated customer count available.", details: "L'Oreal, a global leader in beauty products, does not publicly disclose a direct consolidated customer count. L'Oreal's annual net profit for 2024 was €6.41 billion, which is approximately $6.92 billion. Due to the absence of a direct customer count, an average profit per customer cannot be calculated. L'Oreal's substantial net profit reflects the power of its extensive brand portfolio management, continuous innovation, and robust global distribution network within the beauty industry. The company's ability to achieve consistent growth (5.6% reported growth in 2024 sales) and maintain profitability across diverse product categories, including Consumer Products, Luxe, Dermatological Beauty, and Professional Products, highlights its strong market position and cultivated brand loyalty. The high operating profitability across its various divisions suggests strong pricing power and efficient operational execution." },
+            { rank: 16, billionaireName: "Michael Dell", primaryBusiness: "Dell Technologies", industry: "Technology/Hardware", customers: null, customersUnit: "N/A", netProfit: 4.58 * 1e9, avgProfitPerCustomer: null, notes: "No consolidated customer count available.", details: "Dell Technologies does not provide a consolidated customer count. Its annual net profit for FY2025 (largely corresponding to calendar year 2024) was $4.58 billion. The lack of customer data prevents calculation of average profit per customer. Its business model serves a wide range of customers from individuals to large enterprises." },
+            { rank: 17, billionaireName: "Gautam Adani", primaryBusiness: "Adani Group (Airports)", industry: "Diversified/Infrastructure", customers: 94.4 * 1e6, customersUnit: "passenger movements (FY25)", netProfit: 0.86 * 1e9, avgProfitPerCustomer: 9.06, notes: "FY2025 (ends Mar 2025) passenger movements.", details: "The Adani Group, a diversified Indian conglomerate, does not have a single, overarching customer count due to its wide-ranging interests in infrastructure, energy, and other sectors. However, its airport business segment recorded 94.4 million passenger movements in fiscal year 2025. The Adani Group's annual net profit for FY2025 was approximately $0.855 billion. For the airport segment, this implies an estimated average profit of approximately $9.06 per passenger movement. The group's profitability, stemming from its diverse infrastructure and energy assets, underscores the long-term value creation potential in essential services and large-scale industrial development. The growth in airport passenger movements (7% year-over-year) and the profit generated per passenger highlight the increasing demand for infrastructure services in a developing economy. The group's strategic investments in 'incubating businesses,' such as green hydrogen and data centers, which showed substantial growth in revenue and EBITDA, indicate a deliberate strategy to further diversify and strengthen its profit base." },
+            { rank: 18, billionaireName: "Jim, Rob, Alice, Lukas, Christy Walton", primaryBusiness: "Walmart", industry: "Retail", customers: 255 * 1e6, customersUnit: "weekly customers", netProfit: 19.44 * 1e9, avgProfitPerCustomer: 0.00145, notes: "Weekly customer visits. Profit per visit.", details: "Walmart, a global retail behemoth, serves approximately 255 million customers and members who visit its stores and e-commerce websites weekly. This figure represents weekly traffic rather than unique annual customers. Walmart's annual net profit for its fiscal year 2025 (largely corresponding to calendar year 2024) was $19.436 billion. Based on weekly customer visits, the estimated average profit per customer visit is approximately $0.00145. This extremely low per-visit profit, coupled with Walmart's massive weekly customer traffic, highlights the power of a high-volume, low-margin retail model. The company's profitability is fundamentally driven by the sheer scale of transactions and its extensive customer base, which collectively generate immense aggregate revenue (fiscal year 2024 revenue of $648 billion) and overall profit. Walmart's success is rooted in its relentless focus on operational efficiency, sophisticated supply chain management, and competitive pricing strategies designed to maximize sales volume." },
+            { rank: 20, billionaireName: "Jensen Huang", primaryBusiness: "Nvidia", industry: "Technology/Semiconductors", customers: null, customersUnit: "N/A", netProfit: 72.88 * 1e9, avgProfitPerCustomer: null, notes: "B2B enterprise, no consolidated customer count.", details: "Nvidia, a leader in GPUs and AI chips, primarily serves B2B clients. Its annual net profit for 2024 was $72.88 billion. A consolidated customer count is not applicable, as its revenue comes from sales to other businesses (e.g., cloud providers, PC manufacturers, automotive companies). The immense profit reflects high demand and pricing power for its specialized hardware." },
+            { rank: 22, billionaireName: "David Thomson & family", primaryBusiness: "Thomson Reuters", industry: "Media/Information Services", customers: null, customersUnit: "N/A", netProfit: 2.21 * 1e9, avgProfitPerCustomer: null, notes: "B2B enterprise, no consolidated customer count.", details: "Thomson Reuters provides specialized information and software to professionals in legal, tax, accounting, and media markets. Its annual net profit for 2024 was $2.21 billion. A consolidated customer count is not applicable for its B2B model." },
+            { rank: 23, billionaireName: "Julia Koch & family / Charles Koch & family", primaryBusiness: "Koch Industries", industry: "Diversified", customers: null, customersUnit: "N/A", netProfit: null, avgProfitPerCustomer: null, notes: "Private company, no public data.", details: "Koch Industries is a privately held conglomerate with diverse operations. Financial data, including net profit and customer counts, are not publicly disclosed." },
+            { rank: 24, billionaireName: "Zhong Shanshan", primaryBusiness: "Nongfu Spring", industry: "Food & Beverage", customers: null, customersUnit: "N/A", netProfit: null, avgProfitPerCustomer: null, notes: "No public data available for 2024 net profit/comprehensive customer count.", details: "Nongfu Spring is a leading bottled water and beverage company in China. Detailed 2024 net profit and comprehensive customer data were not available for this analysis." },
+            { rank: 26, billionaireName: "Giovanni Ferrero", primaryBusiness: "Ferrero Group", industry: "Food & Beverage", customers: null, customersUnit: "N/A", netProfit: null, avgProfitPerCustomer: null, notes: "Private company, no public net profit.", details: "Ferrero Group is a privately held confectionery company. Net profit figures are not publicly disclosed." },
+            { rank: 27, billionaireName: "Prajogo Pangestu", primaryBusiness: "Diversified (timber, petrochemicals)", industry: "Diversified", customers: null, customersUnit: "N/A", netProfit: null, avgProfitPerCustomer: null, notes: "No public data available for consolidated net profit/customer count.", details: "Prajogo Pangestu's wealth is derived from diversified interests, primarily in timber and petrochemicals in Indonesia. Consolidated financial data for these ventures were not publicly available." },
+            { rank: 27.1, billionaireName: "Zhang Yiming", primaryBusiness: "ByteDance (TikTok)", industry: "Technology/Social Media", customers: 1.6 * 1e9, customersUnit: "monthly active users (Early 2025)", netProfit: 33.0 * 1e9, avgProfitPerCustomer: 20.63, notes: "Early 2025 monthly active users.", details: "ByteDance, the parent company of TikTok, reported 1.6 billion monthly active users (MAUs) for TikTok globally as of early 2025. This figure represents the platform's extensive global footprint. ByteDance's annual net profit for 2024 was $33 billion. This yields an estimated average profit of approximately $20.63 per monthly active user. TikTok's rapid growth in user acquisition and its significant net profit demonstrate the immense monetization potential inherent in short-form video content and integrated social commerce. The company's ability to generate substantial profit from a user base that is notably young (with 55% being under 30 years old) suggests highly effective engagement and monetization strategies, including in-app advertising and e-commerce. The platform's global expansion, with international sales increasing by 63%, indicates its successful adaptation to diverse international markets, which is crucial for scaling a digital consumer product." },
+            { rank: 29, billionaireName: "Tadashi Yanai & family", primaryBusiness: "Fast Retailing (Uniqlo)", industry: "Fashion & Retail", customers: null, customersUnit: "N/A", netProfit: 2.38 * 1e9, avgProfitPerCustomer: null, notes: "No global customer count available.", details: "Fast Retailing, the parent company of Uniqlo, does not disclose a consolidated global customer count. While customer data for UNIQLO Japan is available as percentage changes, an absolute global figure is not provided. Fast Retailing's annual net profit for its fiscal year 2024 (ending August 2024) was $2.38 billion. Due to the lack of a global customer count, an average profit per customer cannot be determined. The company's significant net profit, despite the absence of a direct global customer count, points to the success of its 'LifeWear' concept and aggressive global expansion strategy. The strong performance of UNIQLO International, which saw a 19.1% increase in revenue and a 24.9% increase in operating profit in FY2024, indicates successful penetration into diverse international markets. This success is largely driven by the consistent quality and broad appeal of its products, alongside effective cost control and pricing power." },
+            { rank: 30, billionaireName: "Phil Knight & family", primaryBusiness: "Nike", industry: "Fashion & Retail", customers: null, customersUnit: "N/A", netProfit: 5.7 * 1e9, avgProfitPerCustomer: null, notes: "No consolidated customer count available.", details: "Nike, a global leader in athletic apparel and footwear, does not publicly disclose a direct customer count. While information on store locations is available, a consolidated customer base figure is not provided. Nike's annual net profit for 2024 was $5.7 billion. Due to the absence of a direct customer count, an average profit per customer cannot be calculated. Nike's consistent high net profit, despite the lack of explicit customer numbers, reflects the immense power of its brand equity, extensive global marketing efforts, and continuous product innovation within the athletic industry. The company's profitability is driven by its ability to command premium pricing, sustained consumer demand, and highly efficient supply chain management. Nike's iconic brand status and perceived value enable it to maintain strong margins in a highly competitive market, fostering customer loyalty that translates into consistent sales performance." },
+            { rank: 31, billionaireName: "Mark Mateschitz", primaryBusiness: "Red Bull", industry: "Food & Beverage", customers: 12.67 * 1e9, customersUnit: "cans sold", netProfit: null, avgProfitPerCustomer: null, notes: "Units sold, not unique customers; no net profit.", details: "Red Bull sold 12.67 billion cans in 2023 (used as proxy for 2024). This represents units sold, not unique customers. As a private company, its net profit is not publicly disclosed." },
+            { rank: 32, billionaireName: "Klaus-Michael Kuehne", primaryBusiness: "Kuehne + Nagel", industry: "Logistics", customers: null, customersUnit: "N/A", netProfit: 1.34 * 1e9, avgProfitPerCustomer: null, notes: "B2B enterprise, no consolidated customer count.", details: "Kuehne + Nagel is a global logistics company. Its annual net profit for 2024 was $1.34 billion. As a B2B service provider, a consolidated customer count is not typically reported in a consumer sense." },
+            { rank: 33, billionaireName: "Colin Huang", primaryBusiness: "PDD Holdings (Pinduoduo)", industry: "Technology/E-commerce", customers: null, customersUnit: "N/A", netProfit: 15.40 * 1e9, avgProfitPerCustomer: null, notes: "No consolidated customer count for 2024 available for PDD.", details: "PDD Holdings, parent of Pinduoduo and Temu, reported a net profit of $15.40 billion for 2024. While user numbers for its platforms are high, a specific consolidated customer count for the entire holding company for 2024 was not used for this specific calculation in the table summary, but its e-commerce platforms have hundreds of millions of active buyers." },
+            { rank: 34, billionaireName: "Stephen Schwarzman", primaryBusiness: "Blackstone", industry: "Finance & Investments", customers: null, customersUnit: "N/A", netProfit: 2.5 * 1e9, avgProfitPerCustomer: null, notes: "B2B investment firm, no consolidated customer count.", details: "Blackstone, a leading financial services firm specializing in private equity and asset management, does not have a quantifiable customer base in the traditional sense, as its clients are primarily institutional investors and high-net-worth individuals. Blackstone's net profit for the last twelve months ending Q1 2025 was $2.5 billion. Due to the specialized nature of its client base, an average profit per customer is not applicable. Blackstone's substantial net profit, despite its highly specialized and limited client roster, highlights the immense profitability of alternative asset management. The firm's ability to attract significant capital inflows, reaching $62 billion in Q1 2025, demonstrates strong investor confidence in its diverse investment strategies across real estate, private equity, and credit. Profit is primarily derived from management fees and performance allocations, emphasizing fee-based revenue generated from managing vast pools of capital. This model allows for high profitability with a relatively small number of very large clients." },
+            { rank: 35, billionaireName: "Jacqueline Mars / John Mars", primaryBusiness: "Mars Inc.", industry: "Food & Beverage", customers: null, customersUnit: "N/A", netProfit: null, avgProfitPerCustomer: null, notes: "Private company, no public data.", details: "Mars Inc. is a privately held company in food, petcare, and confectionery. Financial data, including net profit and customer counts, are not publicly disclosed." },
+            { rank: 37, billionaireName: "Dieter Schwarz", primaryBusiness: "Schwarz Group (Lidl, Kaufland)", industry: "Retail", customers: null, customersUnit: "N/A", netProfit: null, avgProfitPerCustomer: null, notes: "No public data available for consolidated net profit.", details: "Schwarz Group, parent of Lidl and Kaufland, is a major private retail group. Consolidated net profit figures are not publicly disclosed." },
+            { rank: 38, billionaireName: "Li Ka-shing", primaryBusiness: "Diversified", industry: "Diversified", customers: null, customersUnit: "N/A", netProfit: null, avgProfitPerCustomer: null, notes: "No public data available for consolidated net profit/customer count.", details: "Li Ka-shing's wealth is from a diversified portfolio of businesses (ports, retail, infrastructure, telecom). Consolidated financial data for all ventures were not publicly available for this specific analysis." },
+            { rank: 39, billionaireName: "Shiv Nadar", primaryBusiness: "HCL Technologies", industry: "Technology/IT Services", customers: null, customersUnit: "N/A", netProfit: null, avgProfitPerCustomer: null, notes: "No public data for 2024 net profit used in table. HCL is B2B.", details: "HCL Technologies is a major IT services company. While it has many enterprise clients, a specific 2024 net profit figure and consolidated customer count were not used for the table summary. Its profit comes from B2B contracts." },
+            { rank: 40, billionaireName: "Alain Wertheimer / Gerard Wertheimer", primaryBusiness: "Chanel", industry: "Fashion & Retail", customers: null, customersUnit: "N/A", netProfit: null, avgProfitPerCustomer: null, notes: "No 2024 net profit or customer data.", details: "Chanel is a privately held luxury fashion house. Detailed 2024 financial data, including net profit and customer counts, are not publicly disclosed." },
+            { rank: 42, billionaireName: "Ken Griffin", primaryBusiness: "Citadel", industry: "Finance/Hedge Funds", customers: null, customersUnit: "N/A", netProfit: null, avgProfitPerCustomer: null, notes: "Private company, no public data.", details: "Citadel is a privately held hedge fund and financial services firm. Financial data, including net profit, are not publicly disclosed." },
+            { rank: 44, billionaireName: "Thomas Peterffy", primaryBusiness: "Interactive Brokers", industry: "Finance/Brokerage", customers: 3.34 * 1e6, customersUnit: "customers", netProfit: 0.76 * 1e9, avgProfitPerCustomer: 226.25, notes: "Brokerage customers.", details: "Interactive Brokers, an online brokerage firm, reported 3.337 million institutional and individual brokerage customers as of December 31, 2024. The company's annual net profit for 2024 was $0.755 billion. This leads to an estimated average profit of approximately $226.25 per customer. Interactive Brokers' solid profit per customer reflects the high-value nature of brokerage and trading services, particularly for active traders and institutional clients. The company's strategic focus on advanced technology and competitive, low-cost trading attracts a sophisticated client base that generates significant transaction volume and interest income. The reported growth in client accounts (32% higher than the prior year) indicates successful expansion, while its 'industry-leading 74% adjusted pretax profit margin' underscores its exceptional operational efficiency and ability to convert a high percentage of revenue into profit." },
+            { rank: 45, billionaireName: "Reinhold Wuerth & family", primaryBusiness: "Wuerth Group", industry: "Manufacturing", customers: 4 * 1e6, customersUnit: "customers", netProfit: 0.73 * 1e9, avgProfitPerCustomer: 181.25, notes: "Global customers.", details: "The Wuerth Group, a global market leader in assembly and fastening materials, serves more than 4 million customers worldwide. The group's annual net profit for 2024 was approximately $0.725 billion. This results in an estimated average profit of approximately $181.25 per customer. The Wuerth Group's substantial customer base and respectable profit per customer, despite a reported 'dramatic drop in profits of over 40 percent' in 2024, highlight the resilience of its business model in a challenging economic climate. Its focus on providing essential materials suggests a robust B2B model with recurring demand from various industries. The significant profit decline in 2024 is attributed to external macroeconomic factors, such as a weak construction economy, declines in industrial activity, and geopolitical tensions, as well as substantial internal investments in IT infrastructure and warehouse capacities. This indicates that the profit reduction is more a reflection of cyclical pressures and strategic long-term investments rather than a fundamental erosion of its customer value proposition or market share, as sales remained comparatively stable." },
+            { rank: 46, billionaireName: "William Ding", primaryBusiness: "NetEase", industry: "Technology/Gaming", customers: null, customersUnit: "N/A", netProfit: 4.1 * 1e9, avgProfitPerCustomer: null, notes: "No consolidated customer count available.", details: "NetEase is a major internet technology company, primarily in gaming and online services. Its annual net profit for 2024 was $4.1 billion. A consolidated customer count for all its services was not used for the table summary, though its games have hundreds of millions of players." },
+            { rank: 47, billionaireName: "Savitri Jindal & family", primaryBusiness: "Jindal Group", industry: "Metals & Mining", customers: null, customersUnit: "N/A", netProfit: 0.34 * 1e9, avgProfitPerCustomer: null, notes: "No consolidated customer count available.", details: "Jindal Group is a conglomerate with interests in steel, power, cement, and infrastructure. Its net profit for 2024 was $0.34 billion. A consolidated customer count is not applicable for its diverse B2B and industrial operations." },
+            { rank: 48, billionaireName: "Gianluigi Aponte / Rafaela Aponte-Diamant", primaryBusiness: "MSC Group", industry: "Logistics/Shipping", customers: null, customersUnit: "N/A", netProfit: 0.26 * 1e9, avgProfitPerCustomer: null, notes: "No consolidated customer count available. Profit is estimate.", details: "MSC Group is the world's largest container shipping line. Its estimated net profit for 2024 was $0.26 billion. As a B2B logistics provider, a consumer-style customer count is not applicable." },
+            { rank: 50, billionaireName: "Changpeng Zhao", primaryBusiness: "Binance", industry: "Finance/Cryptocurrency", customers: 250 * 1e6, customersUnit: "registered users", netProfit: null, avgProfitPerCustomer: null, notes: "No net profit publicly disclosed.", details: "Binance is a major cryptocurrency exchange with 250 million registered users. As a private entity, its net profit is not publicly disclosed." }
+        ];
+
+        const contentArea = document.getElementById('contentArea');
+        const tabs = document.querySelectorAll('.tab-button');
+        const modal = document.getElementById('detailsModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        let currentSort = { column: null, direction: 'asc' };
+        let charts = {}; // To store chart instances for updates/destruction
+
+        function formatNumber(num, type = 'standard') {
+            if (num === null || num === undefined || isNaN(num)) return 'N/A';
+            if (type === 'profitPerCustomer') return '$' + num.toFixed(2);
+            if (num >= 1e9) return '$' + (num / 1e9).toFixed(2) + ' B';
+            if (num >= 1e6) return '$' + (num / 1e6).toFixed(2) + ' M';
+            if (num >= 1e3) return '$' + (num / 1e3).toFixed(2) + ' K';
+            return '$' + num.toFixed(2);
+        }
+
+        function formatCustomerCount(num) {
+            if (num === null || num === undefined || isNaN(num)) return 'N/A';
+            if (num >= 1e9) return (num / 1e9).toFixed(2) + ' B';
+            if (num >= 1e6) return (num / 1e6).toFixed(2) + ' M';
+            if (num >= 1e3) return (num / 1e3).toFixed(0) + ' K';
+            return num.toString();
+        }
+        
+        function destroyCharts() {
+            Object.values(charts).forEach(chart => {
+                if (chart && typeof chart.destroy === 'function') {
+                    chart.destroy();
+                }
+            });
+            charts = {};
+        }
+
+        function renderOverview() {
+            destroyCharts();
+            contentArea.innerHTML = `
+                <div class="prose max-w-none text-neutral-700">
+                    <h2 class="text-2xl font-semibold text-teal-600 mb-4">Executive Summary</h2>
+                    <p>This report provides a comprehensive analysis of the customer scale and profitability dynamics within the primary businesses associated with the world's top billionaires for the 2024 fiscal year. The examination reveals significant variations in business models, ranging from those serving billions of individuals to highly specialized enterprises catering to a limited number of high-value clients.</p>
+                    <p>Key findings indicate that while technology and retail sectors command the largest customer bases, profitability per customer varies dramatically based on industry, product type, and monetization strategy. Businesses leveraging extensive digital platforms, such as Meta Platforms and Alphabet, demonstrate immense aggregate profits through advertising, even with relatively low per-user direct monetization. In contrast, luxury goods conglomerates like LVMH and specialized B2B software providers like Oracle generate substantial profits from a smaller, high-value client base. The analysis highlights that successful enterprises either achieve unparalleled scale to monetize vast audiences or cultivate deep, high-value relationships with a select clientele. Overall, the findings underscore the diverse pathways to wealth creation at the pinnacle of global commerce, driven by strategic market positioning and efficient value extraction from their respective customer ecosystems.</p>
+                    <h2 class="text-2xl font-semibold text-teal-600 mt-6 mb-4">Introduction</h2>
+                    <p>This interactive application allows exploration of data from a report investigating customer reach and average profitability per customer for core business ventures of the world's leading billionaires (2024 fiscal year). The objective is to illuminate distinct operational and financial models. The selection of billionaires is based on the "Forbes World's Billionaires List 2024" (March 8, 2024).</p>
+                    <p>"Customer" definition is adaptive (active users, subscribers, units sold, clients). Annual net profit is the profitability measure. Average profit per customer is net profit divided by customer count. Data limitations for private companies and diversified conglomerates are acknowledged.</p>
+                </div>
+            `;
+        }
+
+        function renderExploreData(filterIndustry = 'all', searchTerm = '') {
+            destroyCharts();
+            let filteredData = billionaireData;
+            if (filterIndustry !== 'all') {
+                filteredData = filteredData.filter(d => d.industry.toLowerCase().includes(filterIndustry.toLowerCase()));
+            }
+            if (searchTerm) {
+                const lowerSearchTerm = searchTerm.toLowerCase();
+                filteredData = filteredData.filter(d => 
+                    d.billionaireName.toLowerCase().includes(lowerSearchTerm) ||
+                    d.primaryBusiness.toLowerCase().includes(lowerSearchTerm)
+                );
+            }
+
+            if (currentSort.column) {
+                filteredData.sort((a, b) => {
+                    let valA = a[currentSort.column];
+                    let valB = b[currentSort.column];
+
+                    if (typeof valA === 'string') valA = valA.toLowerCase();
+                    if (typeof valB === 'string') valB = valB.toLowerCase();
+                    
+                    if (valA === null || valA === undefined) valA = currentSort.direction === 'asc' ? Infinity : -Infinity;
+                    if (valB === null || valB === undefined) valB = currentSort.direction === 'asc' ? Infinity : -Infinity;
+
+
+                    if (valA < valB) return currentSort.direction === 'asc' ? -1 : 1;
+                    if (valA > valB) return currentSort.direction === 'asc' ? 1 : -1;
+                    return 0;
+                });
+            }
+            
+            const industries = ['all', ...new Set(billionaireData.map(d => d.industry))];
+            const industryOptions = industries.map(ind => `<option value="${ind.toLowerCase()}" ${filterIndustry === ind.toLowerCase() ? 'selected' : ''}>${ind === 'all' ? 'All Industries' : ind}</option>`).join('');
+
+            let tableHTML = `
+                <div class="mb-4 flex flex-col sm:flex-row gap-4">
+                    <div class="flex-grow">
+                        <label for="industryFilterExplore" class="block text-sm font-medium text-neutral-700 mb-1">Filter by Industry:</label>
+                        <select id="industryFilterExplore" class="w-full p-2 border border-neutral-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
+                            ${industryOptions}
+                        </select>
+                    </div>
+                    <div class="flex-grow">
+                        <label for="searchExplore" class="block text-sm font-medium text-neutral-700 mb-1">Search by Name/Business:</label>
+                        <input type="text" id="searchExplore" value="${searchTerm}" placeholder="Enter name or business..." class="w-full p-2 border border-neutral-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-neutral-200 border border-neutral-200">
+                    <thead class="bg-neutral-50">
+                        <tr>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider" data-sort="billionaireName">Billionaire</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider" data-sort="primaryBusiness">Business</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider" data-sort="industry">Industry</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider" data-sort="customers">Customers</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider" data-sort="netProfit">Net Profit (2024)</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider" data-sort="avgProfitPerCustomer">Avg. Profit/Customer</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-neutral-200">
+            `;
+            filteredData.forEach(item => {
+                tableHTML += `
+                    <tr>
+                        <td class="px-3 py-4 whitespace-normal text-sm text-neutral-700">${item.billionaireName}</td>
+                        <td class="px-3 py-4 whitespace-normal text-sm text-neutral-700">${item.primaryBusiness}</td>
+                        <td class="px-3 py-4 whitespace-normal text-sm text-neutral-700">${item.industry}</td>
+                        <td class="px-3 py-4 whitespace-normal text-sm text-neutral-700">${formatCustomerCount(item.customers)} <span class="text-xs text-neutral-500">(${item.customersUnit || 'N/A'})</span></td>
+                        <td class="px-3 py-4 whitespace-normal text-sm text-neutral-700">${formatNumber(item.netProfit)}</td>
+                        <td class="px-3 py-4 whitespace-normal text-sm text-neutral-700">${formatNumber(item.avgProfitPerCustomer, 'profitPerCustomer')}</td>
+                        <td class="px-3 py-4 whitespace-normal text-sm text-center">
+                            <button class="text-teal-600 hover:text-teal-800 font-medium" onclick="showDetails('${item.billionaireName}', '${item.primaryBusiness.replace(/'/g, "\\'")}')">View</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            tableHTML += `</tbody></table></div>`;
+            contentArea.innerHTML = tableHTML;
+
+            document.getElementById('industryFilterExplore').addEventListener('change', (e) => renderExploreData(e.target.value, document.getElementById('searchExplore').value));
+            document.getElementById('searchExplore').addEventListener('input', (e) => renderExploreData(document.getElementById('industryFilterExplore').value, e.target.value));
+            
+            document.querySelectorAll('#contentArea th').forEach(th => {
+                th.addEventListener('click', () => {
+                    const column = th.dataset.sort;
+                    if (!column) return;
+                    const direction = (currentSort.column === column && currentSort.direction === 'asc') ? 'desc' : 'asc';
+                    currentSort = { column, direction };
+                    renderExploreData(document.getElementById('industryFilterExplore').value, document.getElementById('searchExplore').value);
+                    updateSortIndicators();
+                });
+            });
+            updateSortIndicators();
+        }
+        
+        function updateSortIndicators() {
+            document.querySelectorAll('#contentArea th').forEach(th => {
+                th.classList.remove('sort-asc', 'sort-desc');
+                if (th.dataset.sort === currentSort.column) {
+                    th.classList.add(currentSort.direction === 'asc' ? 'sort-asc' : 'sort-desc');
+                }
+            });
+        }
+
+
+        function renderIndustryDeepDive(selectedIndustry = null) {
+            destroyCharts();
+            const industries = [...new Set(billionaireData.map(d => d.industry))].sort();
+            const industryOptions = industries.map(ind => `<option value="${ind}" ${selectedIndustry === ind ? 'selected' : ''}>${ind}</option>`).join('');
+
+            let contentHTML = `
+                <div class="mb-6">
+                    <h2 class="text-2xl font-semibold text-teal-600 mb-2">Industry Deep Dive</h2>
+                    <p class="text-neutral-600 mb-4">Select an industry to view associated billionaire-led businesses, their summary details, and comparative charts for customer scale and profitability per customer within that sector.</p>
+                    <label for="industrySelector" class="block text-sm font-medium text-neutral-700 mb-1">Select Industry:</label>
+                    <select id="industrySelector" class="w-full md:w-1/2 p-2 border border-neutral-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
+                        <option value="">-- Select an Industry --</option>
+                        ${industryOptions}
+                    </select>
+                </div>
+            `;
+
+            if (selectedIndustry) {
+                const industryData = billionaireData.filter(d => d.industry === selectedIndustry);
+                contentHTML += `<h3 class="text-xl font-semibold text-neutral-700 mt-6 mb-4">Businesses in ${selectedIndustry}</h3>`;
+                if (industryData.length > 0) {
+                    contentHTML += `<div class="space-y-4">`;
+                    industryData.forEach(item => {
+                        contentHTML += `
+                            <div class="p-4 border border-neutral-200 rounded-lg shadow-sm">
+                                <h4 class="text-lg font-medium text-teal-700">${item.primaryBusiness} (${item.billionaireName})</h4>
+                                <p class="text-sm text-neutral-600 mt-1"><strong>Customers:</strong> ${formatCustomerCount(item.customers)} (${item.customersUnit || 'N/A'})</p>
+                                <p class="text-sm text-neutral-600"><strong>Net Profit (2024):</strong> ${formatNumber(item.netProfit)}</p>
+                                <p class="text-sm text-neutral-600"><strong>Avg. Profit/Customer:</strong> ${formatNumber(item.avgProfitPerCustomer, 'profitPerCustomer')}</p>
+                                <p class="text-sm text-neutral-500 mt-1"><em>${item.notes}</em></p>
+                                <button class="mt-2 text-sm text-teal-600 hover:text-teal-800 font-medium" onclick="showDetails('${item.billionaireName}', '${item.primaryBusiness.replace(/'/g, "\\'")}')">View Full Details</button>
+                            </div>
+                        `;
+                    });
+                    contentHTML += `</div>`;
+
+                    // Charts for the selected industry
+                    const chartableCustomerData = industryData.filter(d => d.customers !== null && d.primaryBusiness).sort((a,b) => b.customers - a.customers).slice(0,10);
+                    const chartableProfitData = industryData.filter(d => d.avgProfitPerCustomer !== null && d.primaryBusiness).sort((a,b) => b.avgProfitPerCustomer - a.avgProfitPerCustomer).slice(0,10);
+
+                    if (chartableCustomerData.length > 0) {
+                        contentHTML += `
+                            <div class="mt-8">
+                                <h4 class="text-lg font-semibold text-neutral-700 mb-2">Top Companies by Customer Count in ${selectedIndustry} (Max 10)</h4>
+                                <div class="chart-container bg-stone-50 p-2 rounded-md shadow"><canvas id="industryCustomerChart"></canvas></div>
+                            </div>
+                        `;
+                    }
+                    if (chartableProfitData.length > 0) {
+                        contentHTML += `
+                            <div class="mt-8">
+                                <h4 class="text-lg font-semibold text-neutral-700 mb-2">Top Companies by Avg. Profit/Customer in ${selectedIndustry} (Max 10)</h4>
+                                <div class="chart-container bg-stone-50 p-2 rounded-md shadow"><canvas id="industryProfitChart"></canvas></div>
+                            </div>
+                        `;
+                    }
+
+
+                } else {
+                    contentHTML += `<p class="text-neutral-600">No data available for this industry.</p>`;
+                }
+            }
+            contentArea.innerHTML = contentHTML;
+            
+            if (selectedIndustry) {
+                const industryData = billionaireData.filter(d => d.industry === selectedIndustry);
+                const chartableCustomerData = industryData.filter(d => d.customers !== null && d.primaryBusiness).sort((a,b) => b.customers - a.customers).slice(0,10);
+                const chartableProfitData = industryData.filter(d => d.avgProfitPerCustomer !== null && d.primaryBusiness).sort((a,b) => b.avgProfitPerCustomer - a.avgProfitPerCustomer).slice(0,10);
+
+                if (chartableCustomerData.length > 0) {
+                    const customerCtx = document.getElementById('industryCustomerChart')?.getContext('2d');
+                    if (customerCtx) {
+                        charts.industryCustomerChart = new Chart(customerCtx, {
+                            type: 'bar',
+                            data: {
+                                labels: chartableCustomerData.map(d => d.primaryBusiness.length > 20 ? d.primaryBusiness.substring(0,18) + '...' : d.primaryBusiness),
+                                datasets: [{
+                                    label: 'Customer Count',
+                                    data: chartableCustomerData.map(d => d.customers),
+                                    backgroundColor: 'rgba(13, 148, 136, 0.6)', // teal-600
+                                    borderColor: 'rgba(13, 148, 136, 1)',
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { callback: value => formatCustomerCount(value) } } }, plugins: { tooltip: { callbacks: { label: (context) => `${context.dataset.label}: ${formatCustomerCount(context.raw)} (${chartableCustomerData[context.dataIndex].customersUnit})` } } } }
+                        });
+                    }
+                }
+                if (chartableProfitData.length > 0) {
+                    const profitCtx = document.getElementById('industryProfitChart')?.getContext('2d');
+                     if (profitCtx) {
+                        charts.industryProfitChart = new Chart(profitCtx, {
+                            type: 'bar',
+                            data: {
+                                labels: chartableProfitData.map(d => d.primaryBusiness.length > 20 ? d.primaryBusiness.substring(0,18) + '...' : d.primaryBusiness),
+                                datasets: [{
+                                    label: 'Avg. Profit/Customer ($)',
+                                    data: chartableProfitData.map(d => d.avgProfitPerCustomer),
+                                    backgroundColor: 'rgba(59, 130, 246, 0.6)', // blue-500
+                                    borderColor: 'rgba(59, 130, 246, 1)',
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { callback: value => '$' + value.toFixed(2) } } }, plugins: { tooltip: { callbacks: { label: (context) => `${context.dataset.label}: $${context.raw.toFixed(2)}` } } } }
+                        });
+                    }
+                }
+            }
+
+
+            document.getElementById('industrySelector').addEventListener('change', (e) => renderIndustryDeepDive(e.target.value));
+        }
+        
+        function renderComparativeInsights() {
+            destroyCharts();
+            const chartData = billionaireData.filter(d => d.customers !== null && d.avgProfitPerCustomer !== null && d.primaryBusiness);
+            const topCustomersData = [...billionaireData].filter(d => d.customers !== null && d.primaryBusiness).sort((a,b) => b.customers - a.customers).slice(0, 10);
+            const topProfitPerCustomerData = [...billionaireData].filter(d => d.avgProfitPerCustomer !== null && d.primaryBusiness).sort((a,b) => b.avgProfitPerCustomer - a.avgProfitPerCustomer).slice(0, 10);
+
+            const industryColors = {
+                "Technology/Social Media": "rgba(239, 68, 68, 0.7)", // red-500
+                "Automotive": "rgba(249, 115, 22, 0.7)", // orange-500
+                "Aerospace/Telecom": "rgba(245, 158, 11, 0.7)", // amber-500
+                "Technology/E-commerce": "rgba(234, 179, 8, 0.7)", // yellow-500
+                "Diversified/Telecom": "rgba(132, 204, 22, 0.7)", // lime-500
+                "Technology/Internet": "rgba(34, 197, 94, 0.7)", // green-500
+                "Fashion & Retail": "rgba(16, 185, 129, 0.7)", // emerald-500
+                "Retail": "rgba(20, 184, 166, 0.7)", // teal-500
+                "Telecom": "rgba(6, 182, 212, 0.7)", // cyan-500
+                "Diversified/Infrastructure": "rgba(59, 130, 246, 0.7)", // blue-500
+                "Finance/Brokerage": "rgba(99, 102, 241, 0.7)", // indigo-500
+                "Manufacturing": "rgba(139, 92, 246, 0.7)", // violet-500
+                "Default": "rgba(168, 85, 247, 0.7)" // purple-500
+            };
+            
+            const scatterPlotData = {
+                datasets: chartData.map(d => ({
+                    label: d.primaryBusiness,
+                    data: [{ x: d.customers, y: d.avgProfitPerCustomer }],
+                    backgroundColor: industryColors[d.industry] || industryColors["Default"],
+                    notes: d.notes, // Store notes for tooltip
+                    customersUnit: d.customersUnit
+                }))
+            };
+
+            contentArea.innerHTML = `
+                <div class="prose max-w-none text-neutral-700">
+                    <h2 class="text-2xl font-semibold text-teal-600 mb-2">Comparative Analysis & Strategic Insights</h2>
+                    <p class="mb-4">This section visualizes relationships between customer scale and profitability, and highlights top performers. The analysis reveals distinct patterns: some businesses thrive on immense scale (Meta, Alphabet) with lower per-customer profit, while others (Tesla, specialized B2B) focus on high-value relationships with fewer customers. Retail shows a spectrum from Walmart's high-volume/low-margin to LVMH's high-margin/lower-volume luxury model.</p>
+                    
+                    <h3 class="text-xl font-semibold text-neutral-700 mt-6 mb-2">Customer Scale vs. Average Profit per Customer</h3>
+                    <p class="text-sm text-neutral-600 mb-4">Scatter plot showing companies with available data for both customer count and average profit per customer. X-axis (Customer Count) is logarithmic due to wide range. Hover for details.</p>
+                    <div class="chart-container bg-stone-50 p-2 rounded-md shadow"><canvas id="scatterPlot"></canvas></div>
+
+                    <h3 class="text-xl font-semibold text-neutral-700 mt-8 mb-2">Top 10 by Customer Count</h3>
+                    <div class="chart-container bg-stone-50 p-2 rounded-md shadow"><canvas id="topCustomersChart"></canvas></div>
+                    
+                    <h3 class="text-xl font-semibold text-neutral-700 mt-8 mb-2">Top 10 by Average Profit per Customer</h3>
+                    <div class="chart-container bg-stone-50 p-2 rounded-md shadow"><canvas id="topProfitChart"></canvas></div>
+                    
+                    <h3 class="text-xl font-semibold text-neutral-700 mt-8 mb-2">Key Strategic Insights Summary</h3>
+                    <p>The technology sector shows a dichotomy: mass-user platforms (Meta, Alphabet, ByteDance) monetize via ads/engagement, while B2B tech (Oracle, Nvidia) relies on high-value enterprise contracts. Microsoft blends both. Retail varies: Walmart's volume vs. LVMH's luxury margins; Inditex/Uniqlo show modern retail agility. Diversified firms like Berkshire Hathaway profit from portfolio performance; Reliance Industries uses its large Jio subscriber base for cross-selling. Financial services range from Bloomberg's high-value terminals to Interactive Brokers' active trader focus, while telcos like América Móvil often have lower per-customer margins due to competition.</p>
+                </div>
+            `;
+
+            const scatterCtx = document.getElementById('scatterPlot').getContext('2d');
+            charts.scatterPlot = new Chart(scatterCtx, {
+                type: 'scatter',
+                data: scatterPlotData,
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        x: { 
+                            type: 'logarithmic', title: { display: true, text: 'Estimated Annual Customers (Log Scale)' },
+                            ticks: { callback: value => formatCustomerCount(value) }
+                        },
+                        y: { title: { display: true, text: 'Avg. Profit per Customer ($)' }, ticks: { callback: value => '$' + value.toFixed(0) } }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const item = context.dataset;
+                                    const originalData = chartData.find(d => d.primaryBusiness === item.label);
+                                    if (!originalData) return '';
+                                    return [
+                                        `${item.label} (${originalData.billionaireName})`,
+                                        `Customers: ${formatCustomerCount(originalData.customers)} (${originalData.customersUnit})`,
+                                        `Avg. Profit/Cust: ${formatNumber(originalData.avgProfitPerCustomer, 'profitPerCustomer')}`,
+                                        `Industry: ${originalData.industry}`,
+                                        `Note: ${originalData.notes || 'N/A'}`
+                                    ];
+                                }
+                            }
+                        },
+                        legend: { display: false } // Too many labels for a legend
+                    }
+                }
+            });
+
+            const topCustomersCtx = document.getElementById('topCustomersChart').getContext('2d');
+            charts.topCustomersChart = new Chart(topCustomersCtx, {
+                type: 'bar',
+                data: {
+                    labels: topCustomersData.map(d => d.primaryBusiness.length > 16 ? d.primaryBusiness.substring(0,15) + '...' : d.primaryBusiness),
+                    datasets: [{
+                        label: 'Customer Count',
+                        data: topCustomersData.map(d => d.customers),
+                        backgroundColor: 'rgba(13, 148, 136, 0.6)', // teal-600
+                        borderColor: 'rgba(13, 148, 136, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', scales: { x: { ticks: { callback: value => formatCustomerCount(value) } } }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (context) => `${context.dataset.label}: ${formatCustomerCount(context.raw)} (${topCustomersData[context.dataIndex].customersUnit})` } } } }
+            });
+
+            const topProfitCtx = document.getElementById('topProfitChart').getContext('2d');
+            charts.topProfitChart = new Chart(topProfitCtx, {
+                type: 'bar',
+                data: {
+                    labels: topProfitPerCustomerData.map(d => d.primaryBusiness.length > 16 ? d.primaryBusiness.substring(0,15) + '...' : d.primaryBusiness),
+                    datasets: [{
+                        label: 'Avg. Profit/Customer ($)',
+                        data: topProfitPerCustomerData.map(d => d.avgProfitPerCustomer),
+                        backgroundColor: 'rgba(59, 130, 246, 0.6)', // blue-500
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', scales: { x: { ticks: { callback: value => '$' + value.toFixed(0) } } }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (context) => `${context.dataset.label}: $${context.raw.toFixed(2)}` } } } }
+            });
+        }
+
+
+        function renderSummary() {
+            destroyCharts();
+            contentArea.innerHTML = `
+                <div class="prose max-w-none text-neutral-700">
+                    <h2 class="text-2xl font-semibold text-teal-600 mb-4">Report Conclusion</h2>
+                    <p>This analysis of top billionaire-led global enterprises reveals a dynamic landscape of value creation, characterized by two primary strategic approaches: achieving unparalleled scale (e.g., Meta, Alphabet, ByteDance monetizing vast user bases via ads) or cultivating high-value relationships with a more limited customer base (e.g., LVMH in luxury, Oracle/Nvidia in B2B software/hardware, Blackstone/Bloomberg LP in specialized finance).</p>
+                    <p>Hybrid models like Microsoft (mass-market software + enterprise cloud) and diversified conglomerates like Reliance Industries (leveraging a large telecom base for cross-selling) also demonstrate success. Traditional retail giants like Walmart achieve immense profitability through sheer volume despite low per-transaction margins. Ultimately, wealth creation at this level stems from either massive scale for widespread monetization or deeply embedded, high-value specialized client relationships. Understanding these diverse pathways is crucial for market participants.</p>
+                    
+                    <h2 class="text-2xl font-semibold text-teal-600 mt-6 mb-4">Challenges and Data Considerations</h2>
+                    <p>The analysis faced challenges due to varying public disclosure. Private companies (Koch Industries, Mars Inc., Ferrero, Red Bull, Citadel) lack detailed financials, limiting quantitative analysis. For Bloomberg LP, net profit is private. Diversified conglomerates (Berkshire Hathaway, Reliance, Adani Group) make a single "customer" definition difficult; analysis may focus on segments or acknowledge this limitation. Standardizing "customer" across industries (vehicle sold vs. monthly active user vs. enterprise client) is a hurdle. Proxies (Amazon Prime subscribers, Teams MAU) are used but may not capture full engagement. Slight variations in fiscal year data are necessary compromises. These limitations are acknowledged for transparency.</p>
+                </div>
+            `;
+        }
+
+        function showDetails(billionaireName, primaryBusiness) {
+            const item = billionaireData.find(d => d.billionaireName === billionaireName && d.primaryBusiness === primaryBusiness);
+            if (item) {
+                modalTitle.textContent = `${item.primaryBusiness} (${item.billionaireName})`;
+                // Basic Markdown-like formatting for paragraphs
+                const formattedDetails = item.details.split('\n\n').map(pText => `<p class="mb-3">${pText}</p>`).join('');
+                modalBody.innerHTML = formattedDetails;
+                modal.style.display = "block";
+            }
+        }
+
+        function closeModal() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const tabName = tab.dataset.tab;
+                currentSort = { column: null, direction: 'asc' }; // Reset sort when changing tabs
+                if (tabName === 'overview') renderOverview();
+                else if (tabName === 'explore') renderExploreData();
+                else if (tabName === 'industry') renderIndustryDeepDive();
+                else if (tabName === 'comparative') renderComparativeInsights();
+                else if (tabName === 'summary') renderSummary();
+            });
+        });
+
+        // Initial render
+        renderOverview();
+    </script>
+</body>
+</html>

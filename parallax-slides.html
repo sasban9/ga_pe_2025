@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pastel Scroll - Snap Slideshow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet">
+  <!--
+    ★ HOW TO USE ★
+    1. Replace any text, image, or video src with your own content.
+    2. To keep an element fixed while scrolling, add the class="sticky".
+    3. Adjust the data-speed attribute (negative = slower, positive = faster) for parallax motion.
+    4. Tweak the pastel color palette in :root below or add more shades.
+  -->
+  <style>
+    /* ——— Global Styles ——— */
+    :root {
+      /* Pastel palette (20 shades) */
+      --p1:  #f8edeb;  --p2:  #e8e8e4;  --p3:  #d8e2dc;  --p4:  #dfe7fd;
+      --p5:  #cddafd;  --p6:  #c3f0ca;  --p7:  #fcd5ce;  --p8:  #fae1dd;
+      --p9:  #f0efeb;  --p10: #f1f0c0;  --p11: #ffe5d9; --p12: #e4c1f9;
+      --p13: #d0bdf4; --p14: #ffc8dd; --p15: #bde0fe; --p16: #a2d2ff;
+      --p17: #d3e0ea; --p18: #b8d8d8; --p19: #f5d0c5; --p20: #e4e9ff;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html{
+      scrollbar-width:none;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-size: 1.5rem;font-weight: 100;
+      font-family: "Roboto", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+      color: #333; line-height: 1.5;
+      scroll-behavior: smooth;
+    }
+    /* ——— Slideshow Container ——— */
+    main {
+      height: 100vh;          /* viewport lock */
+      overflow-y: scroll;     /* scrollable slides */
+      scroll-snap-type: y mandatory; /* snap each slide */
+    }
+    /* ——— Individual Slide ——— */
+    section.slide {
+      height: 100vh;
+      width: 100%;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 4rem 2rem;
+      position: relative;
+    }
+    /* ——— Sticky (fixed-when-visible) Elements ——— */
+    .sticky {
+      position: sticky;
+      top: 20vh; /* sticks ~20% from top */
+    }
+    /* ——— Parallax Elements ——— */
+    [data-speed] {
+      will-change: transform;
+    }
+    /* ——— Media Styling ——— */
+    img, video, iframe {
+      max-width: 80%;
+      border-radius: 1rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,.1);
+    }
+    h2 {
+      margin: 0 0 .5rem;
+      font-size: clamp(1.8rem, 3vw + .5rem, 3rem);
+    }
+    p {
+      max-width: 65ch; margin: 0 auto 1rem;
+    }
+    /* ——— Utility ——— */
+    .spacer { height: 4rem; }
+  </style>
+</head>
+<body>
+<main id="slides">
+  <!-- 20 Slides -->
+  <section class="slide" style="background: var(--p1);">
+    <h2 class="sticky" data-speed="-0.3">Welcome to the Pastel Journey</h2>
+    <p data-speed="0.2">Scroll to explore 20 slides showcasing how text, images, and videos can blend with pastel aesthetics and parallax motion.</p>
+    <p data-speed="0.3">Scroll to explore 20 slides showcasing how text, images, and videos can blend with pastel aesthetics and parallax motion.</p>
+  </section>
+  
+  <section class="slide" style="background: var(--p2);">
+    <h2 class="sticky" data-speed="-0.2">Slide 2: Pure Inspiration</h2>
+    <img src="https://picsum.photos/800/400?nature,water" alt="Random Unsplash nature" data-speed="0.25">
+  </section>
+  
+  <section class="slide" style="background: var(--p3);">
+    <h2 class="sticky" data-speed="-0.25">Slide 3: Embedded Video</h2>
+    <video data-speed="0.15" src="https://samplelib.com/lib/preview/mp4/sample-30s.mp4" controls muted width="640"></video>
+  </section>
+  
+  <section class="slide" style="background: var(--p4);">
+    <h2 class="sticky" data-speed="-0.2">Slide 4: Story Time</h2>
+    <p data-speed="0.4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+  </section>
+
+  <section class="slide" style="background: var(--p5);">
+    <h2 class="sticky" data-speed="-0.25">Slide 5: More Images</h2>
+    <img data-speed="0.3" src="https://picsum.photos/800/400?city" alt="City scene">
+  </section>
+
+  <section class="slide" style="background: var(--p6);">
+    <h2 class="sticky" data-speed="-0.1"><b>Are newer AI models more resistant to jailbreaking?</b> Slide 6: Quote</h2>
+    <blockquote data-speed="0.15" style="font-style:italic; max-width: 60ch;">“The best way to predict the future is to invent it.” — Alan Kay</blockquote>
+    <div data-speed="0.1">
+      Yes, newer versions of AI models typically include improved safeguards against jailbreaking. For example, newer versions of ChatGPT are generally more robust against jailbreaking attempts compared to older versions. However, this is an ongoing challenge as new jailbreaking techniques continue to emerge.</div>
+  </section>
+
+  <section class="slide" style="background: var(--p7);">
+    <h2 class="sticky" data-speed="-0.2">Slide 7: Another Video</h2>
+    <iframe data-speed="0.15" width="640" height="360" src="https://www.youtube.com/embed/tgbNymZ7vqY" title="YouTube video" frameborder="0" allowfullscreen></iframe>
+  </section>
+
+  <section class="slide" style="background: var(--p8);">
+    <h2 class="sticky" data-speed="-0.25">Slide 8: List</h2>
+    <ul data-speed="0.25" style="font-size:1.25rem; list-style: square;">
+      <li>Pastel palettes</li>
+      <li>Scrolling magic</li>
+      <li>Sticky headers</li>
+    </ul>
+  </section>
+
+  <section class="slide" style="background: var(--p9);">
+    <h2 class="sticky" data-speed="-0.3">Slide 9: Feature Card</h2>
+    <div data-speed="0.3" style="background:#fff;padding:2rem 3rem;border-radius:1rem;box-shadow:0 6px 14px rgba(0,0,0,.08);">
+      <h3 style="margin-top:0;">Card Title</h3>
+      <p>Use cards to highlight key concepts or data points. Replace this text with your own.</p>
+    </div>
+  </section>
+
+  <section class="slide" style="background: var(--p10);">
+    <h2 class="sticky" data-speed="-0.2">Slide 10: Two-Column Layout</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;" data-speed="0.35">
+      <img src="https://picsum.photos/400/400?abstract" alt="Abstract">
+      <p>Left image, right text: change the grid to fit your content with simple HTML/CSS.</p>
+    </div>
+  </section>
+
+  <section class="slide" style="background: var(--p11);">
+    <h2 class="sticky" data-speed="-0.3">Slide 11: Fun Fact</h2>
+    <p data-speed="0.3">Did you know? CSS <code>scroll-snap</code> makes it super easy to build a step-scroll narrative without heavy JS libraries.</p>
+  </section>
+
+  <section class="slide" style="background: var(--p12);">
+    <h2 class="sticky" data-speed="-0.25">Slide 12: Gallery Grid</h2>
+    <div data-speed="0.1" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;">
+      <img src="https://picsum.photos/600/400?1" alt="1"><img src="https://picsum.photos/600/400?2" alt="2">
+      <img src="https://picsum.photos/600/400?3" alt="3"><img src="https://picsum.photos/600/400?4" alt="4">
+    </div>
+  </section>
+
+  <section class="slide" style="background: var(--p13);">
+    <h2 class="sticky" data-speed="-0.2">Slide 13: Code Highlight</h2>
+    <pre data-speed="0.3" style="background:#111;padding:1rem 1.5rem;border-radius:.5rem;color:#f7f7f7;overflow-x:auto;">
+&lt;section class="slide">
+  &lt;h2 class="sticky">Title&lt;/h2>
+  &lt;p>Your content here&lt;/p>
+&lt;/section>
+    </pre>
+  </section>
+
+  <section class="slide" style="background: var(--p14);">
+    <h2 class="sticky" data-speed="-0.2">Slide 14: Callout</h2>
+    <p data-speed="0.35" style="font-size:2rem;font-weight:700;">✨ Build engaging scroll stories in minutes!</p>
+  </section>
+
+  <section class="slide" style="background: var(--p15);">
+    <h2 class="sticky" data-speed="-0.25">Slide 15: Big Number</h2>
+    <div data-speed="0.3" style="font-size:6rem;font-weight:700;">42,977,397,657,236</div>
+    <p data-speed="0.35">…the answer to life, the universe, and everything.</p>
+  </section>
+
+  <section class="slide" style="background: var(--p16);">
+    <h2 class="sticky" data-speed="-0.2">Slide 16: Table Example</h2>
+    <table data-speed="0.1" style="border-collapse:collapse;box-shadow:0 2px 6px rgba(0,0,0,.1);">
+      <tr><th style="padding:.5rem 1rem;background:#fff;">Item</th><th style="padding:.5rem 1rem;background:#fff;">Value</th></tr>
+      <tr><td style="padding:.5rem 1rem;background:#f9f9f9;">Apple</td><td style="padding:.5rem 1rem;background:#f9f9f9;">$1</td></tr>
+      <tr><td style="padding:.5rem 1rem;background:#fff;">Orange</td><td style="padding:.5rem 1rem;background:#fff;">$2</td></tr>
+    </table>
+  </section>
+
+  <section class="slide" style="background: var(--p17);">
+    <h2 class="sticky" data-speed="-0.25">Slide 17: Audio</h2>
+    <audio data-speed="0.25" controls src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+  </section>
+
+  <section class="slide" style="background: var(--p18);">
+    <h2 class="sticky" data-speed="-0.3">Slide 18: SVG Animation</h2>
+    <img data-speed="0.3" src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/2832fb71252497.5bbeed275ae64.gif" alt="">
+    <!-- <svg data-speed="0.3" width="120" height="120" viewBox="0 0 120 120" fill="none" stroke="#333" stroke-width="6">
+      <circle cx="60" cy="60" r="50" stroke-dasharray="314" stroke-dashoffset="0">
+        <animate attributeName="stroke-dashoffset" dur="6s" values="314;0" repeatCount="indefinite" />
+      </circle>
+    </svg> -->
+  </section>
+
+  <section class="slide" style="background: var(--p19);">
+    <h2 class="sticky" data-speed="-0.2">Slide 19: Your Turn</h2>
+    <p data-speed="0.3">Replace these placeholders with your own narrative, data visualisations, or interactive widgets.</p>
+  </section>
+
+  <section class="slide" style="background: var(--p20);">
+    <h2 class="sticky" data-speed="-0.3">Slide 20: Thank You 🙌</h2>
+    <p data-speed="0.3">Made with pure HTML, CSS, and a pinch of JavaScript. Now go create something amazing!</p>
+  </section>
+</main>
+
+<script>
+  // ——— Parallax Scroll Effect ——— //
+  const slides = document.getElementById('slides');
+  slides.addEventListener('scroll', () => {
+    // Loop through everything with data-speed attribute
+    document.querySelectorAll('[data-speed]').forEach(el => {
+      const speed = parseFloat(el.getAttribute('data-speed'));
+      // Distance from top of viewport (positive when element enters view)
+      const offset = el.getBoundingClientRect().top;
+      // Translate Y for parallax effect
+      el.style.transform = `translateY(${offset * speed}px)`;
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>10x10 Animated Grid</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      grid-template-rows: repeat(10, 1fr);
+      width: 100vw;
+      height: 100vh;
+      transition: opacity 0.5s ease;
+    }
+    .grid-cell {
+      border: 1px solid #ccc;
+      display: flex;flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      cursor: pointer;
+      background-color: #f0f0f0;
+      transition: all 0.5s ease;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .clone-cell {
+      position: fixed;
+      z-index: 9999;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      transition: all 0.5s ease;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="grid" class="grid-container"></div>
+
+  <script>
+    const grid = document.getElementById('grid');
+
+    // Sample JSON content for cells
+    const cellData = Array.from({ length: 100 }, (_, i) => {
+      const type = i % 3;
+      if (type === 0) return `<strong>Text Cell ${i + 1}</strong><br/><em>Click me!</em>`;
+      if (type === 1) return `<img src='https://picsum.photos/2${i + 1}' alt='Image ${i + 1}' />`;
+      return `<h1>SASBAN is the 1337 KING!</h1><hr><video width="600" muted autoplay loop><source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4"></video>`;
+    });
+
+    for (let i = 0; i < 100; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'grid-cell';
+      cell.innerHTML = cellData[i];
+
+      cell.addEventListener('click', function () {
+        if (document.querySelector('.clone-cell')) return;
+
+        const rect = cell.getBoundingClientRect();
+        const clone = cell.cloneNode(true);
+        clone.classList.add('clone-cell');
+
+        clone.style.top = `${rect.top}px`;
+        clone.style.left = `${rect.left}px`;
+        clone.style.width = `${rect.width}px`;
+        clone.style.height = `${rect.height}px`;
+
+        document.body.appendChild(clone);
+        grid.classList.add('hidden');
+
+        requestAnimationFrame(() => {
+          clone.style.top = '0px';
+          clone.style.left = '0px';
+          clone.style.width = '100vw';
+          clone.style.height = '100vh';
+          clone.style.fontSize = '24px';
+        });
+
+        clone.addEventListener('click', () => {
+          clone.style.top = `${rect.top}px`;
+          clone.style.left = `${rect.left}px`;
+          clone.style.width = `${rect.width}px`;
+          clone.style.height = `${rect.height}px`;
+          clone.style.fontSize = '14px';
+
+          setTimeout(() => {
+            clone.remove();
+            grid.classList.remove('hidden');
+          }, 500);
+        });
+      });
+
+      grid.appendChild(cell);
+    }
+  </script>
+</body>
+</html>

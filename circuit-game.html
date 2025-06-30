@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electric Circuit Puzzle</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #ffe29f, #ffa99f);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(5, 60px);
+      grid-template-rows: repeat(5, 60px);
+      gap: 5px;
+    }
+    .cell {
+      width: 60px;
+      height: 60px;
+      background-color: #fff3cd;
+      border: 2px solid #856404;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .cell img {
+      width: 40px;
+      height: 40px;
+      transform: rotate(0deg);
+      transition: transform 0.3s ease;
+    }
+    .bulb.on {
+      background-color: #fff8dc;
+      box-shadow: 0 0 15px yellow;
+    }
+  </style>
+</head>
+<body>
+  <h1>Electric Circuit Puzzle</h1>
+  <div id="grid"></div>
+
+  <script>
+    const gridSize = 5;
+    const grid = document.getElementById('grid');
+
+    const pieces = [
+      { type: 'straight', angle: 0 },
+      { type: 'corner', angle: 0 },
+      { type: 't', angle: 0 },
+      { type: 'cross', angle: 0 },
+    ];
+
+    const images = {
+      straight: 'https://i.imgur.com/8Zb9gN8.png',
+      corner: 'https://i.imgur.com/KUYCzNH.png',
+      t: 'https://i.imgur.com/9tkQc1g.png',
+      cross: 'https://i.imgur.com/f1I0N2A.png',
+      bulb: 'https://i.imgur.com/9kYOoPl.png'
+    };
+
+    const gridState = [];
+
+    function createCell(x, y) {
+      const cell = document.createElement('div');
+      cell.classList.add('cell');
+      const rand = Math.floor(Math.random() * pieces.length);
+      const piece = { ...pieces[rand], angle: Math.floor(Math.random() * 4) * 90 };
+
+      const img = document.createElement('img');
+      img.src = images[piece.type];
+      img.style.transform = `rotate(${piece.angle}deg)`;
+
+      cell.appendChild(img);
+      cell.dataset.type = piece.type;
+      cell.dataset.angle = piece.angle;
+      cell.dataset.x = x;
+      cell.dataset.y = y;
+
+      cell.addEventListener('click', () => {
+        piece.angle = (piece.angle + 90) % 360;
+        img.style.transform = `rotate(${piece.angle}deg)`;
+        cell.dataset.angle = piece.angle;
+        checkPowerFlow();
+      });
+
+      grid.appendChild(cell);
+      gridState.push(cell);
+    }
+
+    function createGrid() {
+      for (let y = 0; y < gridSize; y++) {
+        for (let x = 0; x < gridSize; x++) {
+          createCell(x, y);
+        }
+      }
+
+      // Place power source and bulb manually
+      const powerCell = gridState[0];
+      powerCell.querySelector('img').src = images.straight;
+      powerCell.dataset.type = 'straight';
+      powerCell.dataset.angle = 90;
+      powerCell.querySelector('img').style.transform = 'rotate(90deg)';
+
+      const bulbCell = gridState[gridSize * gridSize - 1];
+      bulbCell.querySelector('img').src = images.bulb;
+      bulbCell.dataset.type = 'bulb';
+    }
+
+    function checkPowerFlow() {
+      // Basic flood fill from power source
+      const visited = new Set();
+
+      function getNeighbors(x, y, fromAngle) {
+        const neighbors = [];
+        const directions = [
+          { dx: 0, dy: -1, angle: 0 }, // Up
+          { dx: 1, dy: 0, angle: 90 }, // Right
+          { dx: 0, dy: 1, angle: 180 }, // Down
+          { dx: -1, dy: 0, angle: 270 }  // Left
+        ];
+        const index = y * gridSize + x;
+        const cell = gridState[index];
+        if (!cell) return neighbors;
+
+        const type = cell.dataset.type;
+        const angle = parseInt(cell.dataset.angle);
+
+        const openDirs = {
+          straight: [0, 180],
+          corner: [0, 90],
+          t: [0, 90, 270],
+          cross: [0, 90, 180, 270],
+          bulb: [270],
+        };
+
+        const connections = openDirs[type]?.map(a => (a + angle) % 360) || [];
+
+        for (const dir of directions) {
+          const nx = x + dir.dx;
+          const ny = y + dir.dy;
+          if (nx < 0 || nx >= gridSize || ny < 0 || ny >= gridSize) continue;
+
+          const ni = ny * gridSize + nx;
+          const neighbor = gridState[ni];
+          const ntype = neighbor.dataset.type;
+          const nangle = parseInt(neighbor.dataset.angle);
+          const ncons = openDirs[ntype]?.map(a => (a + nangle) % 360) || [];
+
+          if (connections.includes(dir.angle) && ncons.includes((dir.angle + 180) % 360)) {
+            neighbors.push({ x: nx, y: ny });
+          }
+        }
+
+        return neighbors;
+      }
+
+      function floodFill(x, y) {
+        const key = `${x},${y}`;
+        if (visited.has(key)) return;
+        visited.add(key);
+        const index = y * gridSize + x;
+        const cell = gridState[index];
+
+        if (cell.dataset.type === 'bulb') {
+          cell.classList.add('on');
+        }
+
+        for (const { x: nx, y: ny } of getNeighbors(x, y)) {
+          floodFill(nx, ny);
+        }
+      }
+
+      gridState.forEach(cell => cell.classList.remove('on'));
+      floodFill(0, 0);
+    }
+
+    createGrid();
+    checkPowerFlow();
+  </script>
+</body>
+</html>
