@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Principle</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="mGlitch.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            line-height: 1.8;
+            padding: 0;
+            box-sizing: border-box;
+            font-size: 1.8rem;
+        }
+
+        body,
+        html {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 100;
+            height: 100%;
+            overflow: hidden;
+            scrollbar-width: none;
+            background: black;
+        }
+
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 8px;
+            background: linear-gradient(90deg, #0000, #0000, white);
+            width: 0%;
+            z-index: 9999;
+            transition: width 0.33s ease-in-out;
+        }
+
+        .slide-container {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-type: y mandatory;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slide {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /* text-align: center; */
+            padding: 20px 240px;
+            font-size: 1.5em;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .slide p,
+        .slide h3,
+        .slide img {
+            filter: opacity(0%);
+            transform: skew(10deg, 30deg) rotate(0deg);
+            opacity: 0;
+            transition: filter 0.3s ease-in, opacity 0.33s ease, transform 0.5s ease;
+        }
+
+        .slide:nth-of-type(2n) {
+            transform: skew(10deg, -30deg) rotate(60deg);
+            filter: contrast(200%);
+        }
+
+        .slide.active,
+        .slide.active p,
+        .slide.active h3,
+        .slide.active img {
+            filter: opacity(100%);
+            transform: rotate(0deg);
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .slide img {
+            max-width: 80%;
+            /* transform: rotate(-6deg); */
+            vertical-align: middle;
+            /* height: auto; */
+            margin: 0 2rem;
+            border-radius: 10px;
+        }
+
+        b {
+            font-weight: 400;
+        }
+
+        .slide:nth-child(7n) {
+            background: darkred;
+            color: #fff;
+        }
+
+        .slide:nth-child(7n+1) {
+            background: darkblue;
+            color: #ccc;
+        }
+
+        .slide:nth-child(7n+2) {
+            background: darkkhaki;
+            color: #333;
+        }
+
+        .slide:nth-child(7n+3) {
+            background: darkmagenta;
+            color: #fff;
+        }
+
+        .slide:nth-child(7n+4) {
+            background: darkgreen;
+            color: #fff;
+        }
+
+        .slide:nth-child(7n+5) {
+            background: darkslategray;
+            color: #fff;
+        }
+
+        .slide:nth-child(7n+6) {
+            background: darkorange;
+            color: #333;
+        }
+
+        iframe {
+            width: 80%;
+            height: 60%;
+            border: none;
+            margin-top: 20px;
+        }
+
+        .bounce {
+            animation: bounceIn 12s infinite 2s;
+        }
+
+        @keyframes bounceIn {
+            0%,20%,50%,80%,100% {transform: translateY(0);}
+            40% {transform: translateY(-30px);}
+            60% {transform: translateY(-15px);}
+        }
+    </style>
+</head>
+
+<body>
+    <img class="bounce" style="position: absolute;bottom: 1rem;left: 1rem;z-index: 999;height: 90px;border-radius: 100%;transform: rotate(-6deg);"
+        src="https://sasban.online/sasban.jpg" alt="">
+    <a style="position: absolute;font-size:1rem;top: 0rem;right: 0;z-index: 999;height: 120px;border-radius: 100%;color: khaki;text-decoration: none;"
+        href="http://linktr.ee/sasban9">linktr.ee/sasban9</a>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-container">
+        <div class="slide active">
+            <h3>A book or documentary that fundamentally shifted your perspective.</h3>
+            <!-- <p>Explore innovative learning<br> powered by AI.</p> -->
+
+            <img src="https://cdn.dribbble.com/userupload/23632505/file/original-bf265c35a8f260df3ed2b7d474b915bd.gif"
+                height="400" alt="Slide 1">
+        </div>
+        <div class="slide">
+            <p>Let's break down why sharing a book or documentary that fundamentally shifted your perspective is a
+                powerful element for your video introduction.</p>
+
+        </div>
+        <div class="slide">
+
+            <h3>Why This Topic Resonates Deeply</h3>
+
+            <p>This isn't just about listing something you've read or watched; it's about showcasing your intellectual
+                curiosity, your capacity for critical self-reflection, and your openness to evolving your worldview. It
+                highlights:</p>
+        </div>
+        <div class="slide"
+            style="background: linear-gradient(0deg, black, transparent), url(https://bcp.cdnchinhphu.vn/Uploaded_VGP/phamvanthua/20211001/11021213.jpg) 50% 50%;background-size: cover;">
+
+            <p><b>Intellectual Growth:</b> By explaining how something challenged your pre-existing beliefs, you're
+                demonstrating that you're not static in your thinking. You're capable of absorbing new information and
+                integrating it, even if it means discarding old assumptions.</p>
+        </div>
+        <div class="slide">
+            <p><b>Openness to New Ideas:</b> It shows you're receptive to perspectives that may differ from your own.
+                This is a crucial trait in any collaborative or innovative environment.</p>
+        </div>
+        <div class="slide">
+            <p><b>Critical Thinking & Analysis:</b> To have your perspective shifted, you must have engaged deeply with
+                the material, analyzed its arguments, and compared them to your own understanding. This subtly showcases
+                your analytical skills.</p>
+        </div>
+        <div class="slide" style="flex-direction: row;padding: 40px;">
+            <p><b>Self-Awareness:</b> Acknowledging that your perspective was "shifted" implies a level of
+                self-awareness – you know what you believed before and how that belief was altered.</p>
+            <img src="https://blog.nimblefoundation.org/wp-content/uploads/2024/11/self-awareness-blog-pic-1.jpg"
+                height="300" alt="">
+        </div>
+        <div class="slide"
+            style="background: url(https://ohmyfacts.com/wp-content/uploads/2024/04/20-facts-about-the-ocean-depths-1714367172.jpg);background-size: cover;">
+            <p style="text-shadow: #000 -2px 4px;"><b>Depth and Curiosity:</b> It suggests you're not just consuming
+                information passively but are actively
+                seeking out knowledge and experiences that provoke thought and expand your understanding of the world.
+            </p>
+        </div>
+        <div class="slide">
+            <p><b>Authenticity:</b> This is a very personal point. The specific book or documentary, and <u>why</u> it
+                impacted you, offers a genuine glimpse into your values and intellectual journey.</p>
+
+        </div>
+        <div class="slide">
+
+            <h3>How to Present It Effectively</h3>
+
+            <p>When incorporating this into your video introduction, aim for impact and brevity. Here's how to structure
+                it:</p>
+        </div>
+        <div class="slide">
+            <p style="text-shadow: darkred 2px 4px;"> 1. <b>Identify the Book or Documentary:</b> Clearly state the
+                title. <br>
+                <u>Instead of:</u> "I watched a show about space." <br>
+                <u>Try:</u> "The documentary </b>'Cosmos: A Spacetime Odyssey'</b> with Neil deGrasse Tyson completely
+                blew my mind."<img
+                    src="https://m.media-amazon.com/images/S/pv-target-images/4f09e622a27e686d959387cf01f42b693de23692b132be7f46d7c0da21dfbbd1.jpg"
+                    height="300" alt="" align="right">
+            </p>
+        </div>
+        <div class="slide">
+
+            <p>2. <b>Briefly State Your Initial Perspective/Assumption (Implicitly or Explicitly):</b> What did you
+                think or believe <u>before</u> engaging with this material? <br>
+                <em>Example (continuing from above):</em> "I'd always had a general interest in science, but thought of
+                it as a collection of facts."
+            </p>
+        </div>
+        <div class="slide">
+
+            <p>3. <b>Explain the "Shift" – How it Challenged or Opened Your Eyes:</b> This is the most crucial part.
+                <img src="https://www.investopedia.com/thmb/EP0o0KA_SLPTIpxo_WD4i9dtYLA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/paradigm-shift.asp-FINAL-089dbb0d4e9c45d6bba803bd82b631c6.png"
+                    align="right" height="300" alt=""><br>What was the core idea or revelation that changed something
+                for you?
+            </p>
+        </div>
+        <div class="slide"
+            style='background: url("https://1.cdn.travolution.com/dynamic-images/27000-27999/27550/27550_c=(0,0,1000,666)_w=800_h=533_pjpg.jpg?v=20230522122229");background-size:cover;'>
+            <p style="text-shadow: black 2px 5px;"><em>Example (continuing):</em> "...but 'Cosmos' revealed science not
+                just as facts, but as an </b>epic human endeavor of discovery</b>, a continuous journey of questioning
+                and exploration. It
+                fundamentally changed how I view our place in the universe and the power of human curiosity."</p>
+        </div>
+        <div class="slide">
+            <p>4. <b>Keep it Concise and Engaging:</b> This point should be impactful but brief. Your enthusiasm and
+                genuine reflection will be key.</p>
+        </div>
+        <div class="slide">
+            <div>
+                <h3>Key Considerations:</h3>
+                <p><b>Choose Wisely:</b> Pick something that genuinely had a profound impact on you, not just something
+                    you
+                    liked.</p>
+            </div>
+        </div>
+        <div class="slide">
+            <p><b>Focus on the "How":</b> The specific content of the book/documentary is less important than <u>how</u>
+                it altered your thinking. <br>
+                <b>Authenticity:</b> Your genuine reflection on the shift in perspective will be far more compelling
+                than a generic statement.
+            </p>
+        </div>
+        <div class="slide" style="padding: 40px;flex-direction: row;">
+            <img src="https://img.freepik.com/premium-photo/businessman-holding-glowing-light-bulb-creative-thinking-ideas-innovation-concept_50039-2799.jpg"
+                alt="" align="left">
+            <p>By effectively sharing a book or documentary that challenged your assumptions, you showcase yourself as a
+                dynamic, reflective, and continuously learning individual, ready to embrace new ideas and grow.</p>
+        </div>
+    </div>
+    <script>
+        $( function() {
+		$( ".slide1" ).mgGlitch({
+			destroy : false, // set 'true' to stop the plugin
+                        glitch: false, // set 'false' to stop glitching
+                        scale: true, // set 'false' to stop scaling
+                        blend : true, // set 'false' to stop glitch blending
+                        blendModeType : 'darken', // select blend mode type
+                        glitch1TimeMin : 600, // set min time for glitch 1 elem
+                        glitch1TimeMax : 900, // set max time for glitch 1 elem
+                        glitch2TimeMin : 10, // set min time for glitch 2 elem
+                        glitch2TimeMax : 115, // set max time for glitch 2 elem
+                        zIndexStart : 8, // because of absolute position, set z-index base value
+		});
+	});
+    </script>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            const progress = ((index + 1) / slides.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            }
+            if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+
+</html>

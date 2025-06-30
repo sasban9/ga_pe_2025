@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Principle</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;line-height: 1.8;
+            padding: 0;
+            box-sizing: border-box;
+            font-size: 1.8rem;
+        }
+
+        body,
+        html {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 100;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .progress-rule,.progress-bar {
+            position: fixed;
+            bottom: 12px;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, black, #fff0, white);
+            /* filter: hue-rotate(90deg); */
+            width: 0%;
+            z-index: 9999;
+            transition: width 0.3s ease-in-out;
+        }
+
+        .slide-container {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-type: y mandatory;
+            overflow-y: hidden;
+            position: relative;
+        }
+
+        .slide {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            /* align-items: center; */
+            justify-content: center;
+            /* text-align: center; */
+            padding: 20px 240px;
+            font-size: 1.5em;
+            filter: blur(10px);
+            opacity: 0;
+            transition: filter 0.3s ease, opacity 0.3s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .slide.active {
+            filter: blur(0);
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .slide img {
+            max-width: 80%;
+            transform: rotate(-6deg);vertical-align: middle;
+            /* height: auto; */
+            margin: 0 2rem;
+            border-radius: 10px;
+        }
+
+        .slide b{
+            padding: 0 20px;
+        }
+
+        .slide:nth-child(7n) {background: darkred;color: #fff;}
+        .slide:nth-child(7n+1) {background: darkblue;color: #ccc;}
+        .slide:nth-child(7n+2) {background: darkkhaki;color: #333;}
+        .slide:nth-child(7n+3) {background: darkmagenta;color: #fff;}
+        .slide:nth-child(7n+4) {background: darkgreen;color: #fff;}
+        .slide:nth-child(7n+5) {background: darkslategray;color: #fff;}
+        .slide:nth-child(7n+6) {background: darkorange;color: #333;}
+
+        iframe {
+            width: 80%;
+            height: 60%;
+            border: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <img style="position: absolute;bottom: 1rem;left: 1rem;z-index: 999;height: 90px;border-radius: 100%;transform: rotate(-6deg);" src="https://sasban.online/sasban.jpg" alt="">
+    <a style="position: absolute;font-size:1rem;top: 0rem;right: 0;z-index: 999;height: 120px;border-radius: 100%;color: khaki;text-decoration: none;"  href="http://linktr.ee/sasban9">linktr.ee/sasban9</a>
+    <div class="progess-rule"><div class="progress-bar" id="progressBar"></div></div>
+    <div class="slide-container">
+        <div class="slide active">
+            <h1>A design philosophy or principle you resonate with.</h1>
+            <!-- <p>Explore innovative learning<br> powered by AI.</p> -->
+            
+            <img src="https://elementor.com/blog/wp-content/uploads/2021/12/2021_11_Herding_Cats_for_animation.gif" alt="Slide 1">
+        </div>
+        <div class="slide">
+            <!-- Absolutely, let's unpack that specific point: "A design philosophy or principle you resonate with." -->
+
+            <h2>What it means to include this:</h2>
+
+            <p>This isn't about you being a professional designer (unless you are, of course!).</p><hr>
+            <p>It's about showcasing your appreciation for how things are made, how problems are solved creatively, and
+                how intentionality shapes our interactions with the world. It reveals:</p>
+        </div>
+        <div class="slide">
+            <p><img src="https://i.pinimg.com/originals/1b/e2/51/1be251a8cf0aa63b8b442ca401d9827d.gif" height="200" align="right" alt="">
+            <b>Thoughtfulness and critical observation</b><br> You don't just consume products or experiences; you think
+                about <u>WHY</u> they are designed the way they are.</p>
+        </div><div class="slide">
+            <p><b>Problem-solving aptitude:</b> Design, at its core, is about solving problems – whether it's making a
+                complex app intuitive, a chair comfortable, or a city livable. Resonating with a design philosophy implies
+                you appreciate this problem-solving aspect.</p>
+        </div><div class="slide" style="background: url(https://cms.travelnoire.com/wp-content/uploads/2023/11/sorasak-_UIN-pFfJ7c-unsplash-1568x1046.jpg) 50% 50%;background-size: cover;"><br><br><br>
+            <p><b>Aesthetic and functional appreciation:</b> You value both the beauty and the utility of well-designed
+                things.</p>
+        </div><div class="slide">
+            <p><b>Ability to connect diverse fields:</b> Design principles often transcend specific domains. By picking one,
+                you show you can identify common threads across different areas.</p>
+        </div><div class="slide" style="background: url(https://unlimited.hamk.fi/wp-content/uploads/2023/11/Jussila-et-al_Design-thinking_mainimage_AdobeStock_624636615.jpg) 50% 50%;background-size: cover;">
+            <p style="background: #fffc;padding: 1rem;width: 50vw;color: #333;"><b>Potential for innovative thinking:</b> People who appreciate design often bring a fresh perspective to
+                their own work, thinking about elegance, efficiency, and user experience.</p>
+        </div>
+        <div class="slide">
+            <h3>How to "unpack" it in your video introduction <!--(i.e., what to say/show):--></h3>
+            <p>1. <b>Name the philosophy/principle:</b> Be specific. Don't just say "good design."</p>
+            <!-- <p>* **Example options:**</p> -->
+        </div>
+        <div class="slide">
+            <p><b>Minimalism:</b> Less is more; focusing on essential elements.</p>
+            <p><b>User-Centric Design (UCD):</b> Designing with the user's needs, behaviors, and motivations at the
+            forefront.</p>
+        </div>
+        <div class="slide">
+            <p><img src="https://i.pinimg.com/originals/03/f6/11/03f6113543c91710e3bf577f5ca2b904.gif" align="right" alt=""><b>Biomimicry:</b> Innovation inspired by nature's designs and processes. <br>
+                <b>Affordance:</b> The design of an object should suggest how it is used (e.g., a door handle that looks like
+            it should be pulled).</p>
+        </div>
+        <div class="slide">
+            <p><b>Fitts's Law (in UI/UX):</b> The time required to move to a target area is a function of the distance to
+                and size of the target. (A bit more technical, but shows depth if relevant to your field).</p>
+        </div>
+        <div class="slide" style="background: linear-gradient(#0000,#020), url(https://calibroworkspace.com/wp-content/uploads/2021/04/1_sq6sXe56-s7oPUEht_cwQ-1500x760.jpeg);background-size: cover;">
+            <p><b>Inclusive Design:</b> Designing for the widest possible range of human diversity.</p>
+            <p><b>Sustainable Design:</b> Designing products, services, and systems to minimize environmental impact.</p>
+        </div>
+        <div class="slide">
+            <p><b>"Form follows function" (Louis Sullivan):</b> The shape of a building or object should primarily be based
+            upon its intended function or purpose.</p>
+            <p><b>"Good design is as little design as possible" (Dieter Rams):</b> Part of his 10 principles of good design.</p>
+        </div>
+        <div class="slide">
+            <h3>2. Briefly define it (in your own words):</h3> 
+            <p><img src="https://elementor.com/blog/wp-content/uploads/2021/12/2021_11_Herding_Cats_for_animation.gif" height="200" align="left" alt="">Show you understand it, don't just quote a definition.</p>
+        </div>
+        <div class="slide">
+
+            <h3>3. Explain <u>WHY</u> you resonate with it:</h3>
+            <p>This is the crucial part.</p>
+        </div><div class="slide">
+            <p><b>Connect it to your interests:</b> "I'm drawn to <b style="font-family: monospace;background: crimson;color: white;">MINIMALISM</b> because I believe elegance often lies in
+                simplicity and the removal of clutter, which is something I strive for in my code architecture/data
+                visualizations/research papers."</p>
+        </div><div class="slide">
+            <p><b>Provide a specific example:</b> "I'm fascinated by <u>Biomimicry</u>. For instance, the way engineers are
+                studying the structure of abalone shells to create stronger ceramics, or how Velcro was inspired by burrs.
+                It shows how elegant and optimized solutions can come from observing natural processes."</p>
+        </div>
+        <div class="slide">
+            <p><b>Relate it to a problem:</b> "The principle of <u>UCD</u> deeply resonates with me. I've seen
+                too many software applications that are technically brilliant but frustrating to use because the user wasn't
+                at the heart of the design process. I believe placing the user first leads to truly impactful solutions."</p>
+        </div>
+        <div class="slide" style="background: url(https://t3.ftcdn.net/jpg/02/32/24/48/360_F_232244890_8CJ7VJAU79lhGHg8D19Ch9JrfUCYOn7M.jpg) 50% 50%;background-size: cover;">
+            <p><b>Discuss its broader implications:</b> "I admire the concept of <u>Inclusive Design</u> because it forces us
+            to think beyond the 'average' user and consider the diverse needs of everyone. This kind of thoughtful
+            consideration for accessibility and equity is something I believe is vital in all fields, not just design."</p>
+        </div>
+        <div class="slide">
+
+            <h3>Example snippet for your video:</h3>
+
+            <p>"Beyond my deep dive into the latest LLM architectures, I'm also really captivated by the philosophy of
+                <img src="https://i.ytimg.com/vi/r1CpzEGhs3c/maxresdefault.jpg" height="140" alt="">. </p>
+        </div>
+        <div class="slide">
+            <p>It's the idea of looking to nature for solutions to human challenges. For me, it highlights
+                how millions of years of evolution have already optimized systems for efficiency and resilience. </p>
+        </div>
+        <div class="slide">
+            <p>I find it
+                incredibly inspiring to think about how we can apply these natural 'algorithms' – whether it's in designing
+                more sustainable systems, optimizing logistical flows,</p>
+        </div>
+        <div class="slide">
+            <p>or even building more robust machine learning models
+                – by observing the elegance of nature's designs. It's a testament to thoughtful creation and problem-solving
+                at its finest."</p>
+        </div>
+        <div class="slide">
+            <p>By doing this, you're not just listing a concept; you're demonstrating your intellectual curiosity, your
+                capacity for critical thought, and how you draw connections between seemingly disparate fields.</p>
+        </div>
+        <!-- <div class="slide">
+            <h1>Interactive Learning Games</h1>
+            <p>Engage kids with custom HTML/JS games designed for fun and learning.</p>
+            <img src="https://picsum.photos/900/601" alt="Slide 2">
+        </div> -->
+        <!-- <div class="slide">
+            <h1>Prompt Engineering Lessons</h1>
+            <p>Learn how to communicate effectively with AI using structured prompts.</p>
+            <img src="https://picsum.photos/900/602" alt="Slide 3">
+            <iframe src="https://www.youtube.com/embed/yG2p9gWJwG0?si=G-8diPHiT9jWlfuM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div> -->
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            const progress = ((index + 1) / slides.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            }
+            if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+
+</html>

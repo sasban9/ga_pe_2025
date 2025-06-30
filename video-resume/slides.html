@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dynamic HTML Slides</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #222;
+      color: #eee;
+      margin: 0;
+      padding: 2rem;
+    }
+    #slide-container {
+      max-width: 800px;
+      margin: auto;
+      /* background: white; */
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .line {
+      margin-bottom: 1rem;
+      min-height: 1.5em;
+    }
+  </style>
+</head>
+<body>
+  <div id="slide-container"></div>
+
+  <script>
+    const slides = [
+        [
+            '<h3>Thought Leader</h3>',
+            '<p>In your video introduction, you will be asked to name a thought leader or influential figure who inspires you.</p>',
+            '<small>This could be someone from any field: technology, science, art, literature, business, etc.</small>',
+            'This element in your video introduction is a powerful way to reveal more about yourself than just your technical skills.',
+            'It\'s a window into your **values, aspirations, intellectual curiosities, and even your potential approach to challenges.**',
+            '<h3>What it Communicates About You:</h3>',
+            '<li>1. <u>Your Values and Principles:</u> The *why* behind your admiration often aligns with your own core beliefs. Do you value innovation, ethics, perseverance, collaboration, radical thinking, or societal impact? Your choice and explanation will reveal this.</li>',
+            "<li>2.  **Intellectual Curiosities:** It shows what kind of ideas or challenges you\'re drawn to, even if they\'re outside your immediate domain. Are you inspired by scientific discovery, business disruption, artistic expression, or philosophical depth?</li>",
+            "<li>3.  **Aspiration and Growth Mindset:** Identifying someone you admire indicates you're looking up to excellence and are likely driven to learn, grow, and emulate certain qualities or achievements.</li>",
+            "<li>4.  **Critical Thinking:** It's not just about naming someone famous; it's about articulating *why* they inspire you. This demonstrates your ability to analyze, synthesize, and form reasoned opinions.</li>",
+            "<li>5.  **Broad Interests:** By picking someone from a potentially different field (e.g., a historian if you're a coder, an artist if you're an engineer), you showcase a diverse range of intellectual engagement.</li>"
+    ],
+    [
+        '<h3>How to "Unpack" it in Your Video Introduction (What to Say/Show):</h3>',
+        '<p>1.  **Identify the Person:** Clearly state their name and their primary field or contribution.</p>',
+
+        '<p>* *Examples:* "Dr. Jane Goodall, the primatologist," "Elon Musk, the entrepreneur," "Brené Brown, the researcher and author," "Hayao Miyazaki, the animation director."</p>',
+        '<p>2.  **Briefly State Their Core Contribution/Work:** What are they known for?</p>',
+        '<p>* "Jane Goodall for her groundbreaking research on chimpanzees..."</p>',
+        '<p>* "Elon Musk for his vision in electric vehicles and space exploration..."</p>',
+        '<p>* "Brené Brown for her work on vulnerability, courage, and shame..."</p>',
+        '<p>* "Hayao Miyazaki for his imaginative and environmentally conscious animated films..."</p>',
+        '<p>3.  **Explain *Why* They Inspire You (The Crucial Part):** This is where you connect their work to your own values and interests. Focus on their:</p>',
+
+        '<p>    * **Approach/Methodology:** "I\'m inspired by **Dr. Jane Goodall\'s** *patience and immersive approach* to understanding chimpanzee behavior, spending years observing them in their natural habitat rather than imposing artificial conditions. This dedication to authentic, long-term observation deeply resonates with my belief in thorough data collection and understanding complex systems holistically."</p>',
+        '<p>    * **Impact/Vision:** "I\'m inspired by **Elon Musk\'s** *audacious vision* to tackle some of humanity\'s biggest challenges, like sustainable energy and multi-planetary existence. While his methods are often debated, his willingness to push boundaries and pursue seemingly impossible goals with a long-term perspective is something I find incredibly motivating when thinking about how technology can solve global problems."</p>',
+        '<p>    * **Perspective/Philosophy:** "The work of **Brené Brown** profoundly inspires me, particularly her research on *vulnerability and courageous leadership*. She has shifted my perspective on the importance of embracing imperfection and showing up authentically, which I believe is crucial not just for personal growth but also for building strong, innovative teams in any professional setting."</p>',
+        '<p>    * **Creativity/Innovation:** "As a data scientist, I might not seem directly related to **Hayao Miyazaki\'s** work, but I am deeply inspired by his *unparalleled creativity and his ability to build entire worlds with intricate details and profound emotional depth*. His commitment to environmental themes and the power of storytelling, even in animation, reminds me of the importance of imagination and ethical considerations in all forms of creation, including how we present data."</p>',
+        '<p>    * **Problem-Solving:** "I\'m particularly drawn to **Grace Hopper**, a pioneer in computer programming. Her famous quote, \'It\'s easier to ask forgiveness than permission,\' speaks to a bold, experimental approach to problem-solving and innovation that I admire. She wasn\'t afraid to challenge the status quo to advance the field."</p>',
+        '<p>### Why This is Effective:</p>',
+        '<p>* **Humanizes You:** It goes beyond technical skills and shows your personality and what drives you.</p>',
+// * **Demonstrates Depth:** You're not just consuming information; you're reflecting on it and drawing inspiration.
+// * **Provides Talking Points:** It can spark further conversation about your broader interests during an interview.
+// * **Shows Alignment:** If the person you choose aligns with the company's or program's values, it's a subtle but effective way to demonstrate fit.
+
+// By thoughtfully selecting and explaining your chosen thought leader, you add a rich, personal dimension to your introduction that leaves a lasting impression.
+        ],
+        [
+        "<h1>Welcome to the Slide Show</h1>",
+        "<h2>Introduction</h2>",
+        "<p>This slide demonstrates dynamic HTML content.</p>",
+        "<ul><li>Item one.</li><li>Item two.</li><li>Item three.</li></ul>",
+        "<table border='1'><tr><th>Feature</th><th>Available</th></tr><tr><td>Word-by-word</td><td>Yes</td></tr><tr><td>Arrow key nav</td><td>Yes</td></tr></table>"
+      ],
+      [
+        "<h2>About Us</h2>",
+        "<p><img src='https://sasban.online/sasban.jpg' height='160' align='right'>We love making interactive learning tools.</p>",
+        "<h3>Technologies Used</h3>",
+        "<ul><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>",
+        "<p>Tables help organize data clearly.</p>"
+      ]
+    ];
+
+    const container = document.getElementById("slide-container");
+    let currentSlide = 0;
+    let currentLine = 0;
+    let typing = false;
+
+    function clearSlide() {
+      container.innerHTML = "";
+      currentLine = 0;
+    }
+
+    function showNextLine() {
+      if (typing || currentSlide >= slides.length) return;
+
+      const lines = slides[currentSlide];
+      if (!lines || currentLine >= lines.length) return;
+
+      const lineHTML = lines[currentLine];
+      const temp = document.createElement("div");
+      temp.innerHTML = lineHTML;
+      const fullHTML = temp.innerHTML;
+
+      const tempText = temp.textContent || temp.innerText;
+      const periodIndex = tempText.indexOf(".");
+      const splitPoint = periodIndex >= 0 ? tempText.slice(0, periodIndex + 1) : tempText;
+      const words = splitPoint.split(" ");
+
+      let wordIndex = 0;
+      typing = true;
+
+      const div = document.createElement("div");
+      div.className = "line";
+      container.appendChild(div);
+
+      const interval = setInterval(() => {
+        if (wordIndex >= words.length) {
+          clearInterval(interval);
+          div.innerHTML = lineHTML; // Replace typed text with full HTML for style
+          typing = false;
+          currentLine++;
+          return;
+        }
+        div.innerHTML = words.slice(0, wordIndex + 1).join(" ") + " ...";
+        wordIndex++;
+      }, 200);
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight") {
+        const lines = slides[currentSlide];
+        if (!lines || currentLine >= lines.length) {
+          currentSlide++;
+          if (currentSlide < slides.length) {
+            clearSlide();
+            showNextLine();
+          }
+        } else {
+          showNextLine();
+        }
+      }
+    });
+
+    // Start with first line
+    showNextLine();
+  </script>
+</body>
+</html>

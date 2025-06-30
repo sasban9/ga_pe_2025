@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Intro Video - 10 Talking Points</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caesar+Dressing&family=Frijole&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/styles.css">
+    <!-- <link rel="stylesheet" href="../assets/print.css"> -->
+    <style>
+        /* html {scrollbar-width: none;} */
+        /* body{background: teal;} */
+        img{transform: rotate(-12deg);max-width: 100%;}
+        img:hover{transform: rotate(0deg);}
+        td{width:34%;font-size: 2.3rem;font-weight: bold;text-align: center;}
+    </style>
+</head>
+
+<body>
+    <img src="https://sasban.online/sasban.jpg" alt=""
+        style="position: fixed;top: 20px;left: 20px;height: 100px;border-radius: 100px;">
+    <div id="progress"></div>
+
+    <table style="height: 99vh;width:60%;max-width: 1000px;margin: 0 auto;display: table;">
+        <tr>
+            <td>01.<br><a href="product.html">PRODUCT</a></td>
+            <td>02.<br><a href="design.html">DESIGN</a></td>
+            <td>03.<br>REPO</td>
+        </tr>
+        <tr>
+            <td>04.<br>LIBRARY</td>
+            <td>05.<br>DATAVIZ</td>
+            <td>06.<br>PAPER</td>
+        </tr>
+        <tr>
+            <td>07.<br>PODCAST</td>
+            <td>08.<br>EVENT</td>
+            <td>09.<br>NON-TECH</td>
+        </tr>
+        <tr>
+            <td>⋆｡°✩</td>
+            <td>10.<br>HOBBY</td>
+            <td>★</td>
+        </tr>
+    </table>
+    <div id="slides-container" style="display: none;">
+        <div class="slide">
+            <img src="https://www.ubuy.com.lb/productimg/?image=aHR0cHM6Ly9pbWFnZXMtbmEuc3NsLWltYWdlcy1hbWF6b24uY29tL2ltYWdlcy9JLzcxc3hYTlU3bU5MLl9TUzQwMF8uanBn.jpg" alt="">
+        </div>
+        <div class="slide">
+            <img src="https://www.ridecx.com/cdn/shop/products/92231_3.jpg?v=1607376514&width=416" alt="">
+        </div>
+        <div class="slide">
+            <img src="https://m.media-amazon.com/images/I/71gENdjtVqL._AC_UF894,1000_QL80_.jpg" alt="">
+        </div>
+        <div class="slide">
+            <img src="https://bearhugs.in/cdn/shop/files/buy-hydrojug-traveler-stylish-and-leakproof-tumbler-32-oz-at-bear-hugs-32930.webp?v=1747374267" alt="">
+        </div>
+        <div class="slide">
+            <img src="https://barefootuniverse.com/wp-content/uploads/2023/02/11.jpg" alt="">
+        </div>
+        <div class="slide">
+            <img src="https://content.api.news/v3/images/bin/9b5bbf6eea2949467c47b7891bd4a17c" alt="">
+        </div>
+        <div class="slide">
+            <img src="https://m.media-amazon.com/images/I/81yPGzh5T5L._AC_UF894,1000_QL80_DpWeblab_.jpg" alt="">
+        </div>
+    </div>
+<a href="#" style="position: fixed;right: 20px;bottom: 0;transform: rotate(0);font-size: 20px;">@sasban9</a>
+
+
+
+
+<script>
+    const slides = document.querySelectorAll('.slide');
+    const progressBar = document.getElementById('progress');
+    const animations = [
+        'fadeIn', 'slideLeft', 'slideRight', 'zoomIn', 'rotateIn',
+        'bounceIn', 'flipIn', 'dropIn', 'swingIn', 'growIn',
+        'fadeIn', 'slideLeft', 'slideRight', 'zoomIn', 'rotateIn',
+        'bounceIn', 'flipIn', 'dropIn', 'swingIn', 'growIn'
+    ];
+
+    let currentSlide = 0;
+
+    function showSlidesUpTo(index) {
+        slides.forEach((slide, i) => {
+            if (i <= index) {
+                slide.classList.add('visible');
+                slide.classList.remove('hidden');
+                if (!slide.classList.contains('animated')) {
+                    slide.classList.add(animations[i % animations.length], 'animated');
+                }
+            } else {
+                slide.classList.remove('visible');
+                slide.classList.add('hidden');
+            }
+        });
+        updateProgress(index);
+        setTimeout(() => {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }, 100);
+    }
+
+    function hideAllSlides() {
+        slides.forEach(slide => {
+            slide.classList.remove('visible', 'animated');
+            slide.classList.add('hidden');
+        });
+        progressBar.style.width = '0%';
+        currentSlide = 0;
+    }
+
+    function updateProgress(index) {
+        const percent = ((index + 1) / slides.length) * 100;
+        progressBar.style.width = percent + '%';
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') {
+            if (currentSlide < slides.length) {
+                showSlidesUpTo(currentSlide);
+                currentSlide++;
+            } else {
+                hideAllSlides();
+            }
+        } else if (e.key === 'ArrowLeft') {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlidesUpTo(currentSlide - 1);
+            }
+        }
+    });
+
+    // Initialize first slide
+    showSlidesUpTo(currentSlide - 1);
+</script>
+
+</body>
+
+</html>

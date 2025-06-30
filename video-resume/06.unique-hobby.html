@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Principle</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            line-height: 1.8;
+            padding: 0;
+            box-sizing: border-box;
+            font-size: 1.7rem;
+        }
+
+        body,
+        html {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 100;
+            height: 100%;
+            background-color: #000;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 8px;
+            background: linear-gradient(90deg, transparent, transparent, #fff);
+            width: 0%;
+            z-index: 9999;
+            transition: width 0.3s ease-in-out;
+        }
+
+        .slide-container {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-type: y mandatory;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slide {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            /* align-items: center; */
+            justify-content: center;
+            /* text-align: center; */
+            padding: 20px 240px;
+            font-size: 1.5em;
+            filter: blur(10px);
+            transform: skew(10deg, 10deg);
+            opacity: 0;
+            transition: filter 0.3s ease, opacity 0.3s ease, transform 0.5s ease-out;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .slide:nth-of-type(2n){
+            transform: skew(-10deg, -10deg);
+        }
+
+        .slide.active {
+            filter: blur(0);
+            transform: skew(0deg);
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .slide img {
+            max-width: 80%;
+            transform: rotate(-6deg);
+            vertical-align: middle;
+            /* height: auto; */
+            margin: 0 2rem;
+            border-radius: 10px;
+        }
+
+        .slide:nth-child(7n) {
+            background: darkred;
+            color: #fff;
+        }
+
+        .slide:nth-child(7n+1) {
+            background: darkblue;
+            color: #ccc;
+        }
+
+        .slide:nth-child(7n+2) {
+            background: yellowgreen;
+            color: #333;
+        }
+
+        .slide:nth-child(7n+3) {
+            background: darkmagenta;
+            color: #fff;
+        }
+
+        .slide:nth-child(7n+4) {
+            background: darkgreen;
+            color: #fff;
+        }
+
+        .slide:nth-child(7n+5) {
+            background: darkslategray;
+            color: #fff;
+        }
+
+        .slide:nth-child(7n+6) {
+            background: darkorange;
+            color: #333;
+        }
+
+        iframe {
+            width: 80%;
+            height: 60%;
+            border: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <img style="position: absolute;bottom: 1rem;left: 1rem;z-index: 999;height: 90px;border-radius: 100%;transform: rotate(-6deg);"
+        src="https://sasban.online/sasban.jpg" alt="">
+    <a style="position: absolute;font-size:1rem;top: 0rem;right: 0;z-index: 999;height: 120px;border-radius: 100%;color: khaki;text-decoration: none;"
+        href="http://linktr.ee/sasban9">linktr.ee/sasban9</a>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-container">
+        <div class="slide active">
+            <h1> Why a "Unique Hobby" Matters</h1>
+            <!-- <p>Explore innovative learning<br> powered by AI.</p> -->
+
+            <img src="https://payload.cargocollective.com/1/18/592058/14124816/HEADER.gif"
+                alt="Slide 1">
+        </div>
+        <div class="slide">
+            <p>Let's dive into why showcasing a unique hobby that involves problem-solving or creativity is a fantastic
+                addition to your video introduction.</p>
+        </div>
+        <div class="slide">
+
+            <p>This isn't just about sharing what you do in your free time; it's about revealing a different facet of
+                your intellect and personality. While your academic and professional pursuits demonstrate your
+                structured capabilities, a hobby like this offers a glimpse into your:</p>
+        </div>
+        <div class="slide">
+
+            <p><b>A. Applied Problem-Solving:</b> Many hobbies, from strategic board games to intricate cooking or complex
+                photography, inherently involve overcoming challenges. </p>
+        </div>
+        <div class="slide">
+            <p>Explaining how you navigate these hurdles in your personal passion directly demonstrates your problem-solving abilities in a less formal, more engaging context.</p>
+        </div>
+        <div class="slide" style="background: radial-gradient(#fff0, #00f6, #000, #000), url(https://www.acceptmission.com/wp-content/uploads/2021/03/Blogbanner-digital-innovation.png.webp) 50% 50% no-repeat; background-size: contain;">
+
+            <p style="color:white;text-shadow: darkred 2px 3px;"><b>B. Creativity and Innovation:</b> Whether it's composing a compelling photograph, devising a new recipe, or designing a miniature landscape, these hobbies tap into your creative wellspring. They show you can think outside the box and bring novel ideas to life.</p>
+        </div>
+        <div class="slide">
+            <p><b>C. Deductive and Analytical Thinking:</b> Hobbies like complex board games or even troubleshooting issues
+                with a model build require careful analysis, planning, and anticipating outcomes. This highlights your
+                capacity for logical thought.</p>
+        </div>
+        <div class="slide">
+
+            <p><b>D. Patience and Perseverance:</b> Mastering any intricate hobby demands dedication. Talking about the
+                time and effort you put into something you love showcases your ability to stick with a challenge until
+                it's resolved or perfected.</p>
+        </div>
+        <div class="slide" style="background: url(https://cdn.pixabay.com/photo/2021/02/10/07/48/mountain-climbing-6001209_1280.jpg) 50% 50% no-repeat; background-size: cover;">
+            <p style="color: white;text-shadow: black -3px 0;"><b>E. Passion and Curiosity:</b> Ultimately, sharing a unique hobby reveals what truly excites you when
+                you're not obligated to be "on." It paints a picture of a well-rounded, curious individual who actively
+                seeks out new learning experiences and challenges.</p>
+        </div>
+        <div class="slide">
+
+            <h3>How to Present It Effectively</h3>
+
+            <p>When incorporating this into your video introduction, remember to make it engaging and concise. Here's a
+                quick guide:</p>
+        </div>
+        <div class="slide">
+            <p>1. <b>Name Your Hobby and Briefly Describe It:</b><br>
+                Don't assume everyone knows what a particular complex board game or photography technique is.</p>
+        </div>
+        <div class="slide" style="background: url(https://assetsio.gnwcdn.com/twilight-imperium-fourth-edition-artwork.png?width=1600&height=900&fit=crop&quality=100&format=png&enable=upscale&auto=webp) 50% 50%; background-size:cover">
+            <p style="text-shadow: black 2px 4px 4px;"><em>Instead of:</em> "I love <u>Twilight Imperium</u>." <br>
+                <em>Try:</em> "Outside of work, I'm really into <u>complex strategy board games</u> like <u>Twilight
+                    Imperium</u>, which can take an entire day to play!"
+            </p>
+        </div>
+        <div class="slide">
+            <p><img src="https://media.licdn.com/dms/image/v2/C4E12AQGwLUJFHMe3Cg/article-cover_image-shrink_600_2000/article-cover_image-shrink_600_2000/0/1617734356806?e=2147483647&v=beta&t=d-nuKsPFV047uGzfzuE4EBeSAF9mboHSdYT46augN9I" align="left" alt="">2. <b>Focus on the "Problem-Solving" or "Creativity" Aspect:</b>  This is the crucial part. Connect your
+                hobby to a tangible skill.</p>
+        </div>
+        <div class="slide">
+
+            <small><b>For a Board Game:</b><br> "What I find fascinating is how each game is a <u>dynamic problem-solving
+                    puzzle</u>, <img src="https://i.guim.co.uk/img/media/4f819a0300b24ffde91827b89d7fd7c6ca129ebf/0_0_4000_2400/master/4000.jpg?width=465&dpr=1&s=none&crop=none" align="right" alt="">requiring me to adapt my strategy based on opponents' moves, manage limited resources, and predict multiple turns ahead to secure victory."</small>
+        </div>
+        <div class="slide">
+            <p><b>For Intricate Cooking/Baking:</b> "I love the challenge of <u>molecular gastronomy</u> or <u>intricate
+                    pastry work</u>. It's like a scientific experiment in the kitchen – balancing precise measurements,
+                understanding chemical reactions,</p>
+        </div>
+        <div class="slide">
+            <p>...and troubleshooting when something doesn't quite go as planned, all while striving for a beautiful and
+                delicious outcome."</p>
+        </div>
+        <div class="slide" style="background: linear-gradient(-90deg, #000, rgba(0, 0, 0, 0.5)),url(https://images.squarespace-cdn.com/content/v1/557db364e4b09e55f74621e8/1622821794083-67VAN5KQAEHD87OE9P6K/JUMPING%2BSPIDER.jpg) 50% 50% no-repeat; background-size: cover;">
+            <p style="text-shadow: black 0px 2px;"><b>For Photography:</b> "My passion for <u>macro photography</u> is all about creative problem-solving. It
+                pushes me to find unique perspectives in everyday objects, manipulate light in tiny spaces, and compose
+                a shot that reveals intricate details often unseen by the naked eye."</p>
+        </div>
+        <div class="slide" style="background: linear-gradient(180deg, #000, rgba(0, 0, 0, 0.5)),url(https://ssccohio.weebly.com/uploads/4/5/3/1/4531525/img-2229_orig.jpg) 50% 50% no-repeat; background-size: cover;">
+            <p style="text-shadow: #000 -4px 2px 4px;"><b>For Building Models (e.g., historical dioramas or intricate LEGO builds):</b> "Building detailed historical
+                dioramas is a blend of research and creative construction. I'm constantly problem-solving how to
+                miniaturize complex structures, ensure historical accuracy, and create a sense of dynamic narrative
+                within a small, static scene."</p>
+
+        </div>
+        <div class="slide">
+            <h3>3. Keep it Concise and Enthusiastic: </h3>
+            <p>This should be a quick, memorable highlight, not an exhaustive explanation. Your genuine enthusiasm will
+                be contagious.</p>
+
+        </div>
+        <div class="slide">
+            <p>By sharing a unique hobby with this focus, you're not just listing an activity; you're offering concrete
+                evidence of your diverse skill set, your capacity for engaging with complex challenges, and your curious
+                mind.</p>
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            const progress = ((index + 1) / slides.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            }
+            if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+
+</html>

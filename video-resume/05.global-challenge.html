@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Principle</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body,
+        html {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 100;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 8px;
+            background: linear-gradient(to right, #0000, #0000, #0000, #fff9);
+            width: 0%;
+            z-index: 9999;
+            transition: width 0.3s ease-in-out;
+        }
+
+        .slide-container {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-type: y mandatory;
+            overflow-y: hidden;
+            position: relative;
+        }
+
+        .slide {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            /* align-items: center; */
+            justify-content: center;
+            /* text-align: center; */
+            padding: 20px 240px;
+            font-size: 1.5em;
+            filter: blur(10px);
+            opacity: 0;
+            transition: filter 0.3s ease, opacity 0.3s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        p,li{transform: skew(-13deg, 0deg);}
+
+        .slide.active {
+            filter: blur(0);
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .slide img {
+            max-width: 80%;
+            transform: rotate(-6deg);
+            vertical-align: middle;
+            /* height: auto; */
+            margin: 0 2rem;
+            border-radius: 10px;
+        }
+
+        .slide:nth-of-type(2n) img {
+            transform: rotate(6deg);
+        }
+
+        .slide b {
+            padding: 0 20px;
+        }
+
+        .slide:nth-child(7n) {
+            background: darkred;
+            color: #fff;
+        }
+
+        .slide:nth-child(7n+1) {
+            background: darkblue;
+            color: #ccc;
+        }
+
+        .slide:nth-child(7n+2) {
+            background: greenyellow;
+            color: #333;
+        }
+
+        .slide:nth-child(7n+3) {
+            background: darkmagenta;
+            color: #fff;
+        }
+
+        .slide:nth-child(7n+4) {
+            background: darkgreen;
+            color: #fff;
+        }
+
+        .slide:nth-child(7n+5) {
+            background: darkslategray;
+            color: #fff;
+        }
+
+        .slide:nth-child(7n+6) {
+            background: darkorange;
+            color: #333;
+        }
+
+        iframe {
+            width: 80%;
+            height: 60%;
+            border: none;
+            margin-top: 20px;
+        }
+
+        .bounce {
+            animation: flipp 60s infinite;
+        }
+
+        @keyframes flipp {
+            0%,6%,100% {transform: scaleX(1);}
+            2% {transform: scaleX(-1);}
+        }
+
+        @keyframes bounceIn {
+            0%,20%,50%,80%,100% {transform: translateY(0);opacity: 1;}
+            40% {transform: translateY(-30px);}
+            60% {transform: translateY(15px);}
+        }
+    </style>
+</head>
+
+<body>
+    <img class="bounce" style="position: absolute;bottom: 1rem;left: 1rem;z-index: 999;height: 90px;border-radius: 100%;transform: rotate(-6deg);"
+        src="https://sasban.online/sasban.jpg" alt="">
+    <a style="position: absolute;font-size:1rem;top: 0rem;right: 0;z-index: 999;height: 120px;border-radius: 100%;color: khaki;text-decoration: none;"
+        href="http://linktr.ee/sasban9">linktr.ee/sasban9</a>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-container">
+        <div class="slide active">
+            <h3>A societal or global challenge you're passionate about.</h3>
+            <!-- <p>Explore innovative learning<br> powered by AI.</p> -->
+
+            <img src="https://www.happiesthealth.com/wp-content/uploads/2023/01/social-anxiety.jpg"
+                alt="Slide 1">
+        </div>
+        <!-- <div class="slide">
+            <p>You're right to want to unpack this one! It's a powerful way to reveal your character, values, and
+                vision. <br>
+                Let's break down why this topic is so effective and how to approach it.</p>
+        </div> -->
+        <div class="slide">
+            <h3>Why It's So Effective</h3>
+
+            <p>Discussing a societal or global challenge you're passionate about addressing goes beyond superficial
+                interests and delves into your core motivations. Here's why it resonates:</p>
+        </div>
+        <div class="slide" style="background: url(https://static.vecteezy.com/system/resources/previews/047/422/383/non_2x/discussion-conference-set-people-of-different-ages-sit-and-discuss-on-chairs-around-a-round-table-pro-illustration-free-vector.jpg) 0% 50% no-repeat; background-size: cover;color: white;">
+
+            <p style="text-shadow: black 2px 5px 4px;color: #000;"><b>Reveals Empathy and Social Awareness:</b> It shows you're not solely focused on your own path but are
+                cognizant of larger issues affecting communities and the world. This indicates a sense of responsibility
+                and compassion.</p>
+
+        </div>
+        <div class="slide">
+            <p><b>Demonstrates Critical Thinking and Problem-Solving Orientation:</b> Caring about a problem often
+                implies you've thought about its complexities, its causes, and potential solutions. This indirectly
+                showcases your analytical skills.</p>
+        </div>
+        <div class="slide" style="background: url(https://www.globalsistersreport.org/files/aron-visuals-3jBU9TbKW7o-unsplash%20RESIZE.jpg) 0% 50% no-repeat; background-size: cover;color: white;">
+            <p style="text-shadow: black 2px 5px 4px;"><b>Highlights Your Values and Moral Compass:</b> The challenges you choose to highlight reflect what you
+                find important and what kind of world you aspire to build or contribute to. This offers a glimpse into
+                your ethical framework.</p>
+        </div>
+        <div class="slide">
+            <p>4. <b>Shows Initiative and a Desire for Impact:</b> It suggests you're not content with merely observing
+                problems but have a drive to contribute positively, even if it's in a small way. This speaks to a
+                proactive and engaged personality.</p>
+        </div>
+        <div class="slide">
+            <p>5. <b>Provides a Narrative Hook:</b> It can be a very compelling and personal story. People are often
+                drawn to individuals who are driven by a purpose beyond themselves. <img src="https://static.wixstatic.com/media/54a85d_6611fa0ddb4c42c8bf90ebd7727c2753.jpg/v1/fit/w_2500,h_1330,al_c/54a85d_6611fa0ddb4c42c8bf90ebd7727c2753.jpg" alt="" align="right"></p>
+        </div>
+        <div class="slide">
+            <p>6. <b>Diversifies Your Profile:</b> <img src="https://cdn.prod.website-files.com/5ded36b5e942e74b13468d23/5f9b837d2d99b6cc9c72bb7d_00-Header%402x.png" align="right" height="300" alt=""><br> It moves beyond purely academic or professional skills and shows
+                you're a well-rounded individual with broader interests and concerns.</p>
+        </div>
+        <div class="slide">
+
+            <p><b>How to Approach It in Your Video Introduction</b><img src="https://www.lse.uni-hannover.de/fileadmin/lehrerbildung/Fotos/Teaching_Change/SDGs.jpg" align="left" height="400" alt="">
+            When you talk about a societal or global challenge, aim for authenticity and brevity. <br> Here's a structure
+                you can follow:</p>
+        </div>
+        <div class="slide">
+
+            <b>1. Identify the Challenge (Clearly and Concisely):</b>
+            <table>
+                <tr>
+                    <td>State the specific challenge you're passionate about. Be as specific as possible. Instead of just
+                        "climate change," perhaps "the equitable transition to renewable energy" or "food waste in urban
+                        centers."</td>
+                </tr>
+            </table>
+        </div>
+        <div class="slide">
+            <small>
+                <img src="https://www.tn.gov/content/tn/behavioral-health/stigma/jcr%3Acontent/contentFullWidth/tn_columnctrl/column_parsys1/tn_image.img.jpg/1633114216798.jpg" height="400" alt="" align="right"><em><b>Example:</b> "One global challenge that deeply concerns me is the issue of <u>mental health
+                stigma</u>, particularly among young adults."</em></small>
+        </div>
+        <div class="slide">
+
+            <h3>2. Briefly Explain <u>WHY</u> You Care:</h3>
+            <p>Connect it to a personal experience, an observation, or a core belief. This is where the "passion" comes
+                in.</p>
+            <small><em><b>Example (continuing from before):</b> "Having seen firsthand how silence and judgment can
+                    prevent individuals from seeking crucial support, I'm passionate about fostering environments where
+                    open conversations about mental well-being are the norm."</em></small>
+        </div>
+        <div class="slide">
+            <h3>3. Mention a Potential Angle for Contribution (If Applicable/Briefly):</h3>
+            <p>You don't need a detailed plan for solving the world's problems! Just a brief idea of how you envision
+                yourself or others contributing, or what kind of impact you hope to see. This demonstrates a
+                forward-thinking, solution-oriented mindset.</p>
+        </div>
+        <div class="slide">
+            <p><b>Example (continuing):</b> "I believe technology can play a significant role in creating accessible and
+                non-judgmental platforms for mental health resources and community building, and it's an area I'd love
+                to explore further in my career." (This also subtly ties it back to a potential professional
+                interest).</p>
+        </div>
+        <div class="slide">
+
+            <h3>Key Considerations for Your Delivery:</h3>
+
+            <ul>
+                <li><b>Authenticity is Key:</b> Choose a challenge you genuinely care about. Your passion will be evident in your tone and expression.</li>
+                <li><b>Keep it Brief:</b> This is an introduction, not a dissertation. Aim for 15-30 seconds.</li>
+                <li><b>Focus on the "Why" and "What" (Briefly):</b> Why does it matter to you? What is the core problem?
+                </li>
+            </ul>
+        </div>
+        <div class="slide">
+            <ul>
+                <li><b>Positive Framing:</b> While it's a "challenge," frame your discussion with a sense of hope, determination, or a desire for positive change, rather than just despair.</li>
+                <li><b>Relevance (Optional but Good):</b> If you can, subtly link it back to your field of study, career aspirations, or other interests to show how your various passions connect.</li>
+            </ul>
+        </div>
+        <div class="slide">
+
+            <p><img src="https://m.media-amazon.com/images/I/71nrRZ3renL._AC_UF1000,1000_QL80_.jpg" align="right" height="600" alt=""> By thoughtfully including this element, you'll paint a picture of yourself as a thoughtful, empathetic,
+                and engaged individual who cares about making a difference.</p>
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            const progress = ((index + 1) / slides.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            }
+            if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+
+</html>
