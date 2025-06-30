@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQs: Roles in Prompts</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <img class="bounce" style="position: absolute;bottom: 1rem;left: 1rem;z-index: 999;height: 90px;border-radius: 100%;transform: rotate(-6deg);" src="https://sasban.online/sasban.jpg" alt="">
+    <a style="position: absolute;font-size:1rem;top: 0rem;right: 0;z-index: 999;padding: 2px 10px; color: khaki;text-decoration: none;background:#0006;box-shadow: 0 0 10px khaki;"  href="http://linktr.ee/sasban9">linktr.ee/sasban9</a>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-container">
+        <div class="slide active">
+            <h3>FAQs :: Roles in Prompts</h3>
+            
+            <h3>What is role prompting?</h3>
+            Role prompting is a technique where you assign a specific role or persona (for example, "food critic" or "mathematician") to an AI model. This guides the model to adopt a particular tone, style, or expertise, which can improve the relevance and quality of its responses.
+        </div><div class="slide">            
+            <h3>Why should I use role prompting?</h3>
+            Role prompting is useful because it:
+            
+            <ul>
+                <li>Sets a clear tone and style for responses</li>
+                <li>Improves the quality and specificity of output</li>
+                <li>Helps generate specialized or expert-level content</li>
+                <li>Enhances accuracy in tasks that require domain knowledge</li>
+                <li>Ensures consistency in communication</li>
+            </ul>
+        </div><div class="slide">
+            
+            <h3>What are some common examples of role prompting?</h3>
+            Examples of role prompting include:
+            
+            <ul style="font-size:1.5rem">
+                <li>Asking the AI to act as a food critic for restaurant reviews</li>
+                <li>Instructing it to behave as a marketing expert when drafting promotional emails</li>
+                <li>Designating it as a customer service representative for handling client inquiries</li>
+                <li>Setting the AI to operate as a mathematician for solving numerical problems</li>
+                <li>Assigning it a specific professional tone, such as that of a historian summarizing events</li>
+            </ul>
+        </div><div class="slide">
+            
+            <h3>How does role prompting affect writing style?</h3>
+            By assigning a role, you steer the AI to adjust its language, tone, and depth according to that persona. For instance, a prompt asking the AI to act as a food critic will result in more detailed and evaluative reviews, whereas a marketing expert role might produce more persuasive and engaging content.
+            
+        </div><div class="slide">
+            <h3>Can role prompting improve accuracy?</h3>
+            Yes, role prompting can improve accuracy for certain tasks—especially those requiring specialized knowledge or a specific tone. However, its effectiveness may vary with newer AI models. For more details, see the "Revisiting Roles" section of our documentation.
+            
+        </div><div class="slide">
+            <h3>How do I choose the right role for my prompt?</h3>
+            When choosing a role, consider:
+            
+            <ul>
+                <li>The specific outcome you want to achieve</li>
+                <li>The expertise required for the task</li>
+                <li>The tone and style that best suit your target audience</li>
+                <li>The complexity of the task at hand</li>
+            </ul>
+        </div><div class="slide">
+            <h3>What does 'role' mean in prompt engineering?</h3>
+            In prompt engineering, a role is the persona or perspective assigned to the AI. This directs the model to produce responses that match a specific professional or thematic context.
+            
+        </div><div class="slide">
+            <h3>What is an example of using roles in prompt engineering?</h3>
+            For example, you can instruct the AI by saying, "You are a historian specializing in the American Civil War. Write a brief summary of the key events and outcomes." This helps the model generate a response that is detailed and historically informed.
+            
+        </div><div class="slide">
+            <h3>How do I assign a role to ChatGPT?</h3>
+            To assign a role, include a clear instruction in your prompt, such as: "You are a customer service representative. Please respond to the following inquiry." This tells ChatGPT to tailor its response to that specific persona.
+            
+        </div><div class="slide">
+            <h3>What are the advantages of using role prompting?</h3>
+            Role prompting allows the AI to generate more tailored and contextually appropriate responses. It helps align the output with specific professional or thematic expectations, which can improve both relevance and accuracy.
+            
+        </div><div class="slide">
+            <h3>Describe how role prompting is used and its potential applications.</h3>
+            Role prompting involves instructing the AI to adopt a specific persona, such as a doctor, historian, or marketing expert. This technique is used to shape the response's tone and content. It is particularly useful in applications like customer service, educational content creation, and domain-specific information retrieval where context and expertise are crucial.
+            
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            const progress = ((index + 1) / slides.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            }
+            if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+
+</html>

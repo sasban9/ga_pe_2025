@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Principle</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <img class="bounce" style="position: absolute;bottom: 1rem;left: 1rem;z-index: 999;height: 90px;border-radius: 100%;transform: rotate(-6deg);" src="https://sasban.online/sasban.jpg" alt="">
+    <a class="linktree" href="http://linktr.ee/sasban9">linktr.ee/sasban9</a>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-container">
+        <div class="slide active">
+            <h2>Technique #2: Roles in Prompts</h2>
+            <!-- 🟢 This article is rated easy -->
+            <!-- Reading Time: 9 minutes -->
+            Sander Schulhoff
+            <img src="https://learnprompting.org/docs/assets/basics/role_prompt.svg" alt="Slide 1">
+        </div><div class="slide">
+
+            <p>In this section, we dive into <u>role prompting</u>, a technique that allows users to assign roles to an AI model to control the style, tone, or depth of its generated text. You'll learn how <u>role prompting</u> is applied to various use cases, including text styling and improving accuracy in tasks like reviews, emails, and math problems.</p>
+            
+        </div>
+        <div class="slide">
+
+            <h3>What is <u>Role Prompting</u>?</h3>
+            <p><u>Role prompting</u> is a technique that involves assigning a role or persona to an AI model, such as "food critic" or "mathematician," to control the style or accuracy of its responses.</p>
+            <!-- 1            Shanahan, M., McDonell, K., & Reynolds, L. (2023). Role-Play with Large Language Models.
+            
+            2             Li, G., Hammoud, H. A. A. K., Itani, H., Khizbullin, D., & Ghanem, B. (2023). CAMEL: Communicative Agents for “Mind” Exploration of Large Scale Language Model Society.
+            
+            3            Santu, S. K. K., & Feng, D. (2023). TELeR: A General Taxonomy of LLM Prompts for Benchmarking Complex Tasks. -->
+        </div><div class="slide">
+            
+            <p>By instructing the model to take on a specific role, you can shape how it processes and delivers information. This technique is widely used across many applications, from creative writing to problem-solving.</p>
+        </div><div class="slide">
+            <h3>Application #1: Styling Text</h3>
+            <p><u>Role prompting</u> is most commonly used to alter the style of AI-generated text. By assigning a role, such as a food critic or a marketing expert, the AI can adjust its tone, language, and the depth of its responses based on the given persona.</p>
+        </div><div class="slide">
+            <h4>Example #1: Changing the Style of a Food Review</h4>
+            <p>To ensure your review resonates with your intended audience, consider factors like length, style, language, and tone, and use these to craft a review that speaks directly to your readers' interests and expectations.</p>
+        </div><div class="slide">
+            With a thoughtful approach and a focus on quality content, you can create a review that truly captures the essence of the pizza place you're writing about. Let's start with a simple prompt without a role.
+        </div><div class="slide">
+            <b>Simple Review Prompt:</b>
+            Prompt: 
+            <code class="prompt">Write a review of [pizza place].</code>
+            AI Output: 
+            <code> I recently had the pleasure of trying [random pizza place] and I must say that I was thoroughly impressed. The pizza was cooked to perfection and the toppings were fresh and flavorful. The crust was light and crispy, and the sauce was just the right amount of tangy. The service was also top-notch; the staff was friendly and attentive. Overall, I had a great experience and would definitely recommend [random pizza place] to anyone looking for a delicious pizza.</code>
+        </div><div class="slide">
+            
+            Let's see how assigning the AI the role of a food critic or a Michelin Guide reviewer changes the output when writing a food review.
+            
+            <b>Role Prompt - Food Critic:</b>
+            
+            Prompt:
+            <code class="prompt">You are a food critic. Write a review of [pizza place].</code>
+        </div><div class="slide">
+            
+            AI Output
+            <code>I recently had the pleasure of dining at [Pizza Place], a cozy pizzeria located in the heart of the city. Despite its small size, the restaurant packs a huge punch when it comes to flavor. <br>
+            
+                The pizza was cooked to perfection. The crust was delightfully thin and crispy and the toppings were fresh and flavorful. The combination of flavors was simply delicious. The marinara sauce was rich and flavorful and complemented the toppings perfectly. The cheese was gooey and melted in my mouth. <br>
+        </div><div class="slide">
+                
+                The service was also excellent. The staff was friendly and attentive. They were quick to answer questions and made sure that our food was served on time. <br>
+                
+                Overall, my experience at [Pizza Place] was fantastic and I highly recommend it to anyone looking for a delicious pizza.</code>
+            
+            We can see that it adds more detail and goes a bit more in-depth. Now let's go a step further and make it assume the role of a writer for the Michelin guide:
+        </div><div class="slide">
+            
+            <h3>Role Prompt - Michelin Guide Reviewer:</h3>
+            Prompt
+            <code class="prompt">You are a food critic writing for the Michelin Guide. Write a review of [pizza place].</code>
+        </div><div class="slide">
+            
+            AI Output
+            <code>Located in the heart of [random city], [random pizza place] is a popular spot for pizza lovers. Upon entering, the warm, inviting atmosphere and the smell of freshly baked pizza will make you feel right at home. The menu offers a wide selection of classic pizzas, as well as some unique and creative options. The crust is perfectly crispy and the toppings are always fresh and flavorful. The service is friendly and attentive, and the prices are reasonable. Whether you're looking for a quick bite or a leisurely dinner, [random pizza place] is sure to satisfy your pizza cravings.</code>
+        </div><div class="slide">
+            
+            Now we can see how assigning ChatGPT the role of a food critic makes the review seem more "rich" and "professional" in its description.
+            
+            <!-- You can try it for yourself here: -->
+        </div><div class="slide">
+            <h3>Example #2: Writing Email</h3>
+            <p>Let's consider another example of styling text with <u>role prompting</u>. Let's say you ask the AI to write an email to a client to inform them about a delay in the delivery schedule due to logistical issues.
+        </div><div class="slide">
+                 
+            Your goal is to effectively convey this update while ensuring the client's confidence in your services remains unwavering.</p> <br>
+            
+            <p>When drafting emails, <u>role prompting</u> can significantly change the tone of the message depending on the role assigned to the AI.</p>
+        </div><div class="slide">
+            
+            <h3>Communications Specialist:</h3>
+            For instance, one possible role is that of a communications specialist, whose style might be clear, professional, and to the point: <br>
+            
+            Prompt
+            <code class="prompt">You are a communications specialist. Draft an email to your client advising them about a delay in the delivery schedule due to logistical problems.</code>
+        </div><div class="slide">
+            
+            AI Output
+            <code>Subject: Important Update Regarding Your Order <br>
+            
+                Dear [Client's Name], <br>
+                
+                I hope this email finds you well. I'm reaching out to notify you of a delay in the delivery of your order. Unfortunately, we have encountered a logistical problem which is causing a short hold up. While we are making every effort to resolve this issue quickly, we anticipate your order to be delivered within [new estimated delivery date].</code>
+        </div><div class="slide">
+            
+            <code>We deeply apologize for any inconvenience caused, and we'd like to reassure you we are doing our best to speed up the process. Your patience is greatly appreciated. If you have any questions or concerns, please don't hesitate to contact us. <br>
+            
+                Thank you very much for your understanding.  <br>
+                
+                Best Regards, [Your Name]</code>
+        </div><div class="slide">
+            
+            <h3>Marketing Expert:</h3>
+            Alternatively, have the model adopt the role of a marketing expert to lean more on persuasion, positivity, and relationship building:
+            
+            Prompt:
+            <code class="prompt">You are a marketing expert. Draft an email to a client advising them about a delay in the delivery schedule due to logistical problems.</code>
+        </div><div class="slide">
+            
+            AI Output
+            <code>Subject: A Little More Wait for Your Wonderful Products <br>
+            
+                Dear [Client's Name], <br>
+                
+                We hope this message finds you buzzing with excitement for your upcoming order! However, even the best-laid plans sometimes face unexpected hiccups. We have hit a temporary logistics snag that will unfortunately add a small wait time to your delivery. </code>
+        </div><div class="slide">
+            <code>    While we understand this isn't ideal, we believe great things come to those who wait, and your order is no exception. Rest assured, from the moment we sort out this situation to the time your products reach you, we're committed to ensuring that your experience is nothing short of excellent. <br>
+                
+                Thank you for your patience and understanding. Stay tuned for more updates, and please, don't hesitate to reach out if you have any questions - we're always here. <br>
+                
+                Cheers, [Your Name]</code>
+            </div><div class="slide">
+            
+            <h3>Customer Service Representative:</h3>
+            Lastly, the role of a customer service representative might lead to a more relational and solution-oriented output: <br>
+            
+            Prompt
+            <code class="prompt">You are a customer service representative. Draft an email to a client advising them about a delay in the delivery schedule due to logistical problems.</code>
+            
+        </div><div class="slide">
+            AI Output
+            <code>Subject: Attention Required: Update on Your Order Status <br>
+            
+                Dear [Client's Name], <br>
+                
+                Greetings from [Your Company Name]. <br>
+                
+                We wanted to inform you that, due to unforeseen logistical challenges, there might be a delay in the delivery of your order. We understand that this may cause some inconvenience, and we apologize sincerely. <br>
+        </div><div class="slide">
+                
+                Meanwhile, we are working tirelessly to resolve this and ensure your delivery reaches you by [new estimated date]. We value your time and patience greatly. <br>
+                
+                Please feel free to reach out if you have any questions or need further information. Our team is always here to assist you. <br>
+                
+                Thank you for your understanding. <br>
+                
+                Best regards, [Your Name]</code>
+        </div><div class="slide">
+            <p>Each of these role prompts will yield different results, aligning more closely with the perspective of the assigned role. Whether you need the directness of a communications specialist, the persuasive positivity of a marketing expert, or the empathetic problem-solving approach of a customer service representative, role prompts allow you to tailor the language model to better fit your needs.</p>
+        </div><div class="slide">
+            <h3>Application #2: Improving Accuracy</h3>
+            <!-- 4 This appears to be less effective with newer models. Read Revisiting Roles for more information. -->
+            <p><u>Role prompting</u> can also improve the accuracy of AI outputs 
+            
+                , especially in mathematical problem-solving.</p>
+            
+            </div><div class="slide">
+            Consider this example: <br>
+            
+            Prompt
+            <code class="prompt">You are a brilliant mathematician who can solve any problem in the world. Attempt to solve the following problem: <br>
+            
+                What is 100*100/400*56?</code>
+            
+            AI Output
+            <code>The answer is 1400.</code>
+        </div><div class="slide">
+            
+            <p>This is a correct answer, but if the AI had simply been prompted with <code>What is 100*100/400*56?</code>, it would have answered 280 (incorrect).</p>
+            
+        </div><div class="slide">
+            
+            <h3>Conclusion</h3>
+            <p><u>Role prompting</u> is a versatile prompting technique for shaping the output of generative AI models. By assigning specific roles to the AI, users can control the style, tone, and even the accuracy of the responses, 
+        </div><div class="slide">
+                
+            <p>making it highly effective for tasks like writing, problem-solving, and more. As you explore the capabilities of AI, <u>role prompting</u> will continue to play a crucial role in improving the quality of outputs.</p>
+            
+        </div><div class="slide">
+            <h3>Footnotes</h3>
+            <small>Shanahan, M., McDonell, K., & Reynolds, L. (2023). Role-Play with Large Language Models. ↩ <br>
+            
+            Li, G., Hammoud, H. A. A. K., Itani, H., Khizbullin, D., & Ghanem, B. (2023). CAMEL: Communicative Agents for “Mind” Exploration of Large Scale Language Model Society. ↩ <br>
+            
+            Santu, S. K. K., & Feng, D. (2023). TELeR: A General Taxonomy of LLM Prompts for Benchmarking Complex Tasks. ↩ <br>
+            
+            This appears to be less effective with newer models. Read Revisiting Roles for more information. ↩</small> 
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            const progress = ((index + 1) / slides.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            }
+            if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+
+</html>

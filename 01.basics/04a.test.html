@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Basic Prompt Structures</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0d0f12;
+      --text: #e5e7eb;
+      --accent: #00e0ff;
+      --card: #1a1c1f;
+      --border-radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+
+    h2, h3, h4 {
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    #progress {
+      height: 4px;
+      background: var(--accent);
+      width: 0%;
+      transition: width 0.4s ease;
+      margin-bottom: 2rem;
+    }
+
+    .slide {
+      background: var(--card);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border-radius: var(--border-radius);
+      box-shadow: 0 0 30px rgba(0, 224, 255, 0.08);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+
+    .slide.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .prompt, .code {
+      background: #111317;
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+      font-family: monospace;
+      white-space: pre-wrap;
+      color: #00ffc8;
+    }
+
+    img.illustration {
+      max-width: 100%;
+      border-radius: 12px;
+      margin: 1rem 0;
+      border: 1px solid var(--accent);
+    }
+
+    ul, ol {
+      margin-left: 1.5rem;
+    }
+
+    a {
+      color: var(--accent);
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    td {
+      padding: 0.5rem;
+      border: 1px solid #2f3135;
+    }
+  </style>
+</head>
+<body>
+  <div id="progress"></div>
+  <div id="slides-container">
+
+    <div class="slide">
+      <h2>05. Basic Prompt Structure and Key Parts</h2>
+      <p>Prompts are made up of several key components that work together to guide the AI. While not every prompt will contain all these elements, understanding how each part functions can help you create more targeted and effective inputs.</p>
+      <img class="illustration" src="https://learnprompting.org/docs/assets/basics/formal_prompt.svg" alt="Prompt structure">
+    </div>
+
+    <div class="slide">
+      <h3>The Key Parts of a Prompt</h3>
+      <ul>
+        <li>The Directive</li>
+        <li>Examples</li>
+        <li>Role / Persona</li>
+        <li>Output Formatting</li>
+        <li>Additional Information</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <h3>1. The Directive</h3>
+      <p>The Directive is the main instruction in the prompt. It tells the AI exactly what task it should perform.</p>
+    </div>
+
+    <div class="slide">
+      <h4>What is a Directive?</h4>
+      <p>A directive is a concise instruction or question that gives the AI a clear task to perform.</p>
+      <div class="prompt">Tell me five good books to read.</div>
+    </div>
+
+    <div class="slide">
+      <h4>Implicit Directives</h4>
+      <p>Some prompts imply a directive:</p>
+      <div class="prompt">Night: Noche  Morning:</div>
+    </div>
+
+    <div class="slide">
+      <h4>Best Practices for Directives</h4>
+      <ul>
+        <li>Be clear and concise.</li>
+        <li>Avoid ambiguous instructions.</li>
+        <li>Use action verbs: “write,” “list,” “translate.”</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <h3>2. Examples</h3>
+      <p>When the task is more complex, providing Examples can help guide the AI in producing more accurate responses.</p>
+      <div class="prompt">Translate the following sentences:<br>Q: I like apples. A: Me gustan las manzanas.<br>Q: I enjoy walking.</div>
+    </div>
+
+    <div class="slide">
+      <h4>Best Practices for Examples</h4>
+      <ul>
+        <li>Provide clear and relevant examples.</li>
+        <li>Use examples to show expected structure.</li>
+        <li>Use one-shot or few-shot based on complexity.</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <h3>3. Role (Persona)</h3>
+      <p>Assigning a Role to the AI frames the response in a specific way. This can guide tone, style, and content.</p>
+      <div class="prompt">You are a doctor. Diagnose the patient based on these symptoms: Fever, cough, and fatigue.</div>
+      <div class="prompt">You are a customer service agent. Write an email apologizing for a delayed order.</div>
+    </div>
+
+    <div class="slide">
+      <h4>Best Practices for Roles</h4>
+      <ul>
+        <li>Use roles to add expertise or tone.</li>
+        <li>Ensure the role fits the task.</li>
+        <li>Combine with examples/context when needed.</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <h3>4. Output Formatting</h3>
+      <p>Output Formatting ensures that the response follows a specific structure, like a table, CSV, or paragraph.</p>
+      <div class="prompt">Output this information as a CSV:<br>Case: 2024_ABC...<br>Client: XYZ Corp...</div>
+      <div class="code">Case,Client,Jurisdiction,Filed Date,...</div>
+    </div>
+
+    <div class="slide">
+      <h4>Style Instructions</h4>
+      <p>You can also specify tone, formality, or length:</p>
+      <div class="prompt">Write a clear and curt paragraph about llamas.</div>
+    </div>
+
+    <div class="slide">
+      <h3>5. Additional Information</h3>
+      <p>Additional information gives background the AI needs to complete the task accurately.</p>
+      <div class="prompt">January 1, 2000: Fractured right arm...<br>You are a doctor. Predict future risks.</div>
+    </div>
+
+    <div class="slide">
+      <h4>Best Practices for Additional Info</h4>
+      <ul>
+        <li>Include only what's relevant.</li>
+        <li>Link information clearly to the task.</li>
+        <li>Use when context is essential.</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <h3>Recommended Prompt Order</h3>
+      <ol>
+        <li>Examples (if needed)</li>
+        <li>Additional Information</li>
+        <li>Role</li>
+        <li>Directive</li>
+        <li>Output Formatting</li>
+      </ol>
+    </div>
+
+    <div class="slide">
+      <h3>Conclusion</h3>
+      <p>By mastering Directives, Examples, Roles, Formatting, and Additional Information, you can create effective prompts that guide AI to generate accurate and helpful responses.</p>
+    </div>
+
+  </div>
+
+  <a href="#">@sasban9</a>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const progressBar = document.getElementById('progress');
+    let currentSlide = 0;
+
+    function showSlidesUpTo(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('visible', i <= index);
+      });
+      progressBar.style.width = ((index + 1) / slides.length * 100) + '%';
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' && currentSlide < slides.length) {
+        showSlidesUpTo(currentSlide);
+        currentSlide++;
+      } else if (e.key === 'ArrowLeft' && currentSlide > 0) {
+        currentSlide--;
+        showSlidesUpTo(currentSlide - 1);
+      }
+    });
+
+    showSlidesUpTo(currentSlide - 1);
+  </script>
+</body>
+</html>
