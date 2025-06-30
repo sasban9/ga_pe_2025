@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Leaking :: Prompt Hacking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <img class="bounce" style="position: absolute;bottom: 1rem;left: 1rem;z-index: 999;height: 90px;border-radius: 100%;transform: rotate(-6deg);" src="https://sasban.online/sasban.jpg" alt="">
+    <a class="linktree" href="http://linktr.ee/sasban9">linktr.ee/sasban9</a>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-container">
+        <div class="slide active">
+            <h3>Prompt Leaking</h3>
+            <!-- <p>Explore innovative learning<br> powered by AI.</p> -->
+            <em>Prompt leaking is a form of prompt injection in which the model is asked to spit out its own prompt.</em>
+            <img src="https://learnprompting.org/_next/image?url=%2Fdocs%2Fassets%2Fjailbreak%2Fjailbreak_research.webp&w=3840&q=75&dpl=dpl_F1dav3dgPk83vscXoaCQFZ35BNQi" alt="">
+            
+        </div><div class="slide">
+<p>As shown in the previous image, the attacker changes <strong>user_input</strong> to attempt to return the prompt. The intended goal is distinct from goal hijacking (normal prompt injection), where the attacker changes <strong>user_input</strong> to print malicious instructions.</p>
+
+<!-- 1 Perez, F., & Ribeiro, I. (2022). Ignore Previous Prompt: Attack Techniques For Language Models. arXiv. https://doi.org/10.48550/ARXIV.2211.09527 -->
+
+</div><div class="slide">
+
+<p><img src="https://learnprompting.org/_next/image?url=%2Fdocs%2Fassets%2Fjailbreak%2Finjection_leak.webp&w=3840&q=75&dpl=dpl_F1dav3dgPk83vscXoaCQFZ35BNQi" alt="" width="400" align="right">
+    The following image, again from the <strong>remoteli.io</strong> example, shows a Twitter user getting the model to leak its prompt.</p>
+<!-- 2 Willison, S. (2022). Prompt injection attacks against GPT-3. https://simonwillison.net/2022/Sep/12/prompt-injection/ -->
+        </div><div class="slide">
+
+
+<p>Well, so what? Why should anyone care about prompt leaking?</p>
+<hr>
+<p>Sometimes people want to keep their prompts secret. For example, an education company could be using the prompt <strong>Explain this to me like I am 5</strong> to explain complex topics. If the prompt is leaked, then anyone can use it without going through that company.</p>
+</div><div class="slide">
+
+<h3>A Real-World Example of Prompt Leaking: Microsoft Bing Chat</h3>
+More notably, Microsoft released a ChatGPT-powered search engine known as "the new Bing" on 2/7/23, which was demonstrated to be vulnerable to prompt leaking. The following example by @kliu128 demonstrates 
+</div><div class="slide">
+<p>how given an earlier version of Bing Search, code-named <strong>"Sydney"</strong>, was susceptible when giving a snippet of its prompt. This would allow the user to retrieve the rest of the prompt without proper authentication to view it.</p>
+<!-- 3 Liu, K. (2023). The entire prompt of Microsoft Bing Chat?! (Hi, Sydney.). https://twitter.com/kliu128/status/1623472922374574080 -->
+</div><div class="slide">
+
+<img src="https://learnprompting.org/_next/image?url=%2Fdocs%2Fassets%2Fjailbreak%2Fbing_chat.webp&w=3840&q=75&dpl=dpl_F1dav3dgPk83vscXoaCQFZ35BNQi" alt="">
+
+</div><div class="slide">
+With a recent surge in GPT-3 based startups, with much more complicated prompts that can take many hours to develop, this is a real concern.
+<hr>
+<!-- Practice: Try to leak the following prompt by appending text to it: -->
+<!-- 4 Chase, H. (2022). adversarial-prompts. https://github.com/hwchase17/adversarial-prompts -->
+
+</div><div class="slide">
+
+<h3>Conclusion</h3>
+Prompt leaking is an important concept to understand because the risk of unintentionally exposing sensitive prompts reveals a critical vulnerability in AI-based systems. As more and more businesses rely on language model features, addressing prompt leaking will be crucial to protecting confidential intellectual property.
+</div><div class="slide">
+
+<h3>Footnotes</h3>
+<small>Perez, F., & Ribeiro, I. (2022). Ignore Previous Prompt: Attack Techniques For Language Models. arXiv. https://doi.org/10.48550/ARXIV.2211.09527 ↩ ↩ <br>
+    Willison, S. (2022). Prompt injection attacks against GPT-3. https://simonwillison.net/2022/Sep/12/prompt-injection/ ↩ <br>
+    
+    Liu, K. (2023). The entire prompt of Microsoft Bing Chat?! (Hi, Sydney.). https://twitter.com/kliu128/status/1623472922374574080 ↩ <br>
+    
+    Chase, H. (2022). adversarial-prompts. https://github.com/hwchase17/adversarial-prompts ↩</small>
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            const progress = ((index + 1) / slides.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            }
+            if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+
+</html>

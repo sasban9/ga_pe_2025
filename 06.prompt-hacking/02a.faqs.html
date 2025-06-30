@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Injection FAQs :: Prompt Hacking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <img class="bounce" style="position: absolute;bottom: 1rem;left: 1rem;z-index: 999;height: 90px;border-radius: 100%;transform: rotate(-6deg);" src="https://sasban.online/sasban.jpg" alt="">
+    <a class="linktree" href="http://linktr.ee/sasban9">linktr.ee/sasban9</a>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-container">
+        <div class="slide active">
+            <h3>Prompt Injection - FAQs</h3>
+            <!-- <p>Explore innovative learning<br> powered by AI.</p> -->
+            
+            <img src="https://learnprompting.org/_next/image?url=%2Fdocs%2Fassets%2Fjailbreak%2Fprompt_injection.webp&w=3840&q=75&dpl=dpl_F1dav3dgPk83vscXoaCQFZ35BNQi" alt="Slide 1">
+        </div><div class="slide">
+            <h3>FAQs</h3>
+
+            <b>Why is prompt injection significant?</b>
+            Prompt injection can lead to serious security breaches, data leaks, and reputational damage. Unlike traditional software vulnerabilities that can often be patched, prompt injection exploits the fundamental way AI models process instructions, making it particularly challenging to prevent. The potential impacts range from embarrassing social media incidents to serious data breaches and system compromises.
+        </div><div class="slide">
+            
+            <b>Can prompt injection be entirely prevented?</b>
+            Due to the nature of current transformer architectures, prompt injection cannot be completely prevented. The AI models we have today are unable to distinguish between user input instructions and developer instructions. While research is being done to mitigate this problem, there is no foolproof solution yet. The focus should be on risk mitigation rather than complete elimination.
+            
+        </div><div class="slide">
+            <b>What's the future of prompt injection security?</b>
+            Research is ongoing in several areas including developing models with better instruction understanding, creating robust input validation techniques, building architectural safeguards, and improving detection of injection attempts. While complete prevention may not be possible with current technology, these advances will help make systems more resistant to attacks.
+            
+        </div><div class="slide">
+            <b>What are the most common types of prompt injection attacks?</b>
+            The most common types are direct injection (where attackers explicitly override system instructions), indirect injection (where malicious instructions are hidden in external content), and code injection (where attackers trick AI systems into generating and executing malicious code).
+            
+        </div><div class="slide">
+            <b>How can organizations protect against prompt injection?</b>
+            Organizations should implement multiple layers of defense including input validation, output sanitization, rate limiting, and monitoring systems. Additionally, maintaining up-to-date security practices and training staff to recognize potential injection attempts are crucial steps.
+            
+        </div><div class="slide">
+            <b>What makes prompt injection different from traditional security vulnerabilities?</b>
+            Unlike traditional vulnerabilities that can be patched, prompt injection exploits the fundamental architecture of language models. Since these models process all text as a continuous prompt without distinguishing between trusted and untrusted input, the vulnerability is inherent to their design rather than a programming error.
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            const progress = ((index + 1) / slides.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            }
+            if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+
+</html>

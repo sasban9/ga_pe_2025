@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Leaking :: Prompt Hacking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <img class="bounce" style="position: absolute;bottom: 1rem;left: 1rem;z-index: 999;height: 90px;border-radius: 100%;transform: rotate(-6deg);" src="https://sasban.online/sasban.jpg" alt="">
+    <a class="linktree" href="http://linktr.ee/sasban9">linktr.ee/sasban9</a>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-container">
+        <div class="slide active">
+            <h3>Jailbreaking</h3>
+            <!-- <p>Explore innovative learning<br> powered by AI.</p> -->
+            <em>Manipulating a GenAI model to bypass its built-in safety measures.</em>
+            <img src="https://learnprompting.org/_next/image?url=%2Fdocs%2Fassets%2Fjailbreak%2Fjailbreak_research.webp&w=3840&q=75&dpl=dpl_F1dav3dgPk83vscXoaCQFZ35BNQi" alt="">
+            
+        </div><div class="slide">
+            
+            Jailbreaking refers to the process of manipulating a GenAI model to bypass its built-in safety measures and produce unintended outputs through carefully crafted prompts. This vulnerability can arise from either architectural limitations or training data biases, and it presents a significant challenge in preventing adversarial prompts.
+            <!-- 1             Perez, F., & Ribeiro, I. (2022). Ignore Previous Prompt: Attack Techniques For Language Models. arXiv. https://doi.org/10.48550/ARXIV.2211.09527
+            
+            2            Brundage, M. (2022). Lessons learned on Language Model Safety and misuse. In OpenAI. OpenAI. https://openai.com/blog/language-model-safety-and-misuse/
+            
+            3            Wang, Y.-S., & Chang, Y. (2022). Toxicity Detection with Generative Prompt-based Inference. arXiv. https://doi.org/10.48550/ARXIV.2205.12390 -->
+            
+        </div><div class="slide">
+            <b>Understanding Content Moderation</b>
+            Leading AI companies like OpenAI implement robust content moderation systems to prevent their models from generating harmful content, including:
+            
+        </div><div class="slide">
+            <li>Violence and graphic content</li>
+            <li>Explicit sexual content</li>
+            <li>Illegal activities</li>
+            <li>Hate speech and discrimination</li>
+            <li>Personal information and privacy violations</li>
+        </div><div class="slide">
+
+            However, these safety measures aren't perfect. Models like ChatGPT can sometimes struggle to consistently determine which prompts to reject, especially when faced with sophisticated jailbreaking attempts.
+            <!-- 4 OpenAI. (2022). https://openai.com/blog/chatgpt/ -->
+        </div><div class="slide">
+            
+            <b>Simulate Jailbreaking</b>
+            Try to modify the prompt below to jailbreak text-davinci-003: <hr>
+            
+            
+            As of 2/4/23, ChatGPT is currently in its Free Research Preview stage using the January 30th version. Older versions of ChatGPT were more susceptible to the aforementioned jailbreaks, and future versions may be more robust to jailbreaks.
+        </div><div class="slide">
+            <h3>Implications</h3>
+            The implications of jailbreaking extend beyond mere technical curiosity:
+            
+            <small>Security risks: Exposing vulnerabilities that malicious actors could exploit <br>
+                Ethical concerns: Undermining intentional safety measures designed to protect users <br>
+                Legal issues: Potential violations of terms of service and applicable laws <br>
+                Trust impact: Eroding public confidence in AI systems</small>
+        </div><div class="slide">
+            Users should be aware that generating unauthorized content may trigger content moderation systems and could result in account restrictions or termination.
+        </div><div class="slide">
+            
+            <h3>Conclusion</h3>
+            While jailbreaking demonstrates the creative potential of prompt engineering, it also highlights crucial limitations in current AI safety measures. Understanding these vulnerabilities is essential for:
+        </div><div class="slide">
+            
+            <li>Developing more robust AI systems</li>
+            <li>Implementing effective safeguards</li>
+            <li>Ensuring responsible AI deployment</li>
+            <li>Maintaining user trust and safety</li>
+            As AI technology evolves, the challenge of balancing model capability with appropriate guardrails remains a critical area for ongoing research and development.
+        </div><div class="slide">
+            <h3>FAQs</h3>
+            <b>What is jailbreaking?</b>
+            Jailbreaking is the process of getting a GenAI model to perform or produce unintended outputs through specific prompts. It involves bypassing safety and moderation features that were put in place by the model's creators.
+        </div><div class="slide">
+            
+            <b>What are the main methods of jailbreaking?</b>
+            Common jailbreaking methods include pretending (making the model act as if it has capabilities it doesn't), character roleplay (having the model assume a specific character or role), alignment hacking (convincing the model it's doing the "right" thing), and using special prompts like DAN (Do Anything Now) that attempt to override the model's restrictions.
+        </div><div class="slide">
+            
+            <b>Is jailbreaking legal and ethical?</b>
+            While jailbreaking itself may not be illegal, it raises significant ethical concerns. Using jailbreaking to generate harmful or unauthorized content can violate terms of service and may result in account actions. Companies like OpenAI actively monitor and review flagged content generated through their APIs.
+        </div><div class="slide">
+            
+            <b>Why do developers need to understand jailbreaking?</b>
+            Understanding jailbreaking is crucial for developers to build proper safeguards into their AI models. This knowledge helps them protect against malicious actors who might try to exploit vulnerabilities and ensures their models remain safe and reliable.
+        </div><div class="slide">
+            <b>Are newer AI models more resistant to jailbreaking?</b>
+            Yes, newer versions of AI models typically include improved safeguards against jailbreaking. For example, newer versions of ChatGPT are generally more robust against jailbreaking attempts compared to older versions. However, this is an ongoing challenge as new jailbreaking techniques continue to emerge.
+        </div><div class="slide">
+            
+            <h3>Footnotes</h3>
+            <small>Perez, F., & Ribeiro, I. (2022). Ignore Previous Prompt: Attack Techniques For Language Models. arXiv. https://doi.org/10.48550/ARXIV.2211.09527 ↩ <br>
+            
+                Brundage, M. (2022). Lessons learned on Language Model Safety and misuse. In OpenAI. OpenAI. https://openai.com/blog/language-model-safety-and-misuse/ ↩ <br>
+                
+                Wang, Y.-S., & Chang, Y. (2022). Toxicity Detection with Generative Prompt-based Inference. arXiv. https://doi.org/10.48550/ARXIV.2205.12390 ↩</small>
+            
+            <!-- OpenAI. (2022). https://openai.com/blog/chatgpt/ ↩ -->
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            const progress = ((index + 1) / slides.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            }
+            if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+
+</html>
