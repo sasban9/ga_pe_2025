@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Career Journey</title>
+  <style>
+    html{scrollbar-width: none;}
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #111;
+      color: white;
+      /* overflow: hidden; */
+    }
+    .container {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .slider {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+      max-width: 1600px;
+      /* overflow-y: auto; */
+    }
+
+    .slide {
+      flex: 0 0 auto;
+      width: 260px;
+      height: 180px;
+      transition: transform 0.6s, opacity 0.6s;
+      position: relative;
+      border-radius: 5px;
+      overflow: hidden;
+      transform: scale(0.5) rotateZ(-20deg) skew(20deg);
+      opacity: 0.9;
+    }
+
+    .slide.active {
+      transform: scale(1.05) rotate(0);
+      opacity: 1;
+      z-index: 10;
+      box-shadow: 0 0 5px inset #ff9;
+    }
+
+    .slide img {
+      max-width: 90%;
+      height: 100%;
+      object-fit: contain;
+      display: block;margin: 0 auto;
+      /* position: absolute;right: 0 */
+    }
+
+    .caption {
+      margin: 10px 4px 0;
+      text-align: center;
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    .slide.active .caption {
+      font-size: 16px;
+      color: #fff; background-color: #0008;
+      font-weight: bold;
+      padding: 0 1rem;
+      position: absolute; bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="slider" id="slider">
+      <!-- Slides will be injected by JS -->
+    </div>
+  </div>
+
+  <script>
+    const imageSources = [
+        'pic01b.png','https://i.gifer.com/3zO.gif','pic04a.png','https://media.tenor.com/l-PbZelgds0AAAAM/favorite-facts.gif',
+        'pic02b.png','pic08.png','pic07a.png','pic16.png',
+        'pic01.png','pic14.png','pic05e.png','pic03.png',
+    ];
+
+    const introPoints = [
+      'Started as a curious kid fascinated by code',
+      'Built my first BASIC game at age 14',
+      'Joined coding club in high school',
+      'Won the National Math Olympiad',
+      'Interned with a robotics lab during college',
+      'Graduated with Honors in Electronics Engg from IIT',
+      'Presented for my company at #MWC2015',
+      'Started up and was recognized by CISCO',
+    //   'Worked with AI research labs for 2 years',
+      'Became a keynote speaker at tech conferences',
+      'Mentored 150.000+ students across the globe',
+      'Travelled to 50+ megacities around the 🌎',
+      'Now building the future of GenAI Products'
+    ];
+
+    const slider = document.getElementById('slider');
+    let currentIndex = -1;
+
+    function createSlides() {
+      imageSources.forEach((src, i) => {
+        const slide = document.createElement('div');
+        slide.className = 'slide';
+        slide.innerHTML = `
+        <img src="${src}" alt="Step ${i + 1}">
+        <div class="caption">${introPoints[i]}</div>
+        `;
+        slider.appendChild(slide);
+      });
+    }
+
+    function nextSlide() {
+      const slides = document.querySelectorAll('.slide');
+      if (currentIndex < slides.length - 1) {
+        currentIndex++;
+        slides[currentIndex].classList.add('active');
+      }
+    }
+
+    // Handle keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') {
+        nextSlide();
+      }
+    });
+
+    // Initialize
+    createSlides();
+  </script>
+</body>
+</html>
