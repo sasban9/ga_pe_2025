@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Principle</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        body {
+            text-align: center;
+            font-weight: 100;
+            font-size: 1.6rem;
+            font-family: sans-serif;
+            background: url(https://wallpapers.com/images/featured/blue-abstract-bsid6neh0qavpfd1.jpg) 50% 50%;
+            background-size: cover;
+        }
+
+        li {
+            list-style-type: none;
+            line-height: 4.5rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            background: #fff6;
+            backdrop-filter: blur(30px);
+            border: solid 1px white;
+            border-radius: 8px;
+            padding: 0 16px;
+        }
+
+        /* a:hover{transform: translateY(10px);} */
+        .slide {
+            background: transparent !important;
+        }
+    </style>
+</head>
+
+<body>
+    <img class="bounce" src="https://sasban.online/sasban.jpg" alt="">
+    <a class="linktree" href="http://linktr.ee/sasban9">linktr.ee/sasban9</a>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-container">
+        <div class="slide active">
+            <a href="00.foundation.html">00. Foundations</a>
+            <table>
+                <tr>
+                    <td>
+                        <li><a href="01.quickbooks.html">QuickBooks</a></li>
+                        <li><a href="02.cashflow-companion.html">Cashflow Companion</a></li>
+                        <li><a href="03.newsletter-matchmaker.html">Newsletter Matchmaker</a></li>
+                        <li><a href="04.tier-tester.html">Tier Tester</a></li>
+                    </td>
+                    <td>
+                        <li><a href="05.jobwise.html">JobWise AI</a></li>
+                        <li><a href="06.payment-shield.html">Merchant Payment Shield</a></li>
+                        <li><a href="07.safeher-reviews.html">SafeHer - Travel Reviews</a></li>
+                        <li><a href="08.senior-fitness.html">Senior Fitness Certification</a></li>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="slide">
+            <a href="00.foundation.html">00. Foundations</a>
+            <table>
+                <tr>
+                    <td>
+
+                        <li><a href="09.smartform-defender.html">SmartForm Defender</a></li>
+                        <li><a href="10.ux-ray-vision.html">UX-Ray Vision</a></li>
+                        <li><a href="11.homeowner-panic.html">HomeInspect Pro</a></li>
+                        <li><a href="12.ai-model-optimizer.html">AI Model Optimizer</a></li>
+                    </td>
+                    <td>
+                        <li><a href="#">Ad Budget Defender</a></li>
+                        <li><a href="#">Founders MatchMaker</a></li>
+                        <li><a href="#">iVision Max Pro</a></li>
+                        <li><a href="#">Idea #16</a></li>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            const progress = ((index + 1) / slides.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            }
+            if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+
+</html>
