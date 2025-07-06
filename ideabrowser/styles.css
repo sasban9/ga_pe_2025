@@ -1,6 +1,6 @@
 
 * {
-    margin: 0;line-height: 1.8;
+    margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
@@ -13,7 +13,8 @@ html {
     height: 100%;
     overflow: hidden;
 }
-
+p,div{line-height: 2;}
+table td{line-height: 1.5;}
 .progress-bar {
     position: fixed;
     left: 0;
@@ -67,7 +68,7 @@ html {
 
 .slide:nth-child(7n) {background: darksalmon;color: #222;}
 .slide:nth-child(7n+1) {background: #f8961e;color: #000;}
-.slide:nth-child(7n+1) {background: #111;color: #eee;}
+.slide:nth-child(7n+1) {background: #00003e;color: #eee;}
 .slide:nth-child(7n+2) {background: #f9c74f;color: #111;}
 .slide:nth-child(7n+3) {background: #90be6d;color: #222;}
 .slide:nth-child(7n+4) {background: #43aa8b;color: #111;}
