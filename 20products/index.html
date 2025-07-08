@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Million Sales Products</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caesar+Dressing&family=Frijole&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/styles.css">
+    <!-- <link rel="stylesheet" href="../assets/print.css"> -->
+    <style>
+        /* html {scrollbar-width: none;} */
+        /* body{background: teal;} */
+        img{transform: rotate(-12deg);max-width: 100%;}
+        img:hover{transform: rotate(0deg);}
+        td{width:20%;}
+    </style>
+</head>
+
+<body>
+    <img src="https://sasban.online/sasban.jpg" alt=""
+        style="position: fixed;top: 20px;left: 20px;height: 100px;border-radius: 100px;">
+    <div id="progress"></div>
+
+    <table style="height: 60vh;width:60%;max-width: 1000px;margin: 0 auto;display: table;">
+        <tr>
+            <td><img src="https://www.ubuy.com.lb/productimg/?image=aHR0cHM6Ly9pbWFnZXMtbmEuc3NsLWltYWdlcy1hbWF6b24uY29tL2ltYWdlcy9JLzcxc3hYTlU3bU5MLl9TUzQwMF8uanBn.jpg" alt=""></td>
+            <td><img src="https://www.ridecx.com/cdn/shop/products/92231_3.jpg?v=1607376514&width=900" alt=""></td>
+            <td><img src="https://cdn.menardc.com/main/items/media/ONTEL001/ProductXLarge/PillowCube_Sloth_Hangtag.jpg" alt=""></td>
+            <td><img src="https://m.media-amazon.com/images/I/71gENdjtVqL._AC_UF894,1000_QL80_.jpg" alt=""></td>
+            <td><img src="https://bearhugs.in/cdn/shop/files/buy-hydrojug-traveler-stylish-and-leakproof-tumbler-32-oz-at-bear-hugs-32930.webp?v=1747374267" alt=""></td>
+        </tr>
+        <tr>
+            <td><img src="https://i5.walmartimages.com/seo/Snuggie-the-Original-Wearable-Blanket-with-Sleeves-Super-Soft-Fleece-One-Size-Blue_208d7823-21f0-4bdb-9305-bf2fd8a19161.b0559ffe31c912518e18d99108f84b3e.jpeg" alt=""></td>
+            <td><img src="https://therabody.se/cdn/shop/files/Elite-Gen-5-Hero-5.webp?v=1707476777" alt=""></td>
+            <td><img src="https://m.media-amazon.com/images/I/81qkx54FwNL._AC_UF1000,1000_QL80_.jpg" alt=""></td>
+            <td><img src="https://m.media-amazon.com/images/I/61ArBY5b2FL._UF1000,1000_QL80_.jpg" alt=""></td>
+            <td><img src="https://frywall.com/cdn/shop/files/WEBFrywall_RED_2pk_2048x.jpg?v=1613518800" alt=""></td>
+        </tr>
+        <tr>
+            <td><img src="https://m.media-amazon.com/images/I/71iJR8Mdg0L._AC_UL320_.jpg" alt=""></td>
+            <td><img src="https://m.media-amazon.com/images/I/819Cptu7MPL._AC_UF894,1000_QL80_.jpg" alt=""></td>
+            <td><img src="https://m.media-amazon.com/images/I/71JGtUrxcQL._AC_UF1000,1000_QL80_.jpg" alt=""></td>
+            <td><img src="https://m.media-amazon.com/images/I/81Yd2WUGswL._AC_UF350,350_QL80_.jpg" alt=""></td>
+            <td><img src="https://m.media-amazon.com/images/I/71n1YDh3WaL.jpg" alt=""></td>
+        </tr>
+        <tr>
+            <td><img src="https://media.kohlsimg.com/is/image/kohls/5217486_ALT8?wid=400&hei=400&op_sharpen=1" alt=""></td>
+            <td><img src="https://sensorytoolhouse.com/cdn/shop/files/81yNVzEewKL._AC_SL1500.jpg?v=1698256514&width=1780" alt=""></td>
+            <td><img src="https://reviewed-com-res.cloudinary.com/image/fetch/s--mN7f0Wdg--/b_white,c_fill,cs_srgb,f_auto,fl_progressive.strip_profile,g_auto,h_972,q_auto,w_972/https://reviewed-production.s3.amazonaws.com/1654542364879/Bombas.jpg" alt=""></td>
+            <td><img src="https://i.insider.com/5b84254ab354cd36008b5981?width=1200&format=jpeg" alt=""></td>
+            <td><img src="https://m.media-amazon.com/images/I/41hlF+5cxkL._AC_SY1000_.jpg" alt=""></td>
+        </tr>
+    </table>
+    <div id="slides-container" style="display: none;">
+        <div class="slide">
+            <img src="https://www.ubuy.com.lb/productimg/?image=aHR0cHM6Ly9pbWFnZXMtbmEuc3NsLWltYWdlcy1hbWF6b24uY29tL2ltYWdlcy9JLzcxc3hYTlU3bU5MLl9TUzQwMF8uanBn.jpg" alt="">
+        </div>
+        <div class="slide">
+            <img src="https://www.ridecx.com/cdn/shop/products/92231_3.jpg?v=1607376514&width=416" alt="">
+        </div>
+        <div class="slide">
+            <img src="https://m.media-amazon.com/images/I/71gENdjtVqL._AC_UF894,1000_QL80_.jpg" alt="">
+        </div>
+        <div class="slide">
+            <img src="https://bearhugs.in/cdn/shop/files/buy-hydrojug-traveler-stylish-and-leakproof-tumbler-32-oz-at-bear-hugs-32930.webp?v=1747374267" alt="">
+        </div>
+        <div class="slide">
+            <img src="https://barefootuniverse.com/wp-content/uploads/2023/02/11.jpg" alt="">
+        </div>
+        <div class="slide">
+            <img src="https://content.api.news/v3/images/bin/9b5bbf6eea2949467c47b7891bd4a17c" alt="">
+        </div>
+        <div class="slide">
+            <img src="https://m.media-amazon.com/images/I/81yPGzh5T5L._AC_UF894,1000_QL80_DpWeblab_.jpg" alt="">
+        </div>
+    </div>
+<a href="#" style="position: fixed;right: 20px;bottom: 0;transform: rotate(0);font-size: 20px;">@sasban9</a>
+
+
+
+
+<script>
+    const slides = document.querySelectorAll('.slide');
+    const progressBar = document.getElementById('progress');
+    const animations = [
+        'fadeIn', 'slideLeft', 'slideRight', 'zoomIn', 'rotateIn',
+        'bounceIn', 'flipIn', 'dropIn', 'swingIn', 'growIn',
+        'fadeIn', 'slideLeft', 'slideRight', 'zoomIn', 'rotateIn',
+        'bounceIn', 'flipIn', 'dropIn', 'swingIn', 'growIn'
+    ];
+
+    let currentSlide = 0;
+
+    function showSlidesUpTo(index) {
+        slides.forEach((slide, i) => {
+            if (i <= index) {
+                slide.classList.add('visible');
+                slide.classList.remove('hidden');
+                if (!slide.classList.contains('animated')) {
+                    slide.classList.add(animations[i % animations.length], 'animated');
+                }
+            } else {
+                slide.classList.remove('visible');
+                slide.classList.add('hidden');
+            }
+        });
+        updateProgress(index);
+        setTimeout(() => {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }, 100);
+    }
+
+    function hideAllSlides() {
+        slides.forEach(slide => {
+            slide.classList.remove('visible', 'animated');
+            slide.classList.add('hidden');
+        });
+        progressBar.style.width = '0%';
+        currentSlide = 0;
+    }
+
+    function updateProgress(index) {
+        const percent = ((index + 1) / slides.length) * 100;
+        progressBar.style.width = percent + '%';
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') {
+            if (currentSlide < slides.length) {
+                showSlidesUpTo(currentSlide);
+                currentSlide++;
+            } else {
+                hideAllSlides();
+            }
+        } else if (e.key === 'ArrowLeft') {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlidesUpTo(currentSlide - 1);
+            }
+        }
+    });
+
+    // Initialize first slide
+    showSlidesUpTo(currentSlide - 1);
+</script>
+
+</body>
+
+</html>
