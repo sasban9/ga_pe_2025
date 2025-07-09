@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Principle</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        body {
+            text-align: center;
+            font-weight: 100;
+            font-size: 1.6rem;
+            font-family: sans-serif;
+            background: url(https://wallpapers.com/images/featured/blue-abstract-bsid6neh0qavpfd1.jpg) 50% 50%;
+            background-size: cover;
+        }
+
+        li {
+            list-style-type: none;
+            line-height: 4.5rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            background: #fff6;
+            backdrop-filter: blur(30px);
+            border: solid 1px white;
+            border-radius: 8px;
+            padding: 0 16px;
+        }
+        td li:nth-of-type(2n) a{background: #0408;font-size: 1.8rem;}
+        td{width: 30%;color: transparent;}
+        .bg-white{background: #fff9;color: #111;}
+        .bg-pink, th{background: #f009;font-style: italic;color: #fff;}
+        /* a:hover{transform: translateY(10px);} */
+        .slide {
+            background: transparent !important;
+        }
+    </style>
+</head>
+
+<body>
+    <img class="bounce" src="https://sasban.online/sasban.jpg" alt="">
+    <a class="linktree" href="http://linktr.ee/sasban9">linktr.ee/sasban9</a>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-container">
+        <div class="slide active">
+            <a href="../ideabrowser/00.foundation.html">00. Foundations</a>
+            <table>
+                <tr>
+                    <td>
+                        <li><a href="17.career-fancy.html">CareerFancy</a></li>
+                        <li><a href="17a.deep-dive.html">Deep-dive</a></li>
+                        <li><a href="18.property-books.html">PropertyBooks</a></li>
+                        <li><a href="18a.deep-dive.html">Deep-dive</a></li>
+                    </td>
+                    <td>
+                        <li><a href="19.1Password.html">1Password</a></li>
+                        <li><a href="19a.deep-dive.html">Deep Dive</a></li>
+                        <li><a href="07.safeher-reviews.html">SafeHer Reviews</a></li>
+                        <li><a href="08.senior-fitness.html">Deep Dive</a></li>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="slide">
+            <a href="00.foundation.html">00. Foundations</a>
+            <table>
+                <tr>
+                    <td>
+
+                        <li><a href="09.smartform-defender.html">SmartForm Defender</a></li>
+                        <li><a href="10.ux-ray-vision.html">UX-Ray Vision</a></li>
+                        <li><a href="11.homeowner-panic.html">HomeInspect Pro</a></li>
+                        <li><a href="12.ai-model-optimizer.html">AI Model Optimizer</a></li>
+                    </td>
+                    <td>
+                        <li><a href="13.ad-fraud-guardian.html">Ad Fraud Guardian</a></li>
+                        <li><a href="14.audiobook-smith.html">Audio BookSmith</a></li>
+                        <li><a href="15.code-coach.html">Code Coach</a></li>
+                        <li><a href="16.teacher-shield.html">Teacher Shield</a></li>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="slide" style="display: non;">
+            <table style="font-size: 1.2rem;">
+                <!-- <tr>
+                    <th>2026</th><td>JAN</td><td>FEB</td><td>MAR</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                </tr> -->
+                <tr>
+                    <th>2025*</th><td class="bg-white" colspan="7">silchar ...67</td><td class="bg-white">kolkata</td><td class="bg-white" colspan="3">silchar</td><td class="bg-pink">goa</td>
+                </tr>
+                <tr>
+                    <th>2024</th><td>JAN</td><td>FEB</td><td class="bg-pink">DXB</td><td>APR</td><td>MAY</td><td>JUN</td><td>JUL</td><td class="bg-pink" colspan="2">leh+del+goa</td><td>OCT</td><td></td><td class="bg-white">5th</td>
+                </tr>
+                <tr>
+                    <th>2023</th><td class="bg-white">goa</td><td class="bg-white" colspan="7">...60</td><td>SEP</td><td>OCT</td><td>NOV</td><td class="bg-pink">goa</td>
+                </tr>
+                <tr>
+                    <th>2022</th><td>JAN</td><td>FEB</td><td>MAR</td><td class="bg-white">barn</td><td class="bg-white">ooty</td><td class="bg-white" colspan="2">...49</td><td class="bg-white">sakles</td><td class="bg-white">maa*</td><td>OCT</td><td>NOV</td><td class="bg-white">leela</td>
+                </tr>
+                <tr>
+                    <th>2021</th><td class="bg-white" colspan="3">silchar ...40</td><td class="bg-pink">oberoi</td><td class="bg-white" colspan="4">kolkata ...45</td><td>SEP</td><td>OCT</td><td class="bg-pink">roadtrip</td><td class="bg-pink">goa x2</td>
+                </tr>
+                <tr>
+                    <th>2020</th><td class="bg-white" colspan="10">covid19 ...36</td><td>NOV</td><td class="bg-white">1st</td>
+                </tr>
+                <tr>
+                    <th>2019</th><td class="bg-white">baba*</td><td class="bg-white">...17</td><td></td><td class="bg-white">chik</td><td class="bg-white">...19</td><td class="bg-white" title="guru">pondi</td><td class="bg-white" colspan="5">...25</td><td class="bg-white">sabya</td>
+                </tr>
+                <tr>
+                    <th>2018</th><td class="bg-white" colspan="3">...13</td><td>APR</td><td>MAY</td><td class="bg-white">...14</td><td>JUL</td><td class="bg-pink">BKK</td><td>SEP</td><td class="bg-white">pujas15</td><td>NOV</td><td>DEC</td>
+                </tr>
+                <tr>
+                    <th>2017</th><td>JAN</td><td class="bg-pink">marry</td><td class="bg-white" colspan="3">...3</td><td class="bg-white">kolkata</td><td class="bg-white">goa</td><td colspan="5" class="bg-white">...10</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            const progress = ((index + 1) / slides.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            }
+            if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+
+</html>

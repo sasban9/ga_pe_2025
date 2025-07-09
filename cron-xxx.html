@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Principle</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="01.basics/styles.css">
+</head>
+
+<body>
+    <img class="bounce"
+        style="position: absolute;bottom: 1rem;left: 1rem;z-index: 999;height: 90px;border-radius: 100%;transform: rotate(-6deg);"
+        src="https://sasban.online/sasban.jpg" alt="">
+    <a class="linktree" href="http://linktr.ee/sasban9">linktr.ee/sasban9</a>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-container">
+        <div class="slide active" style="background: radial-gradient(red,salmon,white);color: #000;">
+            <h3><sup>Weekend XXX</sup> Understanding and Responding to Discrimination/Bias</h3>
+            <!-- <p>Explore innovative learning<br> powered by AI.</p> -->
+
+            <img src="https://elementor.com/blog/wp-content/uploads/2021/12/2021_11_Herding_Cats_for_animation.gif"
+                alt="Slide 1">
+        </div>
+        <div class="slide" style="background: url(https://x.jjj.cam/pics/evilangel/paige-owens/kingsexy-mick-blue-seemomsuck/paige-owens-2.jpg) 50% 50%;background-size: contain;"><img src="" alt=""></div>
+        <div class="slide" style="background: url(https://x.jjj.cam/pics/evilangel/sharon-lee-mick-blue/pornsticker-pornstar-vip-xxx/sharon-lee-mick-blue-6.jpg) 50% 50%;background-size: contain;"><img src="" alt=""></div>
+        <div class="slide" style="background: url(https://x.jjj.cam/pics/evilangel/avi-love/tainster-blowjob-allsw-pega1/avi-love-4.jpg) 50% 50%;background-size: contain;"><img src="" alt=""></div>
+        <div class="slide" style="background: url(https://x.jjj.cam/pics/evilangel/lindsey-cruz/diva-cowgirl-imagescom/lindsey-cruz-1.jpg) 50% 50%;background-size: contain;"><img src="" alt=""></div>
+        <div class="slide" style="background: url(https://x.jjj.cam/pics/evilangel/savannah-sixx-mick-blue/bea-ass-assfucked/savannah-sixx-mick-blue-9.jpg) 50% 50%;background-size: contain;"><img src="" alt=""></div>
+        <div class="slide" style="background: url() 50% 50%;background-size: contain;"><img src="" alt=""></div>
+        <div class="slide" style="background: url() 50% 50%;background-size: contain;"><img src="" alt=""></div>
+        <div class="slide"><img src="" alt=""></div>
+        <div class="slide"><img src="https://x.jjj.cam/pics/evilangel/lindsey-cruz/diva-cowgirl-imagescom/lindsey-cruz-1.jpg" alt=""></div>
+        <div class="slide"><img src="https://x.jjj.cam/pics/evilangel/savannah-sixx-mick-blue/bea-ass-assfucked/savannah-sixx-mick-blue-9.jpg" alt=""></div>
+        <div class="slide"><img src="" alt=""></div>
+        <div class="slide"><img src="" alt=""></div>
+        <div class="slide"><img src="" alt=""></div>
+        <div class="slide">
+
+            <small>You're right to want to expand on this crucial topic! Five minutes is barely enough to scratch the
+                surface. </small>
+            <div>Here's a plan for a more comprehensive "<sup>Weekend 28</sup> Understanding and Responding to Discrimination/Bias"
+                lesson, designed for a 16-year-old, with an estimated duration of </b>60-90 minutes</b>, allowing for
+                discussion and activities.</div>
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            const progress = ((index + 1) / slides.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            }
+            if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+
+</html>
