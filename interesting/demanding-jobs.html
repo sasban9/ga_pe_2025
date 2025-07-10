@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction :: Defensive Measures of Prompt Hacking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../06.prompt-hacking/styles.css">
+</head>
+
+<body>
+    <img class="bounce" style="position: absolute;bottom: 1rem;left: 1rem;z-index: 999;height: 90px;border-radius: 100%;transform: rotate(-6deg);" src="https://sasban.online/sasban.jpg" alt="">
+    <a class="linktree" href="http://linktr.ee/sasban9">linktr.ee/sasban9</a>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-container">
+        <div class="slide active">
+            
+    Here's a list of jobs that generally require extensive, long-term preparation starting from a young age, and where small mistakes can significantly hinder or prevent qualification:
+
+</div><div class="slide">
+
+    <h4>Pilot (Commercial/Military):</h4> As you mentioned, this is a prime example. It requires excellent academic performance (especially in STEM), significant financial investment for training, perfect physical and mental health, and years of dedicated flight hours. Even minor vision issues, certain medical conditions, or a single significant disciplinary infraction can disqualify a candidate.
+</div><div class="slide">
+    
+    <h4>Surgeon (and highly specialized medical fields):</h4> 
+    <p>Becoming a surgeon involves around 10-15+ years of education and training <b>after</b> high school (undergrad, medical school, residency, fellowship). This demands extreme academic rigor, precision, vast knowledge, and unwavering dedication. Mistakes in medical school or residency can jeopardize a career. A lack of certain aptitudes or even a relatively minor academic slip-up can make getting into top programs extremely difficult.</p>
+</div><div class="slide">
+    
+    <h4>Astronaut:</h4> This is an exceptionally competitive field that typically recruits from backgrounds like highly experienced pilots, scientists (PhDs in relevant fields), or engineers. It requires top-tier academic achievement, elite physical fitness, psychological resilience, and often prior experience in extremely demanding roles. The preparation is lifelong and mistakes or deficiencies in any area are likely disqualifying.
+</div><div class="slide">
+    
+    <h4>Classical Musician (Orchestral/Soloist):</h4> While perhaps not a "job" in the traditional sense for everyone, achieving professional status in classical music (e.g., concert violinist, principal cellist in a major orchestra) requires starting intensive training (many hours daily) from a very young age (often 3-5 years old). It demands incredible discipline, innate talent, perfect technique, and immense dedication. A lack of consistent practice, poor technique developed early on, or even an injury can end a promising career.
+</div><div class="slide">
+    
+    <h4>Olympic Athlete:</h4> Similar to classical musicians, achieving elite, Olympic-level status in sports often requires starting specialized training in childhood. It demands extreme physical conditioning, mental toughness, specific diets, and often sacrifices in social life and education. Injuries, a plateau in performance, or a single misstep in training can derail years of effort.
+</div><div class="slide">
+    
+    <h4>Theoretical Physicist/Mathematician (Top Research Positions):</h4> While not physically demanding, reaching the pinnacle of these fields (e.g., tenure-track positions at elite universities, Nobel Prize-level research) requires extraordinary intellectual giftedness, deep conceptual understanding, and continuous, intensive study from a young age. A lack of foundational understanding, poor problem-solving skills, or insufficient original thought can prevent one from reaching the highest echelons.
+</div><div class="slide">
+    
+    <h4>Foreign Service Officer/Diplomat (highly specialized roles):</h4> While the general FSO path is rigorous, some highly specialized diplomatic roles (e.g., those requiring mastery of multiple obscure languages, deep regional expertise developed over decades) can fit this description. They demand intense academic preparation, cultural immersion, and often a willingness to live a nomadic lifestyle from a young age. A lack of crucial language skills or cultural understanding can be a significant hurdle.
+</div><div class="slide">
+    
+    <h3>Common Threads Among These Jobs:</h3>
+    
+    <li><b>Early Start:</b> Preparation often begins in early childhood or adolescence.</li>
+    <li><b>Intense Academic Rigor:</b> Many require top-tier performance in specific academic fields.</li>
+    <li><b>Physical and Mental Fortitude:</b> Many demand exceptional physical health and psychological resilience.</li>
+</div><div class="slide">
+    <li><b>Significant Time and Financial Investment:</b> Training is often prolonged and expensive.</li>
+    <li><b>High Stakes:</b> Mistakes, even small ones, can have profound and irreversible consequences for qualification.</li>
+    <li><b>Extreme Competition:</b> The number of available positions at the highest levels is very limited.</li>
+    <li><b>Precision and Detail-Oriented:</b> A high degree of accuracy and attention to detail is paramount.</li>
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            const progress = ((index + 1) / slides.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            }
+            if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+
+</html>

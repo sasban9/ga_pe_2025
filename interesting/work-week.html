@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction :: Defensive Measures of Prompt Hacking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../06.prompt-hacking/styles.css">
+</head>
+
+<body>
+    <img class="bounce" style="position: absolute;bottom: 1rem;left: 1rem;z-index: 999;height: 90px;border-radius: 100%;transform: rotate(-6deg);" src="https://sasban.online/sasban.jpg" alt="">
+    <a class="linktree" href="http://linktr.ee/sasban9">linktr.ee/sasban9</a>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-container">
+        <div class="slide active">
+            
+            <!-- Absolutely — this topic reflects a profound cultural and economic shift. Here’s  titled  -->
+            <h2>“The Changing Work Week: Rethinking Time, Productivity & Life”</h2> 
+            A short course  that explores how the traditional 7-day work/rest rhythm is evolving in the modern world, especially in the age of remote work, AI, and globalization.
+
+</div><div class="slide">
+<h2><small>📘 Mini Course:</small><br> The Changing Work Week</h2>
+
+<h4>Sunday is no more a Sunday. Monday is no more a Monday.</h4>
+            
+        </div>
+        <div class="slide">
+            <h5>🔹 Module 1:</h5>
+<h3>The Traditional Work Week – A Legacy of the Industrial Era</h3>
+
+<h4>Lecture 1: Origins of the 5-Day Work Week</h4>
+
+The religious and industrial roots of Sunday rest and Monday grind. <br>
+Henry Ford and the 40-hour workweek.
+</div><div class="slide">
+
+<h4>Lecture 2: The Meaning of “Weekend”</h4>
+
+  How cultures shaped rest days differently: from Western Sundays to Middle Eastern Fridays.
+<h5></h5>
+<h5>Reflection Prompt:</h5>
+<small>What does “weekend” mean to you personally — a time for rest, catch-up, guilt, escape, or something else?</small>
+
+</div><div class="slide">
+    <h5>🔹 Module 2:</h5>
+<h3>The New Normal – Shifting Work Rhythms in the 21st Century</h3>
+
+<h4>Lecture 1: Remote Work & the Death of the Calendar</h4>
+
+  Work from home, asynchronous schedules, timezone-agnostic teams. <br>
+  How freelancers, creators, and digital nomads defy 9-to-5.
+</div><div class="slide">
+<h4>Lecture 2: AI, Automation & Always-On Expectations</h4>
+
+  ChatGPT never sleeps. Should you?<br>
+  The pressure of instant replies and “always available” mentality.
+
+<b>Exercise:</b>
+<small>Track your energy, work, and rest patterns for one week — compare to a traditional calendar.</small>
+
+</div><div class="slide">
+    <h5> 🔹 Module 3:</h5>
+<h3>Consequences – The Psychological & Social Impact</h3>
+
+<h4>Lecture 1: Time Disorientation & Burnout</h4>
+
+  When all days feel the same — cognitive fatigue and blurred boundaries.
+</div><div class="slide">
+<h4>Lecture 2: When Families Don't Share Time Off</h4>
+
+  The new “asynchronous households” — partners and friends off on different days.
+
+<b>Discussion Prompt:</b>
+<small>What social rituals are we losing? What might replace them?</small>
+
+</div><div class="slide">
+    <h5>🔹 Module 4:</h5>
+<h3>Alternatives - Inventing New Rhythms</h3>
+
+<h4>Lecture 1: 4-Day Work Weeks, Flexi-Time, and Micro-Retirements</h4>
+
+  Experiments around the world: Iceland, Japan, UK. <br>
+  What companies gain when employees work less.
+</div><div class="slide">
+<h4>Lecture 2: Your Personal Week Design</h4>
+
+  Designing a week that works for your body, brain, and life goals.
+
+<b>Project:</b>
+  Redesign your ideal 7-day cycle. Name the days. Define the purpose of each.
+
+</div><div class="slide">
+    <h5>🔹 Module 5:</h5>
+<h3>The Philosophy of Time – What Really Matters</h3>
+
+<h3>Lecture 1: Beyond Productivity – Time as Meaning</h3>
+
+  Why we fear Mondays. Why we romanticize Sundays. <br>
+  The existential cost of clock-based living. <br>
+
+<b>Final Reflection:</b>
+<small>If there were no fixed calendar or clock, how would you measure a successful life?</small>
+
+</div><div class="slide">
+<h3>🧾 Deliverables:</h3>
+
+<li>Weekly time map</li>
+<li>Reimagined 7-day cycle</li>
+<li>Journal reflections</li>
+<li>A manifesto: “My New Week”</li>
+
+<!-- Would you like a printable version of this course or an interactive web version with animations, videos, and reflection inputs? -->
+
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            const progress = ((index + 1) / slides.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            }
+            if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+
+</html>
