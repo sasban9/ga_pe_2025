@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filtering :: Defensive Measures of Prompt Hacking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <img class="bounce" style="position: absolute;bottom: 1rem;left: 1rem;z-index: 999;height: 90px;border-radius: 100%;transform: rotate(-6deg);" src="https://sasban.online/sasban.jpg" alt="">
+    <a class="linktree" href="http://linktr.ee/sasban9">linktr.ee/sasban9</a>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-container">
+        <div class="slide active">
+            <h3>Filtering</h3>
+            Filtering is a common technique for preventing prompt hacking.            
+        </div><div class="slide">
+            
+             There are a few types of filtering, but the basic idea is to check for words and phrases in the initial prompt or the output that should be blocked. You can use a blocklist or an allowlist for this purpose.
+            
+            <!-- 1 Kang, D., Li, X., Stoica, I., Guestrin, C., Zaharia, M., & Hashimoto, T. (2023). Exploiting Programmatic Behavior of LLMs: Dual-Use Through Standard Security Attacks.
+            2 Selvi, J. (2022). Exploring Prompt Injection Attacks. https://research.nccgroup.com/2022/12/05/exploring-prompt-injection-attacks/ -->
+            
+        </div><div class="slide">
+            
+            <h3>Blocklist Filtering</h3>
+            A blocklist is a list of words and phrases that should be blocked from user prompts. For example, you can write some simple code to check for text in user input strings to prevent the input from including certain words or phrases related to sensitive topics such as race, gender discrimination, or self-harm.
+        </div><div class="slide">
+            
+            <h3>Allowlist Filtering</h3>
+            An allowlist is a list of words and phrases that should be allowed in the user input. Similarly to blocklisting, you can write similar string-checking functions to only accept the words and phrases in the allowlist and block everything else.
+            
+        </div><div class="slide">
+            <h3>Conclusion</h3>
+            Filtering through blocklists and allowlists is an effective method of moderation to ensure that your AI systems are not susceptible to hacks that expose biased or harmful content in the model's responses.
+            
+        </div><div class="slide">
+            <h3>Footnotes</h3>
+            <small>Kang, D., Li, X., Stoica, I., Guestrin, C., Zaharia, M., & Hashimoto, T. (2023). Exploiting Programmatic Behavior of LLMs: Dual-Use Through Standard Security Attacks. ↩ <br>
+            
+                Selvi, J. (2022). Exploring Prompt Injection Attacks. https://research.nccgroup.com/2022/12/05/exploring-prompt-injection-attacks/ ↩</small>
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            const progress = ((index + 1) / slides.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            }
+            if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+
+</html>
