@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corrupt or Not 2025</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../06.prompt-hacking/styles.css">
+</head>
+
+<body>
+    <img class="bounce"
+        style="position: absolute;bottom: 1rem;left: 1rem;z-index: 999;height: 90px;border-radius: 100%;transform: rotate(-6deg);"
+        src="https://sasban.online/img/sasban2.jpg" alt="">
+    <a class="linktree" href="http://linktr.ee/sasban9">linktr.ee/sasban9</a>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-container">
+        <!-- <div class="slide active">
+            There are countless stories of individuals or small teams who used a single well-informed action, combined with timing and execution, to make millions (or more). These examples reflect how deep understanding, awareness of trends, and courage to act can lead to outsized outcomes:
+        </div> -->
+        <div class="slide active">
+
+            <h3>The Core Dilemma</h3>
+            You're essentially asking:<br>
+            "Can the ends (reform) justify the means (practicing corruption)<br> in a corrupt system?"
+            <hr>
+            This is a deep and morally complex question, and it sits at the intersection of ethics, pragmatism, power dynamics, and human psychology.
+        </div><div class="slide">
+            <h3>Argument For the Strategy</h3>
+            <h4>(Pragmatist Viewpoint)</h4>
+            
+            <b>Survival First:</b> If the system punishes idealists and whistleblowers, then trying to be ethical from the bottom may not just fail, it might destroy the person.
+        </div><div class="slide">
+            
+            <b>Power Enables Reform:</b> Only those at the top have the leverage to make systemic changes. If the only path up is corrupt, one might feel justified in "playing the game to beat the game."
+            
+            <b>"Dirty Hands" Theory:</b> Some political philosophers (e.g., Michael Walzer) argue that good leaders sometimes must engage in morally questionable actions for a greater good.
+            
+        </div><div class="slide">
+            <h3>Argument Against the Strategy</h3>
+            <h4>(Ethical & Psychological Perspective)</h4>
+            
+            <b>Corruption Changes You:</b> Engaging in corruption, even with good intent, often reshapes a person. Power and self-interest tend to corrupt further, and very few actually reform the system after reaching the top.
+        </div><div class="slide">
+            
+            <b>Loss of Moral Authority:</b> Once compromised, the person may lose credibility, legitimacy, and the trust needed to lead reform.
+            
+            <b>Slippery Slope:</b> Rationalizing small wrongs for a greater good often leads to deeper moral compromise. The distinction between "strategic evil" and "habitual evil" blurs.
+            
+        </div><div class="slide">
+            <h3>Historical Examples</h3>
+            <b>Lee Kuan Yew (Singapore)</b> – Rose within a relatively clean system and then built a famously clean government. He didn’t compromise early.
+            
+            <b>India & Many Developing Democracies</b> – Reformers from within (e.g., bureaucrats, activists) often face career suicide unless they get grassroots or judicial support.
+            
+            <b>Whistleblowers Globally</b> – Most suffer retaliation. Few succeed without higher institutional backing or public support.
+            
+        </div><div class="slide">
+            <h3>Ethical Frameworks That Apply</h3>
+            <table>
+                <tr>
+                    <th width="400">Ethical Theory</th><th>Stance on This Strategy</th>
+                </tr>
+                <tr><td>Utilitarianism</td><td>May approve if the end result is significantly better for many.</td></tr>
+                <tr><td>Deontology</td><td>Would reject the idea — wrongdoing is still wrong, regardless of outcome.</td></tr>
+                <tr><td>Virtue Ethics</td><td>Focuses on character — engaging in corruption erodes personal integrity.</td></tr>
+                <tr><td>Realpolitik</td><td>Embraces this idea as a necessary evil in governance and power dynamics.</td></tr>
+            </table>
+            
+        </div><div class="slide">
+            <h3>A Middle Ground?</h3>
+            <b>Strategic Resistance:</b> Work within the system without compromising core values. Seek allies, use legal tools, and build support incrementally.
+            
+            <b>Grey-Zone Navigation:</b> Some act ambiguously (not directly corrupt, but not confrontational), waiting for the right moment.
+            
+            <b>Transparency in Motive:</b> If one must compromise, doing so with transparency and a clear, accountable roadmap toward reform can be a moral compromise — though very risky.
+            
+        </div><div class="slide">
+            <h3>Conclusion</h3>
+            <p>While it may seem pragmatically justifiable to engage in corruption to climb the ladder and later "clean house," <b style="background: darkgreen;padding: 0 10px;">it is ethically dangerous</b> and historically unreliable. Power changes people more often than people change systems.<br><br>
+            
+                If one genuinely wants to reform, the more sustainable path is often slower, riskier, and requires public support, but it preserves integrity — and that matters when you're trying to build something better.</p>
+            
+            <!-- Would you like fictional or historical stories where people tried both approaches — and what happened to them? -->
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            const progress = ((index + 1) / slides.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            }
+            if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+
+</html>

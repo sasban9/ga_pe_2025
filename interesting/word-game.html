@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Word Builder Game</title>
+  <style>
+    body {
+      font-family: Comic Sans MS, sans-serif;
+      background: #f0f8ff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      color: #ff6600;
+    }
+
+    .game-container {
+      display: flex;flex-direction: row;
+      /* display: inline-block; */
+      gap: 20px;
+      /* margin-bottom: 20px; */
+    }
+
+    .pane {
+      /* width: 40%; */
+      /* min-width: 400px; */
+      padding: 0 3rem;
+      min-height: 40%;
+      background-color: #ffe066;
+      border: 5px solid #ff9900;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 200px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 4px 4px 8px rgba(0,0,0,0.2);
+      transition: 0.3s;
+    }
+
+    .pane:hover {
+      background-color: #ffd43b;
+    }
+
+    .word-display {
+      font-size: 32px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .valid {
+      color: #2b8a3e; /* green */
+    }
+
+    .invalid {
+      color: #d00000; /* red */
+    }
+
+    .word-list {
+      margin-top: 20px;
+      font-size: 18px;
+      max-width: 800px;
+      text-align: center;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Word Builder</h1>
+<div class="game-container">
+  <div id="pane1" class="pane">st</div>
+  <div id="pane2" class="pane">ack</div>
+  <pre style="font-size: 1.6rem;">
+    03AUG SCL SDAH 4000<br>
+    10AUG CCU IXS 8200
+        or CCU IXA 6000 
+        or SDAH SCL 2400<br>
+    12AUG CCU DEL 4666<br>
+    31UAG DEL BLR 4600</pre>
+</div>
+<div class="word-display valid" id="wordDisplay">stack</div>
+<div class="word-list" id="wordList">Words you made: stack</div>
+
+<!-- Sound effects -->
+<audio id="correctSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_9e26717f78.mp3" preload="auto"></audio>
+<audio id="clickSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_b8a765d847.mp3" preload="auto"></audio>
+
+<script>
+  const part1 = [
+    "st", "bl", "gr", "pl", "tr", "cl", "dr", "cr", "fl", "pr", "br", "sl",
+    "sn", "sp", "tw", "wr", "gl", "sh", "th", "wh", "sk", "sm"
+  ];
+
+  const part2 = [
+    "ack", "ush", "ant", "ock", "ing", "ip", "end", "ump", "ick", "own", "ash", "eat",
+    "and", "est", "old", "ent", "art", "orn", "ink", "ilt", "amp", "ush"
+  ];
+
+  const validWords = new Set([
+    "stack", "blush", "black", "shack", "plant", "plush", "clock", "bring", "grip", "grant", "blend", "drum", "pluck", "brown", "crack", "crown", "crash", "flash", "great", "track", "prick", "slack", "clown", "flip", "snack", "spend", "twist", "wrong", "glow", "shell", "think", "whack", "skate", "smart", "sting", "bling", "cring", "drip", "drown", "brand", "gland", "block", "blip", "blown", "clip", "blip", "snip", "ship", "flock", "stock", "trend", "trash", "trip", "trick", "cling", "clash", "cleat", "fling", "whip", "skip", "trump", "clump", "plump", "stump", "slump", "tramp", "stand", "bland", "grand", "crest", "thorn", "shock", "wheat", "shown", "flick", "click", "brick", "stamp", "spent", "stent", "bleat", "pleat", "treat", "brink", "brush", "crush"
+  ]);
+
+  let index1 = 0;
+  let index2 = 0;
+  const foundWords = new Set(["stack"]);
+
+  const pane1 = document.getElementById("pane1");
+  const pane2 = document.getElementById("pane2");
+  const wordDisplay = document.getElementById("wordDisplay");
+  const wordList = document.getElementById("wordList");
+  const correctSound = document.getElementById("correctSound");
+  const clickSound = document.getElementById("clickSound");
+
+  function updateWord() {
+    const word = part1[index1] + part2[index2];
+    wordDisplay.textContent = word;
+    if (validWords.has(word)) {
+      wordDisplay.classList.remove("invalid");
+      wordDisplay.classList.add("valid");
+      if (!foundWords.has(word)) {
+        foundWords.add(word);
+        wordList.textContent = "Words you made: " + Array.from(foundWords).join(", ");
+        correctSound.play();
+      }
+    } else {
+      wordDisplay.classList.remove("valid");
+      wordDisplay.classList.add("invalid");
+    }
+  }
+
+  pane1.addEventListener("click", () => {
+    clickSound.play();
+    index1 = (index1 + 1) % part1.length;
+    pane1.textContent = part1[index1];
+    updateWord();
+  });
+
+  pane2.addEventListener("click", () => {
+    clickSound.play();
+    index2 = (index2 + 1) % part2.length;
+    pane2.textContent = part2[index2];
+    updateWord();
+  });
+
+  // Initialize
+  updateWord();
+</script>
+
+</body>
+</html>
