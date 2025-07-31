@@ -1,0 +1,5 @@
+*{margin:0;padding: 0;box-sizing: border-box;}
+html{scrollbar-width: none;}
+body{font-family: 'Inter', sans-serif; font-size: 16px; line-height: 3.5; color: #333;font-size: 3rem;text-align: center;}
+a{color: #007bff; text-decoration: none;}
+h3{background: linear-gradient(-65deg, red, orange, yellow, darkgreen, blue, indigo, purple);color: #fff; transform: skew(-20deg) rotate(-2deg);text-shadow: 0 4px 3px #000;}
