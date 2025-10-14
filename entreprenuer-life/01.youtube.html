@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Youtube</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: sans-serif;
+            font-size: 1.3rem;
+            line-height: 2;
+            background: #111;
+            color: #fff;
+        }
+
+        .slideshow {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            gap: 1rem;
+            flex-direction: column;
+            justify-content: start;
+            align-items: end;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .slide:nth-of-type(2n) {
+            align-items: start;
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .section {
+            /* display: flex;justify-content: center;flex-direction: column; */
+            text-shadow: 0 4px 4px black;
+            /* height: 100%; */
+            max-width: 55%;
+            min-width: 400px;
+            padding: 0 40px;
+            background: #000a;
+            box-shadow: 0 10px 10px #000;
+            /* border-radius: 20px; */
+            /* text-align: center; */
+            opacity: 0;
+            transform: skewY(-10deg) translateY(-50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .section:nth-of-type(2n){margin: 0 3rem;}
+        .section.visible {
+            opacity: 1;
+            transform: rotate(0deg) skewX(-10deg) translateY(0);
+        }
+
+        .bg-image {
+            background-size: cover;
+            background-position: center;
+            color: white;
+            position: relative;
+        }
+
+        .bg-image::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.1);
+            z-index: 0;
+        }
+
+        .bg-image>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .h3 {
+            font-size: 1.6rem;
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.5;
+        }
+
+        .hint {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0.5;
+            z-index: 9999;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="slideshow">
+        <div class="slide active" style="padding: 0 200px;">
+            <h2> Let’s dive deep into why YouTube in the mid-2000s became a gold rush and why certain early creators
+                skyrocketed while most people stayed invisible.</h2>
+        </div>
+        <div class="slide"
+            style="background: url(https://pbs.twimg.com/media/G1OU2mHbQAEKvJG?format=jpg&name=4096x4096) 50% 50%;background-size: cover;">
+            <div class="section">In the early days of YouTube (around 2005 - 2008), the platform itself was raw and
+                chaotic. </div>
+            <div class="section">Most people were uploading casual, unedited clips — home videos, webcam footage, shaky
+                cellphone recordings. </div>
+            <div class="section">Attention spans were short, and viewers were already overwhelmed by an endless stream
+                of low-quality content. </div>
+            <div class="section">This created a huge opportunity for anyone who could make <span class="h3">polished,
+                    engaging, and easy-to-watch videos.</span></div>
+        </div>
+
+        <!-- Slide 1 -->
+        <div class="slide"
+            style="background: url(https://www.storyblocks.com/resources/wp-content/uploads/2024/05/videoeditorskills_thumbnail.jpg);background-size: cover;">
+            <!-- <div class="section bg-image" style="background-image: url('https://picsum.photos/seed/11/1200/800');"></div> -->
+            <div class="section bg-image">
+                The first advantage was <span class="h3">video editing skill.</span>
+            </div>
+            <div class="section">
+                Early creators who knew how to trim awkward pauses, add transitions, overlay music, or include captions
+                instantly created a smoother viewing experience.
+            </div>
+            <div class="section bg-image" style="background-image: url();">
+                Even small things — like cutting out silence or speeding up certain sections — made videos feel
+                professional.
+            </div>
+            <div class="section">
+                Editing wasn’t just cosmetic; it influenced <u>viewer retention,</u> which YouTube’s recommendation
+                algorithm rewarded.
+            </div>
+        </div>
+        <div class="slide"
+            style="background: url(https://eldvarm.com/wp-content/uploads/2023/07/Eldvarm-Stories-How-Stories-Were-Born-Image-2-1024x768.jpg) 50% 50% no-repeat;background-size: contain;">
+            <div class="section">The second advantage was <h3>storytelling ability</h3>
+            </div>
+            <div class="section bg-image" style="background-image: url('https://picsum.photos/seed/2/1200/800');"></div>
+            <div class="section bg-image">Even short videos needed a hook, a middle, and a payoff. </div>
+            <div class="section">Creators who could build tension, surprise, humor, or emotional resonance kept people
+                watching longer. </div>
+            <div class="section">They understood that a strong narrative—even in a 2-3 minute clip — was more compelling
+                than simply showing something happen.</div>
+        </div>
+        <div class="slide" style="background: url(https://images.squarespace-cdn.com/content/v1/636c07c8356eee29c2729d60/9aaad068-2512-41e9-8874-cd41fcfd61d6/audience-capture-psychology-neuroscience-economics-nickocado-beauty-contest.jpg);background-size: cover;">
+            <div class="section">The third advantage was <span class="h3">understanding audience psychology.</span>
+            </div>
+            <div class="section bg-image">Successful early YouTubers grasped what viewers wanted: relatable
+                personalities, content they could learn from or laugh at, and a reason to subscribe. </div>
+            <div class="section bg-image" style="background-image: url('https://picsum.photos/seed/12/1200/800');">
+            </div>
+            <div class="section">They anticipated what would trigger shares, comments, or repeat views. </div>
+            <div class="section">Many newcomers treated uploading as a passive act — just putting content out — but
+                winners treated it as <span class="h3">designing for attention.</span></div>
+        </div>
+        <div class="slide">
+            <div class="section">Finally, timing mattered. YouTube was growing fast, and competition was still limited.
+            </div>
+            <div class="section">Early creators who combined editing skill, storytelling, and audience insight could
+                rapidly accumulate subscribers,</div>
+            <div class="section">...which then compounded through social proof and algorithmic promotion. </div>
+            <div class="section">By the time the platform became crowded, the early winners had established <u>loyal
+                    audiences and recognizable brands,</u></div>
+            <div class="section">...making it nearly impossible for latecomers to replicate their growth without
+                significant investment.</div>
+        </div>
+        <div class="slide">
+            <div class="section">In short, success wasn’t just about being “creative.” </div>
+            <div class="section">It was about <span class="h3">technical polish, psychological insight, and narrative
+                    skill</span> — applied at the perfect moment in an emerging platform. </div>
+            <div class="section">Those were the qualities that turned a hobbyist video into a viral sensation and,
+                eventually, a career.</div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <!-- <div class="slide">
+    <div class="section">
+      <h1>Slide Two</h1>
+    </div>
+    <div class="section bg-image" style="background-image: url('https://picsum.photos/seed/2/1200/800');">
+      <h2>With Background Image</h2>
+      <p>This section uses a background image with overlay text.</p>
+    </div>
+    <div class="section">
+      <p>This is another section with plain text.</p>
+    </div>
+  </div> -->
+
+    <!-- Slide 3 -->
+    <!-- <div class="slide">
+    <div class="section">
+      <h1>Final Slide</h1>
+      <p>You've reached the end of the presentation. Press → to restart.</p>
+    </div>
+  </div> -->
+
+    </div>
+
+    <!-- <div class="hint">Press → to reveal next section or slide</div> -->
+    <div class="hint">made by @sasban9. Find more at linktr.ee/sasban9</div>
+
+    <script>
+        let currentSlide = 0;
+        let currentSection = 0;
+
+        const slides = document.querySelectorAll('.slide');
+        slides[currentSlide].classList.add('active');
+
+        function revealNext() {
+            const sections = slides[currentSlide].querySelectorAll('.section');
+            if (currentSection < sections.length) {
+                sections[currentSection].classList.add('visible');
+                currentSection++;
+            } else {
+                goToNextSlide();
+            }
+        }
+
+        function goToNextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide++;
+            if (currentSlide >= slides.length) {
+                currentSlide = slides.length - 1; // restart presentation
+            }
+            slides[currentSlide].classList.add('active');
+            currentSection = 0;
+
+            // Reset all section visibility for next view
+            slides[currentSlide].querySelectorAll('.section').forEach(sec => sec.classList.remove('visible'));
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                revealNext();
+            } else if (e.key === 'ArrowLeft') {
+                //   currentSection--;
+            }
+        });
+    </script>
+
+</body>
+
+</html>

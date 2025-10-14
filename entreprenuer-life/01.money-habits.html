@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Money Mindset & Psychology</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Coming+Soon&family=Homenaje&family=Kranky&family=Mynerve&family=Oswald:wght@200..700&family=Playwrite+DE+SAS:wght@100..400&family=Rationale&family=Sixtyfour&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: sans-serif;
+            font-size: 1.15rem;
+            line-height: 2;
+            background: #111;
+            color: #fff;
+        }
+
+        .slideshow {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .slide {
+            width: 100%;
+            height: 98vh;
+            display: flex;
+            gap: 1rem;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.6s ease;transform: rotate(-3deg);
+        }
+
+        .slide:nth-of-type(2n) {
+            align-items: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .section {
+            /* display: flex;justify-content: center;flex-direction: column; */
+            text-shadow: 0 4px 4px black;
+            /* height: 100%; */
+            max-width: 42%;
+            min-width: 15%;margin-left: 30rem;
+            padding: 0 16px;
+            background: #000a;
+            box-shadow: 0 10px 10px #000;
+            /* border-radius: 20px; */
+            /* text-align: center; */
+            opacity: 0;
+            transform: rotateY(-150deg) translateY(-50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .slide:nth-of-type(2n) .section{margin-right: 30rem;margin-left: 0;}
+        .slide:nth-of-type(3n){justify-content: center;align-items: center;text-align: center;}
+
+        .section.visible {
+            opacity: 1;
+            transform: rotate(-5deg) skewX(-10deg) translateY(0);
+        }
+
+        .bg-image {
+            background-size: cover;
+            background-position: center;
+            color: white;
+            position: relative;
+        }
+
+        .bg-image::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.1);
+            z-index: 0;
+        }
+
+        .bg-image>* {
+            position: relative;
+            z-index: 1;
+        }
+        h1,h2,h3{font-family: 'Playwrite DE SAS',monospace; color: skyblue;max-width: 100%;text-shadow: 0 6px 6px #000;min-width: 400px;transform: translateY(0px);}
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        .h3 {
+            font-size: 1.6rem;
+            font-weight: bold;color: coral;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.5;
+        }
+
+        .hint {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0.5;
+            z-index: 9999;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="slideshow">
+        <div class="slide" style="background: url( https://miro.medium.com/1*wFPSPNBeOivHMVscN_9SNw.jpeg) 0% no-repeat;background-size: contain;">
+
+<!-- <div class="section">Absolutely — here’s a full <span class="h3">10-minute lecture</span> style version of the <span class="h3">“Money Mindset & Psychology”</span> category. </div>
+<div class="section">Think of this as what you’d say if you were standing in front of a room full of young people or fresh graduates, </div>
+<div class="section">trying to reset how they think about money <span class="h3">before</span> they step into the real world.</div>
+
+</div><div class="slide" style="background: url(https://i.pinimg.com/736x/00/75/e2/0075e25ef289099e122240981d97d04e.jpg) 100% no-repeat;background-size: contain;"> -->
+
+<div class="section"><h2>Money Mindset & Psychology  The Foundation of Wealth</h2></div>
+
+<div class="section">If you want to master money, you must first <span class="h3">master your mindset</span> about it. </div>
+<div class="section">Because the truth is, money isn’t just numbers — it’s psychology. </div>
+<!-- </div><div class="slide" style="background: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStYiiXzLR5e75Pg6td2ppmsBBYhS2Pf4rG0Q&s) 0% no-repeat;background-size: contain;"> -->
+<div class="section">It’s how you think, how you behave, and what you believe about wealth that ultimately decides how much of it you’ll ever have. </div>
+<div class="section">Let’s go through ten core principles that most people never learn — and usually regret not learning earlier.</div>
+
+</div><div class="slide" style="background: url(https://64.media.tumblr.com/051e10049401c2d6f717b85aa0831bef/e4a68cb8115abc2c-eb/s1280x1920/e89896ad66c49c95da485d98c75c8325c7af85eb.jpg) 100% no-repeat;background-size: contain;">
+
+<h3 class="section">1. Money is a tool, not a goal — use it to design your life.</h3>
+<div class="section">Most people grow up believing money itself is the finish line. </div>
+<div class="section">They chase it blindly — more salary, bigger bank balance, higher status. </div>
+<div class="section">But money is not the destination. It’s the <u>vehicle</u> that gets you to your destination. </div>
+<!-- </div><div class="slide" style="background: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeM_AyC8iSzj9xOL2qYMV0-xC1J1CaiUt6jw&s) 0% no-repeat;background-size: contain;"> -->
+<div class="section">Its purpose is to give you options: the option to spend time with people you love, to work on what matters to you, to live on your terms. </div>
+<div class="section">If you treat money as the goal, you’ll always feel like you don’t have enough. </div>
+<div class="section">If you treat it as a tool, you’ll focus on building the life you actually want — and money will naturally align with that.</div>
+
+</div><div class="slide" style="background: url(https://i.pinimg.com/736x/00/75/e2/0075e25ef289099e122240981d97d04e.jpg) 0% no-repeat;background-size: contain;">
+
+<div class="section"><h3>2. Your beliefs about money become your reality — upgrade them.</h3></div>
+<div class="section">Most people inherit their money mindset from childhood — from parents, culture, religion, or media — and never question it. </div>
+<div class="section">If you grew up hearing “money is hard to earn,” “rich people are greedy,” or “we’re not meant to be wealthy,” those beliefs quietly sabotage you for life. </div>
+<!-- </div><div class="slide" style="background: url(https://w0.peakpx.com/wallpaper/516/845/HD-wallpaper-ford-mustang-2018-universal-phone-background-super-car-sports-car-ford-mustang-2018-iphone-htc-samsu-muscle-cars-mustang-new-mustang-mustang-car-dealer-thumbnail.jpg) 0% no-repeat;background-size: contain;"> -->
+<div class="section">You might turn down opportunities, fear asking for more, or subconsciously self-sabotage when success comes. </div>
+<div class="section">The first step to wealth is awareness: examine your beliefs and upgrade the ones that limit you. </div>
+<div class="section">Replace “money is scarce” with “money is abundant and flows to those who create value.”</div>
+
+</div><div class="slide" style="background: url(https://becauseiamuniquelyandwonderfullymade.com/wp-content/uploads/2013/09/dsc06844-copy.jpg?w=816) 100% no-repeat;background-size: contain;">
+
+<div class="section"><h3>3. Wealth is built slowly, then suddenly — patience compounds.</h3></div>
+<div class="section">One of the biggest reasons people never build wealth is impatience. </div>
+<div class="section">They want results in 6 months, not 6 years. But wealth doesn’t grow linearly — it compounds. </div>
+<div class="section">For a long time, it feels like nothing’s happening… and then it explodes. </div>
+<div class="section">Think of bamboo: it spends years growing roots underground before shooting up overnight. </div>
+<div class="section">The same is true with wealth — the first ₹1 lakh is slow, the next ₹10 lakh comes faster, and the first crore often comes suddenly. </div>
+<div class="section">If you quit early, you never reach the compounding stage.</div>
+
+</div><div class="slide" style="background: url(https://images.travelandleisureasia.com/wp-content/uploads/sites/2/2025/07/03180946/Roller-Coaster-Rides.jpg) 0% no-repeat;background-size: contain;">
+
+<div class="section"><h3>4. Stop trading self-worth for net worth — separate identity from income.</h3></div>
+<div class="section">Your income is not your value as a human. </div>
+<div class="section">Yet many people tie their self-esteem to their salary or business success.</div>
+<div class="section">When things go well, they feel confident; when they don’t, they feel worthless. </div>
+<div class="section">That emotional rollercoaster is dangerous — it leads to bad decisions and burnout. </div>
+<div class="section">Understand that money is just *feedback* from the market about the value you’re currently providing. </div>
+<div class="section">It says nothing about your worth. Use it as information, not validation.</div>
+
+</div><div class="slide" style="background: url(https://i.pinimg.com/736x/9d/09/0d/9d090de89ed8034a1729a9885ca9f493.jpg) 100% no-repeat;background-size: contain;">
+
+<div class="section"><h3>5. The rich think in decades, not paychecks — play the long game.</h3></div>
+<div class="section">If you want to escape the paycheck-to-paycheck trap, stop making decisions based only on this month or this year. </div>
+<div class="section">Wealthy people think in decades. They ask, “What decisions today will make my life easier 10 years from now?” </div>
+<div class="section">That mindset shift changes everything: you choose investments over expenses, skills over shortcuts, and relationships over quick wins.</div> 
+<div class="section">A short-term thinker buys a fancy car to look rich. A long-term thinker invests that money and lets it pay for 10 cars later.</div>
+
+</div><div class="slide" style="background: url(https://img.freepik.com/free-vector/water-scarcity-flat-concept-composition-with-human-characters-starving-people-pouring-water-from-earth-globe-vector-illustration_98292-8481.jpg?semt=ais_hybrid&w=740&q=80) 0% no-repeat;background-size: contain;">
+
+<div class="section"><h3>6. Scarcity thinking keeps you broke; abundance thinking attracts opportunities.</h3></div>
+<div class="section">Scarcity thinking says, “There’s not enough money,” “Competition is too strong,” “Opportunities are gone.” </div>
+<div class="section">Abundance thinking says, “Money is created every day,” “There’s more than enough if I solve the right problem,” “Opportunities multiply when I act.” </div>
+<div class="section">Scarcity closes your eyes; abundance opens them. </div>
+<div class="section">And because your brain always looks for evidence of what you believe, whichever mindset you choose becomes your reality. </div>
+<div class="section">Wealth begins with believing that more is possible.</div>
+
+</div><div class="slide" style="background: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5yCeXMADx6tT8PZpuk3xvi4naC9v1JBPPKg&s) 100% no-repeat;background-size: contain;">
+
+<div class="section"><h3>7. Focus on value creation, not money chasing — money follows value.</h3>People who chase money directly often fail. </div>
+<div class="section">People who obsess over creating value for others — solving real problems, improving lives, saving people time or effort  — rarely stay broke for long. </div>
+<h2 class="section">Why? </h2>
+<div class="section">Because money is a reward system for value. The more value you create for more people, the more money you’ll attract. </div>
+<div class="section">Stop asking, “How can I make $1 million?” Start asking, “What problem can I solve that’s worth $1 million to someone?”</div>
+
+</div><div class="slide" style="background: url() 0% no-repeat;background-size: contain;">
+
+<div class="section"><h3>8. Learn delayed gratification — it’s the #1 wealth skill.</h3></div>
+<div class="section">Every financial success story boils down to this: they were willing to wait. </div>
+<div class="section">They resisted short-term pleasure for long-term gain. They invested instead of spending. </div>
+<div class="section">They built skills instead of chasing trends. They said “not now” so they could say “yes” to bigger things later. </div>
+<div class="section">Delayed gratification is the foundation of investing, entrepreneurship, and financial independence. </div>
+<div class="section">If you master this one habit, everything else becomes easier.</div>
+
+</div><div class="slide" style="background: url() 0% no-repeat;background-size: contain;">
+
+<div class="section"><h3>9. Study wealthy people’s habits, not their luxuries.</h3></div>
+<div class="section">Most people copy how the rich *spend* their money — luxury cars, designer clothes, big houses — but ignore how they *made* it. </div>
+<div class="section">The habits that build wealth are usually boring: reading daily, investing consistently, tracking expenses, reinvesting profits, learning relentlessly. </div>
+<div class="section">Those are the habits to copy, not the status symbols. </div>
+<div class="section">Luxuries are the *byproduct* of wealth — not the blueprint.</div>
+
+</div><div class="slide" style="background: url() 0% no-repeat;background-size: contain;">
+
+<div class="section"><h3>10. Never say “I can’t afford it.” Say “How *can* I afford it?”</h3></div>
+<div class="section">Language shapes your thinking. When you say “I can’t afford it,” your brain shuts down. </div>
+<div class="section">It doesn’t try. But when you ask, “How *can* I afford it?” you open a door — creativity kicks in, ideas appear, new strategies emerge.</div>
+<div class="section">That simple shift trains your mind to look for solutions instead of excuses. </div>
+<div class="section">Every great business and breakthrough started with someone refusing to accept “I can’t” as the final answer.</div>
+
+</div><div class="slide" style="background: url(https://img.freepik.com/free-photo/man-showing-light-bulb-icon_53876-47270.jpg?w=360) 100% no-repeat;background-size: contain;">
+
+<div class="section"><h2>Final Thought:</h2></div>
+<div class="section">Mastering money isn’t about numbers first — it’s about mindset. </div>
+<div class="section">Once you start thinking differently, you’ll start acting differently. </div>
+<div class="section">And when your actions change, your results inevitably follow. </div>
+<div class="section">Before you try to learn how to invest, start a business, or double your income — fix how you *think* about money. </div>
+<div class="section">Because your bank balance will always rise to the level of your mindset....</div>
+
+
+<!-- Would you like me to turn this lecture into a **script you can deliver on stage or in a video course** (with tone, pauses, and storytelling added), or keep it as a **written chapter for a book or course module**? -->
+
+        </div>
+    </div>
+    </div>
+
+    </div>
+
+    <!-- <div class="hint">Press → to reveal next section or slide</div> -->
+    <div class="hint">made by @sasban9. Find more at linktr.ee/sasban9</div>
+
+    <script>
+        let currentSlide = 0;
+        let currentSection = 0;
+
+        const slides = document.querySelectorAll('.slide');
+        slides[currentSlide].classList.add('active');
+
+        function revealNext() {
+            const sections = slides[currentSlide].querySelectorAll('.section');
+            if (currentSection < sections.length) {
+                sections[currentSection].classList.add('visible');
+                currentSection++;
+            } else {
+                goToNextSlide();
+            }
+        }
+
+        function goToNextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide++;
+            if (currentSlide >= slides.length) {
+                currentSlide = slides.length - 1; // restart presentation
+            }
+            slides[currentSlide].classList.add('active');
+            currentSection = 0;
+
+            // Reset all section visibility for next view
+            slides[currentSlide].querySelectorAll('.section').forEach(sec => sec.classList.remove('visible'));
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                revealNext();
+            } else if (e.key === 'ArrowLeft') {
+                //   currentSection--;
+            }
+        });
+    </script>
+
+</body>
+
+</html>

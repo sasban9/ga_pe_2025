@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Money Mindset & Psychology</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Coming+Soon&family=Homenaje&family=Kranky&family=Mynerve&family=Oswald:wght@200..700&family=Playwrite+DE+SAS:wght@100..400&family=Rationale&family=Sixtyfour&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: sans-serif;
+            font-size: 1.15rem;
+            line-height: 2;
+            background: #111;
+            color: #fff;
+        }
+
+        .slideshow {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .slide {
+            width: 100%;
+            height: 98vh;
+            display: flex;
+            gap: 1rem;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.6s ease;transform: rotate(-3deg);
+        }
+
+        .slide:nth-of-type(2n) {
+            align-items: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .section {
+            /* display: flex;justify-content: center;flex-direction: column; */
+            text-shadow: 0 4px 4px black;
+            /* height: 100%; */
+            max-width: 42%;
+            min-width: 15%;margin-left: 30rem;
+            padding: 0 16px;
+            background: #000a;
+            box-shadow: 0 10px 10px #000;
+            /* border-radius: 20px; */
+            /* text-align: center; */
+            opacity: 0;
+            transform: rotateY(-150deg) translateY(-50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .slide:nth-of-type(2n) .section{margin-right: 30rem;margin-left: 0;}
+        .slide:nth-of-type(3n){justify-content: center;align-items: center;text-align: center;}
+
+        .section.visible {
+            opacity: 1;
+            transform: rotate(-5deg) skewX(-10deg) translateY(0);
+        }
+
+        .bg-image {
+            background-size: cover;
+            background-position: center;
+            color: white;
+            position: relative;
+        }
+
+        .bg-image::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.1);
+            z-index: 0;
+        }
+
+        .bg-image>* {
+            position: relative;
+            z-index: 1;
+        }
+        h1,h2,h3{font-family: 'Playwrite DE SAS',monospace; color: skyblue;max-width: 100%;text-shadow: 0 6px 6px #000;min-width: 400px;transform: translateY(0px);}
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        .h3 {
+            font-size: 1.6rem;
+            font-weight: bold;color: coral;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.5;
+        }
+
+        .hint {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0.5;
+            z-index: 9999;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="slideshow">
+        <!-- <div class="slide active" style="background: url( https://miro.medium.com/1*wFPSPNBeOivHMVscN_9SNw.jpeg) 0% no-repeat;background-size: contain;"></div> -->
+        <div class="slide" style="background: url(https://i.insider.com/67d0333b585f1dff88b1bece?width=700) 0% no-repeat;background-size: contain;">
+<!-- Absolutely! Let’s turn the <span class="h3">10 Spending & Budgeting tips</span> into a coherent 10-minute lecture that’s both practical and engaging. I’ll write it as if you’re speaking to an audience of teens or young adults, weaving in examples and actionable steps. -->
+
+<div class="section"><h2> “Master Your Money”<br>Spending and Budgeting Like a Pro</h2></div>
+<div class="section">Let's talk about something that most people don’t realize until it’s too late: </div>
+<div class="section"><h3>how to spend and budget your money wisely. </h3></div>
+<div class="section">This isn’t just about cutting costs — it’s about learning to control your money </div>
+<div class="section">so it works for you, not the other way around.</div>
+</div><div class="slide" style="background: url(https://thumbs.dreamstime.com/b/vibrant-shopping-adventure-happy-friends-ai-generated-artwork-three-joyful-friends-enjoy-fun-shopping-spree-351896209.jpg) 100% no-repeat;background-size: contain;">
+<div class="section"><h3>1. Spend Less Than You Earn</h3></div>
+<div class="section">It sounds simple, right? But most people don’t follow this basic rule. </div>
+<div class="section">Imagine earning ₹10,000 a month but spending ₹12,000 — you’re already digging a hole. </div>
+<div class="section">The first rule of financial freedom is to **live below your means**. </div>
+<div class="section">Even if you earn a lot later, habits built today stick. </div>
+<div class="section">The principle is simple: always leave some money for yourself before spending the rest.</div>
+</div><div class="slide" style="background: url(https://images.unsplash.com/photo-1559839049-2b350c4284cb?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bHV4dXJ5JTIwbGlmZXN0eWxlfGVufDB8fDB8fHww) 0% no-repeat;background-size: contain;">
+<div class="section"><h3>2. Track Every Rupee for 3 Months</h3></div>
+<div class="section">You can’t manage what you don’t measure. </div>
+<div class="section">For three months, write down every rupee you spend. </div>
+<div class="section">Coffee, snacks, online subscriptions — everything. </div>
+<div class="section">At the end, you’ll notice patterns: maybe ₹500 goes to apps you barely use or ₹1000 goes to snacks daily. </div>
+<div class="section">Awareness alone often makes people cut waste without feeling deprived.</div>
+</div><div class="slide" style="background: url(https://i.pinimg.com/736x/f3/80/22/f380227119a91e6973fe734bd9a141be.jpg) 100% no-repeat;background-size: contain;">
+<div class="section"><h3>3. Differentiate Needs, Wants, and Impulses</h3></div>
+<div class="section">Not everything you want is something you need. </div>
+<div class="section">Needs are essentials: food, transport, basic clothes. </div>
+<div class="section">Wants are nice-to-haves, like a new phone or sneakers. </div>
+<div class="section">Impulses are those “I just feel like it” purchases. </div>
+<div class="section">Before buying, ask: “Is this necessary, or am I just chasing a feeling?”</div> 
+<div class="section">Making this distinction saves you money and keeps spending intentional.</div>
+</div><div class="slide" style="background: url(https://b3616530.smushcdn.com/3616530/wp-content/uploads/2024/07/Hendriks_304Nassau_2019Jan_95899_Final-scaled-880x1117.jpg?lossy=2&strip=1&webp=1) 0% no-repeat;background-size: contain;">
+<div class="section"><h3>4. Automate Bill Payments</h3></div>
+<div class="section">Late fees are unnecessary drains on your wallet. </div>
+<div class="section">Automate rent, electricity, and subscriptions. </div>
+<div class="section">Automation removes human error — no more forgetting due dates, and it protects your credit score. </div>
+<div class="section">Automation also trains discipline; your money moves to essentials and savings first, without you thinking about it.</div>
+</div><div class="slide" style="background: url(https://i.pinimg.com/1200x/07/f7/73/07f7730ebdf2d37580727be6243ba2c4.jpg) 100% no-repeat;background-size: contain;">
+<div class="section"><h3>5. Avoid Lifestyle Creep</h3></div>
+<div class="section">As income increases, many people spend more instead of saving more. </div>
+<div class="section">Got your first salary and bought an expensive phone? </div>
+<div class="section">That’s lifestyle creep. The smarter move is: when income rises, <span class="h3">increase savings and investments first, spend later.</span> </div>
+<div class="section">This simple habit builds wealth invisibly.</div>
+</div><div class="slide" style="background: url(https://www.splendidyachting.com/wp-content/uploads/2024/11/globeregal.barontrenck.eurocraft44-3.jpg) 0% no-repeat;background-size: contain;">
+<div class="section"><h3>6. Use the 50/30/20 Rule as a Simple Start</h3></div>
+<div class="section">A practical budgeting method: 50% of your income for needs, 30% for wants, 20% for savings and investments. </div>
+<div class="section">Let’s say you earn $2k a month — $1k goes to essentials, $600 to discretionary spending, and $400 to savings. </div>
+<div class="section">It’s simple, flexible, and prevents overspending.</div>
+</div><div class="slide" style="background: url() 100% no-repeat;background-size: contain;">
+<div class="section"><h3>7. Buy Quality Once Instead of Cheap Twice</h3></div>
+<div class="section">Cheap may seem like saving, but it often costs more. </div>
+<div class="section">Buy a durable backpack or shoes once, rather than replacing them every year. </div>
+<div class="section">High-quality purchases are investments — you pay more upfront but save money and stress in the long run.</div>
+</div><div class="slide" style="background: url() 100% no-repeat;background-size: contain;">
+<div class="section"><h3>8. Never Spend for Status</h3></div>
+<div class="section">It’s tempting to impress others — flashy phones, branded clothes, or a car. </div>
+<div class="section">But wealth isn’t about appearances; it’s about freedom. </div>
+<div class="section">Smart people quietly build assets while others chase approval. </div>
+<div class="section">Ask yourself before any purchase: “Am I buying this for me, or to impress someone else?”</div>
+</div><div class="slide" style="background: url() 100% no-repeat;background-size: contain;">
+<div class="section"><h3>9. Delay Big Purchases by 30 Days</h3></div>
+<div class="section">Impulse buys are expensive. Before a big purchase — like a phone, gadget, or expensive bag — wait 30 days. </div>
+<div class="section">Often, the craving fades, and you realize you didn’t need it in the first place. </div>
+<div class="section">This habit trains patience and prevents regretful spending.</div>
+</div><div class="slide" style="background: url() 100% no-repeat;background-size: contain;">
+<div class="section"><h3>10. Budget for Fun Too</h3></div>
+<div class="section">Budgeting doesn’t mean life is boring. </div>
+<div class="section">Allocate a portion of your income for joy — movies, games, food outings, travel. </div>
+<div class="section">Money should serve your life, not control it. </div>
+<div class="section">When you balance enjoyment with discipline, you create a sustainable lifestyle.</div>
+</div><div class="slide" style="background: url(https://img.freepik.com/premium-photo/beautiful-black-horse-running-grass_948935-2512.jpg) 100% no-repeat;background-size: contain;">
+<div class="section"><b>In closing,</b></div>
+<div class="section">If you master these principles — spending less than you earn, tracking every expense, avoiding lifestyle creep, </div>
+<div class="section">and planning intentional spending — you’re not just budgeting, you’re <span class="h3">building freedom.</span> </div>
+<div class="section">Every rupee saved and wisely allocated today compounds into opportunity tomorrow.</div>
+
+<div class="section">Remember: money isn’t just for surviving; it’s a tool to design the life you want. </div>
+<div class="section">Start small, start now, and your future self will thank you. <br>XOXO</div>
+
+<!-- If you like, I can **also create a visual version of this lecture**: a one-page slide deck with diagrams for each of the 10 points, plus examples like “tracking ₹500 coffee a month adds up to ₹6,000 a year.” That would make it classroom-ready or shareable with teens. -->
+        </div>
+        <div class="slide" style="background: url(https://i.pinimg.com/originals/18/0f/21/180f21c02067d8b0461f1e8ae814fad3.jpg) 0% no-repeat;background-size: contain;">
+            <div class="section">Up Next:</div>
+            <div class="section"><h2>Saving & Emergency Planning</h2></div>
+        </div>
+    </div>
+    </div>
+
+    </div>
+
+    <!-- <div class="hint">Press → to reveal next section or slide</div> -->
+    <div class="hint">made by @sasban9. Find more at linktr.ee/sasban9</div>
+
+    <script>
+        let currentSlide = 0;
+        let currentSection = 0;
+
+        const slides = document.querySelectorAll('.slide');
+        slides[currentSlide].classList.add('active');
+
+        function revealNext() {
+            const sections = slides[currentSlide].querySelectorAll('.section');
+            if (currentSection < sections.length) {
+                sections[currentSection].classList.add('visible');
+                currentSection++;
+            } else {
+                goToNextSlide();
+            }
+        }
+
+        function goToNextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide++;
+            if (currentSlide >= slides.length) {
+                currentSlide = slides.length - 1; // restart presentation
+            }
+            slides[currentSlide].classList.add('active');
+            currentSection = 0;
+
+            // Reset all section visibility for next view
+            slides[currentSlide].querySelectorAll('.section').forEach(sec => sec.classList.remove('visible'));
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                revealNext();
+            } else if (e.key === 'ArrowLeft') {
+                //   currentSection--;
+            }
+        });
+    </script>
+
+</body>
+
+</html>

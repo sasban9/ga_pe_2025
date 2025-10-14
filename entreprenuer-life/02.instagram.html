@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Instagram</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: sans-serif;
+            font-size: 1.3rem;
+            line-height: 2;
+            background: #111;
+            color: #fff;
+        }
+
+        .slideshow {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            gap: 1rem;
+            flex-direction: column;
+            justify-content: start;
+            align-items: end;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .slide:nth-of-type(2n) {
+            align-items: start;
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .section {
+            /* display: flex;justify-content: center;flex-direction: column; */
+            text-shadow: 0 4px 4px black;
+            /* height: 100%; */
+            max-width: 55%;
+            min-width: 400px;
+            padding: 0 40px;
+            background: #000a;
+            box-shadow: 0 10px 10px #000;
+            /* border-radius: 20px; */
+            /* text-align: center; */
+            opacity: 0;
+            transform: skewY(150deg) translateY(-50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .section:nth-of-type(2n){margin: 0 3rem;}
+        .slide:nth-of-type(3n){justify-content: center;align-items: center;text-align: center;}
+
+        .section.visible {
+            opacity: 1;
+            transform: rotate(0deg) skewX(-10deg) translateY(0);
+        }
+
+        .bg-image {
+            background-size: cover;
+            background-position: center;
+            color: white;
+            position: relative;
+        }
+
+        .bg-image::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.1);
+            z-index: 0;
+        }
+
+        .bg-image>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .h3 {
+            font-size: 1.6rem;
+            font-weight: bold;color: coral;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.5;
+        }
+
+        .hint {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0.5;
+            z-index: 9999;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="slideshow">
+        <div class="slide" style="padding: 0 200px;">
+            <h2>Let’s unpack this one, Instagram is a classic case study of how <u>specific knowledge + niche interest</u> turned ordinary people into early digital millionaires.</h2>
+</div><div class="slide" style="background:url(https://billo.app/wp-content/uploads/2020/08/nicole-saavedra-jgSgew8oJtY-unsplash-scaled-1.webp) 50% no-repeat;background-size: contain;">
+<div class="section">When Instagram launched in 2010, it was a simple photo-sharing app. </div>
+<div class="section">There was no algorithmic sophistication, no Reels, and no complex monetization layer. </div>
+<div class="section">It was, at its core, a <span class="h3">visual storytelling platform.</span> Most people treated it like a casual photo album — posting grainy snapshots of food or blurry selfies. </div>
+<div class="section">But a small group recognized something deeper: that Instagram wasn’t about <span class="h3">photos</span> — it was about <span class="h3">aesthetics</span> and <span class="h3">identity curation.</span></div>
+</div><div class="slide" style="background: url(https://www.chitkara.edu.in/design/wp-content/uploads/2022/02/communication-mob2-1.jpg) 50% no-repeat;background-size: contain;">
+<div class="section">The early winners shared three crucial capabilities:</div>
+<div class="section"><h3>1. Technical Skill: Photography and Visual Design</h3></div>
+<div class="section">They understood how to compose a shot — rule of thirds, leading lines, symmetry — and how to make it emotionally resonate. </div>
+<div class="section">They didn’t need expensive cameras; many mastered mobile photography, editing with apps like VSCO or Lightroom Mobile. </div>
+<div class="section">They knew how to use natural light, how to balance colors, how to crop strategically. </div>
+<div class="section">These small skills made their posts pop on the feed when everyone else’s looked amateurish.</div>
+</div><div class="slide" style="background: url(https://cdn.mos.cms.futurecdn.net/dcCeRXh6peHCQeZ5Fve9To.jpg) 50% no-repeat;background-size: contain;">
+<div class="section"><h2>2. Aesthetic Literacy: Composition + Color Theory</h2></div>
+<div class="section">The real edge was their <span class="h3">visual literacy.</span></div>
+<div class="section">They knew how humans subconsciously respond to certain color palettes (e.g., pastel tones feel calm and aspirational, bold primaries feel energetic and playful). </div>
+<div class="section">They curated feeds like art galleries — a cohesive “look” that became their brand. This wasn’t just about beauty; it was about <span class="h3">signal.</span></div>
+<div class="section">Their grid communicated sophistication, consistency, and reliability — traits brands and followers naturally gravitate toward.</div>
+</div><div class="slide" style="background: url(https://buzzradar.com/images/img/wp_uploads/2024/04/post_7310.jpg) 50% no-repeat;background-size: contain;">
+<div class="section"><h3>3. Cultural Awareness: Trendspotting and Timing</h3></div>
+<div class="section">They had their finger on the pulse of evolving social tastes. </div>
+<div class="section">When minimalist flatlays became popular, they adapted quickly. </div>
+<div class="section">When travel photography started trending, they positioned themselves as lifestyle explorers. </div>
+<div class="section">This wasn’t random — they watched hashtags, followed tastemakers, and studied what content triggered engagement. </div>
+<div class="section">In short, they understood that Instagram was <span class="h3">not static</span> — it was a living cultural organism — and they evolved with it.</div>
+</div><div class="slide">
+<div class="section">The combination of those three gave them exponential reach. </div>
+<div class="section">A visually striking post got shared and featured on explore pages.</div> 
+<div class="section">A coherent feed made people click “Follow.” </div>
+<div class="section">And staying ahead of trends kept their content relevant month after month.</div>
+</div><div class="slide">
+<div class="section">But there’s a deeper layer: early Instagrammers also understood the <span class="h3">psychology of aspiration.</span> </div>
+<div class="section">People weren’t just following pretty pictures — they were subscribing to a <span class="h3">lifestyle fantasy.</span> </div>
+<div class="section">Travel bloggers sold freedom, fashion influencers sold confidence, interior designers sold taste. </div>
+<div class="section">Those who understood the emotional subtext behind their content created entire ecosystems — </div>
+<div class="section">brand partnerships, product lines, agencies — long before the influencer economy had a name.</div>
+</div><div class="slide">
+<div class="section">The lesson from the Instagram gold rush is powerful: it wasn’t enough to “be on the platform.”</div>
+<div class="section">Success came to those who could combine <span class="h3">visual craftsmanship</span>, <span class="h3">aesthetic intelligence</span>, and <span class="h3">cultural intuition</span> </div>
+<div class="section">...into a product that people didn’t just <u>like</u> — they <u>wanted to belong to</u>.</div>
+
+<!-- Would you like me to break this same level of depth down for a few *other platforms* too — like YouTube or TikTok — so you can see how each early winner leveraged a different kind of niche mastery? (It becomes really interesting when you see how each platform rewards a *different combination* of skills.) -->
+        </div>
+    </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <!-- <div class="slide">
+    <div class="section">
+      <h1>Slide Two</h1>
+    </div>
+    <div class="section bg-image" style="background-image: url('https://picsum.photos/seed/2/1200/800');">
+      <h2>With Background Image</h2>
+      <p>This section uses a background image with overlay text.</p>
+    </div>
+    <div class="section">
+      <p>This is another section with plain text.</p>
+    </div>
+  </div> -->
+
+    <!-- Slide 3 -->
+    <!-- <div class="slide">
+    <div class="section">
+      <h1>Final Slide</h1>
+      <p>You've reached the end of the presentation. Press → to restart.</p>
+    </div>
+  </div> -->
+
+    </div>
+
+    <!-- <div class="hint">Press → to reveal next section or slide</div> -->
+    <div class="hint">made by @sasban9. Find more at linktr.ee/sasban9</div>
+
+    <script>
+        let currentSlide = 0;
+        let currentSection = 0;
+
+        const slides = document.querySelectorAll('.slide');
+        slides[currentSlide].classList.add('active');
+
+        function revealNext() {
+            const sections = slides[currentSlide].querySelectorAll('.section');
+            if (currentSection < sections.length) {
+                sections[currentSection].classList.add('visible');
+                currentSection++;
+            } else {
+                goToNextSlide();
+            }
+        }
+
+        function goToNextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide++;
+            if (currentSlide >= slides.length) {
+                currentSlide = slides.length - 1; // restart presentation
+            }
+            slides[currentSlide].classList.add('active');
+            currentSection = 0;
+
+            // Reset all section visibility for next view
+            slides[currentSlide].querySelectorAll('.section').forEach(sec => sec.classList.remove('visible'));
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                revealNext();
+            } else if (e.key === 'ArrowLeft') {
+                //   currentSection--;
+            }
+        });
+    </script>
+
+</body>
+
+</html>
