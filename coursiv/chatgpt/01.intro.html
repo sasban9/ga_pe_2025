@@ -1,75 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
 
-What is ChatGPT?
-Hey there, I'm Alex! Today, we're diving into the world of ChatGPT, an advanced large language model (LLM).
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Intro to ChatGPT 2025</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Kranky&family=Mynerve&family=Quintessential&family=Rationale&family=Sixtyfour&display=swap"
+        rel="stylesheet">
+    <style>
+        html {
+            scrollbar-width: none;
+            overflow-x: hidden;
+        }
 
-If you're just starting out using AI, you're in the right place. Here, you'll explore what an LLM is and how ChatGPT works. I'll even throw in some practical exercises to introduce you to the basics of prompt engineering, the most important term in the AI world. Ready? Let's get started!
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            font-family: "Mynerve", "Segoe UI", sans-serif;
+            /* background-color: #f4f1ee; */
+            /* background: linear-gradient(5deg, red, green, blue, pink, black); */
+            background: linear-gradient(5deg, #511516, #4e240e, #663e0c, #4a2716, #514019, #3a4d2c, #1f4f41, #244342, #23303b, #0e2c39);
+            /* background: url(https://images.axios.com/9oE7F0fbRhSBcMTuCMPDU_1Jxk0=/0x348:8161x4939/1920x1080/2025/01/30/1738279680385.jpg) 50% 50%; */
+            background: url(https://wallpapers.com/images/hd/chatgpt-o2m90tzr2rbsk430.jpg) 50% 50%;
+            background-size: cover;
+            background-attachment: fixed;
+            color: #3e3e3e;
+            font-size: 2.85rem;
+            line-height: 2;
+        }
+
+        .container {
+            padding: 2rem;
+            max-width: 980px;
+            margin: auto;
+            /* text-align: center; */
+        }
+
+        .slide {
+            background-color: #e8f5e9;
+            background: #111e;
+            color: #ccc;
+            border-left: 5px solid #111;
+            /* margin: 2rem auto; */
+            width: 90%;
+            padding: 0 2rem;
+            border-radius: 12px;
+            box-shadow: 0 0px 8px #fff;
+            opacity: 0;
+            transform: translateY(30px) rotate(-15deg) skewX(30deg);
+            transition: all 0.6s ease;
+        }
+
+        .slide:nth-of-type(2n) {
+            margin-left: 5rem;
+        }
+        .slide:nth-of-type(5n) {
+            /* font-family: sans-serif, "Quintessential"; */
+            filter: invert(1);
+        }
+
+        .slide.question {
+            font-family: monospace, "Kranky";
+            font-size: 2rem;
+            background: #ccc;
+            color: darkgreen;
+        }
+
+        /* .slide:nth-of-type(5n+2){font-family: "Rationale";}
+        .slide:nth-of-type(5n+3){font-family: "Sixtyfour";font-size: 1.4rem;}
+        .slide:nth-of-type(5n+4){font-family: "Kranky";} */
+
+        h2,
+        h3,
+        b,
+        hr {
+            font-family: 'Rationale', serif;
+            background: #444;
+            background: linear-gradient(90deg, salmon, red, coral, crimson);
+            background: linear-gradient(90deg, #F94144, #F3722C, #F8961E, #F9844A, #F9C74F, #90BE6D, #43AA8B, #4D908E, #577590, #277DA1);
+            padding: 0 2rem;
+            color: #222;
+            margin: 0;
+        }
+
+        .slide.visible {
+            opacity: 1;
+            transform: translateY(0) scaleY(1);
+            /* filter: invert(1); */
+        }
+
+        .slide img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 1rem;
+            max-height: 90vh;
+            vertical-align: baseline;
+        }
+
+        .clear-button {
+            display: block;
+            margin: 2rem auto;
+            padding: 0.75rem 2rem;
+            font-size: 1rem;
+            background-color: #ffcdd2;
+            color: #b71c1c;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .clear-button:hover {
+            background-color: #ef9a9a;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="slide visible">
+            <h3>What is ChatGPT?</h3>
+            Hey there, I'm Alex! Today, we're diving into the world of ChatGPT, an advanced large language model (LLM).
+        </div>
+        <div class="slide">
+            If you're just starting out using AI, you're in the right place.
+            Here, you'll explore what an LLM is and how ChatGPT works.
+        </div>
+        <div class="slide">
+            I'll even throw in some practical exercises to introduce you to the basics of Prompt Engineering, the most
+            important term in the AI world. Ready? Let's get started!
+        </div>
+        <div class="slide">
+            <h3>What is a Large Language Model?</h3>
+            Picture a giant library filled with every book, article, and webpage ever written.
+        </div>
+        <div class="slide">
+            Now, imagine a super-smart librarian who has read everything in that library and can understand and generate
+            human-like
+            text based on all that knowledge. <u>That's essentially what an LLM is!</u>
+        </div>
+        <div class="slide">
+            These models are called "large" because they're trained on massive amounts of text data. 
+        </div>
+        <div class="slide">
+            They learn patterns, relationships, and structures in language, allowing them to generate coherent and contextually
+            appropriate responses to prompts or questions.
+        </div>
+        <div class="slide">
+            In turn, ChatGPT is like the above-mentioned super-smart librarian, but with a special focus on engaging in
+            conversations.
+
+        </div>
+        <div class="slide">
+            So, ChatGPT is an LLM developed by OpenAI that is designed to understand and generate human-like text in a
+            chat format.
+
+        </div>
+        <div class="slide">
+            But How Does ChatGPT Actually Work?
+            It's a bit like a game of word prediction.
+        </div>
+        <div class="slide">
+            When you give ChatGPT a prompt (or ask it a question), it looks at the words you've used and predicts the
+            most likely next word based on its training.
+        </div>
+        <div class="slide">
+            It does this over and over, building up a response word by word.
+        </div>
+        <div class="slide">
+            For example, if you start a sentence with "The cat sat on the...",
+        </div>
+        <div class="slide">
+            ChatGPT might predict "mat" as the next word because it's seen that pattern many times in its training data.
+        </div>
+        <div class="slide">
+            But it's not just about individual words - ChatGPT understands context and can generate complex, meaningful
+            responses.
+        </div>
+        <div class="slide">
+            Suppose you're writing a story and hit a creative block. Try using ChatGPT to help you continue the story.
+        </div>
+        <div class="slide">
+            This is how ChatGPT uses patterns from the data it was trained on and generates responses. Cool, right?
+        </div>
+        <div class="slide">
+            For another example, try asking the AI about making a snack.
+
+        </div>
+        <div class="slide question">
+
+            How do you think ChatGPT responded when you asked for a sandwich recipe?
+            <hr>
+            <small>1. It generates a random recipe<br>
+                2. It copies a recipe from a cookbook<br>
+                3. It repeats a recipe it has seen before<br>
+                4. It combined its understanding of sandwiches, cooking techniques, and common preferences</small>
+        </div>
+        <div class="slide">
+            ChatGPT doesn't just repeat a recipe it has seen before or generate a random recipe.
+        </div>
+        <div class="slide">
+            Instead, it combines its understanding to generate a unique response tailored to your question.
+        </div>
+        <div class="slide">
+            Moreover, ChatGPT remembers what you are talking about and can adjust its future responses accordingly.
+        </div>
+        <div class="slide">
+            Try following up on your previous question about sandwiches by clarifying your food preferences.
+
+        </div>
+        <div class="slide">
+            As you can see, ChatGPT has the ability to maintain context throughout a conversation.
+        </div>
+        <div class="slide">
+            Yet, without guidance, its answers are not 100% what you need most of the time.
+        </div>
+        <div class="slide">
+
+            This is where the importance of Prompt Engineering arises.
+        </div>
+        <div class="slide">
+
+            While LLMs are sophisticated pattern recognition systems trained on vast amounts of text data, Prompt
+            Engineering is the art of effectively communicating with these language models.
+        </div>
+        <div class="slide">
+            In these terms, Prompt Engineering is all about crafting the right input to get the desired output from an
+            LLM like ChatGPT.
+        </div>
+        <div class="slide">
+
+            Imagine you do not have time to think about ingredients, and you do not want to choose between toasted or
+            fresh bread. <b>How would you ask ChatGPT to save you some time?</b>
+        </div>
+        <div class="slide">
+            So, if you prompt your commands effectively, you can use ChatGPT to achieve your goals successfully, and
+            making a sandwich is just a simple example of how LLMs can be helpful.
+        </div>
+        <div class="slide">
+            In fact, there are various applications, from customer service to content creation, where Prompt Engineering
+            skills can be utilized to optimize your time and profit with AI.
+        </div>
+        <div class="slide">
+            In this sense, as a beginner Prompt Engineer, your main focus should be on how to effectively communicate
+            with ChatGPT to get the best results.
+        </div>
+        <div class="slide">
+            Keep exploring, keep learning, and most importantly, have fun with it!
+        </div>
+        <div class="slide">
+            The world of LLMs and Prompt Engineering is full of exciting possibilities, and you're just getting started.
+        </div>
+    </div>
 
 
-What is a Large Language Model?
-Picture a giant library filled with every book, article, and webpage ever written. Now, imagine a super-smart librarian who has read everything in that library and can understand and generate human-like text based on all that knowledge. That's essentially what an LLM is!
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        let currentIndex = 0;
 
-These models are called "large" because they're trained on massive amounts of text data. They learn patterns, relationships, and structures in language, allowing them to generate coherent and contextually appropriate responses to prompts or questions.
-In turn, ChatGPT is like the above-mentioned super-smart librarian, but with a special focus on engaging in conversations.
+        function showSlide(index) {
+            if (index < slides.length) {
+                slides[index].classList.add('visible');
+                slides[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
 
-So, ChatGPT is an LLM developed by OpenAI that is designed to understand and generate human-like text in a chat format.
+        function clearVisibleSlides() {
+            slides.forEach(slide => slide.classList.remove('visible'));
+            currentIndex = 0;
+        }
 
-But How Does ChatGPT Actually Work?
-It's a bit like a game of word prediction. When you give ChatGPT a prompt (or ask it a question), it looks at the words you've used and predicts the most likely next word based on its training. It does this over and over, building up a response word by word.
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                currentIndex = Math.min(currentIndex + 1, slides.length - 1);
+                showSlide(currentIndex);
+            } else if (e.key === 'ArrowLeft') {
+                currentIndex = Math.max(currentIndex - 1, 0);
+                showSlide(currentIndex);
+            }
+        });
+    </script>
+</body>
 
-For example, if you start a sentence with "The cat sat on the...", ChatGPT might predict "mat" as the next word because it's seen that pattern many times in its training data.
-
-But it's not just about individual words - ChatGPT understands context and can generate complex, meaningful responses.
-
-completed check
-Task completed
-Fill in the Gap!
-Suppose you're writing a story and hit a creative block. Try using ChatGPT to help you continue the story.
-
-
-Repeat task
-This is how ChatGPT uses patterns from the data it was trained on and generates responses. Cool, right?
-Task skipped
-Fill in The Gap!
-For another example, try asking the AI about making a snack.
-
-
-Open Playground
-How do you think ChatGPT responded when you asked for a sandwich recipe?
-
-It generates a random recipe
-
-It copies a recipe from a cookbook
-
-It repeats a recipe it has seen before
-
-It combined its understanding of sandwiches, cooking techniques, and common preferences
-Correct answer
-ChatGPT doesn't just repeat a recipe it has seen before or generate a random recipe. Instead, it combines its understanding to generate a unique response tailored to your question.
-
-Moreover, ChatGPT remembers what you are talking about and can adjust its future responses accordingly.
-Task skipped
-Fill in The Gap!
-Try following up on your previous question about sandwiches by clarifying your food preferences.
-
-
-Open Playground
-As you can see, ChatGPT has the ability to maintain context throughout a conversation. Yet, without guidance, its answers are not 100% what you need most of the time.
-
-This is where the importance of prompt engineering arises.
-
-While LLMs are sophisticated pattern recognition systems trained on vast amounts of text data, prompt engineering is the art of effectively communicating with these language models.
-
-In these terms, prompt engineering is all about crafting the right input to get the desired output from an LLM like ChatGPT.
-
-Task skipped
-Fill in The Gap!
-Imagine you do not have time to think about ingredients, and you do not want to choose between toasted or fresh bread. How would you ask ChatGPT to save you some time?
-
-
-Open Playground
-So, if you prompt your commands effectively, you can use ChatGPT to achieve your goals successfully, and making a sandwich is just a simple example of how LLMs can be helpful.
-
-In fact, there are various applications, from customer service to content creation, where prompt engineering skills can be utilized to optimize your time and profit with AI.
-In this sense, as a beginner prompt engineer, your main focus should be on how to effectively communicate with ChatGPT to get the best results.
-
-Keep exploring, keep learning, and most importantly, have fun with it! The world of LLMs and prompt engineering is full of exciting possibilities, and you're just getting started. I can't wait to see what you'll create!
+</html>

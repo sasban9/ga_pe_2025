@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Context Management - ChatGPT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Homenaje&family=Kranky&family=Mynerve&family=Quintessential&family=Rationale&family=Sixtyfour&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: "Homenaje", sans-serif;
+        }
+
+        main,
+        aside {
+            overflow: hidden scroll;
+            height: 100vh;
+            padding: 0;
+            scrollbar-width: none;
+        }
+
+        main {
+            width: 999px;
+            padding: 60px;
+            color: #ccc;
+        }
+
+        main:hover {
+            color: #000;
+            text-shadow: none;
+        }
+
+        aside {
+            text-align: center;
+            background: #222;
+            width: 800px;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            font-family: monospace;
+            color: #fff;
+            font-size: 2rem;
+            opacity: 0.2;
+        }
+
+        aside:hover {
+            opacity: 1;
+        }
+
+        img {
+            max-height: 90vh;
+            margin-bottom: 5vh;
+        }
+
+        pre,
+        code {
+            color: lime;
+            font-size: 1.4rem;
+            text-align: left;
+            padding: 2rem;
+            width: 100%;
+            text-wrap: wrap;
+            line-height: 1.2;
+            background: #333;
+        }
+
+        li {
+            font-size: 2.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        
+<h3>Context Management</h3>
+In this lesson, we're going to focus on context management in prompts.
+
+We'll cover techniques for preserving context, the self-consistency technique, and strategies for writing clear instructions and providing reference text. <hr>
+By the end of this lesson, you'll be able to manage multi-turn conversations effectively.
+<hr>
+Before we start, why do you think it's a big deal to keep the conversation flowing smoothly when chatting with ChatGPT?
+<div class="question">
+    <li>It helps ChatGPT to asses all the information about you and sell it</li>
+    <li>It ensures that ChatGPT can provide relevant and coherent responses over multiple turns</li>
+    <li>ChatGPT will create a personalized book about you</li>
+    <li>It takes you time, so you make less prompts to ChatGPT</li>
+</div>
+Think about what makes conversations flow smoothly and stay on topic.
+<hr>
+Maintaining context ensures that ChatGPT can provide relevant and coherent responses over multiple turns.
+<hr>
+So, building on that - what do you think are some good tricks for keeping the conversation on track when you're chatting with ChatGPT?
+<div class="question">
+    <li>Using vague prompts</li>
+    <li>Providing unrelated information</li>
+    <li>Changing the subject frequently</li>
+    <li>Referring back to previous points</li>
+</div>
+
+Think about what helps keep a conversation on track.
+<hr>
+Referring back to previous points ensures that the context is preserved and the conversation remains coherent.
+
+<h3>Start with The Basics</h3>
+Let's start with the self-consistency technique. This technique ensures that ChatGPT provides consistent responses across multiple interactions.
+
+By maintaining a coherent and reliable conversation flow, it becomes easier for users to follow and trust the information provided.
+
+This technique is particularly useful in scenarios where maintaining a coherent narrative is important, such as email composition.
+<hr><b>TASK 1</b>
+Fill in The Gap! <br>
+Let's see if you can create prompts to maintain self-consistency in a conversation.
+
+<h3>Ask the Model to Adopt a Persona</h3>
+In the prompt above, you have already used one strategy for getting better results - you asked the model to adopt a persona, an HR assistant.
+<hr><b>TASK 2</b>
+Now, to maintain self-consistency when composing the following emails, you have to do that again:
+
+<h3>Provide Examples</h3>
+Otherwise, you can ask ChatGPT to write an email by providing an example or another strategy for getting better results.
+<hr><b>TASK 3</b>
+Type your prompt.
+
+<h3>Using Delimiters</h3>
+To clearly indicate distinct parts of the input, you can use delimiters, such as < >, { }, or triple quotes (""). <hr>
+Delimiters help ChatGPT understand the structure of your message - whether you're separating instructions from content, defining variables, or quoting a block of text.
+
+<h3>Specifying the Length</h3>
+Moreover, you can specify the desired length of the output by adding something like: "Respond in 2 paragraphs," or "Answer in 3 bullet points."
+
+<h3>Wrapping Up</h3>
+In this lesson, we covered context management in prompts, including techniques for preserving context, the self-consistency technique, and strategies for writing clear instructions and providing reference text.
+<hr>
+Next, we'll dive into Image Generation with the <b>4o model</b>! This will further enhance your ability to leverage ChatGPT. Stay tuned!
+<hr>
+    </main>
+    <aside>
+        <b>TASK 1</b>
+
+Act as a friendly HR assistant . Write an email to employees about a survey .
+
+<pre>
+Subject: Your Input Needed: Quick Employee Survey
+
+Hi Team,
+
+We're conducting a brief survey to gather your feedback on working at Innotech. It takes only 10-15 minutes, and your responses will help us improve our workplace.
+
+Please complete it by the 5th of November. Here is the link.
+
+Thanks for helping us make Innotech a better place to work!
+
+Best,
+Jane
+
+</pre>
+<hr>
+<b>TASK 2</b>
+
+
+Act as a friendly HR assistant . Write an email to employees about a new employee announcement .
+<pre>
+Subject: Welcome Our New Team Member!
+
+Hi Team,
+
+I'm excited to announce that Alex has joined Innotech as Data Analyst in our Marketing Department.
+
+Alex comes to us with rich experience, and we are thrilled to have them on board. I'm confident that he will bring great value to our team and help us to achieve our goals.
+
+Please join me in welcoming Alex to our company, and feel free to introduce yourself and make him feel at home!
+
+Thank you for your continued support and collaboration.
+
+Warm regards,
+Jane
+</pre>
+<hr>
+<b>TASK 3</b>
+Look at the example of the email above and create a similar but about another employee announcement .
+<pre>
+
+Subject: Welcome Our New Team Member!
+
+Hi Team,
+
+I'm excited to announce that right after Alex, Emma has joined Innotech too. She took the position of Product Manager in our Product Team.
+
+Emma comes to us as a seasoned expert in product management, and we are thrilled to have her on board. I'm confident that she will bring great value to our team and help us achieve our goals.
+
+Please join me in welcoming Emma to our company, and be comfortable to introduce yourself to make her feel at home!
+
+Thank you for your continued support and collaboration.
+
+Best regards,
+Jane
+</pre>
+<hr>
+    </aside>
+</body>
+
+</html>
