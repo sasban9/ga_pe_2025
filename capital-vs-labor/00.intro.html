@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stacked Narrow Slideshow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Coming+Soon&family=Homenaje&family=Kranky&family=Mynerve&family=Quintessential&family=Rationale&family=Sixtyfour&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+        }
+
+        html {
+            scrollbar-width: none;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            background: url(https://png.pngtree.com/background/20231018/original/pngtree-minimalist-abstract-background-with-dark-lines-and-negative-space-in-3d-picture-image_5595914.jpg);
+            background-size: contain;
+            color: white;
+            font-family: "Mynerve", "Coming Soon", sans-serif;
+            font-size: 2.4rem;
+            line-height: 2;
+        }
+
+        h2 {
+            padding: 0;
+        }
+
+        b {
+            /* font-size: 4rem; */
+            transform: rotate(-8deg);
+        }
+
+        sub {
+            background: grey;
+            border: solid 3px white;
+            border-radius: 80px;
+            margin: 2px;
+            padding: 4px 20px;
+        }
+
+        .slideshow {
+            display: flex;
+            height: 100vh;
+            transition: transform 0.8s ease;
+        }
+
+        .slide {
+            flex: 0 0 40vw;
+            /* min-width: 33vw; */
+            height: 100vh;
+            background: #333;
+            box-sizing: border-box;
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            /* align-items: center; */
+            transform: scale(0.4);
+            /* filter: blur(3px); */
+            transition: transform 0.8s ease, opacity 0.8s ease;
+        }
+
+        .slide ul {
+            text-align: left;
+        }
+
+        .slide.active {
+            transform: scale(1);
+            filter: blur(0);
+        }
+
+        .slide img {
+            max-width: 100%;
+            max-height: 60%;
+            margin-bottom: 15px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="slideshow" id="slideshow">
+        <!-- <div class="slide"></div> -->
+        <div class="slide" style="text-align: center;">
+            <p><img src="../sasban.jpg" height="200" style="border-radius: 100%;width:200px" alt=""><br>@sasban
+                2025<br>linktr.ee/sasban9</p>
+        </div>
+        <div class="slide">
+            Here’s a full-fledged course design for <u>“Capital vs Labor in the Age of AI”</u>, written in a way that
+            makes it engaging, reflective, and practical.
+
+        </div>
+        <div class="slide">
+
+            Course Title
+
+            <h2>Capital vs Labor in the Age of AI: </h2>
+            <h4>Power, Wealth, and Work in a Machine World</h4>
+
+        </div>
+        <div class="slide">
+
+            <h3>Course Overview</h3>
+
+            <p>For centuries, wealth creation has relied on two great forces: <u>capital</u>, which compounds over time,
+                and <u>labor</u>, which trades time for money. The industrial age tilted the scales toward capital.</p>
+        </div>
+        <div class="slide">
+            The digital age accelerated it. Now, in the age of AI, the question resurfaces: <b>What happens to labor
+                when machines can think, act, and produce?</b>
+        </div>
+        <div class="slide">
+
+            This course explores the deep dynamics of capital and labor, why inequality may widen further, and how
+            societies, companies, and individuals can reshape the balance.
+
+        </div>
+        <div class="slide">
+
+            <h4>Learning Objectives</h4>
+
+            By the end of the course, students will:<br>
+
+            * Understand the historical evolution of capital and labor power.<br>
+            * Analyze how AI shifts productivity, ownership, and compensation.<br>
+        </div>
+        <div class="slide">
+            * Critically assess new labor models—gig work, creator economies, AI-assisted entrepreneurship.<br>
+            * Explore economic, ethical, and political debates around inequality.
+        </div>
+        <div class="slide">
+            * Imagine future scenarios for wealth distribution in an AI-driven world.<br>
+            * Develop practical strategies to stay relevant, resilient, and empowered.
+
+        </div>
+        <div class="slide">
+
+            Course Structure (8 Modules)
+
+            <h4>Module 1: The Origins of Capital and Labor</h4>
+
+            * Labor as survival: hunter-gatherers and agrarian toil.<br>
+            * The rise of capital in trade, industry, and empire.<br>
+        </div>
+        <div class="slide">
+            * Compounding wealth vs non-compounding labor.<br>
+            * Why the debate matters more in AI times.
+
+        </div>
+        <div class="slide">
+            Module 2:
+            <h3>The Industrial Age Legacy</h3>
+
+            * Factories and wage labor.<br>
+            * The great promise of unions and worker rights.<br>
+        </div>
+        <div class="slide">
+            * Capitalists: from merchants to barons of steel and oil.<br>
+            * Lessons from the 19th - 20th century labor struggles.
+
+        </div>
+        <div class="slide">
+            Module 3:
+            <h3>The Digital Revolution</h3>
+
+            * Computers and globalization.<br>
+            * The knowledge worker: labor moving “up the value chain.”<br>
+        </div>
+        <div class="slide">
+            * Platforms (Google, Amazon, Facebook) and the rise of capital's dominance again.<br>
+            * Inequality as an algorithmic feature, not a bug.
+
+        </div>
+        <div class="slide">
+
+            <u>Module 4:</u><h3>AI as the Great Disruptor</h3>
+
+            * AI replacing routine mental and physical labor.<br>
+            * The exponential power of AI when paired with capital.<br>
+        </div>
+        <div class="slide">
+            * How ownership of data and models determines power.<br>
+            * “Labor without laborers”: when machines generate wealth.
+
+        </div>
+        <div class="slide">
+
+            <u>Module 5:</u><h3>New Forms of Labor</h3>
+
+            * Gig economy vs algorithmic bosses.<br>
+            * Creator economy: labor as personality, creativity, uniqueness.<br>
+        </div>
+        <div class="slide">
+            * AI as co-pilot: augmented labor rather than displaced labor.<br>
+            * The question: can labor ever compound like capital?
+
+        </div>
+        <div class="slide">
+
+            <u>Module 6:</u><h3>The Future of Capital</h3>
+
+            * Who owns AI: corporations, governments, or communities?<br>
+            * Decentralized capital—crypto, DAOs, shared ownership models.<br>
+        </div>
+        <div class="slide">
+            * Capital concentration: trillion-dollar companies vs the individual worker.<br>
+            * Possible redistributions: UBI, taxation, or profit-sharing models.
+
+        </div>
+        <div class="slide">
+
+            <u>Module 7:</u><h3>Ethics, Power, and Policy</h3>
+
+            * Moral dilemmas of wealth concentration.<br>
+            * The state's role: regulation or acceleration?<br>
+        </div>
+        <div class="slide">
+            * Worker rights in an AI-mediated economy.<br>
+            * Political ideologies reborn: socialism, techno-feudalism, libertarianism.
+
+        </div>
+        <div class="slide">
+
+            <u>Module 8:</u><h3>Navigating the New World</h3>
+
+            * How individuals can survive and thrive.<br>
+            * Building “compoundable labor”: reputation, networks, digital products, ownership stakes.<br>
+        </div>
+        <div class="slide">
+            * Case studies of individuals and groups leveraging AI to escape wage traps.<br>
+            * Final reflections: will labor and capital reconcile, or will AI widen the divide?
+
+        </div>
+        <div class="slide">
+
+            <h3>Pedagogical Style</h3>
+
+            The course mixes history, economics, and philosophy with practical strategies. Each module closes with:
+
+            <p>* <u>Case Study</u> (historical or current example).</p>
+            </div>
+            <div class="slide">
+                <p>* <u>Reflection Prompt</u> (“If your job was automated tomorrow, how would you reinvent your labor?”).<br>
+                * <u>Exercise</u> (e.g., simulate designing a labor model where workers get equity instead of wages).</p>
+
+        </div>
+        <div class="slide">
+
+            <h4>Target Audience</h4>
+
+            * Students of economics, sociology, and business.<br>
+            * Professionals facing automation anxiety.<br>
+            * Entrepreneurs building the future of work.<br>
+            * Policy-makers and social thinkers.
+
+        </div>
+        <div class="slide">
+
+            <h5>Suggested Duration</h5>
+
+            8 weeks (one module per week) or condensed into a <u>2-day intensive seminar.</u>
+
+        </div>
+        <!-- <div class="slide">
+
+            Would you like me to also design </u>sample lecture scripts and discussion prompts</u> for each module, so
+            that it can be used directly in classrooms or workshops?
+
+        </div> -->
+        <div class="slide" style="text-align: center;">
+            <p><img src="../sasban.jpg" height="200" style="border-radius: 100%;width:200px"
+                    alt=""><br>@sasban 2025<br>linktr.ee/sasban9</p>
+        </div>
+    </div>
+
+    <script>
+        let currentIndex = 0;
+        const slideshow = document.getElementById('slideshow');
+        const slides = document.querySelectorAll('.slide');
+        const slideWidth = 40; // vw
+
+        function updateSlidePosition() {
+            const offset = (currentIndex * slideWidth) - ((100 - slideWidth) / 2);
+            slideshow.style.transform = `translateX(-${offset}vw)`;
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === currentIndex);
+            });
+        }
+
+        function nextSlide() {
+            if (currentIndex < slides.length - 1) {
+                currentIndex++;
+                updateSlidePosition();
+            }
+        }
+
+        function prevSlide() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateSlidePosition();
+            }
+        }
+
+        // Keyboard controls
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+
+        // Initialize
+        updateSlidePosition();
+    </script>
+
+</body>
+
+</html>
