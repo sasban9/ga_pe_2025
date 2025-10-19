@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make it Skimmable! 2025</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../06.prompt-hacking/styles.css">
+    <style>
+
+        /* .slide{color: #0006 !important;} */
+    </style>
+</head>
+
+<body>
+    <img class="bounce"
+        style="position: absolute;bottom: 1rem;left: 1rem;z-index: 999;height: 90px;border-radius: 100%;transform: rotate(-6deg);"
+        src="https://sasban.online/img/sasban2.jpg" alt="">
+    <a class="linktree" href="http://linktr.ee/sasban9">linktr.ee/sasban9</a>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-container">
+        <div class="slide2" style="display: none;">
+            <h3>Make it Skimmable!</h3>
+            You're already doing something very smart by making screencasts of your GitHub projects — that's exactly the
+            kind of signal that makes a busy hiring manager take notice. <br>
+            To push your value even further and make your offerings irresistible to employers, here's a multi-pronged
+            strategy:
+
+            Absolutely — let’s unpack this carefully. AI models are already moving beyond general-purpose chatbots into **highly specialized tools**, and the evolution is likely to accelerate in the next few years. Here’s how I see it unfolding:
+
+</div><div class="slide active">
+
+<h3>1. Vertical Specialization</h3>
+
+<p>Instead of one giant “jack-of-all-trades” model, companies will build <u>domain-specific models</u> optimized for certain fields. For example:<br></p><br>
+
+<div>* <b>Legal AI:</b> trained on case law, contracts, statutes, and legal reasoning, capable of drafting, summarizing, and even analyzing risks.<br></div>
+</div><div class="slide">
+<div>* <b>Medical AI:</b> trained on clinical studies, patient data (anonymized), and guidelines to assist diagnosis, treatment plans, and research.<br></div>
+<div>* <b>Financial AI:</b> specialized in market analysis, risk assessment, and regulatory compliance.</div>
+
+</div><div class="slide">
+
+<p>The advantage is that these models can have <u><b>deeper reasoning in one area</b></u> than a generalist model could, because their training data is curated to maximize domain expertise.</p>
+
+</div><div class="slide">
+
+<h3>2. Real-Time & Connected Knowledge</h3>
+
+Future models will combine:<br>
+<table><tr>
+
+    <td>* <b>Pretrained expertise</b> (like ChatGPT today)</td>
+    <td>* <b>Real-time information access</b> (like Perplexity or Grok)</td>
+    <td>* <b>Specialized data streams</b> for specific industries</td>
+</tr></table>
+</div><div class="slide">
+
+<b>Example:</b> a legal AI could pull <u>real-time court decisions, new regulations, and filings,</u> giving lawyers insights faster than manual research. <br>
+Financial AI could track market data, social sentiment, and news to generate actionable analysis on-the-fly.
+
+</div><div class="slide">
+
+### 3. **Multimodal Integration**
+
+Models will increasingly handle **text, images, video, audio, code, and structured data** simultaneously. Specialized models might:
+
+* Analyze X-ray images alongside patient records (medical AI)
+* Read architectural drawings and building codes together (construction AI)
+* Combine news, social media, and stock charts (finance AI)
+
+This allows deep context in a way single-modality models can’t achieve.
+
+</div><div class="slide">
+
+### 4. **Tool-Enhanced and Hybrid Models**
+
+Specialized models will integrate **external tools** natively:
+
+* Calculators, databases, spreadsheets, APIs
+* Simulation engines or modeling software
+* Automated document filing systems
+
+Example: a tax AI that can **read your accounts, check laws, calculate obligations, and generate a ready-to-file report**.
+
+</div><div class="slide">
+
+### 5. **Explainability & Compliance**
+
+As AI becomes specialized, explainability will matter more:
+
+* Legal AI must **cite statutes**.
+* Medical AI must **show evidence behind diagnoses**.
+* Financial AI must **provide audit trails for recommendations**.
+
+Specialization will push models to **not just produce answers, but justify them** rigorously.
+
+</div><div class="slide">
+
+### 6. **Human-in-the-Loop Customization**
+
+Even specialized models will have a **collaborative layer**:
+
+* Professionals can **teach the model preferences or style** (like tone in contracts, risk tolerance in finance).
+* Models will adapt to **organizational knowledge** (internal policies, past decisions) for maximum usefulness.
+
+</div><div class="slide">
+
+### 7. **Smaller, More Efficient Deployments**
+
+Not all applications need a 100-billion-parameter general model. Field-specific models will likely be **smaller, faster, and cheaper** while outperforming generalist models in their domain.
+
+</div><div class="slide">
+
+<p><b>In short:</b> The future will likely look like a <u>network of specialized AI experts</u> rather than one giant omniscient model.<br><br> You might have: a Medical AI for diagnostics, a Legal AI for contracts, a Finance AI for trading, all communicating and collaborating with each other — and with you — to solve real-world problems faster than humans ever could alone.</p>
+
+<!-- If you want, I can **map a full timeline of AI specialization** showing likely fields, capabilities, and when they’ll become mainstream. This could be a 5–10 year horizon. It gives a crystal-clear picture of the future. Do you want me to do that? -->
+
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            const progress = ((index + 1) / slides.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            }
+            if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+
+</html>

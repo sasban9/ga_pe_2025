@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stacked Narrow Slideshow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Coming+Soon&family=Homenaje&family=Kranky&family=Mynerve&family=Quintessential&family=Rationale&family=Sixtyfour&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+        }
+
+        html {
+            scrollbar-width: none;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            background: url(https://png.pngtree.com/background/20231018/original/pngtree-minimalist-abstract-background-with-dark-lines-and-negative-space-in-3d-picture-image_5595914.jpg);background-size: contain;
+            color: white;
+            font-family: "Mynerve", "Coming Soon", sans-serif;
+            font-size: 2.4rem;
+            line-height: 2;
+        }
+
+        h2 {
+            padding: 0;
+        }
+
+        b {
+            /* font-size: 4rem; */
+            transform: rotate(-8deg);
+        }
+
+        sub {
+            background: grey;
+            border: solid 3px white;
+            border-radius: 80px;
+            margin: 2px;
+            padding: 4px 20px;
+        }
+
+        .slideshow {
+            display: flex;
+            height: 100vh;
+            transition: transform 0.8s ease;
+        }
+
+        .slide {
+            flex: 0 0 40vw;
+            /* min-width: 33vw; */
+            height: 100vh;
+            background: #333;
+            box-sizing: border-box;
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            /* align-items: center; */
+            transform: scale(0.4);
+            /* filter: blur(3px); */
+            transition: transform 0.8s ease, opacity 0.8s ease;
+        }
+
+        .slide ul {
+            text-align: left;
+        }
+
+        .slide.active {
+            transform: scale(1);
+            filter: blur(0);
+        }
+
+        .slide img {
+            max-width: 100%;
+            max-height: 60%;
+            margin-bottom: 15px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="slideshow" id="slideshow">
+        <!-- <div class="slide"></div> -->
+        <div class="slide" style="text-align: center;">
+            <p><img src="../sasban.jpg" height="200" style="border-radius: 100%;width:200px"
+                    alt=""><br>@sasban 2025<br>linktr.ee/sasban9</p>
+        </div>
+        <div class="slide">
+            Love it 😄 — let me retroactively weave in the <b>cross-links 🔗</b> so your running index is richer right from the start. Here’s the updated foundation with links across topics:
+
+
+        </div><div class="slide">
+<h3> 🎬 Cinema</h3>
+
+* Iconic world cinema characters from the last 100 years that deeply moved audiences.<br>
+* Designing 12 new unexpected characters completely different from iconic ones.<br>
+</div><div class="slide">
+* Story concept where time, age, and memory can be reversed. <b>🔗 (Life Philosophy: trust, time, memory)</b>
+
+* Reflection on how cinema is losing its mojo to AI (like theater once blamed cinema). <b>🔗 (Life Philosophy: AI futures)</b>
+</div><div class="slide">
+    * Ideas for off-beat roles a peak actor could take that would surprise fans.
+
+        </div><div class="slide">
+<h3> 🌍 Travel</h3>
+
+* A 50-week India travel plan: culturally and touristically significant, geographically clustered for weekend drives, and timed for optimal weather.
+
+        </div><div class="slide">
+<h3> 📚 Curriculum & Learning</h3>
+
+* Modern learning curriculum embracing AI and real-world skills. <b>🔗 (Career Skills)</b>
+* Course to showcase everything AI is capable of. 🔗 (</b>Life Philosophy: AI futures</b>)
+* Prompt engineering course styled like the gospels of the Bible, with lessons and exercises.
+        </div><div class="slide">
+            * Course for students: *“school is about finding answers, while life is about asking the right questions.”* 🔗 (</b>Life Philosophy</b>)
+* Course on underexplored but high-impact career success skills for fresh graduates. 🔗 (</b>Career Skills</b>)
+</div><div class="slide">
+
+* Course on social hacking. 🔗 (</b>Online Safety</b>)
+* Course on modern etiquette in an age of constant recording. 🔗 (</b>Life Philosophy</b>)
+* Course on managing monthly expenses for online services in India (with modules expanded). 🔗 (</b>Online Safety & Digital Awareness</b>)
+        </div><div class="slide">
+            * Course on digital protection & online safety (10 hours, real-world examples). 🔗 (</b>Online Safety</b>)
+* Course on Indian achievements vs. citizenship (can a country claim achievements of subsidized-educated ex-citizens?). 🔗 (</b>Life Philosophy</b>)
+
+        </div><div class="slide">
+<h3> 🎮 Games & Projects (HTML/JS)</h3>
+
+* Recreating a number-merging mobile game like 2048.
+* Slideshow projects:
+
+  * Vertical slides (100vh, 30% width) stacking right-to-left with keyboard controls.
+        </div><div class="slide">
+            * Ken Burns style slideshow with fading and alternating side-by-side layout.
+  * Sentence-resizing experiments: making each line fit in one width, randomized/responsive font sizing.
+
+        </div><div class="slide">
+<h3> 🔐 Online Safety & Digital Awareness</h3>
+
+* Loan shark harassment tactics (spam OTPs, sign-ups, etc.) and digital countermeasures.
+* Little-known online safety tips for daily use.
+* Short scripts for online safety.
+</div><div class="slide">
+
+* 10 real-world incidents exposing safety lapses.
+* Password protection evolution since the 1950s.
+* Cross-links: Curriculum courses on digital protection, social hacking, expense management.
+
+        </div><div class="slide">
+ 🌱 Life Philosophy & Reflections
+
+* How trust erosion changes society and what comes after oath-keeping loses meaning. 🔗 (</b>Cinema: time/age/memory stories</b>)
+</div><div class="slide">
+* Market future where each individual becomes a company and AI agents trade with one another — can 8B micro-companies sustain? 🔗 (</b>Career & Skills, Online Safety</b>)
+            * Why stable career wages/jobs will decrease and what might replace them. 🔗 (</b>Career Skills</b>)
+        </div><div class="slide">
+            * Parallel with life before the industrial age. 🔗 (</b>Career Skills</b>)
+* *Gray Zone Playbook for Visionaries* — how innovators operated on edges of legality/ethics. 🔗 (</b>Career & Success Skills</b>)
+
+        </div><div class="slide">
+ 💼 Career & Success Skills
+
+* Interview insights: creating a 10-hour course to teach fresh graduates career-impacting skills rarely taught. 🔗 (</b>Curriculum, Life Philosophy</b>)
+
+        </div><div class="slide">
+ 🍲 Food & Health
+
+* New foods to try in Kolkata beyond standard fare.
+* 30-day meal plan: rich in vegetables, includes fish/mutton/eggs.
+
+        </div><div class="slide">
+ 🌀 Not Yet Categorized
+
+* Young AI founders post-ChatGPT launch: companies with paying customers. 🔗 (</b>Career Skills, AI Futures</b>)
+* Online household subscriptions & smart ways to reduce digital burden. 🔗 (</b>Online Safety & Digital Awareness</b>)
+
+---
+
+✅ Now your index not only has </b>topics</b>, but also </b>connections</b> across them.
+Next week’s digest will also show 🔗 where new overlaps appear.
+
+Do you want me to also keep a </b>separate “Cross-Link Map”</b> (like a web of connections between topics), or is it enough to show links inside each topic for now?
+
+        </div>
+        <div class="slide" style="text-align: center;">
+            <p><img src="https://sasban.online/sasban.jpg" height="200" style="border-radius: 100%;width:200px"
+                    alt=""><br>@sasban 2025<br>linktr.ee/sasban9</p>
+        </div>
+    </div>
+
+    <script>
+        let currentIndex = 0;
+        const slideshow = document.getElementById('slideshow');
+        const slides = document.querySelectorAll('.slide');
+        const slideWidth = 40; // vw
+
+        function updateSlidePosition() {
+            const offset = (currentIndex * slideWidth) - ((100 - slideWidth) / 2);
+            slideshow.style.transform = `translateX(-${offset}vw)`;
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === currentIndex);
+            });
+        }
+
+        function nextSlide() {
+            if (currentIndex < slides.length - 1) {
+                currentIndex++;
+                updateSlidePosition();
+            }
+        }
+
+        function prevSlide() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateSlidePosition();
+            }
+        }
+
+        // Keyboard controls
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+
+        // Initialize
+        updateSlidePosition();
+    </script>
+
+</body>
+
+</html>

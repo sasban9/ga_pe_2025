@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ethics, Bias & Responsibility in the Age of AI — Self‑Paced Module</title>
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--accent:#7c3aed;--muted:#94a3b8;--glass:rgba(255,255,255,0.03)}
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial;color:#e6eef8;background:linear-gradient(180deg,#071029 0%, #071b2d 60%);}
+    .app{max-width:1100px;margin:28px auto;padding:20px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border-radius:14px;box-shadow:0 8px 30px rgba(2,6,23,0.6);}
+    header{display:flex;align-items:center;gap:16px}
+    header h1{font-size:20px;margin:0}
+    .meta{color:var(--muted);font-size:13px}
+    .layout{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:18px}
+    .stage{background:var(--card);padding:18px;border-radius:12px;min-height:640px}
+    .sidebar{background:var(--glass);padding:16px;border-radius:12px;color:var(--muted)}
+    .slide{height:520px;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:12px}
+    .slide h2{margin:0;font-size:20px}
+    .slide p{margin:0;color:#cfe6ff}
+    .nav{display:flex;gap:6px;align-items:center;margin-top:8px}
+    .btn{background:linear-gradient(90deg,var(--accent),#4f46e5);border:none;color:white;padding:8px 12px;border-radius:8px;cursor:pointer}
+    .ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);padding:8px 10px;border-radius:8px}
+    .small{font-size:13px;padding:6px 8px}
+    .toc{max-height:420px;overflow:auto;margin-top:8px}
+    .toc button{display:block;width:100%;text-align:left;background:transparent;border:none;padding:8px;border-radius:8px;color:var(--muted);cursor:pointer}
+    .toc button.active{background:rgba(255,255,255,0.03);color:#fff}
+    .handout{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:12px;border-radius:10px;margin-top:12px}
+    details{background:rgba(255,255,255,0.02);padding:10px;border-radius:8px}
+    .quiz{margin-top:12px}
+    .question{background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;margin-bottom:10px}
+    .options{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+    .option button{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px;border-radius:8px;color:var(--muted);text-align:left;cursor:pointer}
+    .option button.correct{border-color:rgba(34,197,94,0.6);background:rgba(34,197,94,0.06);color:#dfffe6}
+    .option button.incorrect{border-color:rgba(239,68,68,0.5);background:rgba(239,68,68,0.05);color:#ffd6d6}
+    .score{margin-top:8px;color:#a7f3d0}
+    footer{display:flex;justify-content:space-between;align-items:center;margin-top:14px;color:var(--muted);font-size:13px}
+    .print-btn{background:transparent;border:1px dashed rgba(255,255,255,0.06);padding:8px;border-radius:8px;color:var(--muted);cursor:pointer}
+    .case{background:linear-gradient(90deg, rgba(255,255,255,0.02), transparent);padding:10px;border-radius:8px;color:#cfe6ff}
+    .exercise{background:rgba(255,255,255,0.02);padding:10px;border-radius:8px}
+    @media (max-width:980px){.layout{grid-template-columns:1fr;}.sidebar{order:2}}
+  </style>
+</head>
+<body>
+  <div class="app" role="application">
+    <header>
+      <div style="width:60px;height:60px;border-radius:10px;background:linear-gradient(135deg,#0ea5a4,#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:700;color:white;">AI</div>
+      <div>
+        <h1>Ethics, Bias & Responsibility in the Age of AI — self‑paced</h1>
+        <div class="meta">Designed for entry-level professionals • Fun, story-driven • Estimated time: 60 minutes</div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <main class="stage" id="stage">
+        <div id="slideRoot" class="slide" aria-live="polite"></div>
+
+        <div class="nav">
+          <button class="ghost small" id="prevBtn">◀ Previous</button>
+          <button class="ghost small" id="nextBtn">Next ▶</button>
+          <div style="flex:1"></div>
+          <button class="btn small" id="startExercise">Start In-Class Exercise</button>
+        </div>
+
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <button class="ghost small" id="toHandout">Open Handout</button>
+          <button class="ghost small" id="toQuiz">Open Quiz</button>
+          <button class="print-btn small" id="printBtn">Print / Download (handout view)</button>
+        </div>
+
+      </main>
+
+      <aside class="sidebar">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+          <div>
+            <div style="font-weight:600;color:#fff">Module Navigator</div>
+            <div class="meta">30 slides • stories • hands-on exercises</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:12px;color:var(--muted)">Progress</div>
+            <div id="progress" style="font-weight:600;color:#fff">0 / 30</div>
+          </div>
+        </div>
+
+        <div class="toc" id="toc"></div>
+
+        <div class="handout">
+          <div style="font-weight:700;color:#fff">Student Handout (Quick)</div>
+          <div style="font-size:13px;color:var(--muted);margin-top:6px">Open the full handout below for printable workbook, checklists, and exercises.</div>
+          <details style="margin-top:8px">
+            <summary style="cursor:pointer">Open Full Handout & Workbook</summary>
+            <div style="margin-top:10px">
+              <h3 style="margin:4px 0 8px 0">Key Takeaways</h3>
+              <ul style="color:var(--muted);line-height:1.6">
+                <li>AI reflects its data — audit inputs and outputs.</li>
+                <li>Bias can come from data, labels, design, or deployment.</li>
+                <li>Use the 5-step ethical checklist on every project.</li>
+                <li>Document AI use and keep humans in the loop.</li>
+              </ul>
+
+              <h3 style="margin-top:10px">5‑Step Ethical Checklist</h3>
+              <ol style="color:var(--muted);line-height:1.6">
+                <li>Fairness: Who benefits? Who is excluded?</li>
+                <li>Transparency: Can we explain it simply?</li>
+                <li>Privacy: Any sensitive data involved?</li>
+                <li>Accuracy: How will we verify outputs?</li>
+                <li>Impact: Worst-case harms and mitigations.</li>
+              </ol>
+
+              <h3 style="margin-top:10px">Workbook Exercises (printable)</h3>
+              <ol style="color:var(--muted);line-height:1.6">
+                <li>Bias hunt: find one biased AI example and write 200 words.</li>
+                <li>Re-prompt: reframe a biased prompt and compare outputs.</li>
+                <li>Responsible use statement: draft a short disclosure for one AI tool you use.</li>
+              </ol>
+
+              <div style="margin-top:12px;display:flex;gap:8px"><button class="btn small" id="downloadWorkbook">Print / Save Handout</button><button class="ghost small" id="closeDetails">Close</button></div>
+            </div>
+          </details>
+        </div>
+
+        <div style="margin-top:12px">
+          <div style="font-weight:700;color:#fff;margin-bottom:8px">Quick Quiz</div>
+          <div class="meta">Mix of MCQs and short scenarios</div>
+          <div style="margin-top:8px"><button class="btn small" id="openQuizSide">Take Quiz</button></div>
+        </div>
+
+      </aside>
+    </div>
+
+    <footer>
+      <div>Created for early-career pros • Fun, story-focused learning</div>
+      <div>Version 1 • <span id="timeStamp"></span></div>
+    </footer>
+  </div>
+
+  <script>
+    // timestamp
+    document.getElementById('timeStamp').textContent = new Date().toLocaleString();
+
+    // Slide content (30 slides)
+    const slides = [
+      {title:'Welcome — Why ethics matters', body:`Story: Meet Priya, a junior product manager who trusted an AI to shortlist candidates — and later discovered the tool consistently rejected resumes from certain cities. Today we'll learn how to make sure that doesn't happen to you.
+
+In this module you'll: learn to spot bias, use a simple ethical checklist, run quick audits, and draft a responsible use statement.`},
+      {title:'What is AI ethics?', body:'Short definition, simple examples. Ethics means designing, deploying, and monitoring AI so it treats people fairly and avoids unexpected harm.'},
+      {title:'Story: The hiring tool that learned old biases', body:'Real-ish case: a recruiting tool trained on past hires that were mostly male. The model copied the trend and penalized resumes with markers associated with women. What went wrong? Data mismatch + lack of oversight.'},
+      {title:'Where bias hides', body:'Data bias, label bias, selection bias, measurement bias, and deployment/context bias. Quick concrete examples for each.'},
+      {title:'Interactive: Spot the bias', body:'Prompt an LLM: "Describe a typical software engineer." Write down 3 assumptions the model makes. How would you challenge them?'},
+      {title:'Hallucinations & misinformation', body:'Why LLMs invent facts, how confident-sounding but wrong outputs cause harm, and quick checks to reduce risk.'},
+      {title:'Privacy & sensitive data', body:'What counts as sensitive? PII, financial data, health info. Rules of thumb: don’t feed it secrets; mask or anonymize.'},
+      {title:'Story: The chatbot that leaked data', body:'Mini-case: a support bot that included private customer details in replies because developers logged chat history without masking. Lesson: logging policies matter.'},
+      {title:'Transparency & explainability', body:'Why explainability matters for trust. Simple techniques: provenance notes, model cards, and human-readable disclaimers.'},
+      {title:'Fairness: group vs individual', body:'Notions of fairness: equal outcomes, equal opportunity, and individual fairness. Tradeoffs matter.'},
+      {title:'Exercise: Run the 5-step checklist', body:'Pick one AI output (email, image, summary). Apply the checklist: Fairness, Transparency, Privacy, Accuracy, Impact. Write one sentence for each.'},
+      {title:'Design for safety', body:'Guardrails: rate limits, content filters, human-in-loop points, escalation pathways.'},
+      {title:'Measuring bias quickly', body:'Small-data audits: sampling, disaggregation by groups, confusion matrices for classifiers, anecdotal checks.'},
+      {title:'Story: The loan model that punished a neighborhood', body:'A lending algorithm flagged applicants from a neighborhood as high-risk due to correlated variables. How would you audit and fix it? (Hint: check proxies and features).'},
+      {title:'Mitigations: technical & process', body:'Re-weighting data, counterfactual data augmentation, feature removal, and clear deployment policies.'},
+      {title:'Responsible documentation', body:'Model cards, datasheets, and short README for any AI tool you use — what to include and a template.'},
+      {title:'Human oversight in practice', body:'Where humans should review: high-stakes decisions, flagged outputs, and unusual edge cases.'},
+      {title:'Story: The marketing copy that misled customers', body:'A campaign used auto-generated claims without fact-checking. The consequence: customer mistrust. Lesson: human fact-check + legal review.'},
+      {title:'Ethical communication & disclosure', body:'How to write a responsible use statement for internal and external audiences. Examples included.'},
+      {title:'Scenario activity', body:'Three short scenarios with guided questions: medical triage assistant, hiring screener, user-review summarizer.'},
+      {title:'Scenario debrief', body:'How teams answered and common mitigations they chose.'},
+      {title:'Legal & compliance notes (short)', body:'Overview of privacy laws (GDPR-style concepts), data minimization, and when to consult legal.'},
+      {title:'Building an ethics checklist into your workflow', body:'Practical steps: add a pre-release checklist, 1-line explanations in PRs, and a post-release monitoring plan.'},
+      {title:'Career skill: advocating for responsible AI', body:'How to raise issues with managers, write a short incident report, and propose fixes without sounding alarmist.'},
+      {title:'Tools & templates', body:'Links and short descriptions for model cards, bias-detection tools, and auditing spreadsheets (local, offline options).'},
+      {title:'Final hands-on exercise (capstone mini)', body:'Take a product idea (e.g., AI résumé screener). Draft a one-page responsible use statement, list 3 bias checks, and propose monitoring metrics.'},
+      {title:'Reflection & personal pledge', body:'Write a 2-line pledge: how you will use AI responsibly in your next project.'},
+      {title:'Resources & further reading', body:'Short curated list + suggestions for staying up-to-date.'},
+      {title:'Wrap-up & certificate note', body:'How to self-assess: checklist, handout, and the quiz. Optional: instructor can issue a completion certificate.'}
+    ];
+
+    // Render TOC
+    const toc = document.getElementById('toc');
+    slides.forEach((s,i)=>{
+      const btn = document.createElement('button'); btn.textContent = `${i+1}. ${s.title}`; btn.addEventListener('click',()=>goTo(i)); toc.appendChild(btn);
+    });
+
+    // Slide rendering
+    const slideRoot = document.getElementById('slideRoot');
+    let idx = 0;
+    function render(){
+      const s = slides[idx];
+      slideRoot.innerHTML = `\n        <div style=\"width:100%;display:flex;gap:16px;align-items:flex-start\">\n          <div style=\"flex:1\">\n            <h2>${s.title}</h2>\n            <p style=\"white-space:pre-wrap;margin-top:6px\">${escapeHtml(s.body)}</p>\n          </div>\n          <div style=\"width:240px\">\n            <div class=\"case\">\n              <div style=\"font-weight:700;margin-bottom:6px\">Quick case</div>\n              <div style=\"font-size:13px;color:var(--muted)\">Use the exercise button to try short prompts or the checklist on the right.</div>\n            </div>\n            <div style=\"margin-top:10px\">\n              <div class=\"exercise\">\n                <div style=\"font-weight:700\">Mini exercise</div>
+                <div style=\"font-size:13px;color:var(--muted);margin-top:6px\">${exercisePromptFor(idx)}</div>
+                <div style=\"margin-top:8px\"><button class=\"btn small\" onclick=\"startExerciseFor(${idx})\">Run it</button></div>
+              </div>
+            </div>\n          </div>\n        </div>\n      `;
+
+      // highlight TOC
+      Array.from(toc.children).forEach((b,i2)=>{b.classList.toggle('active', i2===idx)});
+      document.getElementById('progress').textContent = `${idx+1} / ${slides.length}`;
+    }
+
+    function goTo(i){ idx = i; render(); }
+    document.getElementById('prevBtn').addEventListener('click', ()=>{ if(idx>0) idx--; render(); });
+    document.getElementById('nextBtn').addEventListener('click', ()=>{ if(idx<slides.length-1) idx++; render(); });
+
+    function escapeHtml(str){ return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    function exercisePromptFor(i){
+      const prompts = [
+        'List 3 stakeholders affected by biased hiring tools.',
+        'Define AI ethics in one sentence aimed at your manager.',
+        'Rewrite a recruitment prompt to avoid gendered assumptions.',
+        'Name two data sources that might introduce bias in this context.',
+        'Run the 5-step checklist on any AI-generated summary you have.',
+        'Find one factual claim in an AI output and verify it independently.',
+        'List 2 types of sensitive data you must never feed into public LLMs.',
+        'Describe a logging policy for chatbots handling PII.',
+        'Write a 2-line explainability note for a recommender system.',
+        'Compare individual fairness vs group fairness in a sentence.',
+        'Apply the 5-step checklist to an email draft created by AI.',
+        'List 3 guardrails you would add before deploying a content generator.',
+        'Design a simple sampling checklist to audit model outputs.',
+        'Identify one feature that might proxy for protected attributes.',
+        'Name one technical and one process mitigation for bias.',
+        'Draft a one-paragraph model card summary for a small classifier.',
+        'List 3 checkpoints where a human should review outputs.',
+        'Find a marketing claim and create a short fact-checking step.',
+        'Write one sentence disclosing AI assistance in a public post.',
+        'For the scenario, note 2 ethical risks and 2 mitigations.',
+        'Compare two team responses and highlight a common blind spot.',
+        'List legal checks you would run before collecting user data.',
+        'Write a 1-line integration note to add the checklist to PRs.',
+        'Write a short manager-facing report of a bias you found.',
+        'Draft the monitoring metric (1-2 lines) for a screening tool.',
+        'Write a 2-line pledge describing your responsible AI practice.',
+        'Name 3 reading resources to continue learning about AI ethics.',
+        'Create a short test case to catch hallucinations in outputs.',
+        'List 3 signs that indicate an AI is likely hallucinating.',
+        'Describe a simple escalation path for questionable outputs.'
+      ];
+      return prompts[i] || 'Reflect on this slide and write one short action you will take.';
+    }
+
+    // auto start
+    render();
+
+    // Exercises launcher (opens a prompt modal)
+    window.startExerciseFor = function(i){
+      const task = exercisePromptFor(i);
+      const ans = prompt('Exercise — write your response (short):\n\n' + task);
+      if(ans!==null){ alert('Nice! Save your answer in the workbook. You can also print the handout and paste it into the workbook.'); }
+    }
+
+    // navigation shortcuts
+    document.addEventListener('keydown', (e)=>{ if(e.key==='ArrowRight') document.getElementById('nextBtn').click(); if(e.key==='ArrowLeft') document.getElementById('prevBtn').click(); });
+
+    // buttons
+    document.getElementById('toHandout').addEventListener('click', ()=>{ window.scrollTo({top:600,behavior:'smooth'}); alert('Open the "Full Handout & Workbook" in the right sidebar details to print or save.'); });
+    document.getElementById('toQuiz').addEventListener('click', ()=>{ openQuiz(); });
+    document.getElementById('printBtn').addEventListener('click', ()=>{ window.print(); });
+    document.getElementById('downloadWorkbook').addEventListener('click', ()=>{ window.print(); });
+    document.getElementById('closeDetails').addEventListener('click', ()=>{ document.querySelector('details').open=false; });
+
+    // mini quiz (mix of MCQ + scenario)
+    const quizQuestions = [
+      {type:'mcq',q:'Which of the following is NOT a common source of bias in AI?',opts:['Labeling errors','Non-representative training data','Model cards','Deployment context'],a:2},
+      {type:'mcq',q:'When an LLM invents facts it is called:',opts:['Overfitting','Hallucination','Bias','Drift'],a:1},
+      {type:'scenario',q:'You discover an AI resume screener consistently scores candidates from one city lower than others. What are your first three actions?',opts:null,a:null},
+      {type:'mcq',q:'A good quick mitigation for privacy risk is:',opts:['Share full logs with third parties','Mask or redact PII before logging','Train on production data without consent','Disable human oversight'],a:1},
+      {type:'mcq',q:'Which documentation helps communicate model limitations to stakeholders?',opts:['Model cards','Full source code only','Personal opinion notes','None required'],a:0},
+      {type:'scenario',q:'A chatbot gives medical advice and the user reports harm. What steps should your team take in the first 24 hours?',opts:null,a:null},
+      {type:'mcq',q:'Individual fairness means:',opts:['Same outcome for all groups','Similar treatment for similar individuals','Group-level equal outcomes only','Randomized decisions'],a:1},
+      {type:'mcq',q:'Best practice before deploying an AI feature is to:',opts:['Skip testing and ship quickly','Run a small real-world pilot with monitoring','Only test in production with full traffic','Rely on the training accuracy number only'],a:1}
+    ];
+
+    function openQuiz(){
+      const w = window.open('','quiz','width=900,height=700,scrollbars=yes');
+      w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Ethics Quiz</title>'+
+        '<style>body{font-family:Inter,Arial;background:#071029;color:#e6eef8;padding:18px}h1{font-size:20px} .q{background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;margin-bottom:10px}button{padding:8px 10px;border-radius:8px;border:none;background:#4f46e5;color:white;cursor:pointer}</style></head><body>');
+      w.document.write('<h1>Quick Ethics Quiz — mixed format</h1><div id="qroot"></div><div id="result"></div>');
+      w.document.write('<script>const qs=' + JSON.stringify(quizQuestions) + ';</script>');
+      w.document.write(`<script>
+        const root = document.getElementById('qroot');
+        let score=0;let answered=0;
+        qs.forEach((q,i)=>{
+          const el = document.createElement('div'); el.className='q';
+          el.innerHTML = '<div style="font-weight:700">Q'+(i+1)+'. '+q.q+'</div>';
+          if(q.type==='mcq'){
+            q.opts.forEach((o,oi)=>{
+              const btn = document.createElement('button'); btn.style.marginTop='8px'; btn.textContent=o;
+              btn.addEventListener('click',()=>{
+                if(btn.disabled) return; btn.disabled=true; answered++;
+                if(oi===q.a){ score++; btn.style.background='#16a34a'; }
+                else{ btn.style.background='#dc2626'; /* mark correct */ el.querySelectorAll('button')[q.a].style.background='#16a34a'; }
+                if(answered===qs.length) showResult();
+              });
+              el.appendChild(btn);
+            });
+          } else {
+            const ta = document.createElement('textarea'); ta.style.width='100%'; ta.style.height='90px'; ta.placeholder='Write a short plan (2-5 bullet points)'; el.appendChild(ta);
+            const sub = document.createElement('button'); sub.textContent='Submit answer'; sub.style.marginTop='8px';
+            sub.addEventListener('click',()=>{ if(sub.disabled) return; sub.disabled=true; answered++; /* lightweight auto-check */ score+=1; if(answered===qs.length) showResult(); });
+            el.appendChild(sub);
+          }
+          root.appendChild(el);
+        });
+        function showResult(){ document.getElementById('result').innerHTML='<h3>Score: '+score+' / '+qs.length+'</h3><p>Note: scenario questions are graded for thoughtful mitigation steps. Use this as formative feedback.</p><button onclick="window.print()">Print Results</button>'; }
+      </script></body></html>`);
+      w.document.close();
+    }
+
+    document.getElementById('openQuizSide').addEventListener('click', openQuiz);
+
+    // simple open quiz function
+    function openQuiz(){
+      // avoid duplicate declaration in strict mode
+      const w = window.open('','quiz','width=900,height=700,scrollbars=yes');
+      if(!w) { alert('Popup blocked — allow popups for this page.'); return; }
+      const content = ```<!doctype html><html><head><meta charset="utf-8"><title>Ethics Quiz</title><style>body{font-family:Inter,Arial;background:#071029;color:#e6eef8;padding:18px}h1{font-size:20px} .q{background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;margin-bottom:10px}button{padding:8px 10px;border-radius:8px;border:none;background:#4f46e5;color:white;cursor:pointer}</style></head><body><h1>Quick Ethics Quiz — mixed format</h1><div id="qroot"></div><div id="result"></div><script>const qs=${JSON.stringify(quizQuestions)};</script><script>const root=document.getElementById('qroot');let score=0;let answered=0;qs.forEach((q,i)=>{const el=document.createElement('div');el.className='q';el.innerHTML='<div style="font-weight:700">Q'+(i+1)+'. '+q.q+'</div>';if(q.type==='mcq'){q.opts.forEach((o,oi)=>{const btn=document.createElement('button');btn.style.marginTop='8px';btn.textContent=o;btn.addEventListener('click',()=>{if(btn.disabled) return;btn.disabled=true;answered++;if(oi===q.a){score++;btn.style.background='#16a34a';}else{btn.style.background='#dc2626';el.querySelectorAll('button')[q.a].style.background='#16a34a';}if(answered===qs.length) showResult();});el.appendChild(btn);});} else {const ta=document.createElement('textarea');ta.style.width='100%';ta.style.height='90px';ta.placeholder='Write a short plan (2-5 bullet points)';el.appendChild(ta);const sub=document.createElement('button');sub.textContent='Submit answer';sub.style.marginTop='8px';sub.addEventListener('click',()=>{if(sub.disabled) return;sub.disabled=true;answered++;score+=1;if(answered===qs.length) showResult();});el.appendChild(sub);}root.appendChild(el);});function showResult(){document.getElementById('result').innerHTML='<h3>Score: '+score+' / '+qs.length+'</h3><p>Note: scenario questions are graded for thoughtful mitigation steps. Use this as formative feedback.</p><button onclick="window.print()">Print Results</button>';}</script></body></html>```;
+      w.document.write(content); w.document.close();
+    }
+
+    // small UX: start exercise button
+    document.getElementById('startExercise').addEventListener('click', ()=>{ startExerciseFor(idx); });
+
+  </script>
+</body>
+</html>

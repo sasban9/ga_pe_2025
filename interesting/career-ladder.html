@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Twinkle+Star&display=swap" rel="stylesheet">
+    <style>
+        * {
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scrollbar-width: none;
+        }
+
+        body {
+            margin: 0;
+            background: #444;
+            overflow-x: hidden;
+            font-family: "Twinkle Star", Arial, sans-serif;
+        }
+        h1,h2,h3{font-family: sans-serif;}
+
+        main {
+            border-collapse: collapse;
+            display: flex;flex-direction: column;width: 100vw;
+        }
+
+        div.tr{width: 100vw;
+            display: flex;flex-direction: row;
+        }
+
+        div.td,
+        div.th {
+            width: 100%;
+            min-height: 20vh;
+            font-size: 2rem;
+            line-height: 2.5;
+            vertical-align: top;
+            border-bottom: solid 4px #222;
+            background: #333;
+            color: #ccc;
+            padding: 0 2rem;
+            cursor: pointer;
+        }
+
+        div.td {
+            /* filter: blur(3px);transform: scale(.6) perspective(500px) scale(-0.6, -1) rotateY(5deg); */
+            box-shadow: 0 0 10px #fff;
+            background: khaki;
+            color: #222;
+        }
+        div.th{text-align: center;}
+
+        div.td.show {
+            filter: blur(0);
+            transform: rotate(0deg);
+            transition: 0.4s;
+            background: #333;
+            color: #ccc;
+        }
+
+        div img {
+            max-width: 100%;
+            margin: 0 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <!-- <div class="tr">
+            <div class="th"></div>
+            <div class="th"></div>
+            <div class="th"></div>
+            <div class="th"></div>
+            <div class="th"></div>
+            <div class="th"></div>
+            <div class="th"></div>
+            <div class="th"></div>
+            <div class="th"></div>
+            <div class="th"></div>
+        </div> -->
+        <div class="tr">
+            <div class="td">
+
+                <!-- <p>o_O &middot;</p> -->
+                <p>The nature of careers has transformed <b>dramatically</b> in the last 20 - 30 years — so much so that
+                    your parents and you might be living in two completely different work realities. </p>
+
+            </div>
+            <div class="th"></div>
+        </div>
+        <div class="tr">
+            <div class="th"></div>
+            <div class="td" style="height: auto;">
+                <p>What used to be a safe, linear, loyalty-driven path has morphed into a fast-changing, self-directed,
+                    visibility-driven game. </p>
+
+            </div>
+        </div>
+        <div class="tr">
+            <div class="th" colspan="2">
+                <p>Here's a breakdown of that evolution:</p>
+            </div>
+        </div>
+        <div class="tr">
+            <div class="th" colspan="2">
+                <h3>1. From One Career for Life → To Many Chapters, Roles & Reinventions</h3>
+            </div>
+        </div>
+        <div class="tr">
+            <div class="td">
+                <p>Your parents likely chose a profession (engineer, teacher, banker), stuck with it for decades, and
+                    were rewarded for loyalty.</p>
+            </div>
+            <div class="th"></div>
+        </div>
+        <div class="tr">
+            <div class="th"></div>
+            <div class="td">
+                <p>Today, careers are like seasons: people switch roles, industries, even entire identities every few
+                    years. </p>
+            </div>
+        </div>
+        <div class="tr">
+            <div class="td">
+                <p>Reinvention is not a crisis anymore — </p>
+                <h3>It's a strategy</h3>
+            </div>
+            <div class="th"></div>
+        </div>
+        <div class="tr">
+            <div class="th" colspan="2">
+                <h3>2. From Climbing the Ladder → To Building a Portfolio</h3>
+                </div>
+        </div>
+        <div class="tr">
+            <div class="th"></div>
+            <div class="td">
+                <p>Earlier, success meant climbing a clearly defined corporate ladder.</p>
+            </div>
+        </div>
+        <div class="tr">
+            <div class="td">
+                <p>Now, many build careers like portfolios — a mix of jobs, side hustles, content, products, freelance
+                    gigs, investments. </p>
+            </div>
+            <div class="th"></div>
+        </div>
+        <div class="tr">
+            <div class="th"></div>
+            <div class="td">
+                <p>People aren’t just workers; they’re mini-brands, creators, or entrepreneurs, even inside companies.
+                </p>
+
+            </div>
+        </div>
+        <div class="tr">
+            <div class="th" colspan="2">
+                <h3>3. From Local Jobs → To Global Playing Fields</h3>
+                </div>
+        </div>
+        <div class="tr">
+            <div class="td">
+                <p>Your parents probably worked in one city, maybe one country, for their whole career.</p>
+            </div>
+            <div class="th"></div>
+        </div>
+        <div class="tr">
+            <div class="th"></div>
+            <div class="td">
+                <p>You can work from anywhere, with clients or teams across the globe. </p>
+            </div>
+        </div>
+        <div class="tr">
+            <div class="td">
+                <p>The job market is no longer just "who’s hiring in my city" — it’s "who needs my skillset, anywhere in
+                    the world."</p>
+            </div>
+            <!-- <div class="th" ></div> -->
+            <div class="th"></div>
+        </div>
+        <div class="tr">
+
+            <div class="th" colspan="2">
+                <h3>4. From Degrees as Destiny → To Skills as Currency</h3>
+                </div>
+        </div>
+        <div class="tr">
+            <div class="th"></div>
+            <div class="td">
+                <p>In their time, a degree practically guaranteed a job. </p>
+                <p>Now, it’s just the entry ticket.</p>
+            </div>
+        </div>
+        <div class="tr">
+            <div class="td">
+                <p>Today, what matters is: <u>Can you demonstrate skills? Can you solve problems? Can you learn
+                        fast?</u></p>
+            </div>
+            <div class="th"></div>
+        </div>
+        <div class="tr">
+            <div class="th"></div>
+            <div class="td">
+                <p>Certifications, GitHub, case studies, writing, content — these now <b>prove</b> value more than
+                    pedigree.</p>
+            </div>
+        </div>
+        <div class="tr">
+            <div class="th">
+                <h3>5. From Silent Hard Work → To Visible Contribution</h3>
+            </div>
+        </div>
+        <div class="tr">
+            <div class="th"></div>
+            <div class="td">
+                <p>Your parents were told: <u>"Keep your head down, work hard, and you’ll be rewarded."</u></p>
+            </div>
+            <div class="td">
+                <p>Now? If no one sees your work, it doesn’t count. </p>
+            </div>
+            <div class="td">
+                <p>Visibility, storytelling, sharing your process — these are career accelerators. <b>Leaders don’t promote ghosts.</b></p>
+            </div>
+
+        </div>
+        <div class="tr">
+            <div class="th" colspan="2">
+                <h3>6. From Job Security → To Skill Security</h3>
+            </div>
+        </div>
+        <div class="tr">
+            <!-- <div class="th"></div> -->
+            <div class="td">
+                <p>There used to be a real sense of stability — jobs lasted decades, companies were loyal.</p>
+            </div>
+       
+            <div class="td">
+                <p>Now, no role is safe forever. <br><img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDB-d1KtqbUKCq2LTcb8NShfq3mW-WEFBMgA&s"
+                        alt="" height="300"></p>
+            </div>
+            <div class="th"></div>
+            <!-- <div class="td" ></div> -->
+
+            <!-- <div class="th"></div> -->
+            <div class="td"><img src="https://www.microsoft.com/en-us/research/wp-content/uploads/2018/08/01_MSR_SIGCOMM_Data_Network_1400x788.png"
+                    alt="" align="left">
+                <p> But if you keep building <em>adaptable skills</em>, <em>curiosity</em>, and <i>networks</i>, you can
+                    stay employable across any storm.<br></p>
+            </div>
+
+        </div>
+        <div class="tr">
+            <div class="th" colspan="2">
+                <h3>7. From Hierarchy Obedience → To Creative Initiative</h3>
+            </div>
+        </div>
+        <div class="tr">
+            <div class="th"></div>
+            <div class="td" style="width: 300%;">
+                <p>Earlier, work was about following orders, being reliable, and “knowing your place.”</p>
+            </div>
+        </div>
+        <div class="tr">
+            <div class="td" style="width: 200%;">
+                <p>Now, it's about proposing ideas, questioning old ways, leading without authority. </p>
+            </div>
+            <div class="th"></div>
+        </div>
+        <div class="tr">
+            <div class="th"></div>
+            <div class="td" style="width:300%">
+                <h3>Initiative is the new seniority.</h3>
+            </div>
+        </div>
+        <div class="tr">
+            <div class="th" colspan="2">
+                <h3>8. From Manager as Boss → To Manager as Coach (or Obstacle)</h3>
+            </div>
+        </div>
+        <div class="tr">
+            <div class="th">
+                <p>In the past, managers were respected because they had power.</p>
+                <img src="https://www.psychologs.com/wp-content/uploads/2024/02/Top-10-Ways-to-Becom-Powerful-Person.jpg"
+                height="200" alt="">
+            </div>
+            
+            <div class="td">
+                <p><img src="https://media.istockphoto.com/id/1338644164/vector/sport-fans-happy-friends-rooting-for-their-soccer-team-supporters-watch-football-game.jpg?s=612x612&w=0&k=20&c=7cGj48G-R2sSZzmnUphQzZtachVqCGj36eLDKFnuG-8="
+                        alt="" height="300" align="">
+
+                    Today, the best managers earn respect by being mentors, accelerators, and supporters. </p>
+            </div>
+            <div class="td" rowspan="2">
+                <!-- <br><br><br> -->
+                <h2>If they’re not, people leave.</h2>
+                <img src="https://media.istockphoto.com/id/1351264178/vector/office-workers-evacuation-from-building-flat-color-vector-illustration.jpg?s=612x612&w=0&k=20&c=VUjqrX3Yxwl7uo6nLwbDBgLkvpR1XoG_03xAGYnzujM="
+                    alt="">
+            </div>
+        </div>
+        <div class="tr">
+        </div>
+        <div class="tr">
+            <div class="th" colspan="2">
+                <h3>9. From Working in Systems → To Designing Them</h3>
+            </div>
+        </div>
+        <div class="tr">
+            <div class="th" style="width: 200%;"><img
+                src="https://www.planplusonline.com/wp-content/uploads/2014/07/systemsprocessess_wp.jpg" alt=""></div>
+            <div class="td">
+                <p>Your parents followed systems <br>(HR, finance, IT).
+                </p>
+            </div>
+    
+            <div class="td">
+                <p>You’re expected to <u>improve or build</u> them. </p>
+                <p>The line between user and builder is thinner now. </p>
+            </div>
+            <!-- <div class="th"></div> -->
+        </div>
+        <div class="tr">
+            
+            <div class="td" style="text-align: center;">
+                <p>Tools like <img height="60"
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRm4EujEwAzZ_ta6AODoKd3AoLxqrMejBwLSw&s"
+                        alt="">, <img height="60" src="https://cdn.worldvectorlogo.com/logos/zapier-2.svg" alt="">,
+                    <img height="60"
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnjFizahSeGb_Qok8qS15nWWePGNY1vw-hCg&s"
+                        alt=""><br> — they turn every employee into a system designer.
+                </p>
+            </div>
+        </div>
+        <div class="tr">
+            <div class="th" colspan="2"><h3>10. From Time-in-Seat → To Outcome-Driven Value</h3></div>
+        </div>
+        <div class="tr">
+            <div class="td"><p>Earlier, being at your desk all day was proof of <img height="300"
+                src="https://www.shutterstock.com/image-vector/dedication-typography-hand-drawn-brush-600nw-1827389027.jpg"
+                alt=""></p></div>
+            <div class="td"><p>Now, it’s not about hours. It’s about <img height="300" src="https://tradeshala.co.in/wp-content/uploads/2023/02/leverage.png"
+                alt=""> </p></div>
+            
+            <div class="th" colspan="2"><p>Can you produce results that matter — faster, smarter, more creatively? <img
+                src="https://i.ytimg.com/vi/gYGqL-RrSeA/maxresdefault.jpg" alt=""></p></div>
+        </div>
+        <div class="tr">
+            <div class="th"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-E0b9YaGC3J8OmhSQflRKs7uXA254qet6-w&s" alt="" align="left"><h3>Your parents were taught to “fit in.” <br>You have to learn to “stand out.”</h3></div>
+        </div>
+        <div class="tr">
+       
+            <!-- <div class="th"></div> -->
+            <div class="td"><p>They played a game of <br><img height="200" src="https://image7.photobiz.com/8912/28_20240802120030_7089464_large.png" alt="">
+            </p></div>
+            <div class="td"><p>You’re playing a game of ... <img height="200"
+                src="https://www.eurokidsindia.com/blog/wp-content/uploads/2023/10/history-of-human-evolution-1-870x425.jpg"
+                alt=""></p></div>
+                <!-- <div class="th"></div> -->
+        </div>
+    </main>
+
+    
+    
+    
+
+    
+    
+    
+    
+
+    <!-- Would you like a visual chart comparing these two generations’ career models side by side — 
+for a talk, presentation, or article? -->
+    <script>
+        document.addEventListener('mouseover', function (e) {
+            if (e.target.tagName === 'div' && e.target.classList.includes('td')) {
+                e.target.classList.add('show');
+            }
+        });
+
+    </script>
+</body>
+
+</html>
