@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introdution</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            line-height: 1.8;
+            padding: 0;
+            box-sizing: border-box;
+            font-size: 1.7rem;
+        }
+
+        body,
+        html {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 100;
+            height: 100%;
+            background-color: #000;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 8px;
+            background: linear-gradient(90deg, transparent, transparent, #fff);
+            width: 0%;
+            z-index: 9999;
+            transition: width 0.3s ease-in-out;
+        }
+
+        .slide-container {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-type: y mandatory;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slide {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            /* align-items: center; */
+            justify-content: center;
+            /* text-align: center; */
+            padding: 20px 100px 20px 600px;
+            /* font-size: 1.2em; */
+            filter: blur(10px);
+            transform: skew(10deg, 10deg);
+            opacity: 0;
+            transition: filter 0.3s ease, opacity 0.3s ease, transform 0.5s ease-out;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .slide:nth-of-type(2n){
+            transform: skew(-10deg, -10deg);
+        }
+
+        .slide.active {
+            filter: blur(0);
+            transform: skew(0deg);
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .slide img {
+            max-width: 80%;
+            transform: rotate(-6deg);
+            vertical-align: middle;
+            /* height: auto; */
+            margin: 0 2rem;
+            border-radius: 10px;
+        }
+
+        .slide:nth-child(7n) {
+            background: darkred;
+            color: #fff;
+        }
+
+        .slide:nth-child(7n+1) {
+            background: darkblue;
+            color: #ccc;
+        }
+
+        .slide:nth-child(7n+2) {
+            background: yellowgreen;
+            color: #333;
+        }
+
+        .slide:nth-child(7n+3) {
+            background: darkmagenta;
+            color: #fff;
+        }
+
+        .slide:nth-child(7n+4) {
+            background: darkgreen;
+            color: #fff;
+        }
+
+        .slide:nth-child(7n+5) {
+            background: darkslategray;
+            color: #fff;
+        }
+
+        .slide:nth-child(7n+6) {
+            background: lightsalmon;
+            color: #333;
+        }
+        td{font-size: 1.5rem;border-bottom: solid 3px;border-left: solid 3px darkred;padding-left: 1rem;}
+        iframe {
+            width: 80%;
+            height: 60%;
+            border: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <img style="position: absolute;bottom: 1rem;left: 1rem;z-index: 999;height: 90px;border-radius: 100%;transform: rotate(-6deg);"
+        src="https://sasban.online/sasban.jpg" alt="">
+    <a style="position: absolute;font-size:1rem;top: 2rem;right: 1rem;z-index: 999;height: 120px;border-radius: 100%;color: khaki;text-decoration: none;"
+        href="http://linktr.ee/sasban9">linktr.ee/sasban9</a>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-container">
+        <div class="slide active">
+<!-- Here is a tight 2-minute introduction script built for a course page or opening lecture. It focuses on differentiation, value, expectations, and positioning. -->
+
+<!-- **Introduction Script (2 minutes)** -->
+
+Welcome to this AI leadership course for 2025. This is not another beginner-friendly Udemy course filled with generic explanations, surface-level trends, or flashy animations. 
+</div><div class="slide">
+This is a dense, strategic, no-nonsense program built specifically for business leaders who need clarity, direction, and an execution plan for the next twelve months.
+
+</div><div class="slide">
+Most AI courses in the marketplace teach tools. They show you features, prompts, and tricks. This course takes a different approach. It shows you how AI transforms an entire organization when used correctly
+</div><div class="slide">
+—how it reshapes workflows, decision-making, cost structures, team design, competitive advantage, and long-term strategy. 
+</div><div class="slide">
+Leaders don’t need another overview of what AI is. They need a structured way to think, act, and lead in the new environment. That is what this course delivers.
+
+</div><div class="slide">
+The content here is intentionally dense. Every lesson is compact but carefully designed to challenge your assumptions and give you practical frameworks you can apply immediately. You should not rush through it. 
+</div><div class="slide">
+Take it slowly. Pause often. Do the exercises. Think through the scenarios. This is a hands-on leadership program, not passive watching. You will get the full value only if you engage actively with the execises and apply each module to your specific business context.
+
+</div><div class="slide">
+You will not find glossy visuals, heavy animations, or fancy motion graphics here. What you will find is concentrated insight drawn from how the most AI-advanced companies are already operating. 
+</div><div class="slide">
+If you focus on the content itself—and work through it deliberately—you will walk away with a clear, actionable plan for transforming your organization over the next ninety days.
+
+</div><div class="slide">
+If you are ready to lead with confidence in an AI-accelerated world, this course will give you the tools, structures, and perspectives you will not find in typical marketplace courses. <h3>Let’s begin.</h3>
+
+        </div>
+        <div class="slide">
+            <h3><a href="./index.html" style="color: hotpink;">The AI Leadership Mastercourse 2025 &raquo;</a></h3>
+            <strong>What Business Leaders Must Know</strong>
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            const progress = ((index + 1) / slides.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            }
+            if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+
+</html>
