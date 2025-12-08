@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Million Dollar Actions 2025</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../06.prompt-hacking/styles.css">
+</head>
+
+<body>
+    <img class="bounce"
+        style="position: absolute;bottom: 1rem;left: 1rem;z-index: 999;height: 90px;border-radius: 100%;transform: rotate(-6deg);"
+        src="https://sasban.online/img/sasban2.jpg" alt="">
+    <a class="linktree" href="http://linktr.ee/sasban9">linktr.ee/sasban9</a>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-container">
+        <div class="slide active">
+Y2K remediation was a <b>short, high-urgency commercial event</b> caused by a design shortcut in legacy software.
+<img src="https://blog.boson.com/hs-fs/hubfs/Remember.-Y2k.png?width=883&height=498&name=Remember.-Y2k.png" width="500" alt="">
+</div><div class="slide">
+<b>Problem:</b>
+Old systems stored years with two digits (97 instead of 1997).
+When clocks hit 01/01/2000, many systems would interpret “00” as 1900.
+This risked failures in banking, aviation, telecom, utilities, government systems.
+</div><div class="slide">
+Scope:
+Almost every enterprise relied on COBOL or mainframe systems built across 1970s–1990s.
+Millions of lines of code had to be scanned and patched.
+Documentation was poor. Many original developers were retired or deceased.
+</div><div class="slide">
+Market conditions:
+Deadline fixed. No negotiation.
+Regulated industries were legally liable if they failed to remediate.
+Demand > Supply of engineers who understood old systems.
+</div><div class="slide">
+Resulting gold rush:
+Companies hired programmers at aggressive rates.
+COBOL contractors doubled or tripled income.
+Global consulting firms scaled overnight teams.
+Bodies were flown internationally to fix systems onsite.
+</div><div class="slide">
+Characteristics of the opportunity:
+Not about innovation.
+Not about building new tools.
+About **volume execution under time pressure**.
+Value came from **the ability to deliver at scale before the deadline**.
+</div><div class="slide">
+Business winners:
+Large consulting firms (Accenture, TCS, Infosys, Wipro) built global credibility and long-term client contracts.
+Y2K became the wedge that **exported India’s IT services industry**.
+</div><div class="slide">
+Outcome:
+Most failures never occurred because the remediation was done.
+After 2000, the same firms used Y2K relationships to upsell maintenance, outsourcing, and modernization.
+</div><div class="slide">
+Key structural lesson:
+A gold rush appears when:
+
+1. The problem is not optional
+2. The deadline is fixed
+3. The work is repeatable
+4. The buyer has budget and urgency
+5. Capable labor is scarce
+</div><div class="slide">
+Apply to AI now:
+Current urgency: productivity and revenue retention, not survival.
+But new urgency events **will** appear (AI security compliance, model governance, regulatory audit).
+<hr>
+The next Y2K-like event in AI will not be “AI is new.”
+It will be **“AI now must be controlled, monitored, and certified.”**
+</div><div class="slide">
+If you want, I can outline:
+What the **AI Governance Gold Rush** will look like
+Who the buyers will be
+What services will be sold
+And how to position early.
+
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            const progress = ((index + 1) / slides.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            }
+            if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+
+</html>

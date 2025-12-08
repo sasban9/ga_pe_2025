@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animated Poem</title>
+<style>
+  body {
+    background: #1e1e2f;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .poem-container {
+    width: 60%;
+    text-align: center;
+  }
+
+  .line {
+    font-size: 20px;
+    opacity: 0.2;
+    margin: 15px 0;
+    transform: scale(1);
+    transition: all 0.5s ease-in-out;
+    position: relative;
+  }
+
+  .line.active {
+    font-size: 40px; /* 3x bigger */
+    opacity: 1;
+    color: #ffcc00;
+    transform: scale(1.1);
+    animation: pulse 3s infinite alternate;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1.1); }
+    100% { transform: scale(1.15); }
+  }
+</style>
+</head>
+<body>
+  <div class="poem-container">
+<div class="line">The first advantage was <u>video editing skill</u>. </div>
+<div class="line">Early creators who knew how to trim awkward pauses, add transitions, overlay music, </div>
+<div class="line">or include captions instantly created a smoother viewing experience. </div>
+<div class="line">Even small things—like cutting out silence or speeding up certain sections—made videos feel professional. </div>
+<div class="line">Editing wasn’t just cosmetic; it influenced <u>viewer retention</u>, which YouTube's recommendation algorithm rewarded.</div>
+
+<div class="line">The second advantage was **storytelling ability**. </div>
+<div class="line">Even short videos needed a hook, a middle, and a payoff. </div>
+<div class="line">Creators who could build tension, surprise, humor, or emotional resonance kept people watching longer. </div>
+<div class="line">They understood that a strong narrative—even in a 2 - 3 minute clip—was more compelling than simply showing something happen.</div>
+
+<div class="line">The third advantage was <u>understanding audience psychology</u>. </div>
+<div class="line">Successful early YouTubers grasped what viewers wanted: relatable personalities, </div>
+<div class="line">content they could learn from or laugh at, </div>
+<div class="line">and a reason to subscribe. </div>
+<div class="line">They anticipated what would trigger shares, comments, or repeat views. </div>
+<div class="line">Many newcomers treated uploading as a passive act—just putting content out—but winners treated it as <u>designing for attention</u>.</div>
+
+<div class="line">Finally, timing mattered. YouTube was growing fast, </div>
+<div class="line">and competition was still limited. Early creators who combined editing skill, </div>
+<div class="line">storytelling, and audience insight could rapidly accumulate subscribers, </div>
+<div class="line">which then compounded through social proof and algorithmic promotion. </div>
+<div class="line">By the time the platform became crowded, the early winners had established </div>
+<div class="line">**loyal audiences and recognizable brands**, making it nearly impossible for latecomers </div>
+<div class="line">to replicate their growth without significant investment.</div>
+
+In short, success wasn’t just about being “creative.” 
+It was about **technical polish, psychological insight, and narrative skill** - applied at the perfect moment 
+in an emerging platform. Those were the qualities that turned a hobbyist video 
+into a viral sensation and, eventually, a career.
+  </div>
+
+<script>
+  const lines = document.querySelectorAll('.line');
+  let current = 0;
+
+  function activateLine(index) {
+    lines.forEach((line, i) => {
+      line.classList.remove('active');
+      if(i < index) {
+        line.style.opacity = 0.2;
+        line.style.transform = 'scale(1)';
+      } else if(i === index) {
+        line.classList.add('active');
+        line.style.opacity = 1;
+      } else {
+        line.style.opacity = 0.2;
+        line.style.transform = 'scale(1)';
+      }
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'ArrowRight') {
+      if(current < lines.length - 1) {
+        current++;
+        activateLine(current);
+      }
+    } else if(e.key === 'ArrowLeft') {
+      if(current > 0) {
+        current--;
+        activateLine(current);
+      }
+    }
+  });
+
+  // Initialize first line
+  activateLine(current);
+</script>
+</body>
+</html>

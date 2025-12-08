@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stacked Narrow Slideshow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Coming+Soon&family=Homenaje&family=Kranky&family=Mynerve&family=Oswald:wght@200..700&family=Quintessential&family=Rationale&family=Sixtyfour&display=swap" rel="stylesheet">
+<style>
+    *{margin: 0;}
+    body {
+        margin: 0;
+        overflow-x: hidden;
+        background: #111;
+        color: white;
+        font-family: 'Mynerve', sans-serif;
+        font-size: 1.2rem;line-height: 2;
+    }
+    h1,h2,h3,h4{font-family: 'Homenaje', sans-serif;}
+    .slideshow {
+        display: flex;
+        height: 100vh;
+        transition: transform 0.8s ease;
+    }
+    .slide {
+        flex: 0 0 30vw;
+        height: 100vh;
+        background: #333;
+        box-sizing: border-box;
+        padding: 20px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        opacity: 1;
+        transform: scale(0.5) skewX(-30deg);
+        transition: transform 0.8s ease, opacity 0.8s ease;
+    }
+    .slide:nth-of-type(3n){background: darkred;}
+    .slide:nth-of-type(3n+1){background: darkorchid;}
+    .slide.active {
+        transform: scale(1);
+        font-size: 2rem;
+    }
+    .slide img {
+        max-width: 100%;
+        max-height: 60%;
+        margin-bottom: 15px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+</style>
+</head>
+<body>
+
+<div class="slideshow" id="slideshow">
+    <div class="slide"><h1>Discovery, Mastery, Service</h1><h2>@sasban</h2></div>
+    <div class="slide">
+        The first advantage was <h3>video editing skill</h3> 
+</div><div class="slide">
+        Early creators who knew how to trim awkward pauses, add transitions, overlay music, or include captions instantly created a smoother viewing experience. 
+</div><div class="slide">
+        Even small things — like cutting out silence or speeding up certain sections — made videos feel professional. 
+</div><div class="slide">
+        Editing wasn’t just cosmetic; it influenced **viewer retention**, which YouTube’s recommendation algorithm rewarded.
+</div><div class="slide">
+The second advantage was **storytelling ability**. 
+</div><div class="slide">
+Even short videos needed a hook, a middle, and a payoff. 
+</div><div class="slide">
+Creators who could build tension, surprise, humor, or emotional resonance kept people watching longer. 
+</div><div class="slide">
+They understood that a strong narrative — even in a 2 – 3 minute clip — was more compelling than simply showing something happen.
+</div><div class="slide">
+The third advantage was **understanding audience psychology**. 
+</div><div class="slide">
+Successful early YouTubers grasped what viewers wanted: relatable personalities, content they could learn from or laugh at, and a reason to subscribe. 
+</div><div class="slide">
+They anticipated what would trigger shares, comments, or repeat views. 
+</div><div class="slide">
+Many newcomers treated uploading as a passive act—just putting content out—but winners treated it as **designing for attention**.
+</div><div class="slide">
+Finally, timing mattered. YouTube was growing fast, and competition was still limited. Early creators who combined editing skill, storytelling, and audience insight could rapidly accumulate subscribers, which then compounded through social proof and algorithmic promotion. By the time the platform became crowded, the early winners had established **loyal audiences and recognizable brands**, making it nearly impossible for latecomers to replicate their growth without significant investment.
+</div><div class="slide">
+In short, success wasn’t just about being “creative.” It was about **technical polish, psychological insight, and narrative skill**—applied at the perfect moment in an emerging platform. Those were the qualities that turned a hobbyist video into a viral sensation and, eventually, a career.
+    </div>
+    <div class="slide"></div>
+    <div class="slide" style="background: url(https://picsum.photos/id/1015/600/800);"><div style="background: #0008;padding:10px 30px;"><h2>Slide 3</h2><p>Description 3</p></div></div>
+    <div class="slide"><img src="https://miro.medium.com/v2/resize:fit:1400/0*kUTOxg6HYY12lkOb"><h2>FUN gif</h2><p>Description 4</p></div>
+    <div class="slide"><img src="https://picsum.photos/id/1021/600/800"><h2>Slide 5</h2><p>Description 5</p></div>
+    <div class="slide"><img src="https://picsum.photos/id/1022/600/800"><h2>Slide 6</h2><p>Description 6</p></div>
+    <div class="slide"><img src="https://picsum.photos/id/1023/600/800"><h2>Slide 7</h2><p>Description 7</p></div>
+    <div class="slide"><img src="https://picsum.photos/id/1024/600/800"><h2>Slide 8</h2><p>Description 8</p></div>
+    <div class="slide"><img src="https://picsum.photos/id/1025/600/800"><h2>Slide 9</h2><p>Description 9</p></div>
+    <div class="slide"><img src="https://picsum.photos/id/1026/600/800"><h2>Slide 10</h2><p>Description 10</p></div>
+    <div class="slide"><img src="https://picsum.photos/id/1027/600/800"><h2>Slide 11</h2><p>Description 11</p></div>
+    <div class="slide"><img src="https://picsum.photos/id/1028/600/800"><h2>Slide 12</h2><p>Description 12</p></div>
+    <div class="slide"><img src="https://picsum.photos/id/1029/600/800"><h2>Slide 13</h2><p>Description 13</p></div>
+    <div class="slide"><img src="https://picsum.photos/id/1030/600/800"><h2>Slide 14</h2><p>Description 14</p></div>
+</div>
+
+<script>
+let currentIndex = 0;
+const slideshow = document.getElementById('slideshow');
+const slides = document.querySelectorAll('.slide');
+const slideWidth = 30; // vw
+
+function updateSlidePosition() {
+    const offset = (currentIndex * slideWidth) - ((100 - slideWidth) / 2);
+    slideshow.style.transform = `translateX(-${offset}vw)`;
+    slides.forEach((slide, index) => {
+        slide.classList.toggle('active', index === currentIndex);
+    });
+}
+
+function nextSlide() {
+    if (currentIndex < slides.length - 1) {
+        currentIndex++;
+        updateSlidePosition();
+    }
+}
+
+function prevSlide() {
+    if (currentIndex > 0) {
+        currentIndex--;
+        updateSlidePosition();
+    }
+}
+
+// Keyboard controls
+window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') {
+        nextSlide();
+    } else if (e.key === 'ArrowLeft') {
+        prevSlide();
+    }
+});
+
+// Initialize
+updateSlidePosition();
+</script>
+
+</body>
+</html>
