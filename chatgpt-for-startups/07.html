@@ -1,0 +1,332 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Interactive HTML Slideshow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Coming+Soon&family=Goblin+One&family=Homenaje&family=Kranky&family=Mynerve&family=Oswald:wght@200..700&family=Playwrite+DE+SAS:wght@100..400&family=Quintessential&family=Rationale&family=Roboto:ital,wght@0,100..900;1,100..900&family=Sixtyfour&display=swap" rel="stylesheet">
+  <style>
+    *{margin: 0;padding: 0;}
+    html{scrollbar-width: none;}
+    body {
+      font-family: 'Roboto', Arial, sans-serif;font-weight: 100;
+      background: #090023;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-size: 3.2rem;line-height: 1.4;
+    }
+    #slideshow {
+      width: 90%;
+      max-width: 1900px;
+      background: #0003;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      position: relative;
+    }
+    .slide {
+      display: none;
+      /* text-align: center; */
+      min-height: 70vh;padding: 1rem 6rem;
+    }
+    .slide.active {
+      display: flex;gap: 2rem;
+      flex-direction: column;justify-content: center;align-items: center;
+    }
+    span {
+      background: none;
+      color: transparent;opacity:0;
+      transition: all 0.4s ease;
+      padding: 2px 4px;text-align: center;
+      /* border-radius: 4px; */
+    }
+    span.visible {
+      background: #0006;backdrop-filter: blur(0);
+      color: #fff;opacity:1;
+    }
+    b span.visible{color: coral;}
+    u{color: #ff0;text-shadow: 0 4px 2px #000;}
+    img {
+      width: 100%;
+      max-width: 400px;
+      /* display: block; */
+      margin: 15px 0;
+      border-radius: 8px;
+    }
+    blockquote{background: #267;color: cyan;font-family: monospace;font-size: 2rem;padding: 1rem;}
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+    }
+    th, td {
+      border: 1px solid #555;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background: #0003;
+    }
+    #hint {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 24px;
+      color: #bbb;
+    }
+  </style>
+  </head>
+  <body>
+
+  <div id="slideshow">
+    <div class="slide active" style="background: linear-gradient(85deg, #000, #fff0), url() 50% 50%; background-size: cover;flex-direction: column;">
+        <!-- Perfect — here’s the **full teaching script for Module 7: Finance, Legal & Operations — Simplify the Back Office**, designed for your 90-minute **“ChatGPT for Startups”** course. It follows the same cinematic, conversational style as a modern Udemy lesson, with voiceover cues, slide directions, and live ChatGPT demo moments. -->
+
+
+🎬 MODULE 7
+<h2>Finance, Legal & Operations — Simplify the Back Office</h2>
+</div><div class="slide">
+
+<!-- **Duration:** ~15 minutes -->
+<p><b>Goal:</b> 
+<span>Show founders and startup operators </span>
+<span>how ChatGPT can save hours in bookkeeping, </span>
+<span>compliance, documentation, and daily management </span>
+<span>— the “boring but vital” side of running a startup.</span></p>
+</div><div class="slide">
+<b>Core Idea:</b> You don’t need a full back-office team yet; ChatGPT can act as your analyst, paralegal, and ops assistant rolled into one.
+
+</div><div class="slide">
+
+<h3>🎙️INTRO </h3>
+
+<!-- **Voiceover:** -->
+“Every founder loves the creative and product side. But what kills momentum? Paperwork, finances, and the fine print. In this module, I’ll show you how ChatGPT can manage these back-office chores 
+</div><div class="slide">
+like a tireless assistant — freeing you to focus on growth.”
+
+<!-- **On screen:** -->
+
+* Title: <h4>ChatGPT for Finance, Legal & Operations</h4>
+* Subtitle: <b>Automate the boring. Focus on building.</b>
+
+</div><div class="slide">
+<small>PART 1</small>
+<h3>💰 FINANCE MADE SIMPLE</h3>
+
+<!-- **Voiceover:** -->
+“Let’s start with finance — because knowing your numbers keeps you alive. ChatGPT isn’t a substitute for an accountant, but it’s perfect for building clarity, speed, and structure.”
+
+</div><div class="slide">
+<small>Lesson 1: </small>
+<h3>🧾 Automating Financial Reports  </h3>
+
+“Imagine you have monthly expenses in a spreadsheet — marketing, salaries, tools. Instead of manually analyzing, you can ask ChatGPT to summarize patterns.”
+</div><div class="slide">
+<!-- Prompt: -->
+
+<blockquote>“Summarize this table of expenses into total spend per category, key cost drivers, and 3 recommendations to reduce costs by 10%. Output in markdown table.”</blockquote>
+
+<b>Live demo:</b> ChatGPT turns your messy list into a clean, readable report.
+
+<!-- **Voiceover:** -->
+“This kind of analysis helps you act like a CFO without needing one.”
+
+</div><div class="slide">
+<small> Lesson 2:</small>
+<h3>🧮 Building Simple Financial Forecasts   </h3>
+
+<!-- **Voiceover:** -->
+“Forecasting feels intimidating, but it’s just pattern prediction. ChatGPT can help you build a starter model.”
+</div><div class="slide">
+<!-- Prompt: -->
+
+<blockquote>> “Create a 12-month financial projection for a SaaS startup earning $5,000 MRR growing 10% monthly, with 30% expenses. Show revenue, cost, and net profit in table form.”</blockquote>
+
+“In seconds, you get a projection you can paste into Sheets or Excel. Now you can tweak numbers and scenario-test.”
+
+</div><div class="slide">
+<small>Lesson 3: </small>
+<h3>📊 Investor-Ready Summaries  </h3>
+
+<!-- **Voiceover:** -->
+“Before a pitch, founders waste hours writing one-pagers. Let ChatGPT do the heavy lifting.”
+</div><div class="slide">
+
+<!-- Prompt: -->
+
+<blockquote>> “Summarize our latest financial report into 5 bullet points suitable for an investor update email. Keep tone factual but optimistic.”</blockquote>
+
+<!-- **Voiceover:** -->
+“It creates professional summaries with the right tone and clarity — especially useful for monthly investor updates.”
+
+</div><div class="slide">
+<small>PART 2 </small>
+<h3>⚖️ LEGAL CLARITY WITHOUT THE JARGON</h3>
+
+<!-- **Voiceover:** -->
+“Legal documents are like foreign languages — and founders drown in them. ChatGPT can’t replace lawyers, but it’s a brilliant translator, summarizer, and risk detector.”
+
+</div><div class="slide">
+<small>Lesson 1</small>
+<h4>📜  Contract Summaries</h4>
+
+<!-- Prompt: -->
+
+<blockquote>> “Summarize this employment contract into key rights, obligations, and any red flags for the employer. Keep it under 200 words.”</blockquote>
+
+<!-- **Voiceover:** -->
+“This works for NDAs, vendor contracts, or partnership agreements. You’ll instantly understand what you’re signing — before your lawyer reviews it.”
+
+</div><div class="slide">
+<small>Lesson 2 </small><h3>⚠️ Risk Detection    </h3>
+
+<!-- Prompt: -->
+
+<blockquote>Highlight 5 potential legal or operational risks in this vendor agreement and suggest what clauses we should clarify or negotiate.</blockquote>
+
+<!-- **Voiceover:** -->
+“Now ChatGPT is acting like a paralegal — spotting issues before they become expensive.”
+
+</div><div class="slide">
+<small>Lesson 3 </small><h3>🧠 Policy Drafting   </h3>
+<!-- Prompt: -->
+<blockquote>Create a privacy policy for a small e-commerce startup selling handmade goods online. Keep language simple and GDPR-compliant.</blockquote>
+
+<!-- **Voiceover:** -->
+“You get a solid first draft. Then your legal advisor just reviews it, instead of writing from scratch.”
+
+</div><div class="slide">
+PART 3 
+<h3>⚙️  OPERATIONS & WORKFLOW MAGIC (4 min) </h3>
+
+<!-- **Voiceover:** -->
+“Finally, let’s talk operations — the hidden backbone of startups. Here, ChatGPT becomes your Chief of Staff.”
+
+</div><div class="slide">
+<small> Lesson 1</small><h3>🗂️ SOP Creation  </h3>
+
+<!-- Prompt: -->
+
+<blockquote>Create a Standard Operating Procedure for onboarding new freelancers to our content team. Include steps, tools, and expected timelines.</blockquote>
+
+<!-- **Voiceover:** -->
+“ChatGPT instantly structures a clear, repeatable process you can share internally — consistency, solved.”
+
+</div><div class="slide">
+<small> Lesson 2</small><h3>🧭 Task & Priority Planning  </h3>
+
+<!-- Prompt: -->
+
+<blockquote>You are my operations assistant. I’ll share our current goals and tasks — organize them into weekly priorities with deadlines and accountability owners.</blockquote>
+
+<!-- **Voiceover:** -->
+“This turns chaos into clarity. Many founders literally run their operations through a ChatGPT chat thread like this daily.”
+
+</div><div class="slide">
+<small>Lesson 3</small> <h3>🤖 Workflow Automation Suggestions   </h3>
+<!-- Prompt: -->
+
+<blockquote>Given our startup’s stack — Notion, Slack, Google Drive, and Stripe — suggest 5 automations we can set up using Zapier or Make to save manual effort.</blockquote>
+
+<!-- **Voiceover:** -->
+“ChatGPT understands your toolset and recommends automation recipes. It’s like having an AI ops consultant.”
+
+</div><div class="slide">
+
+<h3>🧩 WRAP-UP</h3>
+
+<!-- **Voiceover:** -->
+Let’s recap: ChatGPT helps you run lean and smart. It won’t replace your finance or legal advisors — but it gives you superpowers between meetings. In one afternoon, you can summarize contracts, model cash flow, and design SOPs. That’s what we call an AI-powered back office.
+</div><div class="slide">
+
+<!-- On screen: -->
+<table>
+    <tr><th>Finance</th><td>Summarize → Forecast → Report</td></tr>
+    <tr><th>Legal</th><td>Simplify → Spot Risk → Draft</td></tr>
+    <tr><th>Operations</th><td>Systemize → Prioritize → Automate</td></tr>
+    </tr>
+</table>
+
+</div><div class="slide">
+
+<h3>🧠 MINI PROJECT: “The 3-Hour CFO”</h3>
+
+<!-- **Voiceover:** -->
+“Here’s your hands-on challenge. In 3 prompts, build your AI-powered back office.” <hr>
+
+1️⃣ Upload or paste your last month’s expenses → Ask for cost breakdown and insights.<br>
+</div><div class="slide">
+
+2️⃣ Paste one legal agreement → Ask for summary and risks.<br>
+3️⃣ Ask ChatGPT to design one workflow automation for your team.<br>
+<hr>
+<!-- **Voiceover:** -->
+“By the end of this exercise, you’ll have your first AI CFO, Legal Assistant, and Chief of Staff — all inside ChatGPT.”
+
+</div><div class="slide">
+
+<h3>🎁 HANDOUTS </h3>
+
+<ul>
+    <li>10 ready-to-copy prompts for Finance, Legal, and Ops</li>
+<li>Template: *Startup Expense Analyzer*</li>
+<li>Template: *Simple SOP Generator*</li>
+<li>Bonus video: “Building Your AI CFO in Notion”</li>
+</ul>
+
+<!-- Would you like me to continue by creating the **next module’s full teaching script (Module 8: AI-First Startup Culture)** in the same cinematic, instructor-ready format — or generate **the full prompt pack handout** for this module (all 10 ready-to-use prompts in neatly formatted text)? -->
+
+    </div>
+    <div class="slide" style="align-items: center;">
+      <h2>FIN!</h2> 25.10.25
+  <!-- Would you like me to show you a real-world example — like how a single person could build and scale a SaaS company or D2C brand solo using agentic AI — so you can see exactly how this plays out step by step? -->
+
+    </div>
+    <!-- <div id="hint">Press → to reveal next part</div> -->
+    <div id="hint"><b>@sasban9</b> Find more at <i>linktr.ee/sasban9</i></div>
+  </div>
+
+  <script>
+    let slides = document.querySelectorAll('.slide');
+    let currentSlide = 0;
+
+    function revealNextSpan() {
+      let spans = slides[currentSlide].querySelectorAll('span');
+      let nextSpan = Array.from(spans).find(span => !span.classList.contains('visible'));
+
+      if (nextSpan) {
+        nextSpan.classList.add('visible');
+      } else {
+        // All spans visible, move to next slide if available
+        if (currentSlide < slides.length - 1) {
+          slides[currentSlide].classList.remove('active');
+          currentSlide++;
+          slides[currentSlide].classList.add('active');
+          resetSpans();
+        }
+      }
+    }
+
+    function resetSpans() {
+      let spans = slides[currentSlide].querySelectorAll('span');
+      spans.forEach(span => span.classList.remove('visible'));
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') {
+        revealNextSpan();
+      }
+    });
+
+  // Reveal the first span on load (optional)
+  resetSpans();
+  </script>
+
+  </body>
+  </html>

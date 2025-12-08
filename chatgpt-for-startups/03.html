@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Product & Tech: Build Faster, Smarter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Coming+Soon&family=Goblin+One&family=Homenaje&family=Kranky&family=Mynerve&family=Oswald:wght@200..700&family=Playwrite+DE+SAS:wght@100..400&family=Quintessential&family=Rationale&family=Roboto:ital,wght@0,100..900;1,100..900&family=Sixtyfour&display=swap" rel="stylesheet">
+<style>
+    :root{
+        --font-color:#8f0da0;
+    }
+  *{margin: 0;}
+  html{scrollbar-width: none;}
+  body {
+    font-family: 'Roboto', Arial, sans-serif;font-weight: 100;
+    background: var(--font-color);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-size: 3rem;line-height: 1.4;
+  }
+  body  {
+      animation: bgchange 60s infinite; /* animation-name followed by duration in seconds*/
+         /* you could also use milliseconds (ms) or something like 2.5s */
+    }
+
+    @keyframes bgchange
+    {
+      0%   {background: #571717;}
+      20%  {background: rgb(110, 110, 15);}
+      40%  {background: #1a542f;}
+      60%  {background: #1d6666;}
+      80% {background: #581b43;} 
+      100%   {background: #571717;}
+    }
+
+    @keyframes colorchange
+    {
+      0%   {color: #e55f5f;}
+      25%  {color: yellow;}
+      50%  {color: #55CE91;}
+      75%  {color: #5fe5e5;}
+      100% {color: #ce71ae;} 
+    }
+  #slideshow {
+    width: 80%;
+    max-width: 1900px;
+    background: #0003;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    position: relative;
+  }
+  .slide {
+    display: none;
+    /* text-align: center; */
+    min-height: 70vh;
+  }
+  .slide.active {
+    display: flex;gap: 2rem;
+    flex-direction: column;justify-content: center;align-items: center;
+  }
+  span {
+    background: none;opacity: 0;
+    color: transparent;
+    transition: all 0.4s ease;
+    padding: 2px 4px;
+    /* border-radius: 4px; */
+  }
+  span.visible {
+    background: #0006;backdrop-filter: blur(0);
+    color: #fff;display: inline;opacity: 1;
+  }
+  /* p{text-align: center;} */
+  b span.visible{color: coral;}
+  u{color: #ff0;text-shadow: 0 4px 2px #000;}
+  blockquote{background: #111;color: var(--font-color);font-family: monospace;font-size: 2rem;animation: colorchange 30s infinite;}
+  img {
+    /* width: 100%; */
+    max-height: 400px;
+    /* margin: 15px 0; */
+    border-radius: 8px;
+  }
+  img.logo{height: 60px;background: #ccc;vertical-align: bottom;}
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+  }
+  th, td {
+    border: 1px solid #555;
+    padding: 8px;
+    text-align: left;
+  }
+  th {
+    background: #0003;
+  }
+  #hint {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 24px;
+    color: #bbb;
+  }
+</style>
+</head>
+<body>
+
+<div id="slideshow">
+  <div class="slide active" style="background: linear-gradient(-66deg, #000, #fff0), url() 50% 50%; background-size: cover;flex-direction: column;padding: 0 4rem;">
+<!-- The Future of Work 2024
+<h3 style="text-align: center;">The Agentic Era and <br> Autonomous Workflows</h3>
+
+</div><div class="slide">
+<small>Excellent — let’s expand Module 3: <b>Product & Tech — Build Faster, Smarter</b>, while keeping it consistent with the tone and pacing of a 90-minute course. <br>
+    This module should feel like a hands-on tech sprint where learners <u>see ChatGPT acting like a product manager, designer, and developer — all at once.</u></small>
+
+</div><div class="slide"> -->
+MODULE 3 <h3>Product & Tech: Build Faster, Smarter</h3>
+
+<!-- **Duration:** ~15 minutes -->
+<p><b>Goal:</b> 
+<span>Learn how to turn your ideas</span> 
+<span>into functional product plans, specs, prototypes, </span>
+<span>and even working code </span>
+<span>with <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/ChatGPT-Logo.svg/2048px-ChatGPT-Logo.svg.png" height="60" style="background: #ccc;" alt=""> as your partner.</span></p>
+</div><div class="slide">
+
+<!-- Section 1  -->
+<h4>Turning Ideas into Product Requirements</h4>
+
+<p><span>Most startup founders start with an idea </span>
+  <span>but struggle to define it clearly for their team. </span>
+  <span>ChatGPT can act as a <u>product manager</u> </span>
+  <span>that translates your idea into a structured product spec.</span></p>
+</div><div class="slide" style="flex-direction: row;">
+<!-- **Voiceover Script:** -->
+<p>Imagine you just thought of an app 
+<span>that helps remote teams manage energy and focus. </span>
+<span>Instead of staring at a blank PRD template, </span>
+<span>ask ChatGPT to write it for you.</span></p>
+<blockquote>> 
+  <span>Act as a product manager. </span>
+  <span>Turn this idea — <u>an app that measures and improves focus for remote workers</u> </span>
+  <span>— into a one-page PRD including problem statement, </span>
+  <span>user personas, core features, and success metrics.</span>
+</blockquote>
+</div><div class="slide">
+<p><b>Demo:</b> Show ChatGPT generating a clear, well-structured PRD.</p>
+<p><b>Exercise:</b> <span>Paste your own idea and get a draft PRD instantly.</span></p>
+
+</div><div class="slide">
+<!-- Section 2  -->
+<h3>From User Stories to Feature Specs</h3>
+<table>
+  <tr>
+    <td><p>Now that the PRD is ready, <span>the next step is to create technical clarity</span> <span>— user stories, acceptance criteria, and even pseudo-code.</span></p></td>
+    <td><blockquote><span>> Convert this PRD into detailed user stories with acceptance criteria and edge cases.</span></blockquote></td>
+  </tr>
+</table>
+
+</div><div class="slide">
+ChatGPT will produce lines like:
+<blockquote><span>As a remote worker, I want to set focus intervals so I can reduce distractions.</span></blockquote>
+
+<p><b>Pro Tip:</b> 
+  <span>Ask ChatGPT to number the stories </span>
+  <span>so your dev team can reference them </span>
+  <span>in Jira or Notion.</span></p>
+
+</div><div class="slide">
+<!-- Section 3  -->
+<h3> Writing and Debugging Code with ChatGPT</h3>
+
+<p><span>ChatGPT can generate clean, well-commented starter code </span>
+<span>in almost any language — perfect for prototypes or feature demos.</span></p>
+
+</div><div class="slide">
+<!-- **Voiceover Script:** -->
+<p>Let’s make that focus app real. 
+<span>Watch how ChatGPT creates an HTML + JS version </span>
+<span>of a simple focus timer interface — ready to test within minutes.</span></p>
+<span><blockquote>> Write responsive HTML and JavaScript for a minimalist focus timer with a start, pause, and reset button. Include CSS styling and clear inline comments.</blockquote></span>
+</div><div class="slide" style="flex-direction: row;">
+<p>ChatGPT outputs working code 
+that can be pasted into <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLR9SoCzxlnwOOVeAAoo3Xt15GbhUtnBHYFA&s" class="logo" alt=""> or <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSQl7Vb1cN5wuA-_EBEaVP9zll9VE3xtRn1A&s" class="logo" alt=""></p>
+<div><p><span>Then, demonstrate how to debug or optimize it by prompting:</span></p>
+
+<blockquote><span>> “Explain what this error means and fix it.”</span></blockquote></div>
+</div><div class="slide">
+<b>Mini-Exercise</b> 
+<p><span>Copy a small snippet of your product idea </span>
+<span>(like a calculator, to-do list, or API call) </span>
+<span>and ask ChatGPT to code it.</span></p>
+
+</div><div class="slide">
+<!-- Section 4  -->
+<h3>Design, Copy & UX Content</h3>
+
+<p><span>ChatGPT can also play the role </span>
+  <span>of a <u>UX writer or UI copy generator,</u> </span>
+  <span>helping make products feel human.</span></p>
+
+<blockquote>>
+  <span>Generate friendly, motivational microcopy </span>
+  <span>for a productivity app — include button labels, </span>
+  <span>onboarding messages, and error prompts.</span>
+</blockquote>
+</div><div class="slide">
+<p><b>Result:</b> Polished UX content that gives the prototype life.</p>
+<p>
+  <span><b>Bonus Tip:</b> </span>
+  <span>Ask ChatGPT to rewrite in your brand tone: </span>
+</p>
+<blockquote><span>“Make it sound witty and confident like Notion.”</span></blockquote>
+</div><div class="slide">
+Section 5 <h3>Documentation & Versioning</h3>
+<p><span>Every tech project needs documentation, </span>
+<span>which most founders ignore. </span>
+<span>ChatGPT can auto-create your README, </span>
+<span>change logs, and API summaries.</span></p>
+
+</div><div class="slide">
+<blockquote>> “Write a README.md for a JavaScript timer app that explains features, installation steps, and usage examples.”</blockquote>
+
+<span>You can even version it with prompts like:</span>
+
+<blockquote>> <span>“Summarize changes between version 1.0 and 1.1 in a developer changelog.”</span></blockquote>
+
+</div><div class="slide">
+
+Section 6 <h3>Recap and Real-World Application</h3>
+
+<!-- **Voiceover Summary:** -->
+<p><span>In just one module, you’ve seen ChatGPT act as a PM, </span>
+<span>developer, designer, and documenter. </span>
+<span>You can now take any idea — even half-formed — </span>
+<span>and turn it into a live prototype in a few minutes. </span>
+<span>The goal isn’t to replace your tech team, but to supercharge them.</span></p>
+</div><div class="slide">
+    <b>Challenge Task</b>
+    <table><tr><td>
+<p>Create a <u>‘Product Sprint with ChatGPT’</u> 
+  <span>— take any small startup idea and </span>
+  <span>in under 20 minutes, use ChatGPT to generate:</span></p>
+</td><td>
+<p style="min-width: 400px;"><span>1. A one-page PRD</span><br>
+<span>2. 3 user stories</span><br>
+<span>3. A small working code snippet</span></p>
+</td></tr></table>
+<!-- Would you like me to now expand this module further into a **voiceover-ready Udemy lesson script** (with on-screen text, transitions, and pacing cues for video)? That version feels like an instructor narrating a live product build session. -->
+</div><div class="slide" style="align-items: center;">
+    <h2 style="letter-spacing: 2rem;">!FiN</h2> 25.10.25
+
+  </div>
+  <!-- <div id="hint">Press → to reveal next part</div> -->
+   <div id="hint">Find more at <u><i>linktr.ee/sasban9</i></u> &middot; <u>github.com/sasban9</u></div>
+</div>
+
+<script>
+  let slides = document.querySelectorAll('.slide');
+  let currentSlide = 0;
+
+  function revealNextSpan() {
+    let spans = slides[currentSlide].querySelectorAll('span');
+    let nextSpan = Array.from(spans).find(span => !span.classList.contains('visible'));
+
+    if (nextSpan) {
+      nextSpan.classList.add('visible');
+    } else {
+      // All spans visible, move to next slide if available
+      if (currentSlide < slides.length - 1) {
+        slides[currentSlide].classList.remove('active');
+        currentSlide++;
+        slides[currentSlide].classList.add('active');
+        resetSpans();
+      }
+    }
+  }
+
+  function revealPrevSpan() {
+    slides[currentSlide].classList.remove('active');
+    currentSlide--;
+    slides[currentSlide].classList.add('active');
+    resetSpans();
+  }
+  function resetSpans() {
+    let spans = slides[currentSlide].querySelectorAll('span');
+    spans.forEach(span => span.classList.remove('visible'));
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') {
+      revealNextSpan();
+    } else if (e.key === 'ArrowLeft') {
+      if(currentSlide > 0)revealPrevSpan();
+    }
+  });
+
+// Reveal the first span on load (optional)
+resetSpans();
+</script>
+
+</body>
+</html>

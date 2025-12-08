@@ -1,0 +1,305 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Interactive HTML Slideshow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Coming+Soon&family=Goblin+One&family=Homenaje&family=Kranky&family=Mynerve&family=Oswald:wght@200..700&family=Playwrite+DE+SAS:wght@100..400&family=Quintessential&family=Rationale&family=Roboto:ital,wght@0,100..900;1,100..900&family=Sixtyfour&display=swap" rel="stylesheet">
+  <style>
+    *{margin: 0;box-sizing: border-box;}
+    html{scrollbar-width: none;}
+    body {
+      font-family: 'Roboto', Arial, sans-serif;font-weight: 100;
+      background: #002306;
+      color: #fff;
+      display: flex;justify-content: center;align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-size: 3.6rem;line-height: 1.4;
+    }
+    #slideshow {
+      display: flex;flex-direction: column;justify-content: center;align-items: center;
+      width: 94%;
+      max-width: 1360px;
+      background: #0003;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      position: relative;
+    }
+    .slide {
+      min-width: 1200px;
+      display: none;
+      /* text-align: center; */
+      min-height: 80vh;padding: 1rem 6rem;
+    }
+    .slide.active {
+        display: flex;
+      flex-direction: column;justify-content: center;align-items: center;
+    }
+    span {
+      background: none;
+      color: transparent;opacity:0;
+      transition: all 0.4s ease;
+      padding: 2px 4px;text-align: center;
+      /* border-radius: 4px; */
+    }
+    span.visible {
+      background: #0006;backdrop-filter: blur(0);
+      color: #fff;opacity:1;
+    }
+    b span.visible{color: coral;}
+    u{color: #ff0;text-shadow: 0 4px 2px #000;}
+    img {
+      /* width: 100%; */
+      /* max-width: 400px; */
+      /* display: block; */
+      margin: 0 auto;
+      border-radius: 8px;
+    }
+    pre{font-size: 3rem;transform: scaleX(0.8);}
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+    }
+    th, td {
+      border: 1px solid #555;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background: #0003;
+    }
+    #hint {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 24px;
+      color: #bbb;
+    }
+  </style>
+  </head>
+  <body>
+
+  <div id="slideshow">
+    <div class="slide active" style="background: linear-gradient(85deg, #0000, #fff0), url() 50% 50%; background-size: cover;">
+        <!-- The shift is one of the most important mindset revolutions of the next decade.  -->
+        <!-- <img src="https://media.tenor.com/j1nGLflAMJsAAAAM/axanar-alecpeters-axamonitor.gif" align="right" alt=""> -->
+        <!-- It’s not just a new way of working; it’s a fundamental redefinition of what it means to be a “professional.” -->
+      
+<!-- Absolutely. Here’s the **expanded Module 1** from your “ChatGPT for Startups: How AI Supercharges Every Department (90-minute version)” course — rewritten as a ready-to-teach lesson with **voiceover script, visuals, demos, and exercises**. -->
+<!-- This version is tight enough to fit inside a 10-minute segment yet feels immersive and practical. -->
+<hr>
+
+Module 1 <h2>ChatGPT as Your Startup Copilot</h2>
+
+<!-- **Duration:** ~10 minutes -->
+</div><div class="slide">
+<p><b>Goal:</b> 
+<span>Understand how to make ChatGPT </span>
+<span>act like a dedicated teammate </span>
+<span>who already knows your startup </span>
+<span>— instead of treating it like a one-off tool.</span></p>
+
+</div><div class="slide" style="background: url(https://chandrakanthbn.com/wp-content/uploads/2025/07/entrepreneur_8-1-300x225.jpg) 100% no-repeat;background-size: 33%;padding-right:10rem;">
+
+<!-- ### **1. Opening Hook (Voiceover ≈ 1 min)** -->
+
+<p>> <span>Imagine hiring a team member </span>
+<span>who instantly learns your entire business model, </span>
+<span>remembers your tone, and works 24/7 </span>
+<span>— writing, coding, and brainstorming on demand.</span><br></p>
+<blockquote>> <span>That’s what ChatGPT becomes </span>
+  <span>when you train it as your <b>Startup Copilot.</b></span></blockquote>
+<!-- </div><div class="slide"> -->
+<img src="" alt="">
+<!-- **Visual:** A founder surrounded by chat bubbles labeled “Marketing,” “Tech,” “Finance,” “HR,” with ChatGPT in the center acting as the connector. -->
+
+</div><div class="slide">
+<h3>2. Why Context Is Everything</h3>
+<!-- (Voiceover ≈ 2 min)** -->
+<!-- Explain that ChatGPT’s power scales with <u>context.</u> -->
+<p><span>Most people use it as a blank chat box</span> 
+<span>— but startups can feed it their mission, tone, audience, and workflows </span>
+<span>so it replies <u>as if it were part of the company.</u></span></p>
+</div><div class="slide">
+<b>Example:</b>
+A founder types:
+<span><pre>> “We build eco-friendly home cleaning products 
+  for urban millennials.”</pre></span>
+
+<p><span>If that’s baked into ChatGPT’s memory or system prompt, </span>
+<span>it will generate on-brand marketing lines, not generic ones.</span></p>
+</div><div class="slide">
+
+<b>Demo:</b>
+<table>
+    <tr>
+        <th colspan="2"><!--Show two responses to the same question--> “Write a tagline for our product.”</th>
+    </tr>
+    <tr>
+<td>One without context → </td><td><span>“Clean your home with nature’s touch.”</span></td>
+</tr>
+<tr>
+<td>One with context → </td><td><span>“Sustainably spotless — eco-smart cleaning for modern city living.”</span></td>
+    </tr>
+</table>
+
+<!-- **Visual:** Split-screen comparison. -->
+
+</div><div class="slide">
+
+<h3>3. Teaching ChatGPT About Your Startup</h3>
+
+<!-- Guide learners through a quick, hands-on setup. -->
+
+<h4><span>Step 1 — Gather Your Startup DNA</span></h4>
+<!-- Ask them to note down five things: -->
+
+<pre>
+<span>1. Startup name</span>
+<span>2. One-line mission</span>
+<span>3. Target customers</span>
+<span>4. Product or service summary</span>
+<span>5. Preferred tone (funny, expert, casual, bold, etc.)</span>
+</pre>
+</div><div class="slide">
+
+<h4>Step 2 — The “Startup Copilot Prompt” Template</h4>
+
+<pre style="font-size: 2.7rem;">
+<span>You are the AI Copilot for a startup called [Startup Name].  </span>
+<span>Our mission is [Mission].  </span>
+<span>We serve [Customer Type] by [Product Summary].  </span>
+<span>Our tone is [Tone Style].  </span>
+<span>When answering, always align with our brand voice </span>
+<span>and keep replies short, practical, and startup-friendly.  </span>
+<span>First, confirm you understand our identity, </span>
+<span>then wait for my next task.</span>
+</pre>
+</div><div class="slide">
+
+<!-- **Voiceover Tip:** -->
+
+“This single prompt transforms ChatGPT from a generalist into your personal AI teammate.”
+
+Paste this into ChatGPT and see it respond with acknowledgment
+
+</div><div class="slide">
+  ChatGPT
+<blockquote>> “Got it. I’m now your AI Copilot for <u>GreenNest</u> — eco-friendly cleaning for urban millennials.”</blockquote>
+
+<!-- **Visual:** Screenshot of ChatGPT reply confirming company understanding. -->
+
+</div><div class="slide">
+
+<h3>4. Adding Memory & Tools</h3>
+
+<p>ChatGPT can remember details (via custom instructions) 
+<span>and integrate with tools</span> <br>
+<span><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbwI-YH2DFRO-mGC0sjo-Kin7So9bhNxt_YQ&s" height="90" alt=""> </span>
+<span><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Slack_Technologies_Logo.svg/2560px-Slack_Technologies_Logo.svg.png" style="background: #ccc;" height="90" alt=""> </span>
+<span><img src="https://cdn.worldvectorlogo.com/logos/zapier-2.svg" style="background: #ccc;" height="90" alt=""></span><br>
+<span>for deeper workflow automation.</span></p>
+<!-- like Notion, Slack, or Zapier  -->
+</div><div class="slide">
+<b>Demonstrate conceptually:</b>
+
+> “When you say 
+  <pre>‘Summarize this week’s sales chat from Slack’</pre>
+  ChatGPT can pull structured insights if connected through automation tools.”
+
+<p>Encourage learners to explore integrations later — but emphasize today’s focus is <u>teaching ChatGPT context.</u></p>
+
+</div><div class="slide">
+
+<h3>5. Mini Exercise</h3>
+
+Learners write their Startup Copilot Prompt, paste it into ChatGPT, and then ask:
+
+<pre>> “Generate 3 tagline options and 
+  2 tweet ideas for our startup.”</pre>
+</div><div class="slide">
+<p>Then compare the quality with a prompt given <u>BEFORE</u> training ChatGPT.</p>
+<span>You'll see instantly how context upgrades results.</span>
+</div><div class="slide">
+
+<h3>6. Wrap-Up & Takeaway</h3>
+
+<pre>
+> “From now on, never start a chat cold. 
+Begin by briefing ChatGPT like a new hire.
+> In later modules, we’ll plug this Copilot 
+into marketing, product, and operations 
+— but this setup is your foundation.”
+</pre>
+</div><div class="slide">
+
+<h4>Summary:</h4>
+• Context > Commands<br>
+• Teach before you ask<br>
+• Save your Copilot Prompt for all future sessions
+
+</div><div class="slide">
+
+<h4>Deliverables / Downloads</h4>
+
+<li>Editable “Startup Copilot Prompt Template” (PDF/Notion format)</li>
+<li>Example brand setup file (“EcoStartup Demo”)</li>
+<li>Optional extension: “How to write Custom Instructions for your startup” cheat sheet</li>
+
+
+<!-- Would you like me to now **expand Module 2 (Founder Mode: Strategy, Vision & Validation)** in the same voiceover-ready, lesson-by-lesson format next? -->
+
+    </div>
+    <div class="slide" style="align-items: center;">
+      <h2>FIN!</h2> 25.10.25
+    <!-- Would you like me to show you a real-world example — like how a single person could build and scale a SaaS company or D2C brand solo using agentic AI — so you can see exactly how this plays out step by step? -->
+
+    </div>
+    <!-- <div id="hint">Press → to reveal next part</div> -->
+    <div id="hint"><b>@sasban9</b> Find more at <i>linktr.ee/sasban9</i></div>
+  </div>
+
+  <script>
+    let slides = document.querySelectorAll('.slide');
+    let currentSlide = 0;
+
+    function revealNextSpan() {
+      let spans = slides[currentSlide].querySelectorAll('span');
+      let nextSpan = Array.from(spans).find(span => !span.classList.contains('visible'));
+
+      if (nextSpan) {
+        nextSpan.classList.add('visible');
+      } else {
+        // All spans visible, move to next slide if available
+        if (currentSlide < slides.length - 1) {
+          slides[currentSlide].classList.remove('active');
+          currentSlide++;
+          slides[currentSlide].classList.add('active');
+          resetSpans();
+        }
+      }
+    }
+
+    function resetSpans() {
+      let spans = slides[currentSlide].querySelectorAll('span');
+      spans.forEach(span => span.classList.remove('visible'));
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') {
+        revealNextSpan();
+      }else if(e.key === 'ArrowLeft') {
+        currentSlide--;
+      }
+    });
+
+  // Reveal the first span on load (optional)
+  resetSpans();
+  </script>
+
+  </body>
+  </html>
