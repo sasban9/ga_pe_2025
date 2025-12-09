@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Snap Scroll Slideshow</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    overflow: hidden; /* hide scrollbar */
+    background: #111;
+    color: #fff;
+  }
+
+  #container {
+    height: 100%;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory; /* snap scroll */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  #container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
+
+  .section {
+    height: 90vh;
+    display: flex;gap:1rem;
+    justify-content: center;
+    align-items: center;
+    font-size: 1em;
+    transition: all 0.5s ease;
+    text-align: center;
+    scroll-snap-align: center; /* section snap */
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .section.highlight {
+    font-size: 3em;flex-direction: column;
+    color: #00ffcc;
+  }
+
+  h1, p {
+    margin: 0.5em 0;
+  }
+
+</style>
+</head>
+<body>
+
+<div id="container">
+  <div class="section">Welcome to Day 1 of our <b>2023 AI Creator course.</b> Before we touch any tools, <u>I want you to understand</u> why this year was such a watershed moment. 
+    </div><div class="section">
+Until 2022, AI could automate, analyze, and classify — but it wasn’t *creative*. In late 2022 and through 2023, models like ChatGPT, GPT-3.5, and image generators changed everything.
+>
+> For the first time, we could have *conversations* with AI, get it to write, design, brainstorm, explain, and even teach — all in natural language. And we didn’t need to be programmers.</div>
+  <div class="section">Each section <i>highlights</i> as it <u>reaches</u> center</div>
+  <div class="section">Watch the text <b>grow</b> and <i>move</i> up smoothly</div>
+  <div class="section">You can put <u>images</u> or <b>HTML</b> elements here too</div>
+  <div class="section">Congratulations! This is the <i>last</i> section</div>
+</div>
+
+<script>
+  const container = document.getElementById('container');
+  const sections = document.querySelectorAll('.section');
+
+  function highlightSection() {
+    const containerMiddle = window.innerHeight / 2;
+
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      const sectionMiddle = rect.top + rect.height / 2;
+
+      if (Math.abs(sectionMiddle - containerMiddle) < rect.height / 2) {
+        section.classList.add('highlight');
+      } else {
+        section.classList.remove('highlight');
+      }
+    });
+  }
+
+  // Listen to scroll
+  container.addEventListener('scroll', highlightSection);
+
+  // Initial highlight
+  highlightSection();
+</script>
+
+</body>
+</html>

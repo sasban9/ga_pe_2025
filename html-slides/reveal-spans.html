@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interactive HTML Slideshow</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #1a1a1a;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-size: 2.8rem;
+  }
+  #slideshow {
+    width: 70%;
+    max-width: 900px;
+    background: #2a2a2a;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    position: relative;
+  }
+  .slide {
+    display: none;
+    text-align: center;
+  }
+  .slide.active {
+    display: flex;
+    min-height: 70vh;
+    flex-direction: column;
+  }
+  span {
+    background: none;
+    color: transparent;
+    transition: all 0.4s ease;
+    padding: 2px 4px;
+    /* border-radius: 4px; */
+  }
+  span.visible {
+    background: #0006;
+    color: #fff;
+  }
+  img {
+    width: 100%;
+    max-width: 400px;
+    /* display: block; */
+    margin: 15px 0;
+    border-radius: 8px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+  }
+  th, td {
+    border: 1px solid #555;
+    padding: 8px;
+    text-align: left;
+  }
+  th {
+    background: #333;
+  }
+  #hint {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #bbb;
+  }
+</style>
+</head>
+<body>
+
+<div id="slideshow">
+  <!-- Slide 1 -->
+  <div class="slide active">
+    <h2><span>Welcome</span> <span>to our</span> <span>interactive slideshow</span></h2>
+    <p>
+      <span>This paragraph</span> <span>demonstrates how text</span>
+      <span>is revealed</span> <span>bit by bit.</span>
+    </p>
+  </div>
+
+  <!-- Slide 2 -->
+  <div class="slide" style="background: url(https://picsum.photos/1200/850);background-size: cover;">
+    <p>
+      <b><span>Bold text</span></b> <i><span>and italic styles</span></i>
+      <span><u>are also supported.</u></span><br>
+      <img src="https://picsum.photos/400/250" alt="Sample image">
+    </p>
+    <p>
+      <span>Images can enhance</span> <span>the storytelling experience</span> 
+      <span>on each slide.</span>
+    </p>
+  </div>
+
+  <!-- Slide 3 -->
+  <div class="slide">
+    <div>
+      <span>This is a DIV container</span>
+      <span>with structured content inside.</span>
+    </div>
+    <p>
+      <span>Click the arrow key</span> <span>to reveal more text</span> <span>sequentially.</span>
+    </p>
+  </div>
+
+  <!-- Slide 4 -->
+  <div class="slide">
+    <table>
+      <tr>
+        <th><span>Feature</span></th>
+        <th><span>Description</span></th>
+      </tr>
+      <tr>
+        <td><span>Spans</span></td>
+        <td><span>Revealed</span> <span>step by step</span></td>
+      </tr>
+      <tr>
+        <td><span>Slides</span></td>
+        <td><span>Change automatically</span> <span>when done</span></td>
+      </tr>
+    </table>
+    <p>
+      <span>This table demonstrates</span> <span>how complex HTML elements</span> 
+      <span>can work too.</span>
+    </p>
+  </div>
+
+  <!-- Slide 5 -->
+  <div class="slide">
+    <p>
+      <span>Congratulations!</span> <span>You have reached</span> <span>the end of this demo.</span>
+    </p>
+    <p>
+      <span>Each slide</span> <span>was built entirely</span> 
+      <span>with HTML</span> <span>and JavaScript.</span>
+    </p>
+  </div>
+
+  <!-- <div id="hint">Press → to reveal next part</div> -->
+   <div id="hint">@sasban9 Find more at linktr.ee/sasban9</div>
+</div>
+
+<script>
+  let slides = document.querySelectorAll('.slide');
+  let currentSlide = 0;
+
+  function revealNextSpan() {
+    let spans = slides[currentSlide].querySelectorAll('span');
+    let nextSpan = Array.from(spans).find(span => !span.classList.contains('visible'));
+
+    if (nextSpan) {
+      nextSpan.classList.add('visible');
+    } else {
+      // All spans visible, move to next slide if available
+      if (currentSlide < slides.length - 1) {
+        slides[currentSlide].classList.remove('active');
+        currentSlide++;
+        slides[currentSlide].classList.add('active');
+        resetSpans();
+      }
+    }
+  }
+
+  function resetSpans() {
+    let spans = slides[currentSlide].querySelectorAll('span');
+    spans.forEach(span => span.classList.remove('visible'));
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') {
+      revealNextSpan();
+    }
+  });
+
+// Reveal the first span on load (optional)
+resetSpans();
+</script>
+
+</body>
+</html>

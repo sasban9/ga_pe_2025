@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keyboard Controlled Slideshow</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: #fff;
+    overflow: hidden;
+  }
+
+  #container {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+  }
+
+  .section {
+    height: 60vh;
+    display: flex;gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    font-size: 1em;
+    transition: all 0.5s ease;
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    top: 100%; /* start off-screen */
+    left: 0;
+    opacity: 0.3;
+    color: #aaa;
+  }
+
+  .section.active {
+    top: 0;
+    font-size: 3em;
+    color: #00ffcc;
+    opacity: 1;
+  }
+
+  h1, p {
+    margin: 0.5em 0;
+  }
+</style>
+</head>
+<body>
+
+<div id="container">
+  <div class="section active">Welcome to our <b>keyboard slideshow</b></div>
+  <div class="section">Each section <i>highlights</i> as it <u>reaches</u> center</div>
+  <div class="section">Watch the text <b>grow</b> and <i>move</i> smoothly</div>
+  <div class="section">You can put <u>images</u> or <b>HTML</b> elements here</div>
+  <div class="section">Congratulations! This is the <i>last</i> section</div>
+</div>
+
+<script>
+  const sections = document.querySelectorAll('.section');
+  let currentIndex = 0;
+
+  function showSlide(index) {
+    sections.forEach((section, i) => {
+      if (i === index) {
+        section.classList.add('active');
+      } else {
+        section.classList.remove('active');
+        section.style.top = (i > index ? 5 : -50) + 'vh'; // move above or below
+      }
+    });
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown') {
+      if (currentIndex < sections.length - 1) {
+        currentIndex++;
+        showSlide(currentIndex);
+      }
+    } else if (e.key === 'ArrowUp') {
+      if (currentIndex > 0) {
+        currentIndex--;
+        showSlide(currentIndex);
+      }
+    }
+  });
+
+  // Position slides vertically initially
+  sections.forEach((section, i) => {
+    if (i !== 0) section.style.top = '100vh';
+  });
+</script>
+
+</body>
+</html>

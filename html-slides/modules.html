@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interactive HTML Slideshow</title>
+<style>
+  *{margin: 0;}
+  html{scrollbar-width: none;}
+  body {
+    font-family: Arial, sans-serif;
+    background: #1a1a1a;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* height: 100vh; */
+    margin: 0;
+    font-size: 2.4rem;line-height: 2;
+  }
+  #slideshow {
+    width: 70%;
+    max-width: 900px;
+    background: #2a2a2a;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    position: relative;
+  }
+  .slide {
+    /* display: none; */
+    text-align: center;
+    min-height: 70vh;
+  }
+  .slide {
+    display: flex;
+    flex-direction: column;justify-content: center;
+  }
+  span {
+    background: none;
+    color: transparent;
+    transition: all 0.4s ease;
+    padding: 2px 4px;transform: rotate(-6deg);display: inline-block;
+    /* border-radius: 4px; */
+  }
+  span.visible {
+    background: #000a;backdrop-filter: blur(0);
+    color: #fff;
+  }
+  img {
+    width: 100%;
+    max-width: 400px;
+    /* display: block; */
+    margin: 15px 0;
+    border-radius: 8px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+  }
+  th, td {
+    border: 1px solid #555;
+    padding: 8px;
+    text-align: left;
+  }
+  th {
+    background: #333;
+  }
+  #hint {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #bbb;
+  }
+</style>
+</head>
+<body>
+
+<div id="slideshow">
+  <div class="slide active" style="background: linear-gradient(85deg, #000, #fff0), url(https://cdn.prod.website-files.com/6899da9beccbdbe92be49b5d/68b56c25ebe6e4d0cb2e5109_astronaut-opt.avif) 50% 50%; background-size: cover;">
+<div><span>Perfect — let's write</span> <span><b>Module 1 of your 2023 low-code AI course</b></span> <span>as a <b>complete, ready-to-teach script.</b></span></div><hr>
+<div><span>This is a <b>4-hour session</b></span> <span>designed to take students</span> <span>from *zero to confidently prompting GPT-3.5 / ChatGPT*</span> <span>while building their <b>first real AI content tool</b></span> <span>— all without coding.</span></div>
+<!-- I'll structure it minute-by-minute with explanations, demos, talking points, student exercises, and project instructions. -->
+
+</div><div class="slide">
+
+<h2>📘 Module 1: Generative AI Foundations</h2>
+
+<table>
+    <tr><td>Total Duration:</td><td> <span>4 hours</span></td></tr>
+    <tr><td>Theme:</td><td> <span>“From User to Creator</span> <span>— Mastering the Basics of Prompt-Driven AI”</span></td></tr>
+    <tr><td>Outcome:</td><td><span>Students understand</span> <span>how generative AI works,</span> <span>write effective prompts,</span> <span>and build a simple low-code</span> <span>content generation workflow.</span></td></tr>
+</table>
+
+</div><div class="slide">
+
+<h3>🕐 0:00 - 0:20 | Welcome & Context: Why 2023 Changed Everything</h3>
+<b>Instructor Script:</b>
+
+> “Welcome to Day 1 of our 2023 AI Creator course. Before we touch any tools, I want you to understand why this year was such a watershed moment. Until 2022, AI could automate, analyze, and classify — but it wasn't *creative*. In late 2022 and through 2023, models like ChatGPT, GPT-3.5, and image generators changed everything.
+>
+> For the first time, we could have *conversations* with AI, get it to write, design, brainstorm, explain, and even teach — all in natural language. And we didn't need to be programmers.
+>
+> That's why today's session is about turning you from a *user* into a *creator*. By the end of these four hours, you'll be generating high-quality text outputs, experimenting with prompt techniques, and building your first low-code AI tool.”
+</div><div class="slide">
+**Whiteboard points:**
+
+* AI 1.0 → Automation & Classification
+* AI 2.0 → Generative & Creative
+* 2023 → Prompting becomes a new literacy
+
+</div><div class="slide">
+
+<h3>🕐 0:20 - 0:50 | Core Concepts: What Generative AI Actually Does</h3>
+
+<u>Instructor Script:</u>
+
+<blockquote>> “Before we start prompting, you should understand — at a high level — what's happening under the hood. A generative language model like GPT-3.5 is a statistical prediction engine. It looks at your prompt, predicts the most likely next word based on billions of text patterns, and does this over and over until a coherent response is formed.</blockquote>
+</div><div class="slide">
+<blockquote>> It doesn't ‘think' like a human. It doesn't ‘know' in the way we do. It's pattern recognition at an unimaginably large scale. And that's important because *how* you ask for something — the instructions, the context, the tone — dramatically changes the output.”</blockquote>
+</div><div class="slide">
+**Explain:**
+
+* Trained on internet-scale data (books, code, articles)
+* Predictive text on steroids — but context-aware
+* Your prompt = input conditions that shape the output
+</div><div class="slide">
+**Mini Demo:**
+
+* Type a basic prompt: *“Write a paragraph about coffee.”*
+* Type a structured prompt: *“Write a 100-word marketing paragraph for a luxury coffee brand, using persuasive language and a poetic tone.”*
+* Discuss how structure changed the result.
+
+</div><div class="slide">
+
+### 🕐 0:50 - 1:30 | Prompt Engineering Basics
+
+**Instructor Script:**
+
+> “Prompt engineering is the new literacy of the AI era. It's how you talk to the model. Think of it as programming in plain English. There's no magic syntax, but there *are* patterns that consistently produce better results.”
+</div><div class="slide">
+**Teach the 4 key parts of a powerful prompt:**
+
+1. **Instruction:** What do you want?
+2. **Context:** What's the situation or background?
+3. **Role:** Who should the AI pretend to be?
+4. **Output Format:** How should the answer be structured?
+</div><div class="slide">
+**Examples:**
+
+* **Basic:** “Write a blog post about healthy eating.”
+* **Structured:**
+
+  > “You are a nutritionist. Write a 300-word blog post for parents about how to prepare healthy school lunches. Use a friendly, conversational tone and include 3 bullet-point tips.”
+
+**Hands-On Exercise (20 min):**
+</div><div class="slide">
+* Students write 5 prompts:
+
+  1. Explain a concept
+  2. Write a story
+  3. Summarize an article
+  4. Generate marketing copy
+  5. Simulate a professional advisor
+</div><div class="slide">
+* Discuss results in pairs.
+
+**Instructor Tip:** Emphasize iteration — “Good prompting is 30% what you write and 70% how you refine.”
+
+</div><div class="slide">
+
+### 🕐 1:30 - 1:45 | Break ☕
+
+</div><div class="slide">
+
+### 🕐 1:45 - 2:45 | Guided Lab: Building a “Content Creator” in Low-Code
+
+**Goal:** Connect GPT-3.5 to a simple workflow that generates multiple types of content from one input.
+
+</div><div class="slide">
+**Step 1 - Define the Workflow (10 min):**
+
+> “We'll build a tool that takes one topic and outputs three types of content: a Tweet, a LinkedIn post, and a blog draft. This simulates a real-world use case: multi-channel content repurposing.”
+
+</div><div class="slide">
+**Step 2 - Choose a Platform (10 min):**
+
+* Demo with **Zapier**, **Make**, or **Airtable Automations** (instructor's choice).
+* Show how to connect to OpenAI API or ChatGPT plugin.
+
+</div><div class="slide">
+**Step 3 - Create Prompt Templates (20 min):**
+
+* Tweet prompt: “Write a single, witty Tweet (under 280 characters) about {topic}.”
+* LinkedIn prompt: “Write a professional LinkedIn post (under 200 words) about {topic}, with a call to action.”
+* Blog prompt: “Write a 500-word blog article on {topic} aimed at a general audience, using a clear and engaging tone.”
+
+</div><div class="slide">
+**Step 4 - Automate (20 min):**
+
+* Input: A single text field for “topic.”
+* Output: Three AI-generated content blocks delivered by email or added to a Google Doc.
+
+</div><div class="slide">
+**Instructor Commentary:**
+
+> “This is the first time you're chaining generative AI into a real workflow. No code. Just prompts, automation, and output formatting. This is exactly how many companies used GPT-3.5 commercially in 2023 — simple, composable, and fast.”
+
+</div><div class="slide">
+
+### 🕐 2:45 - 3:15 | Advanced Prompt Patterns & Best Practices
+
+**Instructor Script:**
+
+> “Before we wrap up, let's level up your prompt skills. The most powerful creators don't just write instructions — they *design conversations*.”
+
+</div><div class="slide">
+**Techniques to Demonstrate:**
+
+* **Role Prompting:** “You are a seasoned journalist…”
+* **Few-Shot Examples:** Give 2 examples of what you want before asking.
+* **Output Control:** “Answer in a table with two columns: insight and example.”
+* **Chain-of-Thought Hints:** “Think step by step before answering.”
+
+</div><div class="slide">
+**Live Demos:**
+
+* Compare outputs with and without roles.
+* Use examples to shape style.
+* Create structured data (e.g., a CSV table) directly from GPT.
+
+</div><div class="slide">
+
+### 🕐 3:15 - 3:50 | Capstone Mini-Project: Content Studio
+
+**Assignment:**
+Each student builds a complete “Content Studio” workflow:
+
+* Input: One topic
+* Output: Tweet, LinkedIn post, blog draft
+* Add optional bonus: image prompt for Midjourney or DALL·E 2 based on the same topic.
+
+</div><div class="slide">
+**Deliverable:**
+
+* Demo their workflow to the class
+* Discuss what prompt changes improved results
+* Reflect on how each output type requires different instructions
+
+</div><div class="slide">
+
+### 🕐 3:50 - 4:00 | Wrap-Up & Reflection
+
+**Instructor Closing Script:**
+
+> “Today you've done more than just learn prompts — you've created your first real generative AI product. You've learned how small changes in language transform outputs, how to embed AI in workflows, and how to turn one idea into many pieces of content.
+>
+> This was the hardest mental shift — from *asking questions* to *designing instructions*. The rest of this course builds on this skill: tomorrow we'll use the same thinking to generate visuals, build chatbots, and eventually integrate multiple AI systems together.
+>
+> The key lesson from Module 1: **Prompting is programming.** And you now speak the language.”
+
+</div><div class="slide">
+
+<h3>✅ Learning Outcomes (Post-Module 1):</h3>
+
+<p>* <span>Understand</span> <span>how generative models</span> <span>work conceptually.</span></p>
+<p>* <span>Write clear,</span> <span>structured,</span> <span>and effective prompts.</span></p>
+<p>* Build a real low-code GPT-powered content generation workflow.</p>
+<p>* Apply iterative prompt design to improve quality.</p>
+
+  </div>
+
+  <!-- <div id="hint">Press → to reveal next part</div> -->
+   <div id="hint">@sasban9 Find more at linktr.ee/sasban9</div>
+</div>
+
+<script>
+  let slides = document.querySelectorAll('.slide');
+  let currentSlide = 0;
+
+  function revealNextSpan() {
+    let spans = slides[currentSlide].querySelectorAll('span');
+    let nextSpan = Array.from(spans).find(span => !span.classList.contains('visible'));
+
+    if (nextSpan) {
+      nextSpan.classList.add('visible');
+    } else {
+      // All spans visible, move to next slide if available
+      if (currentSlide < slides.length - 1) {
+        slides[currentSlide].classList.remove('active');
+        currentSlide++;
+        slides[currentSlide].classList.add('active');
+        resetSpans();
+      }
+    }
+  }
+
+  function resetSpans() {
+    let spans = slides[currentSlide].querySelectorAll('span');
+    spans.forEach(span => span.classList.remove('visible'));
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') {
+      revealNextSpan();
+    }
+  });
+
+// Reveal the first span on load (optional)
+resetSpans();
+</script>
+
+</body>
+</html>
