@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            line-height: 1.8;
+            padding: 0;
+            box-sizing: border-box;
+            font-size: 1.8rem;
+        }
+
+        body,
+        html {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 100;
+            height: 100%;
+            background-color: #000;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 8px;
+            background: linear-gradient(90deg, transparent, transparent, #fff);
+            width: 0%;
+            z-index: 9999;
+            transition: width 0.3s ease-in-out;
+        }
+
+        .slide-container {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-type: y mandatory;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slide {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            /* align-items: center; */
+            justify-content: center;
+            /* text-align: center; */
+            padding: 20px 240px;
+            /* font-size: 1.2em; */
+            filter: blur(10px);
+            transform: skew(10deg, 10deg);
+            opacity: 0;
+            transition: filter 0.3s ease, opacity 0.3s ease, transform 0.5s ease-out;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .slide:nth-of-type(2n){
+            transform: skew(-10deg, -10deg);
+        }
+
+        .slide.active {
+            filter: blur(0);
+            transform: skew(0deg);
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .slide img {
+            max-width: 80%;
+            transform: rotate(-6deg);
+            vertical-align: middle;
+            /* height: auto; */
+            margin: 0 2rem;
+            border-radius: 10px;
+        }
+
+        .slide:nth-child(7n) {
+            background: darkred;
+            color: #fff;
+        }
+
+        .slide:nth-child(7n+1) {
+            background: darkblue;
+            color: #ccc;
+        }
+
+        .slide:nth-child(7n+2) {
+            background: yellowgreen;
+            color: #333;
+        }
+
+        .slide:nth-child(7n+3) {
+            background: darkmagenta;
+            color: #fff;
+        }
+
+        .slide:nth-child(7n+4) {
+            background: darkgreen;
+            color: #fff;
+        }
+
+        .slide:nth-child(7n+5) {
+            background: darkslategray;
+            color: #fff;
+        }
+
+        .slide:nth-child(7n+6) {
+            background: lightsalmon;
+            color: #333;
+        }
+        td{font-size: 1.5rem;border-bottom: solid 3px;border-left: solid 3px darkred;padding-left: 1rem;}
+        iframe {
+            width: 80%;
+            height: 60%;
+            border: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <img style="position: absolute;bottom: 1rem;left: 1rem;z-index: 999;height: 90px;border-radius: 100%;transform: rotate(-6deg);"
+        src="https://sasban.online/sasban.jpg" alt="">
+    <a style="position: absolute;font-size:1rem;top: 0rem;right: 1rem;z-index: 999;height: 120px;border-radius: 100%;color: khaki;text-decoration: none;"
+        href="http://linktr.ee/sasban9">linktr.ee/sasban9</a>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-container">
+        <div class="slide active">
+<!-- Understood. Expanding **Day 18 — R: Reputation Capital** into a **full video-ready lesson script**, with story, teaching narrative, exercises, and speaking flow.
+This is written in **impactful, motivational teaching tone**, ready for recording. -->
+
+
+<h2>Step R: Reputation Capital</h2>
+
+<h3>Your Name is Your Currency</h3>
+
+<p><b>Key Idea:</b> Reputation is a form of wealth.</p>
+It compounds. It pays you forever.
+And once lost, it is nearly impossible to rebuild.
+
+</div><div class="slide">
+
+<!-- ## **HOOK / OPENING STORY (Use this verbatim or adapt)** -->
+
+There’s a story from the early days of Silicon Valley:
+A young founder had a habit of giving unrealistic time promises to investors and partners.
+He was talented, charming, and brilliant.
+But he delivered late. Every time.
+
+Eventually, people stopped taking his calls.
+</div><div class="slide">
+
+Meanwhile, another founder, with fewer skills and less genius, had a rule:
+“If I say I’ll do it, I’ll do it. No exceptions.”
+
+Five years later, everyone wanted to work with the second founder.
+</div><div class="slide">
+Not because he was the smartest.
+<p>But because his <u>word meant something.</u></p>
+
+<b>Talent gets attention. <br>
+Reputation builds empires.</b>
+
+</div><div class="slide">
+
+<!-- ## **TEACHING SECTION** -->
+
+When you were in school, your value was measured through: <br>
+
+* Marks
+* Grades
+* Certificates
+* Rankings
+</div><div class="slide">
+
+In the working world, the real currency is your <b>reputation</b>
+
+* What people say about you when you’re not in the room<br>
+* How reliable you are<br>
+* How you handle pressure<br>
+* Whether you follow through
+</div><div class="slide">
+
+Your reputation answers questions like:
+
+* Can people trust you to deliver?
+* Do you finish what you start?
+* Do you say what you mean and mean what you say?
+* Do you create value or drain it?
+</div><div class="slide" style="text-align: center;">
+
+<h2>Reputation <br>=<br> Character + Consistency + Competence</h2>
+</div><div class="slide">
+
+<p>You build it in <u>three places</u>:</p>
+
+1. **In your work**
+   Show excellence even in small things.
+
+2. **In your relationships**
+   Leave people better than you found them.
+
+3. **In your word**
+   If you commit, you execute.
+
+</div><div class="slide">
+
+<h4>The Silent Rule of High Performers</h4>
+
+**Overdeliver quietly.
+Underpromise intentionally.
+Never break your word.**
+
+This is what makes athletes, elite entrepreneurs, creators, and respected leaders magnetic.
+
+</div><div class="slide">
+
+## **REAL WORLD EXAMPLES**
+
+• Cristiano Ronaldo has teammates who say:
+“His work ethic speaks louder than his talent.”
+His reputation is built in training, not in trophies.
+</div><div class="slide">
+
+• Virat Kohli built his name not just through runs, but through consistency and relentless standards.
+
+• Apple’s brand reputation for simplicity is why customers line up before release day.
+</div><div class="slide">
+<b>Reputation compounds. Like interest. Like momentum. Like gravity.</b>
+
+</div><div class="slide">
+
+<h3>REPUTATION KILLERS (avoid these)</h3>
+
+* Making promises casually
+* Delaying or disappearing
+* Doing the bare minimum
+* Blaming others
+* Being hard to rely on
+
+Each one slowly pulls you back into the **“average mindset.”**
+
+</div><div class="slide">
+
+<h3>REPUTATION BUILDERS (do these daily)</h3>
+
+* Be on time
+* Do what you said you would do
+* Own mistakes without excuses
+* Finish what you start
+* Speak less, execute more
+
+This alone makes you **rare** in a world of talkers.
+
+</div><div class="slide">
+<h3>PRACTICAL ACTION EXERCISES</h3>
+
+<h4>Exercise 1 — The 3 Commitments Audit</h4>
+
+Write down:
+
+1. One promise you made to yourself that you haven’t kept
+2. One promise you made to someone else that you haven’t completed
+</div><div class="slide">
+3. One project you left unfinished
+
+**Your task:**
+Finish at least **one** of the above **today**.
+
+</div><div class="slide">
+
+<h4>Exercise 2 — The “Reputation Rule”</h4>
+
+<p>For the next <b>30 days</b>:<br>
+If you say you will do something, <br>
+<b>you must do it.</b><br>
+No exceptions. No excuses. No renegotiation.</p>
+
+You will feel your self-respect grow.
+
+</div><div class="slide">
+
+<h3>In Closing</h3> 
+<!-- (use as final words) -->
+
+Your reputation is not built in big heroic moments.
+It is built in the quiet, repeatable, invisible choices:<br>
+
+When no one is watching.<br>
+When it’s not exciting.<br>
+When it’s easier to skip.
+</div><div class="slide">
+
+<p>Every time you follow through, you rewrite your identity:
+<b>“I am a person who does what I say.”</b></p>
+
+People trust those people.
+Opportunities find those people.
+Success gravitates to those people.
+
+<b>Protect your name. <br>
+Because your name will carry your life.</b>
+
+<!-- 
+## **NEXT STEP**
+
+Would you like me to now:
+
+1. Convert this into a **full teleprompter script** (word-for-word spoken delivery),
+2. Make a **slide deck** for the video visuals, or
+3. Create the **workbook page** for Day R?
+
+Reply with **1, 2, or 3.** -->
+
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            const progress = ((index + 1) / slides.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            }
+            if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+
+</html>

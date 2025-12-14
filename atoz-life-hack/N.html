@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            line-height: 1.8;
+            padding: 0;
+            box-sizing: border-box;
+            font-size: 1.8rem;
+        }
+
+        body,
+        html {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 100;
+            height: 100%;
+            background-color: #000;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 8px;
+            background: linear-gradient(90deg, transparent, transparent, #fff);
+            width: 0%;
+            z-index: 9999;
+            transition: width 0.3s ease-in-out;
+        }
+
+        .slide-container {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-type: y mandatory;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slide {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            /* align-items: center; */
+            justify-content: center;
+            /* text-align: center; */
+            padding: 20px 240px;
+            /* font-size: 1.2em; */
+            filter: blur(10px);
+            transform: skew(10deg, 10deg);
+            opacity: 0;
+            transition: filter 0.3s ease, opacity 0.3s ease, transform 0.5s ease-out;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .slide:nth-of-type(2n){
+            transform: skew(-10deg, -10deg);
+        }
+
+        .slide.active {
+            filter: blur(0);
+            transform: skew(0deg);
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .slide img {
+            max-width: 80%;
+            transform: rotate(-6deg);
+            vertical-align: middle;
+            /* height: auto; */
+            margin: 0 2rem;
+            border-radius: 10px;
+        }
+
+        .slide:nth-child(7n) {
+            background: darkred;
+            color: #fff;
+        }
+
+        .slide:nth-child(7n+1) {
+            background: darkblue;
+            color: #ccc;
+        }
+
+        .slide:nth-child(7n+2) {
+            background: yellowgreen;
+            color: #333;
+        }
+
+        .slide:nth-child(7n+3) {
+            background: darkmagenta;
+            color: #fff;
+        }
+
+        .slide:nth-child(7n+4) {
+            background: darkgreen;
+            color: #fff;
+        }
+
+        .slide:nth-child(7n+5) {
+            background: darkslategray;
+            color: #fff;
+        }
+
+        .slide:nth-child(7n+6) {
+            background: lightsalmon;
+            color: #333;
+        }
+        td{font-size: 1.5rem;border-bottom: solid 3px;border-left: solid 3px darkred;padding-left: 1rem;}
+        iframe {
+            width: 80%;
+            height: 60%;
+            border: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <img style="position: absolute;bottom: 1rem;left: 1rem;z-index: 999;height: 90px;border-radius: 100%;transform: rotate(-6deg);"
+        src="https://sasban.online/sasban.jpg" alt="">
+    <a style="position: absolute;font-size:1rem;top: 0rem;right: 0;z-index: 999;height: 120px;border-radius: 100%;color: khaki;text-decoration: none;"
+        href="http://linktr.ee/sasban9">linktr.ee/sasban9</a>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-container">
+        <div class="slide active">
+
+<!-- 
+Here is a <b>full, expanded lesson script for Day O</b>.
+This is written in a <b>clear, motivational teaching tone</b>—ready for recording as a video. -->
+
+<h2>Step O: OWNERSHIP</h2>
+
+</b>Theme:</b> Your life is yours to build. No one is coming to save you.
+</div><div class="slide">
+
+<!-- <h2>VIDEO SCRIPT</h2> -->
+
+<!-- <h3>Title Slide:</h3> -->
+
+<h3>Ownership: The Shift from Dependency to Power</h3>
+</div><div class="slide">
+
+<!-- <h3>Opening Hook (Story / Reality Check)</b> -->
+
+Think of every person you admire: top athletes, founders, artists, creators.
+<p>What do they all have in common?</p>
+<p>They <b>take responsibility for their results</b>. They do not wait for permission, praise, or guaranteed success.</p>
+</div><div class="slide">
+Contrast that with the conditioning most of us grew up with:
+“Follow instructions. Don’t question authority. Someone else will tell you what to do next.”
+<p>School teaches obedience, not ownership.</p>
+
+Today, we break that.
+</div><div class="slide">
+
+<!-- <h3>Key Message</b> -->
+
+</b>Your life changes the moment you stop blaming and start owning.</b>
+If something is not how you want it to be—your finances, your skills, your confidence, your network—it is not your fault that you *were conditioned* to stay small…
+</div><div class="slide">
+<p>But it <b>is your responsibility</b> to change it.</p>
+
+Ownership = Power.
+</div><div class="slide">
+
+<h3>Crucial Insight</h3>
+
+Blame is comfortable.
+Ownership is uncomfortable.
+
+That’s why most people never succeed.
+</div><div class="slide">
+When you say:
+“I don’t have enough time” → you surrender power.
+“There are no opportunities” → you surrender power.
+“My family didn’t support me” → you surrender power.
+</div><div class="slide">
+But when you say:
+<p>“I will <b>create</b> time.”</p>
+<p>“I will <b>build</b> opportunities.”</p>
+<p>“I will <b>become</b> the support I lacked.”</p>
+
+Now the power comes back to you.
+</div><div class="slide">
+
+<!-- <b>Teaching Points</b> -->
+
+<h3>1. Ownership is the mindset of creators</h3>
+
+Job-seekers react.
+<b>Owners initiate.</b>
+
+Job-seekers wait for approval.
+<b>Owners *move with intention*.</b>
+</div><div class="slide">
+<b>2. If it’s your life, it’s your responsibility</b>
+
+<p>No one else is responsible for your:</p>
+• Income
+• Skill level
+• Fitness
+• Direction
+• Lifestyle
+• Confidence
+
+<p>These are <b>yours</b>.</p>
+</div><div class="slide">
+<b>3. Excuses are mental debt</b>
+
+Every time you make an excuse, you borrow justification to feel good now—but pay with regret later.
+
+<b>4. Ownership does not mean perfection</b>
+
+It means:
+“Whatever happens, I respond. I adapt. I adjust. I move forward.”
+</div><div class="slide">
+<b>Example Scenario</b>
+
+Two people want to learn coding, filmmaking, or music:
+<table>
+    <tr>
+<td width="240"></b>Person A:</b></td>
+<td>“I want to, but I don’t have a good laptop yet.”</td>
+<td>Outcome → Stuck.</td>
+</tr><tr>
+<td></b>Person B:</b></td>
+<td>“I’ll start with what I have: phone, old machine, borrowed device.”</td>
+<td>Outcome → Progress. Momentum. Confidence.</td>
+    </tr>
+</table>
+
+
+Same situation. Different mindset. Different future.
+</div><div class="slide">
+
+<b>Implementation Framework: The Ownership Shift</b>
+
+<p><b>Step 1:</b> Identify one area you are unhappy with.</p>
+<p><b>Step 2:</b> Remove blame and explanation.</p>
+<p><b>Step 3:</b> Write: *“I am responsible for improving this.”*</p>
+</div><div class="slide">
+<p><b>Step 4:</b> Take <b>one tiny action today.</b></p>
+<p><b>Step 5:</b> Track progress daily, without drama.</p>
+
+Ownership is not a single decision.
+It is a *daily posture*.
+</div><div class="slide">
+
+<h3>Action Exercise (Do This Today)</h3>
+
+Take out a journal and write answers to these three prompts:
+
+<p>1. <b>Where in my life am I waiting instead of acting?</b></p>
+<p>2. <b>What excuse have I been repeating?</b></p>
+<p>3. <b>What is one small action I will take today to move forward?</b></p>
+</div><div class="slide">
+<p>Then <b>do that action before the day ends.</b></p>
+Even if it is tiny. <br>
+Especially if it is tiny.
+
+Tiny acts compound into transformation.
+</div><div class="slide">
+
+<b>Closing Line</b>
+
+The moment you stop waiting for someone to change your life, you step into your power.
+Ownership is how ordinary people become extraordinary.
+<br>
+<b>You are the author. Not the audience.</b>
+<!-- 
+## Ready for Next Step?
+
+Choose one:
+
+</b>1)</b> Want me to <b>write the video script word-for-word</b>, including tone, pacing, and delivery cues?
+</b>2)</b> Want a <b>student worksheet PDF</b> for Day O?
+</b>3)</b> Want a <b>live workshop coaching script</b> for Day O?
+
+Reply: <b>1, 2, or 3.</b> -->
+
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            const progress = ((index + 1) / slides.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            }
+            if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+
+</html>
