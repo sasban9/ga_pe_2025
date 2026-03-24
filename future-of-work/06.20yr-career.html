@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interactive HTML Slideshow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Coming+Soon&family=Goblin+One&family=Homenaje&family=Kranky&family=Mynerve&family=Oswald:wght@200..700&family=Playwrite+DE+SAS:wght@100..400&family=Quintessential&family=Rationale&family=Roboto:ital,wght@0,100..900;1,100..900&family=Sixtyfour&display=swap" rel="stylesheet">
+<style>
+  *{margin: 0;}
+  html{scrollbar-width: none;}
+  body {
+    font-family: 'Roboto', Arial, sans-serif;font-weight: 100;
+    background: #1a1a1a;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-size: 3.6rem;line-height: 1.4;
+  }
+  #slideshow {
+    width: 90%;
+    max-width: 1900px;
+    background: #2a2a2a;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    position: relative;
+  }
+  .slide {
+    display: none;
+    text-align: center;
+    min-height: 70vh;
+  }
+  .slide.active {
+    display: flex;
+    flex-direction: column;justify-content: center;
+  }
+  span {
+    background: none;
+    color: transparent;
+    transition: all 0.4s ease;
+    padding: 2px 4px;
+    /* border-radius: 4px; */
+  }
+  span.visible {
+    background: #0003;backdrop-filter: blur(0);
+    color: #fff;
+  }
+  b span.visible{color: coral;}
+  img {
+    width: 100%;
+    max-width: 400px;
+    /* display: block; */
+    margin: 15px 0;
+    border-radius: 8px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+  }
+  th, td {
+    border: 1px solid #555;
+    padding: 8px;
+    text-align: left;
+  }
+  th {
+    background: #333;
+  }
+  #hint {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 24px;
+    color: #bbb;
+  }
+</style>
+</head>
+<body>
+
+<div id="slideshow">
+  <div class="slide active" style="background: linear-gradient(85deg, #000, #fff0), url(https://cdn.prod.website-files.com/6899da9beccbdbe92be49b5d/68b56c25ebe6e4d0cb2e5109_astronaut-opt.avif) 50% 50%; background-size: cover;">
+
+<p><span>Perfect — now let’s dive into the **capstone of the course**.</span>
+<span>Here’s the full lecture script + exercises for the final part of </span>
+<span>*“The Future of Work: High-Paying Careers That AI Won’t Replace.”*</span></p>
+
+</div><div class="slide">
+
+MODULE 6 
+<span><h2>Designing a 20-Year Career That AI Can’t Disrupt</h2></span>
+
+</div><div class="slide">
+
+<!-- ### 🎤 Lecture Script (Instructor Voice + Guide) **Opening (5 min)** -->
+
+<p><span>Most professionals think about their careers</span>
+<span>in 2–3 year windows: the next job, the next promotion, the next skill. </span>
+<b><span>That’s understandable — the pace of change </span></b>
+<span>feels too unpredictable to think further ahead.</span></p>
+</div><div class="slide">
+<p>
+But the truth is, the people who build extraordinary careers in the age of AI <b><span>DON'T plan for the next two years. </span></b> <span>They plan for the next twenty.</span></p>
+</div><div class="slide">
+
+They don’t react to technology. 
+<b><span>They *design* their trajectory around it.</span></b> 
+They don’t just survive disruption 
+<b><span>— they position themselves to ride every wave it brings.</span></b>
+</div><div class="slide">
+
+This final module is about stepping back from the day-to-day and building something bigger: 
+<p><b><span>a **strategic, 20-year career roadmap** </span></b>
+<span>that will not just keep you relevant </span>
+<span>— but make you one of the most valuable professionals of your generation.</span></p>
+
+</div><div class="slide">
+
+🧭 Step 1: <h3>Understand the Mega-Curves Shaping the Next 20 Years</h3>
+
+Before you plan your career, you need to know what you’re planning *for*.
+</div><div class="slide">
+<p><span>The most dangerous mistake is to optimize for the present</span> <span> — when the present is already disappearing.</span>
+<span>Here are the four unstoppable macro-trends</span> <span>you must anchor your career around:</span></p>
+</div><div class="slide">
+
+<b><span>1. Intelligence Everywhere</span></b> AI becomes embedded into every workflow, product, and decision. Human + machine collaboration is the default.
+</div><div class="slide">
+2. **The Rise of Autonomy** — Agents, robotics, and self-operating systems reduce repetitive work across industries.
+</div><div class="slide">
+3. **Industry Convergence** — The boundaries between sectors blur. Finance becomes tech. Healthcare becomes data. Manufacturing becomes software.
+</div><div class="slide">
+4. **Human Premium** — As machines take over more functions, the market value of trust, taste, judgment, and creativity *increases*.
+</div><div class="slide">
+
+If your 20-year plan aligns with these tectonic shifts, your career will ride the wave. If it ignores them, you’ll constantly be chasing relevance.
+
+</div><div class="slide">
+
+📍 Step 2: <h3>Shift From “Job Titles” to “Value Roles”</h3>
+</div><div class="slide">
+
+The next mistake professionals make is planning careers around **titles**: manager, VP, head of product, director.
+</div><div class="slide">
+
+Titles are fragile. Value roles are not.
+
+A *value role* is the fundamental human function that will always command a premium — regardless of industry or title. Examples include:
+</div><div class="slide">
+<table>
+    <tr>
+        <th>Integrator</th><td> bringing together people, tech, and strategy into one solution.</td>
+    </tr>
+    <tr><th>Orchestrator</th><td>leading complex systems of AI, humans, and processes.</td></tr>
+    <tr><th>Explorer</th><td> identifying and exploiting new opportunities.</td></tr>
+</table>
+</div><div class="slide">
+
+<tr><th>Translator</th><td> turning complex data or insights into decisions.</td></tr>
+<tr><th>Evangelist</th><td> building trust, vision, and momentum for change.</td></tr>
+</div><div class="slide">
+
+When planning your future, ask: *Which value role do I want to be world-class at?* Then shape every job choice, skill investment, and project toward that north star.
+
+</div><div class="slide">
+
+🧱 Step 3: <h3>Build a Career in Phases, Not Jumps</h3>
+</div><div class="slide">
+Think of a 20-year career like a marathon with **three overlapping phases**. Each phase builds on the last:
+</div><div class="slide">
+**Phase 1: Foundation (0–5 years)** – Master the fundamentals. Build depth in a domain, breadth in adjacent skills, and literacy in AI. Focus on credibility and proof of work.
+</div><div class="slide">
+
+**Phase 2: Leverage (5–12 years)** – Start stacking compound skills. Move into higher-value roles that combine human judgment with machine leverage. Develop a visible personal brand.
+</div><div class="slide">
+
+**Phase 3: Influence (12–20 years)** – Transition from execution to direction. Lead teams, design systems, set strategy. Your value now is in orchestration, foresight, and decision-making.
+</div><div class="slide">
+
+<span>The key is intentionality. </span>
+<span>Don’t just climb a ladder </span>
+<span>— build a runway.</span>
+
+</div><div class="slide">
+
+ 🪄 Step 4: Use “Strategic Pivots” to Stay Ahead
+</div><div class="slide">
+
+The pace of change means no 20-year plan will unfold in a straight line. The most successful professionals design *pivots* into their strategy.
+</div><div class="slide">
+
+A **pivot** is a planned shift that keeps you ahead of technological curves — before they make your current path obsolete.
+</div><div class="slide">
+
+Here’s how to think about pivots:
+
+<p><span>* Every 4–6 years, audit your relevance: Are you still at the frontier of value creation?</span><br>
+<span>* If not, reposition — either horizontally (into adjacent skills or industries) or vertically (into leadership, strategy, or orchestration).</span></p>
+</div><div class="slide">
+* Use each pivot to move closer to your “value role” and deepen your moat.
+
+Example: A marketing analyst becomes a marketing strategist → transitions to AI-driven growth designer → pivots into product strategy leadership.
+</div><div class="slide">
+
+Each pivot compounds career capital while aligning with the evolving future.
+
+</div><div class="slide">
+
+ 🧭 Step 5: Focus on Career Capital, Not Credentials
+</div><div class="slide">
+
+AI will reduce the signaling value of many degrees and certificates. What will matter far more is **career capital** — the unique combination of assets you accumulate over time:
+</div><div class="slide">
+
+* **Skills capital** – what you can do that few others can.
+* **Network capital** – who you know and who trusts you.
+* **Reputation capital** – how visible and credible your expertise is.
+* **IP capital** – what systems, products, or ideas you’ve built.
+</div><div class="slide">
+
+Design your next 20 years around steadily compounding these four forms of capital — they will open more doors than any resume ever could.
+
+</div><div class="slide">
+
+### 🧠 Step 6: Anchor Your Career to a Purpose, Not a Position
+</div><div class="slide">
+
+Finally, the most future-proof careers aren’t built around *positions*. They’re built around a **purpose** — a driving question or mission that evolves but never disappears.
+</div><div class="slide">
+
+Examples:
+
+* “How do I make technology more human?”
+* “How do I turn data into better decisions?”
+* “How do I help organizations adapt to exponential change?”
+</div><div class="slide">
+
+When your career is built on a question, every new tool, every industry shift, every disruption becomes a *pathway* — not a threat.
+
+</div><div class="slide">
+
+### 🪜 Putting It All Together
+</div><div class="slide">
+
+Here’s the final mindset I want you to carry with you:
+
+> Don’t prepare for a single future. Prepare for *many* futures — and build yourself to thrive in all of them.
+</div><div class="slide">
+
+That means:
+
+* Thinking in **decades**, not jobs.
+* Playing for **value**, not titles.
+* Designing **pivots**, not reacting to crises.
+* Compounding **capital**, not collecting credentials.
+* Leading with **purpose**, not fear.
+</div><div class="slide">
+
+If you do that, the next 20 years won’t be a storm to survive. They’ll be the most exciting, opportunity-rich chapter of your career.
+
+</div><div class="slide">
+
+## 🧪 Exercises & Strategic Assignments
+</div><div class="slide">
+
+**Exercise 1: Future Trends Alignment (30 min)**
+List the four mega-trends shaping your industry. Then, describe how your current skills and career direction align with (or diverge from) each. What changes do you need to make to stay on the front foot?
+
+</div><div class="slide">
+
+**Exercise 2: 20-Year Career Map (45 min)**
+Create a 3-phase roadmap for your own future:
+</div><div class="slide">
+
+* **Foundation (0–5 yrs):** What skills, experiences, and credibility do you need?
+* **Leverage (5–12 yrs):** What high-value roles or transitions will you aim for?
+* **Influence (12–20 yrs):** How will you move into orchestration, leadership, or vision-setting?
+</div><div class="slide">
+
+Include potential pivot points and what signals would trigger them.
+
+</div><div class="slide">
+
+**Exercise 3: Career Capital Audit (30 min)**
+</div><div class="slide">
+Assess your current capital in four areas — skills, network, reputation, and IP — on a scale of 1–10.
+Then write one concrete action you will take in the next 6 months to improve each by at least one point.
+
+</div><div class="slide">
+
+**Exercise 4: The 10-Year Letter (Optional, Deep Reflection)**
+</div><div class="slide">
+Write a letter to your future self in 2035 describing who you are, what you’re doing, and why your work matters. This helps anchor your plan to a purpose, not just a position.
+
+</div><div class="slide">
+
+✅ **End of Module 6 — and the Course**
+</div><div class="slide">
+
+Congratulations. You’ve now completed *“The Future of Work: High-Paying Careers That AI Won’t Replace.”*
+
+If you’ve followed each module closely, you now have:
+</div><div class="slide">
+
+* A deep understanding of how AI is reshaping work.<br>
+* A clear view of the skills and roles machines cannot replicate.<br>
+* A strategy to build your moat and command AI as an ally.<br>
+* A roadmap to navigate the next 20 years with confidence and clarity.
+</div><div class="slide">
+
+The future will belong not to the most technical or the most talented — but to those who are most *deliberate*. And by designing your trajectory rather than drifting into it, you’ve already taken the hardest and most important step.
+
+</div><div class="slide">
+    <h2>FIN!</h2>
+<!-- Would you like me to now package all 6 modules into a **ready-to-teach course document** (with intro, objectives, summaries, and instructor notes)? (It will read like a polished course manual you could share or teach directly.) -->
+
+  </div>
+
+  <!-- <div id="hint">Press → to reveal next part</div> -->
+   <div id="hint"><b>@sasban9</b> Find more at <i>linktr.ee/sasban9</i></div>
+</div>
+
+<script>
+  let slides = document.querySelectorAll('.slide');
+  let currentSlide = 0;
+
+  function revealNextSpan() {
+    let spans = slides[currentSlide].querySelectorAll('span');
+    let nextSpan = Array.from(spans).find(span => !span.classList.contains('visible'));
+
+    if (nextSpan) {
+      nextSpan.classList.add('visible');
+    } else {
+      // All spans visible, move to next slide if available
+      if (currentSlide < slides.length - 1) {
+        slides[currentSlide].classList.remove('active');
+        currentSlide++;
+        slides[currentSlide].classList.add('active');
+        resetSpans();
+      }
+    }
+  }
+
+  function resetSpans() {
+    let spans = slides[currentSlide].querySelectorAll('span');
+    spans.forEach(span => span.classList.remove('visible'));
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') {
+      revealNextSpan();
+    }
+  });
+
+// Reveal the first span on load (optional)
+resetSpans();
+</script>
+
+</body>
+</html>

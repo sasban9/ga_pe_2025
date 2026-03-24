@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The New Age School</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Coming+Soon&family=Goblin+One&family=Homenaje&family=Kranky&family=Mynerve&family=Oswald:wght@200..700&family=Playwrite+DE+SAS:wght@100..400&family=Quintessential&family=Rationale&family=Roboto:ital,wght@0,100..900;1,100..900&family=Sixtyfour&display=swap" rel="stylesheet">
+<style>
+  *{margin: 0;}
+  html{scrollbar-width: none;}
+  body {
+    font-family: 'Roboto', Arial, sans-serif;font-weight: 100;
+    background: #231700;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* height: 100vh;   */
+    margin: 0;
+    font-size: 3rem;line-height: 1.4;
+  }
+  #slideshow {
+    width:70%;
+    max-width: 1900px;
+    background: #0003;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    position: relative;
+  }
+  .slide {
+    display: none;
+    /* text-align: center; */
+    min-height: 70vh;
+  }
+  .slide.active {
+    display: flex;gap: 2rem;
+    flex-direction: column;justify-content: center;align-items: center;
+  }
+  span {
+    background: none;display: none;
+    color: transparent;
+    transition: all 0.4s ease;
+    padding: 2px 4px;
+    /* border-radius: 4px; */
+  }
+  span.visible {
+    background: #0006;backdrop-filter: blur(0);
+    color: #fff;display: inline;text-align: center;
+  }
+  p{text-align: center;border-bottom:solid 1px #fff;}
+  b span.visible{color: coral;}
+  u{color: #ff0;text-shadow: 0 4px 2px #000;}
+  img {
+    /* width: 100%; */
+    max-height: 400px;
+    /* display: block; */
+    margin: 15px 0;
+    border-radius: 8px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+  }
+  th, td {
+    border: 1px solid #555;
+    padding: 8px;
+    text-align: left;
+  }
+  th {
+    background: #0003;
+  }
+  #hint {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 24px;
+    color: #bbb;
+  }
+</style>
+</head>
+<body>
+
+<div id="slideshow">
+  <div class="slide active" style="background: linear-gradient(85deg, #000, #fff0), url() 50% 50%; background-size: cover;flex-direction: column;">
+      <h3>⚡ The New Age Curriculum</h3>
+Hey — quick question.
+<div>
+<span>Do you ever sit in class, </span>
+<span>staring at the blackboard, </span>
+<span>wondering “Why am I memorizing this?”</span>
+<span>Like… what’s the point of copying equations, </span>
+<span>dates, and definitions you’ll forget </span>
+<span>a week after the exam?</span>
+
+<p><span>If that sounds like you — good. </span>
+<span>Because it means you’re awake.</span></p>
+<hr>
+<p><span>The truth is, school in India </span>
+<span>was built for an old world </span>
+<span>— a world of factories, clerks, and government jobs.</span>
+<span>But you? You’re growing up in the age of AI </span>
+<span>— where anyone with a laptop and a wild idea </span>
+<span>can build something world-changing.</span></p>
+<hr>
+<p><span>You don’t need permission anymore.</span>
+<span>You don’t need a degree to be brilliant.</span>
+<span>You just need curiosity, creativity, </span>
+<span>and the courage to fail fast.</span></p>
+
+<span>That’s why we’re building something different </span>
+<span>— a learning world made for this century.</span>
+<span>Forget “subjects” like math or history. </span>
+<span>Imagine exploring realms:</span>
+<hr>
+A Realm of Systems, where you play with real-world simulations — what happens if India runs fully on clean energy?
+A Realm of Stories, where your words become films, music, or AI-generated worlds.
+A Realm of Minds, where you study not the brain in a textbook, but your own consciousness.
+A Realm of Value, where you learn business by actually building one.
+And a Realm of Agents, where AI becomes your collaborator, not your competitor.
+<hr>
+This isn’t school. It’s a world you shape.<br>
+
+No grades. No rote. Just mastery, creation, and impact.<br>
+You build your map of intelligence as you explore.<br>
+<br>
+<p>So if you’re bored, frustrated, or secretly feel you’re capable of more — you probably are.
+You’re not a bad student.</p>
+<p>You’re just a new kind of human — designed for a world your textbooks don’t even understand yet.</p>
+
+Come see what learning feels like when it’s alive.
+Welcome to <b>the Nine Realms of Mastery</b> —
+the school for the generation that won’t wait for permission.
+</div>
+  </div>
+  <!-- <div id="hint">Press → to reveal next part</div> -->
+   <div id="hint">Find more at <u><i>linktr.ee/sasban9</i></u> &middot; <u>github.com/sasban9</u></div>
+</div>
+
+<script>
+  let slides = document.querySelectorAll('.slide');
+  let currentSlide = 0;
+
+  function revealNextSpan() {
+    let spans = slides[currentSlide].querySelectorAll('span');
+    let nextSpan = Array.from(spans).find(span => !span.classList.contains('visible'));
+
+    if (nextSpan) {
+      nextSpan.classList.add('visible');
+    } else {
+      // All spans visible, move to next slide if available
+      if (currentSlide < slides.length - 1) {
+        slides[currentSlide].classList.remove('active');
+        currentSlide++;
+        slides[currentSlide].classList.add('active');
+        resetSpans();
+      }
+    }
+  }
+
+  function revealPrevSpan() {
+    slides[currentSlide].classList.remove('active');
+    currentSlide--;
+    slides[currentSlide].classList.add('active');
+    resetSpans();
+  }
+  function resetSpans() {
+    let spans = slides[currentSlide].querySelectorAll('span');
+    spans.forEach(span => span.classList.remove('visible'));
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') {
+      revealNextSpan();
+    } else if (e.key === 'ArrowLeft') {
+      if(currentSlide > 0)revealPrevSpan();
+    }
+  });
+
+// Reveal the first span on load (optional)
+resetSpans();
+</script>
+
+</body>
+</html>

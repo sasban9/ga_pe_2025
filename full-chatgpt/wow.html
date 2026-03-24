@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mind of OpenAI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Coming+Soon&family=Goblin+One&family=Homenaje&family=Kranky&family=Mynerve&family=Oswald:wght@200..700&family=Playwrite+DE+SAS:wght@100..400&family=Quintessential&family=Rationale&family=Roboto:ital,wght@0,100..900;1,100..900&family=Sixtyfour&display=swap" rel="stylesheet">
+<style>
+    :root{
+        --font-color:#8f0da0;
+    }
+  *{margin: 0;}
+  html{scrollbar-width: none;}
+  body {
+    font-family: 'Roboto', Arial, sans-serif;font-weight: 100;
+    background: var(--font-color);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-size: 2.2rem;line-height: 1.4;
+  }
+  body  {
+      animation: bgchange 60s infinite; /* animation-name followed by duration in seconds*/
+         /* you could also use milliseconds (ms) or something like 2.5s */
+    }
+
+    @keyframes bgchange
+    {
+      0%   {background: #571717;}
+      20%  {background: rgb(110, 110, 15);}
+      40%  {background: #1a542f;}
+      60%  {background: #1d6666;}
+      80% {background: #581b43;} 
+      100%   {background: #571717;}
+    }
+
+    @keyframes colorchange
+    {
+      0%   {color: #e55f5f;}
+      25%  {color: yellow;}
+      50%  {color: #55CE91;}
+      75%  {color: #5fe5e5;}
+      100% {color: #ce71ae;} 
+    }
+  #slideshow {
+    width: 80%;
+    max-width: 1900px;
+    background: #0003;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    position: relative;
+  }
+  .slide {
+    display: none;
+    /* text-align: center; */
+    min-height: 70vh;
+  }
+  .slide.active {
+    display: flex;gap: 2rem;
+    flex-direction: column;justify-content: center;align-items: center;
+  }
+  span {
+    background: none;opacity: 0;
+    color: transparent;
+    transition: all 0.4s ease;
+    padding: 2px 4px;
+    /* border-radius: 4px; */
+  }
+  span.visible {
+    background: #0006;backdrop-filter: blur(0);
+    color: #fff;display: inline;opacity: 1;
+  }
+  /* p{text-align: center;} */
+  b span.visible{color: coral;}
+  u{color: #ff0;text-shadow: 0 4px 2px #000;}
+  blockquote{background: #111;color: var(--font-color);font-family: monospace;font-size: 2rem;animation: colorchange 30s infinite;}
+  img {
+    /* width: 100%; */
+    max-height: 400px;
+    /* margin: 15px 0; */
+    border-radius: 8px;
+  }
+  img.logo{height: 60px;background: #ccc;vertical-align: bottom;}
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+  }
+  th, td {
+    border: 1px solid #555;
+    padding: 8px;
+    text-align: left;
+  }
+  th {
+    background: #0003;
+  }
+  #hint {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 24px;
+    color: #bbb;
+  }
+</style>
+</head>
+<body>
+
+<div id="slideshow">
+  <div class="slide active" style="background: linear-gradient(-66deg, #000, #fff0), url() 50% 50%; background-size: cover;flex-direction: column;padding: 0 4rem;">
+
+<span>Not everyone should take the same kind of risk.</span>
+<p><span>But everyone should take <u>some</u> risk, because <b>no progress happens without it.</b></span></p>
+<p><span>The key is: <b>The form and size of the risk must match the person’s safety net.</b></span></p>
+</div><div class="slide">
+When someone has no parental backing, no financial cushion, no family assets, and real monthly responsibilities 
+<span>— taking a <b>jump-off-a-cliff</b> type risk is not courage. </span>
+<span>It’s <u>self-sabotage.</u></span>
+
+<span>The biggest lie of the “entrepreneurship culture” is:</span>
+
+<p><span>“Quit your job and chase your passion.”</span></p>
+</div><div class="slide">
+<p>That advice only works for people who already have a soft landing.
+
+<span>If you do <b>NOT</b> have a cushion, your path must be different.</span></p>
+
+<span>You don’t take <b>leap-style risk.</b></span>
+<span>You take <b>ladder-style risk.</b></span>
+
+<span>Meaning:
+You climb <u>while</u> holding on to what keeps you safe.</span>
+</div><div class="slide">
+You **build the second income stream before you leave the first one.**
+You **increase optionality before you decrease stability.**
+You **layer safety before you take swings.**
+
+People who have no financial backup need:
+– Gradual risk
+– Controlled risk
+– Skills-first, income-next, quitting-last
+
+Not reckless moves.
+
+</div><div class="slide">
+
+<h3>Think of Risk Like Fire</h3>
+
+<b>Rich family?</b>
+<p><span>You can play with a bonfire. If it gets out of control, someone has water.</span></p>
+</div><div class="slide">
+<b>No cushion?</b>
+<p><span>You must learn to use a <i>candle flame</i> first — steady and small.</span></p>
+<span>But that candle can eventually light the whole room.</span>
+
+</div><div class="slide">
+
+<h3>Here are the **3 kinds of risk**:</h3>
+
+<b>1. Dumb Risk (Don’t do this)</b>
+<span>Quit job, burn bridges, go “all-in” with no plan.</span>
+<span>This is gambling.</span>
+<span>This is romanticized failure.</span>
+</div><div class="slide">
+<b>2. Smart Risk (This is your path)</b>
+Keep income → Build skill → Build side income → Replace income → Then quit.
+Slow, systematic, repeatable.
+
+<b>3. No Risk (This is the real danger)</b>
+Stay in the job forever → Skill stagnates → Economy shifts → Job disappears → No backup.
+This is what most people *think* is safe.
+But it’s actually the **riskiest**.
+
+</div><div class="slide">
+<h3>Understand this:</h3>
+
+If you have no family wealth,
+<span>you <u>do not have the luxury</u> to avoid building leverage.</span>
+</div><div class="slide">
+Because in 5–10 years:
+<span>– AI will replace low-skill work</span>
+<span>– Salaries won’t rise</span>
+<span>– Companies will shrink teams</span>
+<span>– Career ladders will flatten</span>
+</div><div class="slide">
+Staying “safe” now becomes dangerous later.
+
+<span>So your risk strategy is:</span>
+<span><i>Small risks now → Big security later.</i></span>
+
+</div><div class="slide">
+
+<b>The safest person in the world is not the one who has a stable job.</b>
+<p><span>The safest person is the one who can:</span>
+<span>learn fast, communicate value, and create money on demand.</span></p>
+
+<span>This is a <i>portable, internal security system.</i></span>
+</div><div class="slide">
+You already have the foundations:
+<span>teaching + coaching + communication + coding.</span>
+
+<span>That means, if you work this correctly:</span>
+<span>Your security will eventually be <u>self-created and unbreakable.</u></span>
+
+</div><div class="slide">
+
+We are not gambling here.
+<span>We are <i>engineering a controlled transition.</i></span>
+
+<table>
+    <tr>
+        <td><span>Your path is:</span><br>
+<span>Safety → Stability → Skill → System → Income → Freedom</span></td>
+        <td><span>Not:</span><br>
+<span>Safety → Jump → Pray.</span></td>
+    </tr>
+</table>
+
+
+</div><div class="slide">
+
+And now I’ll tell you something most people never hear:
+
+<span><b>Your lack of parental wealth is not a disadvantage.</b></span>
+<span>It is <i>why you will build stronger self-trust.</i></span>
+</div><div class="slide">
+People with cushions rarely develop <u>inner certainty.</u>
+<span><b>You will.</b></span>
+
+<span>And once you have <u>that</u>, no one can take it away.</span>
+
+</div><div class="slide">
+When you're ready, we continue exactly where we paused:
+**Choosing who you will teach first.**
+
+A
+B
+C
+or
+D
+
+I’ll wait.
+
+
+</div><div class="slide" style="align-items: center;">
+    <h2 style="letter-spacing: 2rem;">Godspeed!</h2> 25.11.10
+
+  </div>
+  <!-- <div id="hint">Press → to reveal next part</div> -->
+   <div id="hint">Find more at <u><i>linktr.ee/sasban9</i></u> &middot; <u>github.com/sasban9</u></div>
+</div>
+
+<script>
+  let slides = document.querySelectorAll('.slide');
+  let currentSlide = 0;
+
+  function revealNextSpan() {
+    let spans = slides[currentSlide].querySelectorAll('span');
+    let nextSpan = Array.from(spans).find(span => !span.classList.contains('visible'));
+
+    if (nextSpan) {
+      nextSpan.classList.add('visible');
+    } else {
+      // All spans visible, move to next slide if available
+      if (currentSlide < slides.length - 1) {
+        slides[currentSlide].classList.remove('active');
+        currentSlide++;
+        slides[currentSlide].classList.add('active');
+        resetSpans();
+      }
+    }
+  }
+
+  function revealPrevSpan() {
+    slides[currentSlide].classList.remove('active');
+    currentSlide--;
+    slides[currentSlide].classList.add('active');
+    resetSpans();
+  }
+  function resetSpans() {
+    let spans = slides[currentSlide].querySelectorAll('span');
+    spans.forEach(span => span.classList.remove('visible'));
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') {
+      revealNextSpan();
+    } else if (e.key === 'ArrowLeft') {
+      if(currentSlide > 0)revealPrevSpan();
+    }
+  });
+
+// Reveal the first span on load (optional)
+resetSpans();
+</script>
+
+</body>
+</html>
+
