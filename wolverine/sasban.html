@@ -3,17 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>SASBAN 2025</title>
     <style>
         *{margin: 0;padding: 0;box-sizing: border-box;}
-        body{display: flex;flex-direction: row; justify-content: center;align-items: center;flex-wrap: wrap;min-height: 100vh;}
-        div{height: 55vh;min-width: 200px;margin: 0.3rem;box-shadow: 0 0 10px #000;}
+        body{display: flex;flex-direction: column;justify-content: space-between;align-items: center;height:100vh}
+        main{display: flex;flex-direction: row;height: 50vh;align-items: end;justify-content: center;padding-bottom: 100px;background: lightcyan;}
+        div{height: 45vh;min-width: 200px;margin: 0.5rem;box-shadow: 0 0 10px #000;transform: rotate(-2deg);}
         /* div:nth-of-type(4n+2),div:nth-of-type(4n+3){margin-top: 2rem;} */
         div:nth-of-type(2n){margin-top: 2rem;}
+        h1,h2{font-size: 3rem;font-family: fantasy;}
+        img{display: inline-block;}
+        div:hover{transform: rotate(3deg);transition: all 6s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
     </style>
 </head>
 <body>
-    <div style="background: url('sas6.png')50% 50%; background-size: cover;"></div>
+    <h2>I am a foodie!</h2>
+    <main>
+        <div style="background: url('sas6.png')50% 50%; background-size: cover;"></div>
     <div style="background: url('sas7.png')50% 50%; background-size: cover;"></div>
     <!-- <div style="background: url('sas8.png')50% 50%; background-size: cover;"></div> -->
     <div style="background: url('sas13.png')50% 50%; background-size: cover;"></div>
@@ -23,5 +29,6 @@
     <div style="background: url('sas5.png')50% 50%; background-size: cover;"></div>
     <!-- olypub -->
     <!-- <div style="background: url('sas4.png')50% 50%; background-size: cover;"></div> -->
+    </main>
 </body>
 </html>
