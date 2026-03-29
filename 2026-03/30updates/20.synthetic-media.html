@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Marketing Content to Hyper-Personalized Synthetic Media</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Fraunces:ital,wght@0,300;0,700;1,300;1,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #060810;
+    --bg-card: #0d1117;
+    --accent-cyan: #00f5d4;
+    --accent-amber: #ffd166;
+    --accent-pink: #ff6b9d;
+    --accent-blue: #4cc9f0;
+    --accent-lime: #c3f73a;
+    --text-main: #e8eaf0;
+    --text-muted: #8892a4;
+    --grid-line: rgba(255,255,255,0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text-main);
+    font-family: 'DM Mono', monospace;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--accent-cyan);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: screen;
+    transition: transform 0.1s;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid rgba(0,245,212,0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transition: all 0.15s ease;
+  }
+
+  /* Grid background */
+  .grid-bg {
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 0;
+  }
+
+  /* Ambient glow blobs */
+  .blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: 0;
+    animation: drift 12s ease-in-out infinite alternate;
+  }
+  .blob-1 { width: 600px; height: 600px; background: var(--accent-cyan); top: -20%; left: -10%; }
+  .blob-2 { width: 500px; height: 500px; background: var(--accent-pink); bottom: -10%; right: -5%; animation-delay: -4s; }
+  .blob-3 { width: 400px; height: 400px; background: var(--accent-amber); top: 30%; left: 40%; animation-delay: -8s; }
+
+  @keyframes drift {
+    from { transform: translate(0, 0) scale(1); }
+    to   { transform: translate(30px, 20px) scale(1.05); }
+  }
+
+  /* Slide container */
+  .slideshow {
+    position: relative;
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: clamp(40px, 6vw, 100px) clamp(40px, 8vw, 140px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.7s ease, transform 0.7s ease;
+    transform: translateY(30px);
+  }
+
+  .slide.active {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+  }
+
+  .slide.exit {
+    opacity: 0;
+    transform: translateY(-30px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  /* Slide number tag */
+  .slide-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--text-muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .slide-tag::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--text-muted);
+  }
+
+  /* Headline */
+  .headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(42px, 6.5vw, 90px);
+    line-height: 0.95;
+    letter-spacing: 0.01em;
+    color: var(--text-main);
+    margin-bottom: 28px;
+    max-width: 85%;
+  }
+
+  .headline .accent { color: var(--accent-cyan); }
+  .headline .accent-amber { color: var(--accent-amber); }
+  .headline .accent-pink { color: var(--accent-pink); }
+  .headline .accent-lime { color: var(--accent-lime); }
+  .headline .accent-blue { color: var(--accent-blue); }
+
+  /* Body text */
+  .body-text {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(22px, 2vw, 30px);
+    line-height: 1.55;
+    color: rgba(232,234,240,0.8);
+    max-width: 72%;
+    font-weight: 300;
+  }
+
+  .body-text strong {
+    color: var(--accent-amber);
+    font-weight: 700;
+  }
+
+  /* Stat callout */
+  .stat-block {
+    display: flex;
+    gap: 40px;
+    margin-top: 36px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .stat-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(44px, 5vw, 72px);
+    color: var(--accent-cyan);
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--text-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* Divider line */
+  .divider {
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-cyan), transparent);
+    margin-bottom: 28px;
+    border-radius: 2px;
+  }
+
+  /* Bullet list */
+  .bullet-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .bullet-list li {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(21px, 1.8vw, 28px);
+    color: rgba(232,234,240,0.85);
+    font-weight: 300;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    line-height: 1.4;
+  }
+  .bullet-list li::before {
+    content: '›';
+    color: var(--accent-cyan);
+    font-size: 1.3em;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* Pull quote */
+  .pull-quote {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(26px, 2.8vw, 44px);
+    font-style: italic;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--text-main);
+    border-left: 4px solid var(--accent-pink);
+    padding-left: 28px;
+    max-width: 78%;
+    margin-top: 16px;
+  }
+
+  /* Tag chips */
+  .chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+  .chip {
+    font-family: 'DM Mono', monospace;
+    font-size: 15px;
+    padding: 8px 18px;
+    border-radius: 4px;
+    border: 1px solid;
+    letter-spacing: 0.06em;
+  }
+  .chip-cyan  { border-color: var(--accent-cyan);  color: var(--accent-cyan); }
+  .chip-amber { border-color: var(--accent-amber); color: var(--accent-amber); }
+  .chip-pink  { border-color: var(--accent-pink);  color: var(--accent-pink); }
+  .chip-lime  { border-color: var(--accent-lime);  color: var(--accent-lime); }
+  .chip-blue  { border-color: var(--accent-blue);  color: var(--accent-blue); }
+
+  /* Two-column layout */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    max-width: 90%;
+    margin-top: 16px;
+  }
+  .col-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .col-items {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(21px, 1.7vw, 26px);
+    font-weight: 300;
+    line-height: 1.7;
+    color: rgba(232,234,240,0.85);
+  }
+
+  /* Centered slide variant */
+  .slide.center {
+    align-items: center;
+    text-align: center;
+  }
+  .slide.center .headline { max-width: 90%; }
+  .slide.center .body-text { max-width: 72%; text-align: center; }
+  .slide.center .divider { margin-left: auto; margin-right: auto; }
+  .slide.center .pull-quote { border-left: none; border-top: 4px solid var(--accent-pink); padding-left: 0; padding-top: 24px; }
+
+  /* Title slide big decoration */
+  .title-kicker {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(13px, 1.1vw, 17px);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--accent-cyan);
+    margin-bottom: 24px;
+  }
+  .title-sub {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(22px, 2vw, 32px);
+    font-weight: 300;
+    color: rgba(232,234,240,0.65);
+    margin-top: 24px;
+    max-width: 65%;
+  }
+
+  /* Massive background word */
+  .bg-word {
+    position: absolute;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(140px, 22vw, 340px);
+    color: rgba(255,255,255,0.025);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+    right: -2%;
+    bottom: -4%;
+    letter-spacing: -0.02em;
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    position: fixed;
+    bottom: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-pink));
+    z-index: 100;
+    transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* Navigation */
+  .nav {
+    position: fixed;
+    bottom: 32px;
+    right: 48px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .nav-btn {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--text-main);
+    width: 48px; height: 48px;
+    border-radius: 6px;
+    font-size: 20px;
+    cursor: none;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    font-family: 'DM Mono', monospace;
+  }
+  .nav-btn:hover {
+    background: rgba(0,245,212,0.15);
+    border-color: var(--accent-cyan);
+    color: var(--accent-cyan);
+  }
+  .nav-counter {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    min-width: 52px;
+    text-align: center;
+  }
+
+  /* Slide-specific accent overrides */
+  .slide[data-accent="amber"] .divider { background: linear-gradient(90deg, var(--accent-amber), transparent); }
+  .slide[data-accent="pink"]  .divider { background: linear-gradient(90deg, var(--accent-pink),  transparent); }
+  .slide[data-accent="lime"]  .divider { background: linear-gradient(90deg, var(--accent-lime),  transparent); }
+  .slide[data-accent="blue"]  .divider { background: linear-gradient(90deg, var(--accent-blue),  transparent); }
+
+  /* Animated gradient headline for title */
+  .grad-text {
+    background: linear-gradient(120deg, #00f5d4, #4cc9f0, #ff6b9d, #ffd166);
+    background-size: 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradShift 6s linear infinite;
+  }
+  @keyframes gradShift {
+    0%   { background-position: 0%   50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0%   50%; }
+  }
+
+  /* Scanline on title */
+  .scanline {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(0,0,0,0.06) 3px,
+      rgba(0,0,0,0.06) 4px
+    );
+    pointer-events: none;
+    opacity: 0.4;
+  }
+
+  /* Slide 23 end */
+  .end-mark {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-top: 36px;
+  }
+
+  /* Table style */
+  .data-table {
+    margin-top: 24px;
+    width: 80%;
+    border-collapse: collapse;
+  }
+  .data-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: left;
+    padding: 10px 20px 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .data-table td {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(20px, 1.6vw, 25px);
+    font-weight: 300;
+    color: rgba(232,234,240,0.85);
+    padding: 12px 20px 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: top;
+  }
+  .data-table td.hi { color: var(--accent-cyan); font-weight: 500; }
+
+  /* Inline highlight box */
+  .highlight-box {
+    display: inline-block;
+    background: rgba(0,245,212,0.08);
+    border: 1px solid rgba(0,245,212,0.2);
+    border-radius: 6px;
+    padding: 20px 28px;
+    margin-top: 24px;
+  }
+  .highlight-box .hb-text {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(22px, 1.9vw, 30px);
+    font-weight: 300;
+    color: var(--accent-cyan);
+    line-height: 1.5;
+  }
+
+  /* Timeline */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 20px;
+    max-width: 80%;
+  }
+  .tl-item {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 24px;
+    align-items: start;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .tl-year {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(26px, 2.5vw, 38px);
+    color: var(--accent-amber);
+    line-height: 1.1;
+  }
+  .tl-desc {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(20px, 1.6vw, 25px);
+    font-weight: 300;
+    color: rgba(232,234,240,0.85);
+    line-height: 1.4;
+  }
+
+  /* Hover on nav */
+  .slide .headline { cursor: default; }
+
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="grid-bg"></div>
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+<div class="progress-bar" id="progressBar"></div>
+<div class="scanline"></div>
+
+<div class="slideshow" id="slideshow">
+
+  <!-- SLIDE 1: Title -->
+  <div class="slide center active" data-slide="1">
+    <div class="title-kicker">A New Era of Marketing</div>
+    <div class="headline grad-text">From Marketing Content<br>to Hyper-Personalized<br>Synthetic Media</div>
+    <div class="title-sub">How AI is rewriting the relationship between brands and the individual human being</div>
+    <div class="bg-word">SYNTH</div>
+  </div>
+
+  <!-- SLIDE 2: The Old World -->
+  <div class="slide" data-slide="2" data-accent="amber">
+    <div class="slide-tag">01 — Context</div>
+    <div class="divider"></div>
+    <div class="headline">The <span class="accent-amber">Old Playbook</span> of Marketing</div>
+    <div class="body-text">For decades, marketing meant <strong>mass messages</strong> crafted for imaginary averages — the "35-year-old suburban parent," the "millennial tech buyer." One voice. Millions of ears.</div>
+    <div class="bg-word">MASS</div>
+  </div>
+
+  <!-- SLIDE 3: The Shift -->
+  <div class="slide" data-slide="3">
+    <div class="slide-tag">02 — The Shift</div>
+    <div class="divider"></div>
+    <div class="headline">Personalization:<br><span class="accent">A Broken Promise</span></div>
+    <ul class="bullet-list">
+      <li>"Hi [First Name]" emails — the illusion of knowing you</li>
+      <li>Segmented ads by zip code and age bracket</li>
+      <li>Recommendation engines that miss the mark constantly</li>
+      <li>The gap between data collected and value delivered</li>
+    </ul>
+    <div class="bg-word">GAP</div>
+  </div>
+
+  <!-- SLIDE 4: What is Synthetic Media -->
+  <div class="slide" data-slide="4" data-accent="pink">
+    <div class="slide-tag">03 — Definition</div>
+    <div class="divider"></div>
+    <div class="headline">What is <span class="accent-pink">Synthetic Media</span>?</div>
+    <div class="body-text">AI-generated or AI-manipulated content — text, images, audio, video — that is computationally produced rather than captured from reality.</div>
+    <div class="chip-row">
+      <span class="chip chip-cyan">Deepfakes</span>
+      <span class="chip chip-amber">AI Voice</span>
+      <span class="chip chip-pink">Generated Video</span>
+      <span class="chip chip-lime">Virtual Influencers</span>
+      <span class="chip chip-blue">AI Copywriting</span>
+    </div>
+    <div class="bg-word">AI</div>
+  </div>
+
+  <!-- SLIDE 5: Scale of Change -->
+  <div class="slide" data-slide="5">
+    <div class="slide-tag">04 — Scale</div>
+    <div class="divider"></div>
+    <div class="headline">The Numbers<br><span class="accent">Don't Lie</span></div>
+    <div class="stat-block">
+      <div class="stat">
+        <div class="stat-number">$2.9T</div>
+        <div class="stat-label">Synthetic media market by 2032</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">90%</div>
+        <div class="stat-label">Of online content may be AI-generated by 2026</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">6×</div>
+        <div class="stat-label">Higher conversion with truly personalized content</div>
+      </div>
+    </div>
+    <div class="bg-word">DATA</div>
+  </div>
+
+  <!-- SLIDE 6: The Technology Stack -->
+  <div class="slide" data-slide="6" data-accent="blue">
+    <div class="slide-tag">05 — Technology</div>
+    <div class="divider"></div>
+    <div class="headline">The <span class="accent-blue">Tech Stack</span> Behind It</div>
+    <div class="two-col">
+      <div>
+        <div class="col-label" style="color: var(--accent-blue)">Generation Layer</div>
+        <div class="col-items">Large Language Models<br>Diffusion Image Models<br>Neural Voice Synthesis<br>Video Generation AI</div>
+      </div>
+      <div>
+        <div class="col-label" style="color: var(--accent-cyan)">Personalization Layer</div>
+        <div class="col-items">Real-time Data Pipelines<br>Behavioral Graphs<br>Identity Resolution<br>Dynamic Rendering</div>
+      </div>
+    </div>
+    <div class="bg-word">STACK</div>
+  </div>
+
+  <!-- SLIDE 7: Journey from Mass to Micro -->
+  <div class="slide" data-slide="7" data-accent="amber">
+    <div class="slide-tag">06 — Evolution</div>
+    <div class="divider"></div>
+    <div class="headline">The <span class="accent-amber">Evolution</span><br>of Targeting</div>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-year">1990s</div><div class="tl-desc">Mass broadcast — one message, every audience</div></div>
+      <div class="tl-item"><div class="tl-year">2000s</div><div class="tl-desc">Segmentation — demographics, psychographics</div></div>
+      <div class="tl-item"><div class="tl-year">2010s</div><div class="tl-desc">Behavioral targeting — cookies, retargeting pixels</div></div>
+      <div class="tl-item"><div class="tl-year">2020s</div><div class="tl-desc">Hyper-personalization — AI-generated, real-time, individual</div></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: What Hyper-Personalized Means -->
+  <div class="slide" data-slide="8">
+    <div class="slide-tag">07 — Definition</div>
+    <div class="divider"></div>
+    <div class="headline">"<span class="accent">Hyper-Personalized</span>"<br>— What It Actually Means</div>
+    <div class="body-text">Content that dynamically adapts every element — the face in the video, the voice tone, the product shown, the narrative arc, the emotional appeal — to a <strong>specific individual</strong>, not a segment.</div>
+    <div class="bg-word">YOU</div>
+  </div>
+
+  <!-- SLIDE 9: Dynamic Video Ads -->
+  <div class="slide" data-slide="9" data-accent="pink">
+    <div class="slide-tag">08 — Application</div>
+    <div class="divider"></div>
+    <div class="headline">Dynamic <span class="accent-pink">Video</span> at Scale</div>
+    <ul class="bullet-list">
+      <li>AI swaps the spokesperson's face to match viewer demographics</li>
+      <li>Locale, language, and accent adjusted per viewer</li>
+      <li>Product colorway shown matches user's past purchase palette</li>
+      <li>Millions of video variants rendered in real-time — zero human editing</li>
+    </ul>
+    <div class="bg-word">VIDEO</div>
+  </div>
+
+  <!-- SLIDE 10: AI Copywriting -->
+  <div class="slide" data-slide="10" data-accent="lime">
+    <div class="slide-tag">09 — Application</div>
+    <div class="divider"></div>
+    <div class="headline">Copy That <span class="accent-lime">Knows</span> You</div>
+    <div class="body-text">LLMs can generate landing page copy that references your city, your last purchase, your browsing pattern, and your inferred emotional state — all within a single page load.</div>
+    <div class="highlight-box">
+      <div class="hb-text">"Based on your morning run in Seattle, here's a hydration deal — just for you, right now."</div>
+    </div>
+    <div class="bg-word">COPY</div>
+  </div>
+
+  <!-- SLIDE 11: Voice & Audio -->
+  <div class="slide" data-slide="11" data-accent="blue">
+    <div class="slide-tag">10 — Application</div>
+    <div class="divider"></div>
+    <div class="headline"><span class="accent-blue">Synthetic Voice</span><br>Marketing</div>
+    <ul class="bullet-list">
+      <li>Personalized podcast ads in the host's cloned voice</li>
+      <li>AI voiceovers that match regional accents and dialects</li>
+      <li>Dynamic audio ads adapting to listener mood signals</li>
+      <li>Real-time voice agents indistinguishable from humans</li>
+    </ul>
+    <div class="bg-word">VOICE</div>
+  </div>
+
+  <!-- SLIDE 12: Virtual Influencers -->
+  <div class="slide" data-slide="12">
+    <div class="slide-tag">11 — Application</div>
+    <div class="divider"></div>
+    <div class="headline">The Rise of <span class="accent">Virtual</span><br>Influencers</div>
+    <div class="body-text">Fully AI-generated personas with curated backstories, consistent aesthetics, and millions of followers. They never age, never get cancelled, and can be in every time zone simultaneously.</div>
+    <div class="chip-row">
+      <span class="chip chip-pink">Lil Miquela</span>
+      <span class="chip chip-cyan">Imma</span>
+      <span class="chip chip-amber">Noonoouri</span>
+      <span class="chip chip-lime">Shudu</span>
+    </div>
+    <div class="bg-word">PERSONA</div>
+  </div>
+
+  <!-- SLIDE 13: The Data Engine -->
+  <div class="slide" data-slide="13" data-accent="amber">
+    <div class="slide-tag">12 — Infrastructure</div>
+    <div class="divider"></div>
+    <div class="headline">What Fuels the<br><span class="accent-amber">Engine</span></div>
+    <table class="data-table">
+      <thead>
+        <tr><th>Signal Type</th><th>Examples</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="hi">Behavioral</td><td>Clicks, dwell time, scroll depth, purchase history</td></tr>
+        <tr><td class="hi">Contextual</td><td>Device, time of day, location, weather, app in use</td></tr>
+        <tr><td class="hi">Emotional</td><td>Sentiment from social posts, review language</td></tr>
+        <tr><td class="hi">Predictive</td><td>ML-inferred intent, life-stage, next likely action</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SLIDE 14: Privacy Paradox -->
+  <div class="slide" data-slide="14" data-accent="pink">
+    <div class="slide-tag">13 — Tension</div>
+    <div class="divider"></div>
+    <div class="headline">The Privacy<br><span class="accent-pink">Paradox</span></div>
+    <div class="pull-quote">"People want ads that feel relevant. They don't want brands to know how relevant they can be."</div>
+    <div class="body-text" style="margin-top: 24px;">Hyper-personalization requires hyper-surveillance. The very data that makes content magical is the data consumers fear handing over.</div>
+  </div>
+
+  <!-- SLIDE 15: Consent & Ethics -->
+  <div class="slide" data-slide="15">
+    <div class="slide-tag">14 — Ethics</div>
+    <div class="divider"></div>
+    <div class="headline">Consent,<br><span class="accent">Trust</span> & Ethics</div>
+    <ul class="bullet-list">
+      <li>Who owns your likeness when an AI uses it in an ad?</li>
+      <li>Should users know a face in an ad is synthetic?</li>
+      <li>Emotional manipulation at scale — where's the line?</li>
+      <li>Regulatory fragmentation: GDPR, CCPA, and beyond</li>
+    </ul>
+    <div class="bg-word">ETHICS</div>
+  </div>
+
+  <!-- SLIDE 16: Deepfake Risk -->
+  <div class="slide" data-slide="16" data-accent="pink">
+    <div class="slide-tag">15 — Risk</div>
+    <div class="divider"></div>
+    <div class="headline">When Synthetic<br><span class="accent-pink">Goes Wrong</span></div>
+    <div class="two-col">
+      <div>
+        <div class="col-label" style="color: var(--accent-pink)">Brand Risk</div>
+        <div class="col-items">Uncanny valley effects<br>Fabricated celebrity endorsements<br>Viral backlash from detected AI<br>Loss of brand authenticity</div>
+      </div>
+      <div>
+        <div class="col-label" style="color: var(--accent-amber)">Societal Risk</div>
+        <div class="col-items">Misinformation at ad scale<br>Identity theft via voice cloning<br>Erosion of media trust<br>Weaponized personalization</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 17: Opportunity for Brands -->
+  <div class="slide" data-slide="17" data-accent="lime">
+    <div class="slide-tag">16 — Opportunity</div>
+    <div class="divider"></div>
+    <div class="headline">The Competitive<br><span class="accent-lime">Advantage</span></div>
+    <div class="stat-block">
+      <div class="stat">
+        <div class="stat-number" style="color: var(--accent-lime)">80%</div>
+        <div class="stat-label">Consumers more likely to buy when experience is personalized</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number" style="color: var(--accent-lime)">40%</div>
+        <div class="stat-label">Revenue uplift from advanced personalization</div>
+      </div>
+    </div>
+    <div class="body-text" style="margin-top: 24px;">Brands that master hyper-personalized synthetic media will operate with near-zero marginal creative cost and near-infinite variety.</div>
+  </div>
+
+  <!-- SLIDE 18: The Creative Workflow Shift -->
+  <div class="slide" data-slide="18" data-accent="blue">
+    <div class="slide-tag">17 — Workflow</div>
+    <div class="divider"></div>
+    <div class="headline">Creative Work<br>Is <span class="accent-blue">Changing</span></div>
+    <div class="two-col">
+      <div>
+        <div class="col-label" style="color: var(--text-muted)">Before</div>
+        <div class="col-items">Brief → Concept → Production → Distribution<br><br>Weeks to months per campaign</div>
+      </div>
+      <div>
+        <div class="col-label" style="color: var(--accent-blue)">After</div>
+        <div class="col-items">Signal → Generation → Delivery<br><br>Minutes to seconds per variant<br>∞ variants simultaneously</div>
+      </div>
+    </div>
+    <div class="bg-word">FLOW</div>
+  </div>
+
+  <!-- SLIDE 19: Human-AI Collaboration -->
+  <div class="slide" data-slide="19">
+    <div class="slide-tag">18 — Roles</div>
+    <div class="divider"></div>
+    <div class="headline">Humans + AI:<br><span class="accent">New Roles</span></div>
+    <ul class="bullet-list">
+      <li>Creatives become <strong>creative directors of AI systems</strong></li>
+      <li>Copywriters shift to prompt engineers and brand guardians</li>
+      <li>Data scientists become the new art directors</li>
+      <li>Ethics officers become essential, not optional</li>
+    </ul>
+    <div class="bg-word">ROLES</div>
+  </div>
+
+  <!-- SLIDE 20: Case Studies Teaser -->
+  <div class="slide" data-slide="20" data-accent="amber">
+    <div class="slide-tag">19 — In Practice</div>
+    <div class="divider"></div>
+    <div class="headline">Already <span class="accent-amber">Happening</span></div>
+    <table class="data-table">
+      <thead>
+        <tr><th>Brand</th><th>What They Did</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="hi">Coca-Cola</td><td>AI-generated ad imagery from brand visual DNA</td></tr>
+        <tr><td class="hi">Nike</td><td>Personalized athlete video messages at scale</td></tr>
+        <tr><td class="hi">Starbucks</td><td>Deep Brew AI — personalized offers per customer</td></tr>
+        <tr><td class="hi">Sephora</td><td>AI-generated skincare tutorials per skin profile</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SLIDE 21: The Next Frontier -->
+  <div class="slide" data-slide="21" data-accent="lime">
+    <div class="slide-tag">20 — Future</div>
+    <div class="divider"></div>
+    <div class="headline">The Next<br><span class="accent-lime">Frontier</span></div>
+    <ul class="bullet-list">
+      <li>Real-time synthetic video ads served per eyeball, per millisecond</li>
+      <li>AI agents that negotiate pricing and pitch offers conversationally</li>
+      <li>Fully synthetic brand worlds — metaverse storefronts, AI hosts</li>
+      <li>Emotionally adaptive content responding to biometric signals</li>
+    </ul>
+    <div class="bg-word">NEXT</div>
+  </div>
+
+  <!-- SLIDE 22: Principles for Responsible Use -->
+  <div class="slide" data-slide="22">
+    <div class="slide-tag">21 — Principles</div>
+    <div class="divider"></div>
+    <div class="headline">Doing This<br><span class="accent">Right</span></div>
+    <div class="two-col">
+      <div>
+        <div class="col-label" style="color: var(--accent-cyan)">Disclose</div>
+        <div class="col-items">Label AI-generated content clearly. Build trust, not illusions.</div>
+      </div>
+      <div>
+        <div class="col-label" style="color: var(--accent-amber)">Consent</div>
+        <div class="col-items">Earn data access. Give users meaningful control.</div>
+      </div>
+    </div>
+    <div class="two-col" style="margin-top: 28px;">
+      <div>
+        <div class="col-label" style="color: var(--accent-pink)">Audit</div>
+        <div class="col-items">Test for bias in generated content across demographics.</div>
+      </div>
+      <div>
+        <div class="col-label" style="color: var(--accent-lime)">Value Exchange</div>
+        <div class="col-items">Personalization must feel like a gift, not surveillance.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 23: Closing -->
+  <div class="slide center" data-slide="23">
+    <div class="slide-tag" style="justify-content: center;">22 — The Takeaway</div>
+    <div class="headline grad-text">The Medium<br>IS the Person</div>
+    <div class="body-text">Synthetic media doesn't just change how content is made — it changes what content fundamentally <em>is</em>. In a hyper-personalized world, every piece of marketing becomes a mirror. The question is what it reflects.</div>
+    <div class="end-mark">End of Presentation · From Marketing to Synthetic Media</div>
+    <div class="bg-word">∞</div>
+  </div>
+
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">←</button>
+  <div class="nav-counter" id="navCounter">01 / 23</div>
+  <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">→</button>
+</div>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx - 6 + 'px';
+    cursor.style.top  = my - 6 + 'px';
+  });
+
+  function animateRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) *.12;
+    cursorRing.style.left = rx - 18 + 'px';
+    cursorRing.style.top  = ry - 18 + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  // Slideshow logic
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+  let animating = false;
+
+  function updateProgress() {
+    const pct = ((current + 1) / total) * 100;
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('navCounter').textContent =
+      String(current + 1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
+  }
+
+  function goTo(index) {
+    if (animating) return;
+    if (index < 0 || index >= total) return;
+    animating = true;
+
+    const curr = slides[current];
+    curr.classList.add('exit');
+    curr.classList.remove('active');
+    setTimeout(() => curr.classList.remove('exit'), 500);
+
+    current = index;
+    const next = slides[current];
+    next.classList.add('active');
+    updateProgress();
+
+    setTimeout(() => { animating = false; }, 700);
+  }
+
+  function changeSlide(dir) {
+    goTo(current + dir);
+  }
+
+  updateProgress();
+
+  // Keyboard nav
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+      e.preventDefault(); changeSlide(1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault(); changeSlide(-1);
+    }
+  });
+
+  // Touch swipe
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) changeSlide(dx < 0 ? 1 : -1);
+  });
+
+  // Cursor glow on buttons
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'scale(2)';
+      cursorRing.style.transform = 'scale(1.5)';
+    });
+    btn.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'scale(1)';
+      cursorRing.style.transform = 'scale(1)';
+    });
+  });
+</script>
+
+</body>
+</html>

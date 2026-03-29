@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why "Copyright" Became "Contribution Credits" in the Synthetic Era</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #050810;
+    --bg-card: #0c1120;
+    --accent-gold: #f5c842;
+    --accent-cyan: #3cf7e8;
+    --accent-rose: #ff4f72;
+    --accent-violet: #b06aff;
+    --text-primary: #f0eeea;
+    --text-muted: #9ca3b0;
+    --grid-line: rgba(255,255,255,0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: var(--bg-deep);
+    overflow: hidden;
+    font-family: 'Space Mono', monospace;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 14px; height: 14px;
+    border: 2px solid var(--accent-cyan);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: width .2s, height .2s, border-color .2s;
+    mix-blend-mode: difference;
+  }
+  .cursor-dot {
+    position: fixed;
+    width: 4px; height: 4px;
+    background: var(--accent-gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%,-50%);
+  }
+
+  /* Background grid */
+  .grid-bg {
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Ambient blobs */
+  .blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.18;
+    transition: opacity 1s ease;
+  }
+  .blob-1 { width: 500px; height: 500px; background: var(--accent-violet); top: -150px; left: -150px; }
+  .blob-2 { width: 400px; height: 400px; background: var(--accent-cyan); bottom: -100px; right: -100px; }
+  .blob-3 { width: 300px; height: 300px; background: var(--accent-rose); top: 40%; left: 60%; }
+
+  /* Slide container */
+  #deck {
+    position: relative; z-index: 1;
+    width: 100%; height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    padding: 60px 80px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .slide.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .slide-inner {
+    max-width: 1100px;
+    width: 100%;
+    transform: translateY(24px);
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .slide.active .slide-inner {
+    transform: translateY(0);
+  }
+
+  /* Slide number tag */
+  .slide-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .slide-tag::before {
+    content: '';
+    display: inline-block;
+    width: 32px; height: 1px;
+    background: var(--text-muted);
+  }
+
+  /* Eyebrow label */
+  .eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding: 6px 14px;
+    display: inline-block;
+    border: 1px solid;
+    border-radius: 2px;
+  }
+  .eyebrow.gold { color: var(--accent-gold); border-color: var(--accent-gold); }
+  .eyebrow.cyan { color: var(--accent-cyan); border-color: var(--accent-cyan); }
+  .eyebrow.rose { color: var(--accent-rose); border-color: var(--accent-rose); }
+  .eyebrow.violet { color: var(--accent-violet); border-color: var(--accent-violet); }
+
+  /* Headings */
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 8vw, 110px);
+    line-height: 0.92;
+    color: var(--text-primary);
+    letter-spacing: 0.01em;
+    margin-bottom: 28px;
+  }
+  h1 .accent { color: var(--accent-gold); }
+  h1 .cyan { color: var(--accent-cyan); }
+  h1 .rose { color: var(--accent-rose); }
+  h1 .violet { color: var(--accent-violet); }
+
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(30px, 4vw, 78px);
+    line-height: 1.0;
+    color: var(--text-primary);
+    letter-spacing: 0.02em;
+    margin-bottom: 24px;
+  }
+  h2 .accent { color: var(--accent-gold); }
+  h2 .cyan { color: var(--accent-cyan); }
+  h2 .rose { color: var(--accent-rose); }
+  h2 .violet { color: var(--accent-violet); }
+
+  /* Body text */
+  p.body {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(21px, 2vw, 26px);
+    line-height: 1.7;
+    color: var(--text-primary);
+    max-width: 960px;
+  }
+  p.body strong { color: var(--accent-gold); font-weight: 700; }
+  p.body em { color: var(--accent-cyan); font-style: italic; }
+
+  /* Decorative divider */
+  .divider {
+    width: 60px; height: 3px;
+    margin-bottom: 28px;
+    border-radius: 2px;
+  }
+  .divider.gold { background: var(--accent-gold); }
+  .divider.cyan { background: var(--accent-cyan); }
+  .divider.rose { background: var(--accent-rose); }
+  .divider.violet { background: var(--accent-violet); }
+
+  /* Quote style */
+  blockquote {
+    border-left: 4px solid var(--accent-gold);
+    padding-left: 28px;
+    margin: 20px 0;
+  }
+  blockquote p {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 2.5vw, 34px);
+    font-style: italic;
+    color: var(--text-primary);
+    line-height: 1.5;
+  }
+
+  /* List items */
+  ul.styled {
+    list-style: none;
+    margin-top: 20px;
+  }
+  ul.styled li {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(21px, 1.8vw, 25px);
+    color: var(--text-primary);
+    line-height: 1.6;
+    padding: 10px 0 10px 36px;
+    position: relative;
+    border-bottom: 1px solid var(--grid-line);
+  }
+  ul.styled li::before {
+    content: '→';
+    position: absolute; left: 0;
+    color: var(--accent-cyan);
+    font-size: 20px;
+  }
+
+  /* Comparison grid */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-top: 28px;
+  }
+  .compare-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 28px 30px;
+  }
+  .compare-card .label {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .compare-card .label.old { color: var(--accent-rose); }
+  .compare-card .label.new { color: var(--accent-cyan); }
+  .compare-card p {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(20px, 1.6vw, 23px);
+    color: var(--text-primary);
+    line-height: 1.6;
+  }
+
+  /* Big stat */
+  .stat-block {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 11vw, 140px);
+    line-height: 1;
+    color: var(--accent-gold);
+  }
+  .stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(21px, 1.8vw, 26px);
+    color: var(--text-muted);
+    padding-bottom: 16px;
+    max-width: 280px;
+    line-height: 1.4;
+  }
+
+  /* Timeline steps */
+  .timeline {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .tl-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .tl-year {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30px;
+    color: var(--accent-gold);
+    min-width: 80px;
+    padding-top: 3px;
+  }
+  .tl-text {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(20px, 1.6vw, 23px);
+    color: var(--text-primary);
+    line-height: 1.5;
+  }
+
+  /* Highlight box */
+  .highlight-box {
+    background: linear-gradient(135deg, rgba(245,200,66,0.08), rgba(60,247,232,0.06));
+    border: 1px solid rgba(245,200,66,0.25);
+    border-radius: 8px;
+    padding: 28px 32px;
+    margin-top: 24px;
+  }
+  .highlight-box p {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(21px, 1.8vw, 26px);
+    color: var(--text-primary);
+    line-height: 1.65;
+  }
+
+  /* Pill tags */
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 22px;
+  }
+  .pill {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(17px, 1.4vw, 20px);
+    padding: 8px 18px;
+    border-radius: 100px;
+    border: 1px solid;
+    line-height: 1.3;
+  }
+  .pill.gold { color: var(--accent-gold); border-color: rgba(245,200,66,0.4); background: rgba(245,200,66,0.07); }
+  .pill.cyan { color: var(--accent-cyan); border-color: rgba(60,247,232,0.4); background: rgba(60,247,232,0.07); }
+  .pill.rose { color: var(--accent-rose); border-color: rgba(255,79,114,0.4); background: rgba(255,79,114,0.07); }
+  .pill.violet { color: var(--accent-violet); border-color: rgba(176,106,255,0.4); background: rgba(176,106,255,0.07); }
+
+  /* ====== TITLE SLIDE SPECIAL ====== */
+  .title-slide .slide-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    position: relative;
+  }
+  .title-slide .super {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--accent-cyan);
+    margin-bottom: 28px;
+  }
+  .title-slide h1 {
+    font-size: clamp(52px, 7.5vw, 108px);
+    margin-bottom: 32px;
+  }
+  .title-slide .subtitle {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(23px, 2.2vw, 30px);
+    font-style: italic;
+    color: var(--text-muted);
+    max-width: 680px;
+    line-height: 1.6;
+    margin-bottom: 40px;
+  }
+  .title-slide .meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.25);
+    text-transform: uppercase;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding-top: 22px;
+  }
+
+  /* Decorative corner marks */
+  .corner-tl, .corner-br {
+    position: absolute;
+    width: 24px; height: 24px;
+    border-color: rgba(245,200,66,0.3);
+    border-style: solid;
+  }
+  .corner-tl { top: -4px; left: -4px; border-width: 2px 0 0 2px; }
+  .corner-br { bottom: -4px; right: -4px; border-width: 0 2px 2px 0; }
+
+  /* ====== NAVIGATION ====== */
+  #nav {
+    position: fixed;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    z-index: 100;
+    background: rgba(12,17,32,0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 100px;
+    padding: 10px 22px;
+  }
+  #nav button {
+    background: none;
+    border: none;
+    cursor: none;
+    color: var(--text-muted);
+    font-size: 22px;
+    line-height: 1;
+    padding: 4px 8px;
+    transition: color 0.2s;
+    font-family: 'Space Mono', monospace;
+  }
+  #nav button:hover { color: var(--accent-gold); }
+  #nav .progress-dots {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    transition: all 0.3s ease;
+    cursor: none;
+  }
+  .dot.active { background: var(--accent-gold); width: 20px; border-radius: 3px; }
+
+  #slide-counter {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    min-width: 52px;
+    text-align: center;
+  }
+
+  /* Keyboard hint */
+  #hint {
+    position: fixed;
+    bottom: 36px;
+    right: 48px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: rgba(255,255,255,0.18);
+    letter-spacing: 0.1em;
+    z-index: 100;
+  }
+  #hint kbd {
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 3px;
+    padding: 1px 6px;
+    font-size: 11px;
+  }
+
+  /* Large decorative quote mark */
+  .big-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 200px;
+    line-height: 0.7;
+    color: rgba(245,200,66,0.08);
+    position: absolute;
+    top: 30px;
+    left: -20px;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* Two-col layout */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-top: 16px;
+    align-items: start;
+  }
+
+  /* Code-style token */
+  code {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.88em;
+    background: rgba(60,247,232,0.1);
+    color: var(--accent-cyan);
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+
+  /* Final slide */
+  .final-slide .slide-inner {
+    text-align: center;
+  }
+  .final-slide h1 {
+    font-size: clamp(48px, 7vw, 100px);
+  }
+  .final-glyph {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 160px;
+    line-height: 1;
+    color: var(--accent-gold);
+    opacity: 0.15;
+    display: block;
+    margin: 0 auto 10px;
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="grid-bg"></div>
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<div id="deck">
+
+  <!-- SLIDE 1: TITLE -->
+  <div class="slide title-slide active" data-index="0">
+    <div class="slide-inner">
+      <div class="corner-tl"></div>
+      <div class="corner-br"></div>
+      <p class="super">A Cultural & Legal Reckoning · The Synthetic Era</p>
+      <h1>Why <span class="accent">"Copyright"</span><br>Became<br><span class="cyan">"Contribution</span> Credits"</h1>
+      <p class="subtitle">How the rise of AI authorship shattered centuries-old ownership doctrine — and what replaced it.</p>
+      <p class="meta">17 Slides &nbsp;·&nbsp; Intellectual Property &nbsp;·&nbsp; AI & Society &nbsp;·&nbsp; 2020s–Future</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: THE OLD WORLD -->
+  <div class="slide" data-index="1">
+    <div class="slide-inner">
+      <div class="eyebrow gold">Setting the Stage</div>
+      <h2>The <span class="accent">Old Order</span><br>of Authorship</h2>
+      <div class="divider gold"></div>
+      <p class="body">For 300 years, copyright rested on one assumption: <strong>a human made this.</strong> Berne Convention (1886), the US Copyright Act (1976), TRIPS — all built on the romantic idea of the lone creator whose mind sparked an original work into being.</p>
+      <div class="highlight-box" style="margin-top:28px;">
+        <p>"Copyright is the legal recognition that creative work springs from an <em>individual human intellect</em> — and that person deserves control over what they made."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: THE CRACK -->
+  <div class="slide" data-index="2">
+    <div class="slide-inner">
+      <div class="eyebrow rose">The Fracture Point</div>
+      <h2>When <span class="rose">AI</span> Entered<br>The Studio</h2>
+      <div class="divider rose"></div>
+      <p class="body">By the early 2020s, models like DALL·E, Midjourney, GPT, Stable Diffusion, Suno, and Sora could produce <strong>publication-ready</strong> images, text, music, and video — often in seconds. The copyright system had no language for this. Whose work is it?</p>
+      <div class="compare" style="margin-top:24px;">
+        <div class="compare-card">
+          <p class="label old">The Problem</p>
+          <p>No human "authored" the pixel. The model synthesized it from billions of training examples.</p>
+        </div>
+        <div class="compare-card">
+          <p class="label new">The Irony</p>
+          <p>Those training examples were the copyrighted work of millions of real human creators.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: WHO OWNS IT? -->
+  <div class="slide" data-index="3">
+    <div class="slide-inner">
+      <div class="eyebrow cyan">The Core Question</div>
+      <h2>Who Actually<br><span class="cyan">Owns</span> a<br>Synthetic Work?</h2>
+      <div class="divider cyan"></div>
+      <ul class="styled">
+        <li>The <strong>prompter</strong> who typed 12 words?</li>
+        <li>The <strong>company</strong> that trained and deployed the model?</li>
+        <li>The <strong>artists & writers</strong> whose work trained the model?</li>
+        <li>The <strong>model itself</strong> — if we grant it some form of agency?</li>
+        <li><strong>No one</strong> — public domain from inception?</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: COURT CASES -->
+  <div class="slide" data-index="4">
+    <div class="slide-inner">
+      <div class="eyebrow rose">Legal Reality Check</div>
+      <h2>Courts <span class="rose">Couldn't</span><br>Agree Either</h2>
+      <div class="divider rose"></div>
+      <div class="timeline">
+        <div class="tl-item">
+          <span class="tl-year">2023</span>
+          <span class="tl-text">US Copyright Office: AI-generated images <strong>cannot be copyrighted.</strong> No human authorship = no copyright.</span>
+        </div>
+        <div class="tl-item">
+          <span class="tl-year">2024</span>
+          <span class="tl-text">Getty Images vs. Stability AI — billion-dollar lawsuit over training data ingestion without license.</span>
+        </div>
+        <div class="tl-item">
+          <span class="tl-year">2024</span>
+          <span class="tl-text">NYT vs. OpenAI — challenge to whether training constitutes fair use or systematic copying.</span>
+        </div>
+        <div class="tl-item">
+          <span class="tl-year">2025+</span>
+          <span class="tl-text">Courts globally produced <strong>contradictory rulings.</strong> The system buckled under the volume.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: SCALE -->
+  <div class="slide" data-index="5">
+    <div class="slide-inner">
+      <div class="eyebrow gold">The Scale Problem</div>
+      <h2>Copyright Wasn't<br>Built for <span class="accent">This</span></h2>
+      <div class="divider gold"></div>
+      <div class="stat-block">
+        <span class="stat-num">1B+</span>
+        <span class="stat-label">Images generated by AI models per day by 2025</span>
+      </div>
+      <p class="body">Copyright enforcement was designed for <strong>thousands</strong> of infringement cases per year. The synthetic era produced <em>millions</em> per hour. Litigation was not a solution. The system needed a different architecture entirely.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: THE TRAINING DATA PROBLEM -->
+  <div class="slide" data-index="6">
+    <div class="slide-inner">
+      <div class="eyebrow violet">The Hidden Debt</div>
+      <h2>Models Are Made of <br><span class="violet">Borrowed</span> Humanity</h2>
+      <div class="divider violet"></div>
+      <p class="body">Every synthetic output carries the <strong>invisible fingerprints</strong> of millions of human creators. A model that paints "in the style of" a living artist distills decades of that artist's practice. Copyright law called this <em>"fair use."</em> Creators called it <em>"theft."</em></p>
+      <div class="highlight-box" style="margin-top:28px; border-color: rgba(176,106,255,0.3);">
+        <p>The question was no longer just <strong>"who owns the output?"</strong> — it was <strong>"who deserves credit for the input?"</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: OLD MODEL FAILS -->
+  <div class="slide" data-index="7">
+    <div class="slide-inner">
+      <div class="eyebrow rose">System Failure</div>
+      <h2>Five Ways<br><span class="rose">Copyright</span> Broke Down</h2>
+      <div class="divider rose"></div>
+      <ul class="styled">
+        <li><strong>No human author</strong> = unenforceable under Berne Convention</li>
+        <li><strong>Infinite generation</strong> = enforcement at scale is impossible</li>
+        <li><strong>Style laundering</strong> = AI learns style, not exact work; law protects expression, not style</li>
+        <li><strong>Cross-border chaos</strong> = no international consensus on AI authorship</li>
+        <li><strong>Creator erasure</strong> = original contributors get zero credit or compensation</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: NEW CONCEPT EMERGES -->
+  <div class="slide" data-index="8">
+    <div class="slide-inner" style="position:relative;">
+      <div class="big-quote">"</div>
+      <div class="eyebrow cyan">The Paradigm Shift</div>
+      <h2>Enter:<br></Enter:br><span class="cyan">Contribution</span> Credits</h2>
+      <div class="divider cyan"></div>
+      <p class="body">The term <strong>Contribution Credits</strong> emerged from intersecting policy, tech ethics, and creator advocacy movements. The core insight: rather than trying to assign <em>ownership</em> to synthetic works — assign <em>acknowledgment and compensation</em> to everyone who contributed to making the model possible.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: HOW IT WORKS -->
+  <div class="slide" data-index="9">
+    <div class="slide-inner">
+      <div class="eyebrow gold">The New Framework</div>
+      <h2>How Contribution<br><span class="accent">Credits</span> Work</h2>
+      <div class="divider gold"></div>
+      <div class="two-col">
+        <div>
+          <p class="body" style="font-size:clamp(20px,1.6vw,23px);">Every AI model maintains a <code>contribution graph</code> — a weighted record of whose work influenced its capabilities. When a model generates revenue or output, a micro-royalty pool flows back through the graph.</p>
+        </div>
+        <div>
+          <ul class="styled" style="margin-top:0;">
+            <li>Writers, artists, coders get <strong>fractional credit</strong></li>
+            <li>Credit is <strong>attributed, not absolute</strong></li>
+            <li>Public ledger — <strong>verifiable & auditable</strong></li>
+            <li>No one "owns" the output; <strong>everyone shares the value</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 11: OLD VS NEW -->
+  <div class="slide" data-index="10">
+    <div class="slide-inner">
+      <div class="eyebrow gold">Side by Side</div>
+      <h2><span class="rose">Copyright</span> vs<br><span class="cyan">Contribution Credits</span></h2>
+      <div class="divider gold"></div>
+      <div class="compare">
+        <div class="compare-card" style="border-color:rgba(255,79,114,0.2);">
+          <p class="label old">© Copyright</p>
+          <p>Exclusive ownership. Monopoly right. Single author. Binary: owned or public domain. Litigation-enforced. Ignores AI's training origins.</p>
+        </div>
+        <div class="compare-card" style="border-color:rgba(60,247,232,0.2);">
+          <p class="label new">✦ Contribution Credits</p>
+          <p>Distributed acknowledgment. Proportional compensation. Many contributors. Spectrum-based. Protocol-enforced. Honors the full creative lineage.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 12: PHILOSOPHY -->
+  <div class="slide" data-index="11">
+    <div class="slide-inner">
+      <div class="eyebrow violet">The Philosophy</div>
+      <h2>From <span class="violet">Owning</span><br>to <span class="cyan">Belonging</span></h2>
+      <div class="divider violet"></div>
+      <blockquote>
+        <p>"All creative work builds on what came before. Copyright pretended otherwise. Contribution Credits simply makes that truth legible — and compensable."</p>
+      </blockquote>
+      <p class="body" style="margin-top:24px;">The synthetic era forced a philosophical reckoning: creativity was <strong>never solitary.</strong> Shakespeare borrowed plots. Picasso remixed Cézanne. Every "original" work is a <em>conversation with the past.</em> AI just made that conversation visible at industrial scale.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 13: WHO BENEFITS -->
+  <div class="slide" data-index="12">
+    <div class="slide-inner">
+      <div class="eyebrow cyan">Winners & Challenges</div>
+      <h2>Who Does <span class="cyan">This Help</span>?</h2>
+      <div class="divider cyan"></div>
+      <p class="body" style="margin-bottom:20px;">Contribution Credits rebalance power across the creative economy:</p>
+      <div class="pills">
+        <span class="pill cyan">Visual Artists</span>
+        <span class="pill gold">Writers & Authors</span>
+        <span class="pill violet">Musicians & Composers</span>
+        <span class="pill rose">Open Source Developers</span>
+        <span class="pill cyan">Photographers</span>
+        <span class="pill gold">Journalists & Archivists</span>
+        <span class="pill violet">Indigenous Knowledge Holders</span>
+        <span class="pill rose">Academic Researchers</span>
+      </div>
+      <p class="body" style="margin-top:24px; font-size:clamp(19px,1.5vw,22px); color: var(--text-muted);">Challenge: tracking contribution at the scale of trillion-parameter models requires new infrastructure — cryptographic provenance, federated registries, and legal frameworks that don't yet fully exist.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 14: IMPLEMENTATION -->
+  <div class="slide" data-index="13">
+    <div class="slide-inner">
+      <div class="eyebrow gold">In Practice</div>
+      <h2>The <span class="accent">Infrastructure</span><br>of Credit</h2>
+      <div class="divider gold"></div>
+      <div class="timeline">
+        <div class="tl-item">
+          <span class="tl-year" style="font-size:22px; color:var(--accent-cyan);">DATA</span>
+          <span class="tl-text"><strong>Provenance tagging</strong> — every training sample carries metadata linking it to its original creator via cryptographic signature.</span>
+        </div>
+        <div class="tl-item">
+          <span class="tl-year" style="font-size:22px; color:var(--accent-cyan);">MODEL</span>
+          <span class="tl-text"><strong>Influence weighting</strong> — attribution models estimate which training data shaped a given output most strongly.</span>
+        </div>
+        <div class="tl-item">
+          <span class="tl-year" style="font-size:22px; color:var(--accent-cyan);">MARKET</span>
+          <span class="tl-text"><strong>Revenue sharing pools</strong> — platform fees flow into creator pools distributed by contribution weight each quarter.</span>
+        </div>
+        <div class="tl-item">
+          <span class="tl-year" style="font-size:22px; color:var(--accent-cyan);">LAW</span>
+          <span class="tl-text"><strong>New legal instruments</strong> — "contribution licenses" replace traditional copyright for AI-adjacent work.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 15: CRITICISMS -->
+  <div class="slide" data-index="14">
+    <div class="slide-inner">
+      <div class="eyebrow rose">The Hard Questions</div>
+      <h2>The <span class="rose">Critiques</span><br>Are Real</h2>
+      <div class="divider rose"></div>
+      <ul class="styled">
+        <li>Can fractional micro-payments <strong>actually sustain</strong> a creative career?</li>
+        <li>Who decides the <strong>weighting algorithm</strong> — and who audits them?</li>
+        <li>Does this legitimize mass data scraping by <strong>retroactively paying</strong> for it?</li>
+        <li>Does it <strong>commodify creativity</strong> further rather than protect it?</li>
+        <li>What about creators who <strong>opt out</strong> — can they truly be excluded?</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 16: THE BIGGER PICTURE -->
+  <div class="slide" data-index="15">
+    <div class="slide-inner">
+      <div class="eyebrow violet">The Larger Meaning</div>
+      <h2>A Mirror Held Up <br>to <span class="violet">Human</span> Culture</h2>
+      <div class="divider violet"></div>
+      <p class="body">The shift from Copyright to Contribution Credits is more than a legal reform. It is a <strong>civilizational acknowledgment</strong>: that culture is collective, that creativity is cumulative, and that the myth of the solitary genius was always <em>partly fiction.</em></p>
+      <div class="highlight-box" style="border-color:rgba(176,106,255,0.3); margin-top:28px;">
+        <p>AI didn't destroy authorship. It <strong>revealed what authorship always was</strong> — a conversation across time, compressed into a single voice.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 17: CLOSING -->
+  <div class="slide final-slide" data-index="16">
+    <div class="slide-inner">
+      <span class="final-glyph">✦</span>
+      <div class="eyebrow cyan" style="display:inline-block; margin:0 auto 20px;">The Takeaway</div>
+      <h1 style="font-size:clamp(44px,6.5vw,90px); text-align:center;">The Synthetic Era<br>Didn't Kill<br><span class="accent">Authorship</span><br>— It Distributed It</h1>
+      <p class="body" style="text-align:center; margin:28px auto 0; font-size:clamp(21px,1.8vw,26px);">Copyright was a wall. <strong>Contribution Credits</strong> is a map — acknowledging every path that led to the work, across every creator who walked it.</p>
+      <div class="divider gold" style="margin:32px auto 0;"></div>
+    </div>
+  </div>
+
+</div><!-- /deck -->
+
+<!-- Navigation -->
+<div id="nav">
+  <button id="prevBtn" title="Previous">&#8592;</button>
+  <div class="progress-dots" id="dots"></div>
+  <span id="slide-counter">01 / 17</span>
+  <button id="nextBtn" title="Next">&#8594;</button>
+</div>
+
+<div id="hint"><kbd>←</kbd> <kbd>→</kbd> to navigate</div>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const dot = document.getElementById('cursorDot');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    dot.style.left = e.clientX + 'px';
+    dot.style.top = e.clientY + 'px';
+  });
+
+  // Slides
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+
+  // Build dots
+  const dotsContainer = document.getElementById('dots');
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i));
+    dotsContainer.appendChild(d);
+  });
+
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    dotsContainer.children[current].classList.remove('active');
+    current = (n + total) % total;
+    slides[current].classList.add('active');
+    dotsContainer.children[current].classList.add('active');
+    document.getElementById('slide-counter').textContent =
+      String(current + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+    // Shift blobs subtly per slide
+    const hue = (current / total) * 360;
+    document.querySelector('.blob-3').style.transform = `translate(${Math.sin(hue)*30}px, ${Math.cos(hue)*30}px)`;
+  }
+
+  document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+  document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') goTo(current + 1);
+    if (e.key === 'ArrowLeft') goTo(current - 1);
+  });
+
+  // Touch/swipe
+  let startX = 0;
+  document.addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 50) { dx < 0 ? goTo(current + 1) : goTo(current - 1); }
+  });
+</script>
+</body>
+</html>

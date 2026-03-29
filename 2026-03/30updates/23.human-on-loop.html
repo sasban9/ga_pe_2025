@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Human-in-the-Loop → Human-on-the-Loop</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c14;
+    --accent1: #00e5ff;
+    --accent2: #ff4d6d;
+    --accent3: #b8ff57;
+    --gold: #ffd166;
+    --muted: #8899aa;
+    --white: #eef4ff;
+    --panel: rgba(255,255,255,0.04);
+    --border: rgba(0,229,255,0.18);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    font-family: 'Rajdhani', sans-serif;
+    color: var(--white);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--accent1);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid var(--accent1);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.5;
+    transition: all 0.15s ease;
+  }
+
+  /* Grid background */
+  .grid-bg {
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Noise overlay */
+  .noise {
+    position: fixed;
+    inset: 0;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Slideshow container */
+  #slideshow {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 80px;
+    opacity: 0;
+    transform: translateY(30px);
+    pointer-events: none;
+    transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    text-align: center;
+  }
+
+  .slide.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+  }
+
+  /* Slide number badge */
+  .slide-num {
+    position: absolute;
+    top: 32px;
+    right: 44px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  /* Tag / label */
+  .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent1);
+    margin-bottom: 22px;
+    opacity: 0.85;
+  }
+
+  /* Headings */
+  .headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(44px, 7vw, 88px);
+    line-height: 1;
+    letter-spacing: 0.04em;
+    color: var(--white);
+    margin-bottom: 28px;
+  }
+
+  .headline .hl-cyan  { color: var(--accent1); }
+  .headline .hl-red   { color: var(--accent2); }
+  .headline .hl-green { color: var(--accent3); }
+  .headline .hl-gold  { color: var(--gold); }
+
+  /* Body text */
+  .body {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(22px, 2.6vw, 38px);
+    font-weight: 300;
+    line-height: 1.55;
+    color: #c5d5e8;
+    max-width: 1020px;
+  }
+
+  .body b { color: var(--white); font-weight: 700; }
+  .body .cy { color: var(--accent1); }
+  .body .rd { color: var(--accent2); }
+  .body .gr { color: var(--accent3); }
+  .body .gd { color: var(--gold); }
+
+  /* Divider line */
+  .divider {
+    width: 80px; height: 2px;
+    background: linear-gradient(90deg, var(--accent1), transparent);
+    margin: 24px auto;
+  }
+
+  /* Big stat */
+  .stat {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 12vw, 140px);
+    line-height: 1;
+    letter-spacing: 0.03em;
+  }
+  .stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(14px, 1.6vw, 22px);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  /* Two-column layout */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    max-width: 1000px;
+    text-align: left;
+  }
+  .col-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 32px 28px;
+  }
+  .col-card .card-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .col-card .card-body {
+    font-size: clamp(20px, 2vw, 28px);
+    font-weight: 300;
+    line-height: 1.5;
+    color: #b8cde0;
+  }
+
+  /* List */
+  .fancy-list {
+    list-style: none;
+    max-width: 1020px;
+    text-align: left;
+  }
+  .fancy-list li {
+    font-size: clamp(21px, 2.2vw, 32px);
+    font-weight: 300;
+    line-height: 1.5;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(0,229,255,0.08);
+    /* display: flex; */
+    align-items: flex-start;
+    gap: 18px;
+    color: #c0d5ea;
+  }
+  .fancy-list li .bullet {
+    color: var(--accent1);
+    font-family: 'Space Mono', monospace;
+    font-size: 18px;
+    margin-top: 3px;
+    flex-shrink: 0;
+  }
+
+  /* Quote style */
+  .quote-block {
+    border-left: 3px solid var(--accent2);
+    padding: 28px 36px;
+    background: var(--panel);
+    border-radius: 0 4px 4px 0;
+    max-width: 840px;
+    text-align: left;
+  }
+  .quote-text {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(20px, 2vw, 28px);
+    font-style: italic;
+    line-height: 1.6;
+    color: #ddeeff;
+  }
+  .quote-src {
+    margin-top: 16px;
+    font-size: 14px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* Glow accent blob */
+  .glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.12;
+    pointer-events: none;
+  }
+  .glow-cyan  { background: var(--accent1); }
+  .glow-red   { background: var(--accent2); }
+  .glow-green { background: var(--accent3); }
+
+  /* Transition arrow visual */
+  .arrow-transition {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin: 20px 0;
+  }
+  .arrow-box {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(26px, 3.5vw, 48px);
+    padding: 16px 32px;
+    border: 1px solid;
+    border-radius: 4px;
+    letter-spacing: 0.06em;
+  }
+  .arrow-box.old { border-color: var(--accent2); color: var(--accent2); }
+  .arrow-box.new { border-color: var(--accent3); color: var(--accent3); }
+  .arrow-sym {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(30px, 4vw, 56px);
+    color: var(--gold);
+  }
+
+  /* Navigation */
+  #nav {
+    position: fixed;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    z-index: 100;
+  }
+  #nav button {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    padding: 10px 28px;
+    cursor: none;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+    border-radius: 2px;
+  }
+  #nav button:hover {
+    background: var(--accent1);
+    color: var(--bg);
+    border-color: var(--accent1);
+  }
+
+  /* Progress bar */
+  #progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent1), var(--accent3));
+    transition: width 0.5s cubic-bezier(0.16,1,0.3,1);
+    z-index: 200;
+  }
+
+  /* Slide counter */
+  #counter {
+    position: fixed;
+    bottom: 36px;
+    right: 44px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    z-index: 100;
+    letter-spacing: 0.12em;
+  }
+
+  /* Keyboard hint */
+  #hint {
+    position: fixed;
+    bottom: 36px;
+    left: 44px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: rgba(136,153,170,0.5);
+    z-index: 100;
+    letter-spacing: 0.1em;
+  }
+
+  /* Decorative corner lines */
+  .corner {
+    position: absolute;
+    width: 40px; height: 40px;
+    opacity: 0.25;
+  }
+  .corner-tl { top: 20px; left: 20px; border-top: 1px solid var(--accent1); border-left: 1px solid var(--accent1); }
+  .corner-tr { top: 20px; right: 20px; border-top: 1px solid var(--accent1); border-right: 1px solid var(--accent1); }
+  .corner-bl { bottom: 80px; left: 20px; border-bottom: 1px solid var(--accent1); border-left: 1px solid var(--accent1); }
+  .corner-br { bottom: 80px; right: 20px; border-bottom: 1px solid var(--accent1); border-right: 1px solid var(--accent1); }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+<div class="grid-bg"></div>
+<div class="noise"></div>
+<div id="progress-bar"></div>
+
+<div id="slideshow">
+
+  <!-- SLIDE 1: Title -->
+  <div class="slide active" id="s1">
+    <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div><div class="corner corner-br"></div>
+    <div class="glow glow-cyan" style="width:500px;height:500px;top:-100px;left:-100px;"></div>
+    <div class="glow glow-red" style="width:400px;height:400px;bottom:-80px;right:-80px;"></div>
+    <div class="tag">AI Governance · 2024–2026</div>
+    <div class="headline">
+      The <span class="hl-red">Human</span> Has<br>Left the <span class="hl-cyan">Loop</span>
+    </div>
+    <div class="divider"></div>
+    <div class="body">
+      From <b>Human-<span class="rd">in</span>-the-Loop</b> to <b>Human-<span class="gr">on</span>-the-Loop</b><br>
+      — and what that shift means for everything
+    </div>
+    <div class="slide-num">01 / 19</div>
+  </div>
+
+  <!-- SLIDE 2: The Old World -->
+  <div class="slide" id="s2">
+    <div class="glow glow-red" style="width:360px;height:360px;top:50px;right:100px;"></div>
+    <div class="tag">The Old Paradigm</div>
+    <div class="headline">Human<br><span class="hl-red">IN</span> the Loop</div>
+    <div class="divider"></div>
+    <div class="body">
+      A model where <b>every significant AI action</b> requires a human to approve, review, or intervene <b>before</b> it executes.<br><br>
+      The human is an <span class="rd">active operator</span> inside the process flow.
+    </div>
+    <div class="slide-num">02 / 19</div>
+  </div>
+
+  <!-- SLIDE 3: The New World -->
+  <div class="slide" id="s3">
+    <div class="glow glow-green" style="width:360px;height:360px;top:50px;left:100px;"></div>
+    <div class="tag">The New Paradigm</div>
+    <div class="headline">Human<br><span class="hl-green">ON</span> the Loop</div>
+    <div class="divider"></div>
+    <div class="body">
+      A model where AI systems <b>act autonomously</b> within defined boundaries, while humans <b>monitor, audit, and override</b> from the outside.<br><br>
+      The human is a <span class="gr">strategic supervisor</span> — not a gatekeeper.
+    </div>
+    <div class="slide-num">03 / 19</div>
+  </div>
+
+  <!-- SLIDE 4: The Shift Visualized -->
+  <div class="slide" id="s4">
+    <div class="tag">The Transition</div>
+    <div class="headline" style="margin-bottom:36px;">The <span class="hl-gold">Shift</span> at a Glance</div>
+    <div class="arrow-transition">
+      <div class="arrow-box old">Human IN the Loop</div>
+      <div class="arrow-sym">→</div>
+      <div class="arrow-box new">Human ON the Loop</div>
+    </div>
+    <div class="body" style="margin-top:28px;">
+      From <span class="rd">checkpoint</span> to <span class="gr">watchdog</span>.<br>
+      From <span class="rd">bottleneck</span> to <span class="gr">backstop</span>.<br>
+      From <span class="rd">required approval</span> to <span class="gr">trusted autonomy</span>.
+    </div>
+    <div class="slide-num">04 / 19</div>
+  </div>
+
+  <!-- SLIDE 5: Why it happened -->
+  <div class="slide" id="s5">
+    <div class="glow glow-cyan" style="width:420px;height:420px;bottom:-60px;right:40px;"></div>
+    <div class="tag">Why Now?</div>
+    <div class="headline">What <span class="hl-cyan">Drove</span> the Change</div>
+    <div class="divider"></div>
+    <ul class="fancy-list">
+      <li><span class="bullet">▸</span>AI agents now execute <b>multi-step, long-horizon tasks</b> at machine speed</li>
+      <li><span class="bullet">▸</span>Waiting for human approval at each step creates <b>unacceptable latency</b></li>
+      <li><span class="bullet">▸</span>Model reliability and alignment research has <b>matured enough to trust</b> bounded autonomy</li>
+      <li><span class="bullet">▸</span>Economic pressure demands AI that <b>scales without proportional human labor</b></li>
+    </ul>
+    <div class="slide-num">05 / 19</div>
+  </div>
+
+  <!-- SLIDE 6: HITL defined -->
+  <div class="slide" id="s6">
+    <div class="tag">Deep Dive · HITL</div>
+    <div class="headline">Human-<span class="hl-red">IN</span>-the-Loop<br>Defined</div>
+    <div class="divider"></div>
+    <div class="two-col" style="max-width:860px;">
+      <div class="col-card">
+        <div class="card-label" style="color:var(--accent2);">Characteristics</div>
+        <div class="card-body">Real-time human approval gates · Synchronous decision points · Manual review before each AI output is used</div>
+      </div>
+      <div class="col-card">
+        <div class="card-label" style="color:var(--accent2);">Best Used For</div>
+        <div class="card-body">High-stakes one-off decisions · Early AI deployments · Regulated industries requiring audit trails</div>
+      </div>
+    </div>
+    <div class="slide-num">06 / 19</div>
+  </div>
+
+  <!-- SLIDE 7: HOTL defined -->
+  <div class="slide" id="s7">
+    <div class="tag">Deep Dive · HOTL</div>
+    <div class="headline">Human-<span class="hl-green">ON</span>-the-Loop<br>Defined</div>
+    <div class="divider"></div>
+    <div class="two-col" style="max-width:860px;">
+      <div class="col-card">
+        <div class="card-label" style="color:var(--accent3);">Characteristics</div>
+        <div class="card-body">Asynchronous oversight · AI acts first, human reviews after · Exception-based escalation only</div>
+      </div>
+      <div class="col-card">
+        <div class="card-label" style="color:var(--accent3);">Best Used For</div>
+        <div class="card-body">Scalable pipelines · Repetitive high-volume tasks · Agents with bounded, reversible actions</div>
+      </div>
+    </div>
+    <div class="slide-num">07 / 19</div>
+  </div>
+
+  <!-- SLIDE 8: Agentic AI is here -->
+  <div class="slide" id="s8">
+    <div class="glow glow-cyan" style="width:500px;height:500px;top:-100px;left:-100px;"></div>
+    <div class="tag">The Agentic Era</div>
+    <div class="headline">AI Agents<br>Don't <span class="hl-cyan">Wait</span></div>
+    <div class="divider"></div>
+    <div class="body">
+      Modern AI agents — from <b>AutoGPT</b> to <b>Claude's computer use</b> to <b>coding agents</b> — can plan, execute, and iterate across <span class="cy">dozens of steps</span> in seconds.<br><br>
+      Inserting a human checkpoint at every step would <b>nullify the entire value proposition</b>.
+    </div>
+    <div class="slide-num">08 / 19</div>
+  </div>
+
+  <!-- SLIDE 9: Stat -->
+  <div class="slide" id="s9">
+    <div class="glow glow-green" style="width:400px;height:400px;top:0;right:0;"></div>
+    <div class="tag">Scale</div>
+    <div class="stat" style="color:var(--accent3);">10,000×</div>
+    <div class="stat-label">faster than human review at scale</div>
+    <div class="divider"></div>
+    <div class="body">
+      AI pipelines executing <b>thousands of decisions per second</b> make traditional HITL physically impossible.<br>
+      The human must move <span class="gr">above</span> the process — not inside it.
+    </div>
+    <div class="slide-num">09 / 19</div>
+  </div>
+
+  <!-- SLIDE 10: Responsibilities shift -->
+  <div class="slide" id="s10">
+    <div class="tag">Role Redefinition</div>
+    <div class="headline">What the<br>Human <span class="hl-gold">Now Does</span></div>
+    <div class="divider"></div>
+    <ul class="fancy-list">
+      <li><span class="bullet">▸</span><b>Sets boundaries</b> — defines what AI can and cannot do autonomously</li>
+      <li><span class="bullet">▸</span><b>Monitors dashboards</b> — watches patterns, flags, and anomalies in real time</li>
+      <li><span class="bullet">▸</span><b>Handles exceptions</b> — steps in only when confidence is low or risk is high</li>
+      <li><span class="bullet">▸</span><b>Audits outcomes</b> — reviews logs to improve future AI behavior</li>
+      <li><span class="bullet">▸</span><b>Pulls the brake</b> — retains authority to halt, redirect, or override at any moment</li>
+    </ul>
+    <div class="slide-num">10 / 19</div>
+  </div>
+
+  <!-- SLIDE 11: Risk -->
+  <div class="slide" id="s11">
+    <div class="glow glow-red" style="width:450px;height:450px;top:-50px;right:-50px;"></div>
+    <div class="tag">The Risk Side</div>
+    <div class="headline">When <span class="hl-red">On-Loop</span><br>Goes Wrong</div>
+    <div class="divider"></div>
+    <div class="body">
+      Without proper guardrails, HOTL creates <span class="rd">automation bias</span> — humans rubber-stamp AI outputs without genuine scrutiny.<br><br>
+      Errors <b>compound at machine speed</b> before anyone notices.<br>
+      The consequences can be <span class="rd">irreversible</span> by the time a human reviews logs.
+    </div>
+    <div class="slide-num">11 / 19</div>
+  </div>
+
+  <!-- SLIDE 12: Guardrails -->
+  <div class="slide" id="s12">
+    <div class="tag">Design for Safety</div>
+    <div class="headline">The <span class="hl-cyan">Guardrails</span><br>That Make it Work</div>
+    <div class="divider"></div>
+    <ul class="fancy-list">
+      <li><span class="bullet">▸</span><b>Confidence thresholds</b> — AI escalates automatically when certainty drops below a limit</li>
+      <li><span class="bullet">▸</span><b>Reversibility-first design</b> — prefer undoable actions; flag irreversible ones for human review</li>
+      <li><span class="bullet">▸</span><b>Audit trails</b> — every AI decision logged, timestamped, explainable</li>
+      <li><span class="bullet">▸</span><b>Anomaly alerts</b> — deviations from expected patterns trigger human attention</li>
+    </ul>
+    <div class="slide-num">12 / 19</div>
+  </div>
+
+  <!-- SLIDE 13: Quote -->
+  <div class="slide" id="s13">
+    <div class="glow glow-red" style="width:380px;height:380px;bottom:-60px;left:60px;"></div>
+    <div class="tag">Perspective</div>
+    <div class="headline" style="font-size:clamp(36px,5vw,64px);margin-bottom:32px;">The Oversight Paradox</div>
+    <div class="quote-block">
+      <div class="quote-text">
+        "The challenge is not whether AI should have human oversight — it must. The challenge is designing oversight that remains <b>meaningful</b> even when humans can no longer read every output."
+      </div>
+      <div class="quote-src">— AI Governance Research, 2025</div>
+    </div>
+    <div class="slide-num">13 / 19</div>
+  </div>
+
+  <!-- SLIDE 14: Industry Examples -->
+  <div class="slide" id="s14">
+    <div class="tag">Real World</div>
+    <div class="headline">HOTL <span class="hl-gold">In the Wild</span></div>
+    <div class="divider"></div>
+    <ul class="fancy-list">
+      <li><span class="bullet">▸</span><b>Finance:</b> Algorithmic trading — AI executes, compliance team reviews daily batch reports</li>
+      <li><span class="bullet">▸</span><b>Healthcare:</b> AI triages patient records; clinician reviews flagged edge cases only</li>
+      <li><span class="bullet">▸</span><b>Software:</b> AI coding agents push commits; senior dev reviews weekly rollups</li>
+      <li><span class="bullet">▸</span><b>Content moderation:</b> AI removes 99% autonomously; humans handle appeals queue</li>
+    </ul>
+    <div class="slide-num">14 / 19</div>
+  </div>
+
+  <!-- SLIDE 15: The spectrum -->
+  <div class="slide" id="s15">
+    <div class="glow glow-cyan" style="width:420px;height:420px;top:-80px;right:-40px;"></div>
+    <div class="tag">Nuance</div>
+    <div class="headline">It's a <span class="hl-cyan">Spectrum</span>,<br>Not a Switch</div>
+    <div class="divider"></div>
+    <div class="body">
+      Healthy AI deployment <b>blends both models</b>:<br><br>
+      <span class="rd">IN-the-Loop</span> for novel, high-stakes, and irreversible decisions.<br>
+      <span class="gr">ON-the-Loop</span> for routine, high-volume, and reversible actions.<br><br>
+      The art is <b>knowing which mode applies</b> to each decision type.
+    </div>
+    <div class="slide-num">15 / 19</div>
+  </div>
+
+  <!-- SLIDE 16: Skills needed -->
+  <div class="slide" id="s16">
+    <div class="tag">Human Upskilling</div>
+    <div class="headline">New Skills for<br><span class="hl-green">On-Loop</span> Humans</div>
+    <div class="divider"></div>
+    <ul class="fancy-list">
+      <li><span class="bullet">▸</span><b>Pattern literacy</b> — reading dashboards and anomaly signals fluently</li>
+      <li><span class="bullet">▸</span><b>Prompt governance</b> — writing constraints and system prompts that encode good judgment</li>
+      <li><span class="bullet">▸</span><b>Exception triage</b> — rapid, high-confidence decisions on escalated edge cases</li>
+      <li><span class="bullet">▸</span><b>Outcome accountability</b> — owning AI decisions as if they were your own</li>
+    </ul>
+    <div class="slide-num">16 / 19</div>
+  </div>
+
+  <!-- SLIDE 17: Policy angle -->
+  <div class="slide" id="s17">
+    <div class="glow glow-red" style="width:380px;height:380px;top:-60px;left:60px;"></div>
+    <div class="tag">Policy & Regulation</div>
+    <div class="headline">Lawmakers Are<br><span class="hl-red">Catching Up</span></div>
+    <div class="divider"></div>
+    <div class="body">
+      The EU AI Act, US Executive Orders, and sector-specific rules increasingly require <b>documented human oversight</b> — but rarely specify <i>how</i>.<br><br>
+      HOTL architectures can satisfy oversight requirements <span class="rd">while enabling speed</span> — if audit trails are robust and escalation paths are clear.
+    </div>
+    <div class="slide-num">17 / 19</div>
+  </div>
+
+  <!-- SLIDE 18: The future -->
+  <div class="slide" id="s18">
+    <div class="glow glow-green" style="width:500px;height:500px;bottom:-100px;right:-60px;"></div>
+    <div class="tag">Looking Ahead</div>
+    <div class="headline">What Comes<br>After <span class="hl-green">On-Loop</span>?</div>
+    <div class="divider"></div>
+    <div class="body">
+      As AI systems become more aligned and interpretable, the question shifts from<br>
+      <b>"Can we trust AI to act?"</b><br>
+      to<br>
+      <b>"How do we verify it acted well?"</b><br>
+      The future is <span class="gr">collaborative autonomy</span> — AI and human as long-term co-pilots, not master and tool.
+    </div>
+    <div class="slide-num">18 / 19</div>
+  </div>
+
+  <!-- SLIDE 19: Closing -->
+  <div class="slide" id="s19">
+    <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div><div class="corner corner-br"></div>
+    <div class="glow glow-cyan" style="width:500px;height:500px;top:-100px;right:-60px;"></div>
+    <div class="glow glow-green" style="width:400px;height:400px;bottom:-80px;left:-60px;"></div>
+    <div class="tag">The Takeaway</div>
+    <div class="headline">The Human Hasn't<br>Left. They've <span class="hl-cyan">Risen</span>.</div>
+    <div class="divider"></div>
+    <div class="body">
+      HOTL isn't about <span class="rd">removing humans</span> from AI decisions.<br>
+      It's about placing them <span class="gr">where they add the most value</span>:<br><br>
+      <b>Setting the intent. Watching the horizon.<br>Intervening when it counts.</b>
+    </div>
+    <div class="slide-num">19 / 19</div>
+  </div>
+
+</div><!-- end slideshow -->
+
+<div id="nav">
+  <button id="prevBtn">← Prev</button>
+  <button id="nextBtn">Next →</button>
+</div>
+<div id="counter">1 / 19</div>
+<div id="hint">← → ARROW KEYS or CLICK</div>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX - 6 + 'px';
+    cursor.style.top  = e.clientY - 6 + 'px';
+    ring.style.left   = e.clientX - 18 + 'px';
+    ring.style.top    = e.clientY - 18 + 'px';
+  });
+
+  // Slideshow logic
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+  const counter = document.getElementById('counter');
+  const bar = document.getElementById('progress-bar');
+
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    current = (n + total) % total;
+    slides[current].classList.add('active');
+    counter.textContent = (current + 1) + ' / ' + total;
+    bar.style.width = ((current + 1) / total * 100) + '%';
+  }
+
+  document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+  document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') goTo(current + 1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp') goTo(current - 1);
+  });
+
+  // Touch support
+  let startX = 0;
+  document.addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 50) goTo(current + (dx < 0 ? 1 : -1));
+  });
+
+  // Init bar
+  bar.style.width = (1/total*100) + '%';
+</script>
+</body>
+</html>

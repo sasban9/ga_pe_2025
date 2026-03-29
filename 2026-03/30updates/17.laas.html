@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SaaS → LaaS: The Labor Revolution</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0a0a0f;
+    --paper: #f5f0e8;
+    --acid: #c8ff00;
+    --rust: #e84a2f;
+    --slate: #1e2a3a;
+    --mist: #8fa0b0;
+    --gold: #d4a843;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    font-family: 'Space Mono', monospace;
+    background: var(--ink);
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--acid);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, width 0.2s, height 0.2s;
+    mix-blend-mode: difference;
+  }
+
+  /* SLIDESHOW CONTAINER */
+  #deck {
+    width: 100vw; height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 8vw 10vw;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.05s;
+    overflow: hidden;
+  }
+
+  .slide.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* ── PROGRESS BAR ── */
+  #progress-bar {
+    position: fixed;
+    bottom: 0; left: 0;
+    height: 3px;
+    background: var(--acid);
+    z-index: 100;
+    transition: width 0.5s cubic-bezier(.77,0,.175,1);
+  }
+
+  /* ── SLIDE COUNTER ── */
+  #counter {
+    position: fixed;
+    bottom: 28px; right: 40px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--mist);
+    z-index: 100;
+  }
+
+  /* ── NAV ARROWS ── */
+  #nav {
+    position: fixed;
+    bottom: 20px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; gap: 16px;
+    z-index: 100;
+  }
+  .nav-btn {
+    width: 44px; height: 44px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: transparent;
+    color: #fff;
+    font-size: 18px;
+    cursor: none;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .nav-btn:hover {
+    background: var(--acid);
+    border-color: var(--acid);
+    color: var(--ink);
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE THEMES
+  ══════════════════════════════════════ */
+
+  /* DARK BASE */
+  .dark { background: var(--ink); color: var(--paper); }
+  /* PAPER */
+  .paper { background: var(--paper); color: var(--ink); }
+  /* SLATE */
+  .slate-bg { background: var(--slate); color: var(--paper); }
+  /* ACID */
+  .acid-bg { background: var(--acid); color: var(--ink); }
+  /* RUST */
+  .rust-bg { background: var(--rust); color: var(--paper); }
+  /* GRID */
+  .grid-bg {
+    background: var(--ink);
+    color: var(--paper);
+    background-image:
+      linear-gradient(rgba(200,255,0,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,255,0,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  /* ── TYPOGRAPHY ── */
+  .display {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(3.5rem, 7vw, 10rem);
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+  }
+  .display-italic {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: clamp(3rem, 7.5vw, 8.5rem);
+    line-height: 0.92;
+  }
+  .headline {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 4.5vw, 5rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .subhead {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1rem, 2.2vw, 2rem);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .body-text {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(0.75rem, 2.4vw, 1.6rem);
+    line-height: 1.75;
+    max-width: 55ch;
+    opacity: 0.78;
+  }
+  .label {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.2rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.5;
+  }
+  .accent { color: var(--acid); }
+  .accent-rust { color: var(--rust); }
+  .accent-gold { color: var(--gold); }
+
+  .mt1 { margin-top: 1rem; }
+  .mt2 { margin-top: 2rem; }
+  .mt3 { margin-top: 3rem; }
+  .gap-row { display: flex; flex-direction: column; gap: 1rem; }
+
+  /* ── DECORATIVE ── */
+  .big-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(8rem, 22vw, 26rem);
+    line-height: 0.8;
+    opacity: 0.06;
+    position: absolute;
+    right: -2vw; bottom: -4vh;
+    pointer-events: none;
+    color: inherit;
+  }
+
+  .rule {
+    width: 60px; height: 3px;
+    background: var(--acid);
+    margin-bottom: 1.5rem;
+  }
+  .rule-dark {
+    width: 60px; height: 3px;
+    background: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+  .rule-rust {
+    width: 60px; height: 3px;
+    background: var(--rust);
+    margin-bottom: 1.5rem;
+  }
+
+  /* TAG / BADGE */
+  .tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border: 1px solid currentColor;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-bottom: 1.2rem;
+  }
+
+  /* SPLIT LAYOUT */
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6vw;
+    width: 100%;
+    align-items: start;
+  }
+
+  /* PILL LIST */
+  .pill-list {
+    display: flex; flex-direction: column; gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+  .pill {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 0.75rem 1.2rem;
+    border-left: 3px solid var(--acid);
+    background: rgba(200,255,0,0.04);
+    font-size: clamp(0.7rem, 1.2vw, 0.95rem);
+    font-family: 'Space Mono', monospace;
+  }
+  .pill.rust-pill { border-color: var(--rust); background: rgba(232,74,47,0.06); }
+  .pill-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.6rem;
+    line-height: 1;
+    opacity: 0.4;
+  }
+
+  /* TIMELINE */
+  .timeline { display: flex; flex-direction: column; gap: 0; width: 100%; margin-top: 2rem; }
+  .t-item {
+    display: grid;
+    grid-template-columns: 190px 1fr;
+    gap: 2rem;
+    padding: 1.2rem 0;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .t-year {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem;
+    color: var(--acid);
+    line-height: 1;
+  }
+  .t-desc {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    opacity: 0.7;
+  }
+
+  /* COMPARISON TABLE */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: rgba(255,255,255,0.08);
+    width: 100%;
+    margin-top: 2rem;
+  }
+  .c-cell {
+    padding: 1rem 1.2rem;
+    background: var(--ink);
+    font-size: clamp(0.65rem, 1.1vw, 0.85rem);
+    font-family: 'Space Mono', monospace;
+    line-height: 1.6;
+  }
+  .c-header {
+    background: var(--slate);
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+  }
+  .c-header.acid-h { background: var(--acid); color: var(--ink); }
+  .c-header.rust-h { background: var(--rust); }
+
+  /* QUOTE SLIDE */
+  .big-quote {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: clamp(2rem, 4.5vw, 4.5rem);
+    line-height: 1.15;
+    max-width: 18ch;
+  }
+  .quote-source {
+    margin-top: 2rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.45;
+  }
+
+  /* STAT GRID */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(200,255,0,0.15);
+    width: 100%;
+    margin-top: 2rem;
+  }
+  .stat-cell {
+    padding: 2rem 1.5rem;
+    background: var(--ink);
+    display: flex; flex-direction: column; gap: 0.4rem;
+  }
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    color: var(--acid);
+    line-height: 1;
+  }
+  .stat-label { font-size: 1.15rem; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.5; }
+
+  /* DIAGONAL ACCENT */
+  .diag {
+    position: absolute;
+    right: 0; top: 0;
+    width: 38vw; height: 100%;
+    background: rgba(200,255,0,0.04);
+    clip-path: polygon(20% 0, 100% 0, 100% 100%, 0% 100%);
+    pointer-events: none;
+  }
+
+  /* NOISE OVERLAY */
+  .slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.4;
+    mix-blend-mode: overlay;
+  }
+
+  /* ENTER ANIMATION */
+  .slide.active .anim-up {
+    animation: upIn 0.6s cubic-bezier(.16,1,.3,1) both;
+  }
+  .slide.active .anim-up:nth-child(1) { animation-delay: 0.05s; }
+  .slide.active .anim-up:nth-child(2) { animation-delay: 0.15s; }
+  .slide.active .anim-up:nth-child(3) { animation-delay: 0.25s; }
+  .slide.active .anim-up:nth-child(4) { animation-delay: 0.35s; }
+  .slide.active .anim-up:nth-child(5) { animation-delay: 0.45s; }
+  .slide.active .anim-up:nth-child(6) { animation-delay: 0.55s; }
+
+  @keyframes upIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* GLITCH */
+  @keyframes glitch {
+    0%,100% { clip-path: inset(0 0 98% 0); transform: translate(-4px,0); }
+    20% { clip-path: inset(30% 0 50% 0); transform: translate(4px,0); }
+    40% { clip-path: inset(60% 0 20% 0); transform: translate(-2px,0); }
+    60% { clip-path: inset(10% 0 80% 0); transform: translate(3px,0); }
+    80% { clip-path: inset(80% 0 5% 0); transform: translate(-3px,0); }
+  }
+  .glitch-wrap { position: relative; display: inline-block; }
+  .glitch-wrap::before, .glitch-wrap::after {
+    content: attr(data-text);
+    position: absolute; top: 0; left: 0;
+    width: 100%;
+    font-family: inherit; font-size: inherit; font-weight: inherit;
+    font-style: inherit; line-height: inherit; letter-spacing: inherit;
+  }
+  .glitch-wrap::before { color: var(--rust); animation: glitch 3s infinite; }
+  .glitch-wrap::after  { color: var(--acid); animation: glitch 3s 0.1s infinite reverse; }
+
+  /* SCAN LINE */
+  .scanlines {
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 2px,
+      rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+  }
+
+  /* ICON DOTS */
+  .icon-row { display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
+  .i-dot {
+    width: 48px; height: 48px;
+    border: 1px solid rgba(200,255,0,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+  }
+
+  /* HORIZONTAL RULE */
+  hr.slide-rule {
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin: 1.5rem 0;
+    width: 100%;
+  }
+
+  /* CHECKLIST */
+  .checklist { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1.5rem; }
+  .check-item {
+    display: flex; align-items: flex-start; gap: 1rem;
+    font-size: clamp(0.7rem, 1.3vw, 0.95rem);
+    font-family: 'Space Mono', monospace;
+    opacity: 0.8;
+  }
+  .check-mark { color: var(--acid); flex-shrink: 0; margin-top: 2px; }
+
+  @media (max-width: 700px) {
+    .split { grid-template-columns: 1fr; }
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    .compare { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<div id="deck">
+
+  <!-- ═══ SLIDE 1 — COVER ═══ -->
+  <div class="slide dark active" id="s1">
+    <div class="scanlines"></div>
+    <div class="diag"></div>
+    <div class="big-num">∞</div>
+    <div class="anim-up label" style="color:var(--acid); opacity:1; letter-spacing:0.25em;">2024 → 2026</div>
+    <div class="anim-up" style="margin-top:1rem;">
+      <div class="glitch-wrap display" data-text="SaaS → LaaS">SaaS → LaaS</div>
+    </div>
+    <div class="anim-up headline" style="margin-top:1rem; color:var(--mist);">The Labor Revolution</div>
+    <div class="anim-up body-text mt2">
+      How AI collapsed the distance between software and work — and what it means for every industry on earth.
+    </div>
+    <div class="anim-up rule mt3"></div>
+    <div class="anim-up label">Scroll or use arrow keys · click to advance</div>
+  </div>
+
+  <!-- ═══ SLIDE 2 — WHAT WAS SaaS ═══ -->
+  <div class="slide dark" id="s2">
+    <div class="big-num">01</div>
+    <div class="anim-up label">Chapter One</div>
+    <div class="anim-up display mt1">The<br><span class="accent">SaaS</span><br>Era</div>
+    <div class="anim-up body-text mt2">
+      Software as a Service defined 2010–2024. Companies paid monthly subscriptions for tools — Salesforce, Slack, Notion, Figma — that <em>helped humans do work</em> faster. The human was still the unit of production.
+    </div>
+    <div class="anim-up pill-list" style="max-width: 520px;">
+      <div class="pill"><span class="pill-num">01</span> Software automates repetitive tasks</div>
+      <div class="pill"><span class="pill-num">02</span> Humans remain the decision-makers</div>
+      <div class="pill"><span class="pill-num">03</span> Value = seats × subscription price</div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 3 — THE CRACK IN THE WALL ═══ -->
+  <div class="slide paper" id="s3">
+    <div class="big-num" style="color: var(--ink); opacity:0.05;">?</div>
+    <div class="anim-up label">The inflection</div>
+    <div class="anim-up display mt1">Then<br>GPT-4<br><span style="color:var(--rust);">arrived.</span></div>
+    <div class="anim-up rule-rust mt2"></div>
+    <div class="anim-up body-text">
+      In 2023–2024, large language models crossed a threshold: they could complete cognitive tasks — drafting, coding, research, analysis, customer support — at near-human quality, at machine speed, for near-zero marginal cost.
+    </div>
+    <div class="anim-up body-text mt1">
+      The question stopped being <em>"which tool should my employee use?"</em> and became <em>"do I need the employee?"</em>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 4 — DEFINING LaaS ═══ -->
+  <div class="slide acid-bg" id="s4">
+    <div class="big-num" style="color: var(--ink); opacity:0.08;">L</div>
+    <div class="anim-up label" style="color: var(--ink);">New paradigm</div>
+    <div class="anim-up display mt1" style="color:var(--ink);">Labor<br>as a<br>Service</div>
+    <div class="anim-up body-text mt2" style="color:var(--ink); opacity:0.7;">
+      LaaS is a model where buyers procure <strong>completed work</strong> — not software seats, not FTEs — on demand. An AI agent (or a thin layer of AI + human oversight) delivers a business outcome billed by the task, the outcome, or the hour of compute.
+    </div>
+    <div class="anim-up checklist" style="color:var(--ink); max-width: 500px;">
+      <div class="check-item"><span class="check-mark" style="color:var(--ink);">✦</span> Output-oriented, not effort-oriented</div>
+      <div class="check-item"><span class="check-mark" style="color:var(--ink);">✦</span> Infinitely scalable — no hiring lag</div>
+      <div class="check-item"><span class="check-mark" style="color:var(--ink);">✦</span> Economics of software, quality of labor</div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 5 — THE NUMBERS ═══ -->
+  <div class="slide grid-bg" id="s5">
+    <div class="anim-up label">Scale of disruption</div>
+    <div class="anim-up headline mt1">The numbers<br>don't lie.</div>
+    <div class="anim-up stat-grid">
+      <div class="stat-cell">
+        <div class="stat-num">$650B</div>
+        <div class="stat-label">Global BPO market targeted by AI agents by 2026</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">40%</div>
+        <div class="stat-label">Of white-collar tasks automatable at GPT-4+ quality</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">100×</div>
+        <div class="stat-label">Cost reduction vs. equivalent human labor in early LaaS pilots</div>
+      </div>
+    </div>
+    <div class="anim-up body-text mt2" style="opacity:0.5; font-size:1.1rem;">
+      Projections based on McKinsey Global Institute, Goldman Sachs AI Report 2024, and Andreessen Horowitz portfolio analysis.
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 6 — THE SHIFT VISUALIZED ═══ -->
+  <div class="slide slate-bg" id="s6">
+    <div class="big-num">02</div>
+    <div class="anim-up label">The model shift</div>
+    <div class="anim-up headline mt1">From seats<br>to <span class="accent">outcomes.</span></div>
+    <div class="anim-up compare">
+      <div class="c-cell c-header">📦 SaaS (2024)</div>
+      <div class="c-cell c-header acid-h">⚡ LaaS (2026)</div>
+      <div class="c-cell">You buy a tool. You hire people to use it.</div>
+      <div class="c-cell">You buy finished work. AI does it.</div>
+      <div class="c-cell">Revenue = seats × $/seat/month</div>
+      <div class="c-cell">Revenue = tasks × $/task or $/outcome</div>
+      <div class="c-cell">Scaling = more headcount</div>
+      <div class="c-cell">Scaling = more compute</div>
+      <div class="c-cell">Quality depends on employee skill</div>
+      <div class="c-cell">Quality depends on model + prompt</div>
+      <div class="c-cell">Churn risk: competitor has better UX</div>
+      <div class="c-cell">Churn risk: competitor delivers cheaper output</div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 7 — ANATOMY OF A LaaS PRODUCT ═══ -->
+  <div class="slide dark" id="s7">
+    <div class="anim-up tag">Product anatomy</div>
+    <div class="anim-up headline">What a LaaS<br>product looks like</div>
+    <div class="anim-up pill-list" style="max-width:600px; margin-top:2rem;">
+      <div class="pill"><span class="pill-num">1</span> <div><strong>Input layer</strong> — Customer submits a job: a brief, data, a task spec</div></div>
+      <div class="pill"><span class="pill-num">2</span> <div><strong>Orchestration</strong> — AI agents plan, delegate, and execute sub-tasks</div></div>
+      <div class="pill"><span class="pill-num">3</span> <div><strong>Quality gate</strong> — Automated + optional human review before delivery</div></div>
+      <div class="pill"><span class="pill-num">4</span> <div><strong>Output</strong> — Customer receives completed work artifact</div></div>
+      <div class="pill"><span class="pill-num">5</span> <div><strong>Billing</strong> — Charged per unit of output, not per seat or hour</div></div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 8 — EARLY LAAS EXAMPLES ═══ -->
+  <div class="slide paper" id="s8">
+    <div class="big-num" style="color:var(--ink); opacity:0.05;">eg.</div>
+    <div class="anim-up label">Real examples · 2025–2026</div>
+    <div class="anim-up display mt1">LaaS<br><span style="color:var(--rust);">in the</span><br>wild</div>
+    <div class="anim-up pill-list" style="max-width: 580px;">
+      <div class="pill rust-pill"><span>🖋</span> <div><strong>AI writing studios</strong> — Produce blog posts, ad copy, and reports billed per piece, not per seat</div></div>
+      <div class="pill rust-pill"><span>💻</span> <div><strong>AI dev shops</strong> — Ship features and bug fixes billed per story point, not per engineer-month</div></div>
+      <div class="pill rust-pill"><span>📊</span> <div><strong>AI analysts</strong> — Deliver competitive intelligence reports on demand, no analyst FTE needed</div></div>
+      <div class="pill rust-pill"><span>🎧</span> <div><strong>AI support agents</strong> — Handle tier-1 customer issues billed per resolved ticket</div></div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 9 — THE UNIT ECONOMICS ═══ -->
+  <div class="slide dark" id="s9">
+    <div class="big-num">03</div>
+    <div class="anim-up label">Why it wins</div>
+    <div class="anim-up display mt1">Unit<br><span class="accent">Economics</span><br>Rewritten</div>
+    <div class="anim-up split mt2">
+      <div class="gap-row">
+        <div class="subhead" style="font-size:0.85rem; opacity:0.5;">TRADITIONAL BPO</div>
+        <div style="font-family:'DM Serif Display',serif; font-size:3rem; color:var(--rust);">$18<span style="font-size:1.2rem;">/hr</span></div>
+        <div class="body-text">Cost per human agent hour in offshore service centers. Includes salary, overhead, management, attrition.</div>
+      </div>
+      <div class="gap-row">
+        <div class="subhead" style="font-size:0.85rem; color:var(--acid); opacity:1;">LaaS AGENT</div>
+        <div style="font-family:'DM Serif Display',serif; font-size:3rem; color:var(--acid);">$0.18<span style="font-size:1.2rem;">/hr</span></div>
+        <div class="body-text">Estimated cost per compute-equivalent hour of LaaS output at 2026 model pricing. 100× cheaper. Scales instantly.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 10 — WHO BUILDS LaaS ═══ -->
+  <div class="slide slate-bg" id="s10">
+    <div class="anim-up tag">The builders</div>
+    <div class="anim-up headline">Who is building<br><span class="accent">LaaS</span> right now?</div>
+    <div class="anim-up timeline">
+      <div class="t-item">
+        <div class="t-year">Big Tech</div>
+        <div class="t-desc">Microsoft Copilot Studio, Google Agentspace, Salesforce Agentforce — legacy SaaS vendors bolting LaaS layers onto existing platforms to protect ARR.</div>
+      </div>
+      <div class="t-item">
+        <div class="t-year">Startups</div>
+        <div class="t-desc">Vertical AI companies (legal, accounting, recruiting, sales) attacking specific labor markets with purpose-built agents. Faster, cheaper, more focused.</div>
+      </div>
+      <div class="t-item">
+        <div class="t-year">Incumbents</div>
+        <div class="t-desc">Accenture, Infosys, Wipro — repackaging workforce + AI as "AI-augmented services." Human in the loop, but shrinking fast.</div>
+      </div>
+      <div class="t-item">
+        <div class="t-year">Freelancers</div>
+        <div class="t-desc">Solo operators using AI to 10× their output and undercut traditional agencies — the rise of "AI-powered boutiques."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 11 — QUOTE ═══ -->
+  <div class="slide rust-bg" id="s11">
+    <div class="big-num" style="opacity:0.08;">"</div>
+    <div class="anim-up label" style="color:rgba(245,240,232,0.5);">Signal from the field</div>
+    <div class="anim-up big-quote mt2">
+      "Every SaaS company is one great agent away from being a LaaS company."
+    </div>
+    <div class="anim-up quote-source">— Observed sentiment across YC S25 batch, 2025</div>
+    <div class="anim-up body-text mt3" style="opacity:0.6;">
+      The tools exist. The models exist. The only remaining question is who will build the workflow layer first — and own the customer relationship that comes with it.
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 12 — INDUSTRIES FIRST HIT ═══ -->
+  <div class="slide dark" id="s12">
+    <div class="big-num">04</div>
+    <div class="anim-up label">Disruption map</div>
+    <div class="anim-up headline mt1">First industries<br>to <span class="accent-rust">fall.</span></div>
+    <div class="anim-up icon-row">
+      <div class="i-dot" title="Customer Support">🎧</div>
+      <div class="i-dot" title="Content & Marketing">✍️</div>
+      <div class="i-dot" title="Software Development">💻</div>
+      <div class="i-dot" title="Legal">⚖️</div>
+      <div class="i-dot" title="Finance & Accounting">📈</div>
+      <div class="i-dot" title="HR & Recruiting">🧑‍💼</div>
+      <div class="i-dot" title="Data Analysis">🔬</div>
+      <div class="i-dot" title="Design">🎨</div>
+    </div>
+    <div class="anim-up body-text mt2">
+      Industries with high cognitive routine density, clear output specs, and digital-native workflows are hit first. Physical, ambiguous, or relationship-heavy work resists the longest.
+    </div>
+    <div class="anim-up body-text mt1" style="color:var(--acid);">
+      Customer support and content creation crossed the threshold in 2024. Software development follows in 2025–2026.
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 13 — THE HUMAN QUESTION ═══ -->
+  <div class="slide paper" id="s13">
+    <div class="big-num" style="color:var(--ink); opacity:0.05;">?</div>
+    <div class="anim-up label">The uncomfortable truth</div>
+    <div class="anim-up display mt1">What<br>happens<br><span style="color:var(--rust);">to us?</span></div>
+    <div class="anim-up body-text mt2">
+      LaaS doesn't eliminate all human work. It <strong>restructures it</strong>. Three new roles emerge at scale:
+    </div>
+    <div class="anim-up checklist">
+      <div class="check-item" style="color:var(--ink);"><span class="check-mark" style="color:var(--rust);">01</span> <strong>Prompters & orchestrators</strong> — humans who specify and direct AI agents</div>
+      <div class="check-item" style="color:var(--ink);"><span class="check-mark" style="color:var(--rust);">02</span> <strong>Quality reviewers</strong> — humans who validate AI output for high-stakes decisions</div>
+      <div class="check-item" style="color:var(--ink);"><span class="check-mark" style="color:var(--rust);">03</span> <strong>Relationship owners</strong> — humans who sell, manage, and build trust with clients</div>
+    </div>
+    <div class="anim-up body-text mt2" style="color:var(--rust);">
+      The gap between these roles and displaced workers is vast — and bridging it is the defining policy challenge of 2026.
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 14 — SAAS VENDORS IN TROUBLE ═══ -->
+  <div class="slide slate-bg" id="s14">
+    <div class="anim-up tag">Incumbent threat</div>
+    <div class="anim-up headline">SaaS vendors<br>face a<br><span class="accent">reckoning.</span></div>
+    <div class="anim-up split mt2">
+      <div class="gap-row">
+        <div class="body-text">
+          <strong style="color:var(--acid);">The problem:</strong> If a customer can get the <em>outcome</em> directly — the written contract, the analyzed dataset, the coded feature — why pay for the tool that helps a human produce it?
+        </div>
+        <div class="body-text mt1">
+          SaaS companies are facing "outcome substitution" — customers don't cancel the software, they simply stop needing it because the agent bypasses the UI entirely.
+        </div>
+      </div>
+      <div class="gap-row">
+        <div class="body-text">
+          <strong style="color:var(--acid);">The response:</strong> Every major SaaS vendor — Salesforce, HubSpot, Zendesk, Notion, Adobe — is racing to bolt AI agents onto their platforms and reframe themselves as LaaS providers.
+        </div>
+        <div class="body-text mt1">
+          The winners will own the workflow. The losers become infrastructure.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 15 — THE PRICING INVERSION ═══ -->
+  <div class="slide acid-bg" id="s15">
+    <div class="big-num" style="color:var(--ink); opacity:0.07;">$</div>
+    <div class="anim-up label" style="color:var(--ink);">Business model revolution</div>
+    <div class="anim-up display mt1" style="color:var(--ink);">Pricing<br>turns<br>inside<br>out.</div>
+    <div class="anim-up body-text mt2" style="color:var(--ink); opacity:0.7;">
+      SaaS pricing is predictable and recurring — the vendor's dream. LaaS pricing is usage-based and outcome-tied — the customer's dream. The power shifts.
+    </div>
+    <div class="anim-up checklist" style="color:var(--ink);">
+      <div class="check-item"><span class="check-mark" style="color:var(--ink);">→</span> Customers pay only for what they get</div>
+      <div class="check-item"><span class="check-mark" style="color:var(--ink);">→</span> Vendors must guarantee quality to earn revenue</div>
+      <div class="check-item"><span class="check-mark" style="color:var(--ink);">→</span> Gross margin compresses as compute scales</div>
+      <div class="check-item"><span class="check-mark" style="color:var(--ink);">→</span> Moats become data + workflow lock-in, not UX</div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 16 — RISKS & FAILURE MODES ═══ -->
+  <div class="slide dark" id="s16">
+    <div class="big-num">05</div>
+    <div class="anim-up label">The shadow side</div>
+    <div class="anim-up headline mt1">Risks &<br><span class="accent-rust">failure modes.</span></div>
+    <div class="anim-up pill-list" style="max-width:620px;">
+      <div class="pill rust-pill"><span>⚠️</span> <div><strong>Hallucination liability</strong> — AI delivers wrong output; who owns the error in a no-FTE model?</div></div>
+      <div class="pill rust-pill"><span>⚠️</span> <div><strong>Data leakage</strong> — Customer inputs flow through third-party model APIs, raising IP and compliance risk</div></div>
+      <div class="pill rust-pill"><span>⚠️</span> <div><strong>Quality cliff</strong> — LaaS works for P90 tasks; the long tail of edge cases still breaks agents</div></div>
+      <div class="pill rust-pill"><span>⚠️</span> <div><strong>Commoditization race</strong> — If models are APIs, every LaaS layer is one better-prompted competitor away from displacement</div></div>
+      <div class="pill rust-pill"><span>⚠️</span> <div><strong>Regulatory backlash</strong> — Labor displacement at scale triggers political response, sector-specific AI restrictions</div></div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 17 — THE TRUST LAYER ═══ -->
+  <div class="slide paper" id="s17">
+    <div class="big-num" style="color:var(--ink); opacity:0.05;">🤝</div>
+    <div class="anim-up label">The missing piece</div>
+    <div class="anim-up display mt1">Trust is<br>the new<br><span style="color:var(--rust);">moat.</span></div>
+    <div class="anim-up body-text mt2">
+      In SaaS, trust was earned by product reliability. In LaaS, trust is earned by output reliability — and that's far harder to establish and audit.
+    </div>
+    <div class="anim-up body-text mt1">
+      The LaaS companies that win will be those who build the most credible quality assurance layer: human-in-the-loop review, explainability tooling, audit trails, and SLA guarantees on output accuracy.
+    </div>
+    <div class="anim-up rule-rust mt2"></div>
+    <div class="anim-up body-text" style="color:var(--rust); font-size:0.85rem;">
+      "HITL" — Human in the Loop — is not a temporary crutch. It is a permanent feature for high-stakes LaaS deployments.
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 18 — GEOGRAPHY OF DISRUPTION ═══ -->
+  <div class="slide grid-bg" id="s18">
+    <div class="anim-up label">Global impact</div>
+    <div class="anim-up headline mt1">Not all markets<br>disrupted <span class="accent">equally.</span></div>
+    <div class="anim-up compare mt2">
+      <div class="c-cell c-header">Region / Sector</div>
+      <div class="c-cell c-header acid-h">LaaS Impact</div>
+      <div class="c-cell">US / EU Knowledge Work</div>
+      <div class="c-cell" style="color:var(--rust);">🔴 High — immediate displacement pressure</div>
+      <div class="c-cell">India / Philippines BPO</div>
+      <div class="c-cell" style="color:var(--rust);">🔴 Extreme — entire export sector threatened</div>
+      <div class="c-cell">Emerging markets (manufacturing)</div>
+      <div class="c-cell" style="color:var(--gold);">🟡 Moderate — physical work buffers impact</div>
+      <div class="c-cell">Creative & cultural industries</div>
+      <div class="c-cell" style="color:var(--gold);">🟡 Mixed — AI excels at derivative, struggles at original</div>
+      <div class="c-cell">Healthcare, Law, Finance (regulated)</div>
+      <div class="c-cell" style="color:var(--acid);">🟢 Lower — regulation slows adoption; still coming</div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 19 — THE FUTURE LANDSCAPE ═══ -->
+  <div class="slide rust-bg" id="s19">
+    <div class="big-num" style="opacity:0.08;">06</div>
+    <div class="anim-up label" style="color:rgba(245,240,232,0.6);">2026 and beyond</div>
+    <div class="anim-up display mt1">What the<br>world looks<br>like next.</div>
+    <div class="anim-up timeline" style="margin-top:2rem;">
+      <div class="t-item" style="border-color:rgba(245,240,232,0.12);">
+        <div class="t-year" style="font-size:1.1rem;">2026</div>
+        <div class="t-desc">LaaS becomes a standard procurement category. Fortune 500 companies spin down BPO contracts and replace with AI service vendors. First "zero-headcount" business units appear.</div>
+      </div>
+      <div class="t-item" style="border-color:rgba(245,240,232,0.12);">
+        <div class="t-year" style="font-size:1.1rem;">2028</div>
+        <div class="t-desc">Regulatory frameworks emerge in EU and US. "AI Work Standards" define liability, minimum quality bars, and required human oversight for different task categories.</div>
+      </div>
+      <div class="t-item" style="border-color:rgba(245,240,232,0.12);">
+        <div class="t-year" style="font-size:1.1rem;">2030</div>
+        <div class="t-desc">LaaS consolidates into a handful of dominant platforms. The "AWS of labor" emerges. Human work becomes a premium tier, not the default.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 20 — CLOSE / CTA ═══ -->
+  <div class="slide dark" id="s20">
+    <div class="scanlines"></div>
+    <div class="diag"></div>
+    <div class="big-num" style="opacity:0.05;">∞</div>
+    <div class="anim-up label" style="color:var(--acid);">The takeaway</div>
+    <div class="anim-up display mt1">The work<br>gets done.<br><span class="accent">The question</span><br><span style="color:var(--mist);">is by whom.</span></div>
+    <div class="anim-up rule mt3"></div>
+    <div class="anim-up body-text">
+      SaaS gave humans better tools. LaaS makes humans optional on a growing share of tasks. The companies, workers, and governments that adapt fastest — by redefining value, acquiring new skills, and building new guardrails — will define the next twenty years of the global economy.
+    </div>
+    <div class="anim-up body-text mt2" style="color:var(--acid); font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; letter-spacing:0.05em; opacity:1;">
+      SaaS → LaaS is not a trend. It is a regime change.
+    </div>
+  </div>
+
+</div><!-- /#deck -->
+
+<!-- PROGRESS + COUNTER + NAV -->
+<div id="progress-bar"></div>
+<div id="counter">01 / 20</div>
+<div id="nav">
+  <button class="nav-btn" id="prevBtn">←</button>
+  <button class="nav-btn" id="nextBtn">→</button>
+</div>
+
+<script>
+  // CURSOR
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top  = e.clientY + 'px';
+  });
+
+  // SLIDESHOW
+  const slides = document.querySelectorAll('.slide');
+  const total  = slides.length;
+  let current  = 0;
+
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    current = (n + total) % total;
+    slides[current].classList.add('active');
+
+    // progress bar
+    document.getElementById('progress-bar').style.width =
+      ((current + 1) / total * 100) + '%';
+
+    // counter
+    document.getElementById('counter').textContent =
+      String(current + 1).padStart(2,'0') + ' / ' +
+      String(total).padStart(2,'0');
+  }
+
+  // KEYBOARD
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'ArrowDown') goTo(current + 1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')                    goTo(current - 1);
+  });
+
+  // BUTTONS
+  document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+  document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+
+  // CLICK ANYWHERE to advance
+  document.getElementById('deck').addEventListener('click', e => {
+    if (!e.target.closest('#nav')) goTo(current + 1);
+  });
+
+  // TOUCH SWIPE
+  let tx = 0;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; });
+  document.addEventListener('touchend',   e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 50) dx < 0 ? goTo(current + 1) : goTo(current - 1);
+  });
+
+  // INIT
+  goTo(0);
+</script>
+</body>
+</html>

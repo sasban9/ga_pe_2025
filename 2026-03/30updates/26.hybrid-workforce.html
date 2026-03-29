@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Managing Synthetic Teammates — Leadership in a Hybrid Workforce</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,200&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0a0a0f;
+    --paper: burlywood;
+    --amber: #e8a020;
+    --rust: #c94a2b;
+    --teal: #1a7a6e;
+    --frost: #cce8e4;
+    --grid: rgba(10,10,15,0.07);
+    --accent: #e8a020;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    font-family: 'DM Mono', monospace;
+    background: var(--ink);
+  }
+
+  /* ─── DECK ─────────────────────────────────────────────── */
+  #deck {
+    position: relative;
+    width: 100vw; height: 100vh;
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: clamp(2rem, 6vw, 5rem) clamp(2rem, 7vw, 6rem);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(60px);
+    transition: opacity 0.55s cubic-bezier(.4,0,.2,1), transform 0.55s cubic-bezier(.4,0,.2,1);
+    will-change: opacity, transform;
+  }
+  .slide.active {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateX(0);
+  }
+  .slide.exit {
+    opacity: 0;
+    transform: translateX(-60px);
+  }
+
+  /* ─── BACKGROUNDS ───────────────────────────────────────── */
+  .bg-paper   { background: var(--paper); }
+  .bg-ink     { background: var(--ink); }
+  .bg-amber   { background: var(--amber); }
+  .bg-teal    { background: var(--teal); }
+  .bg-rust    { background: var(--rust); }
+  .bg-frost   { background: var(--frost); }
+  .bg-split   {
+    background: linear-gradient(105deg, var(--ink) 50%, var(--paper) 50%);
+  }
+
+  /* ─── GRID OVERLAY ──────────────────────────────────────── */
+  .slide::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .slide > * { position: relative; z-index: 1; }
+
+  /* ─── TYPOGRAPHY ────────────────────────────────────────── */
+  .label {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(0.55rem, 1.2vw, 0.75rem);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    opacity: 0.6;
+  }
+  .display {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.4rem, 12vw, 5.5rem);
+    line-height: 0.96;
+    letter-spacing: -0.03em;
+    max-width: 15ch;
+    margin-bottom: 1.5rem;
+  }
+  .serif {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    font-weight: 300;
+    line-height: 1.35;
+    max-width: 34ch;
+  }
+  .body-text {
+    font-size: clamp(1.2rem, 2.6vw, 1.6rem);
+    line-height: 1.7;
+    max-width: 72ch;
+    opacity: 0.85;
+  }
+  .mono-large {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(0.85rem, 1.8vw, 1.1rem);
+    line-height: 1.9;
+  }
+
+  /* ─── COLOUR CLASSES ────────────────────────────────────── */
+  .c-paper  { color: var(--paper); }
+  .c-ink    { color: var(--ink); }
+  .c-amber  { color: var(--amber); }
+  .c-rust   { color: var(--rust); }
+  .c-teal   { color: var(--teal); }
+  .c-frost  { color: var(--frost); }
+
+  /* ─── DECORATIVE ELEMENTS ───────────────────────────────── */
+  .rule {
+    width: clamp(40px, 8vw, 80px);
+    height: 3px;
+    margin-bottom: 1.5rem;
+    border-radius: 2px;
+  }
+  .slash {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(6rem, 20vw, 16rem);
+    position: absolute;
+    opacity: 0.06;
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+  .big-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(5rem, 18vw, 13rem);
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+    opacity: 0.12;
+    position: absolute;
+    right: 5vw; bottom: 4vh;
+    pointer-events: none;
+  }
+
+  /* ─── LIST ──────────────────────────────────────────────── */
+  .check-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+  .check-list li {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    font-size: clamp(1.2rem, 1.5vw, 2rem);
+    line-height: 1.5;
+  }
+  .check-list li::before {
+    content: '→';
+    flex-shrink: 0;
+    margin-top: 0.05em;
+    opacity: 0.7;
+  }
+
+  /* ─── PILL TAGS ─────────────────────────────────────────── */
+  .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+  .tag {
+    padding: 0.3em 0.85em;
+    border: 1.5px solid currentColor;
+    border-radius: 999px;
+    font-size: clamp(0.65rem, 1.1vw, 0.75rem);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.75;
+  }
+
+  /* ─── QUOTE BLOCK ───────────────────────────────────────── */
+  .quote-block {
+    border-left: 4px solid var(--amber);
+    padding-left: 1.5rem;
+    margin: 1.5rem 0;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    line-height: 1.4;
+    max-width: 50ch;
+    background: #fff6;
+  }
+
+  /* ─── STAT GRID ─────────────────────────────────────────── */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem 3rem;
+    margin-top: 1rem;
+  }
+  .stat-item .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+  .stat-item .stat-desc {
+    font-size: clamp(1.1rem, 1.2vw, 0.82rem);
+    opacity: 0.65;
+    line-height: 1.4;
+  }
+
+  /* ─── FRAMEWORK TABLE ───────────────────────────────────── */
+  .fw-table { border-collapse: collapse; width: 100%; max-width: 600px; margin-top: 1.2rem; }
+  .fw-table th {
+    text-align: left;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem 0.5rem 0;
+    border-bottom: 1px solid currentColor;
+    opacity: 0.5;
+  }
+  .fw-table td {
+    padding: 0.65rem 1rem 0.65rem 0;
+    font-size: clamp(0.75rem, 1.3vw, 0.88rem);
+    line-height: 1.4;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .fw-table.dark td { border-bottom: 1px solid rgba(10,10,15,0.1); }
+
+  /* ─── PROGRESS BAR ──────────────────────────────────────── */
+  #progress {
+    position: fixed;
+    bottom: 0; left: 0;
+    height: 3px;
+    background: var(--amber);
+    transition: width 0.4s cubic-bezier(.4,0,.2,1);
+    z-index: 100;
+  }
+
+  /* ─── CONTROLS ──────────────────────────────────────────── */
+  #controls {
+    position: fixed;
+    bottom: 1.5rem; right: 2rem;
+    display: flex; gap: 0.5rem;
+    z-index: 100;
+  }
+  .ctrl-btn {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    background: rgba(10,10,15,0.6);
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    backdrop-filter: blur(8px);
+    transition: background 0.2s, transform 0.15s;
+  }
+  .ctrl-btn:hover { background: var(--amber); border-color: var(--amber); color: var(--ink); transform: scale(1.08); }
+
+  /* ─── SLIDE COUNTER ─────────────────────────────────────── */
+  #counter {
+    position: fixed;
+    bottom: 1.6rem; left: 2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.35);
+    z-index: 100;
+  }
+
+  /* ─── COVER DECORATIONS ─────────────────────────────────── */
+  .circle-deco {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* ─── SPLIT LAYOUT ──────────────────────────────────────── */
+  .split-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    width: 100%;
+  }
+
+  @media (max-width: 640px) {
+    .stat-grid { grid-template-columns: 1fr; }
+    .split-content { grid-template-columns: 1fr; gap: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div id="deck">
+
+  <!-- SLIDE 1 — COVER -->
+  <div class="slide bg-ink active" id="s1">
+    <div class="slash c-paper" style="right:-2vw;top:-3vh;font-size:clamp(8rem,28vw,22rem)">AI</div>
+    <div class="label c-amber">Leadership Series · 2026</div>
+    <div class="display c-paper" style="max-width:12ch">Managing<br><em style="font-style:italic;color:var(--amber)">Synthetic</em><br>Teammates</div>
+    <div class="rule" style="background:var(--amber)"></div>
+    <div class="serif c-frost" style="opacity:0.75;font-size:clamp(1rem,2.2vw,1.4rem)">Leadership in a Hybrid Human–AI Workforce</div>
+    <div class="tags" style="margin-top:2rem">
+      <span class="tag c-paper">Future of Work</span>
+      <span class="tag c-paper">AI Management</span>
+      <span class="tag c-paper">Leadership</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 2 — THE SHIFT -->
+  <div class="slide bg-paper" id="s2">
+    <div class="big-num c-ink">02</div>
+    <div class="label c-rust">The Landscape</div>
+    <div class="display c-ink">The Team<br>Has Changed.</div>
+    <div class="rule" style="background:var(--rust)"></div>
+    <div class="body-text c-ink">
+      AI is no longer just a tool on a desk. It joins meetings, drafts strategies, writes code, analyzes customers — and it never sleeps. The workforce has a new kind of colleague. The question is: <strong>are leaders ready?</strong>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 — DEFINITION -->
+  <div class="slide bg-teal" id="s3">
+    <div class="slash c-paper" style="right:-2vw;bottom:-4vh;font-size:clamp(10rem,30vw,24rem);opacity:0.07">?</div>
+    <div class="label c-frost" style="opacity:0.6">Definition</div>
+    <div class="display c-paper" style="max-width:14ch">What Is a Synthetic Teammate?</div>
+    <div class="rule" style="background:var(--amber)"></div>
+    <div class="body-text c-frost">
+      A <strong>Synthetic Teammate</strong> is an AI agent or system that participates autonomously in knowledge work — not merely assisting, but executing tasks, making decisions within defined limits, and collaborating alongside human team members in shared workflows.
+    </div>
+    <div class="tags" style="margin-top:1.5rem">
+      <span class="tag c-frost">LLM Agents</span>
+      <span class="tag c-frost">Co-pilots</span>
+      <span class="tag c-frost">Autonomous Systems</span>
+      <span class="tag c-frost">AI Workflows</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 — STATS -->
+  <div class="slide bg-paper" id="s4">
+    <div class="label c-rust">By the Numbers</div>
+    <div class="display c-ink" style="font-size:clamp(2rem,5vw,3.8rem)">The Data<br>Speaks First.</div>
+    <div class="rule" style="background:var(--rust)"></div>
+    <div class="stat-grid">
+      <div class="stat-item">
+        <div class="stat-num c-rust">77%</div>
+        <div class="stat-desc c-ink">of executives say AI will fundamentally change workforce structure within 3 years</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num c-teal">4.2×</div>
+        <div class="stat-desc c-ink">productivity multiplier reported by teams integrating AI agents in knowledge tasks</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num c-ink">63%</div>
+        <div class="stat-desc c-ink">of managers report lacking frameworks to evaluate AI teammate performance</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num c-amber" style="opacity:1">2031</div>
+        <div class="stat-desc c-ink">projected year AI agents outnumber human knowledge workers in many sectors</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5 — THE HUMAN REACTION -->
+  <div class="slide bg-ink" id="s5">
+    <div class="big-num c-paper">05</div>
+    <div class="label c-amber">Human Factor</div>
+    <div class="display c-paper" style="max-width:13ch">Your Team Is<br>Already <em style="color:var(--rust);font-style:italic">Anxious.</em></div>
+    <div class="rule" style="background:var(--amber)"></div>
+    <ul class="check-list c-frost" style="max-width:80ch">
+      <li>Fear of role displacement or devaluation</li>
+      <li>Confusion about accountability when AI makes mistakes</li>
+      <li>Resentment when AI "gets credit" for human work</li>
+      <li>Uncertainty about which skills still matter</li>
+      <li>Loss of psychological safety when competing with tireless systems</li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 6 — LEADERSHIP GAP -->
+  <div class="slide bg-amber" id="s6">
+    <div class="slash c-ink" style="right:-3vw;top:-2vh;opacity:0.07;font-size:clamp(10rem,28vw,22rem)">!</div>
+    <div class="label c-ink">The Problem</div>
+    <div class="display c-ink" style="max-width:13ch">The Leadership<br>Playbook<br>Is Broken.</div>
+    <div class="rule" style="background:var(--ink)"></div>
+    <div class="body-text c-ink">
+      Legacy management training was designed for humans. Performance reviews, motivation theory, delegation, trust — these models were built on human psychology. Synthetic teammates break every assumption. Leaders who apply old playbooks to AI colleagues will fail — not because they lack intelligence, but because they lack a new <strong>mental model.</strong>
+    </div>
+  </div>
+
+  <!-- SLIDE 7 — THE 5 ROLES -->
+  <div class="slide bg-paper" id="s7">
+    <div class="label c-teal">Framework</div>
+    <div class="display c-ink" style="font-size:clamp(1.8rem,4.5vw,3.4rem)">5 Roles Every<br>AI-Era Leader<br>Must Play</div>
+    <div class="rule" style="background:var(--teal)"></div>
+    <ul class="check-list c-ink" style="max-width:86ch">
+      <li><strong>Architect</strong> — Design the human-AI collaboration system</li>
+      <li><strong>Translator</strong> — Bridge intent between humans and AI agents</li>
+      <li><strong>Auditor</strong> — Evaluate AI output with critical judgment</li>
+      <li><strong>Cultivator</strong> — Grow human skills that AI cannot replicate</li>
+      <li><strong>Guardian</strong> — Protect ethics, accountability and culture</li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 8 — TRUST CALIBRATION -->
+  <div class="slide bg-ink" id="s8">
+    <div class="big-num c-paper">08</div>
+    <div class="label c-amber">Trust Architecture</div>
+    <div class="display c-paper" style="max-width:13ch">Trust Must Be<br>Earned — <em style="color:var(--amber);font-style:italic">and<br>Designed.</em></div>
+    <div class="rule" style="background:var(--amber)"></div>
+    <div class="body-text c-frost" style="margin-bottom:1rem">
+      Over-trust produces automation bias. Under-trust wastes capability. Calibrated trust requires a repeatable framework:
+    </div>
+    <table class="fw-table">
+      <thead>
+        <tr>
+          <th class="c-amber">Trust Level</th>
+          <th class="c-amber">AI Autonomy</th>
+          <th class="c-amber">Human Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="c-frost">Supervised</td><td class="c-frost">Draft only</td><td class="c-frost">Full review + edit</td></tr>
+        <tr><td class="c-frost">Assisted</td><td class="c-frost">Recommend</td><td class="c-frost">Decide + spot-check</td></tr>
+        <tr><td class="c-frost">Delegated</td><td class="c-frost">Execute</td><td class="c-frost">Monitor + override</td></tr>
+        <tr><td class="c-frost">Autonomous</td><td class="c-frost">Act + report</td><td class="c-frost">Exception handling</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SLIDE 9 — ACCOUNTABILITY -->
+  <div class="slide bg-rust" id="s9">
+    <div class="slash c-paper" style="right:-2vw;bottom:-4vh;font-size:clamp(10rem,28vw,22rem);opacity:0.08">⚖</div>
+    <div class="label c-paper" style="opacity:0.7">Critical Issue</div>
+    <div class="display c-paper" style="max-width:12ch">Who Is<br>Accountable<br>When AI Fails?</div>
+    <div class="rule" style="background:var(--paper)"></div>
+    <div class="body-text c-paper">
+      AI has no consequences. It cannot be fired, sued, or shamed. <strong>Accountability always flows upward to humans.</strong> Leaders must define — before deployment — who owns each AI decision, what the escalation path looks like, and how errors are surfaced, learned from, and prevented.
+    </div>
+  </div>
+
+  <!-- SLIDE 10 — PERFORMANCE MANAGEMENT -->
+  <div class="slide bg-paper" id="s10">
+    <div class="label c-ink">Managing Performance</div>
+    <div class="display c-ink" style="font-size:clamp(1.8rem,4.5vw,3.2rem)">How Do You<br>Review an<br>AI Teammate?</div>
+    <div class="rule" style="background:var(--ink)"></div>
+    <ul class="check-list c-ink">
+      <li><strong>Output quality</strong> — accuracy, relevance, hallucination rate</li>
+      <li><strong>Reliability</strong> — consistency across edge cases and contexts</li>
+      <li><strong>Efficiency</strong> — tokens, latency, cost per task completed</li>
+      <li><strong>Safety</strong> — adherence to guardrails and ethical constraints</li>
+      <li><strong>Collaboration fit</strong> — how well it integrates into human workflows</li>
+    </ul>
+    <div class="body-text c-ink" style="margin-top:1.2rem;opacity:0.6;font-size:0.8rem">
+      Unlike humans, AI teammates do not self-motivate or self-improve without human redesign. Performance management means <em>prompt engineering, fine-tuning, and system redesign.</em>
+    </div>
+  </div>
+
+  <!-- SLIDE 11 — DELEGATION -->
+  <div class="slide bg-teal" id="s11">
+    <div class="big-num c-frost" style="opacity:0.09">11</div>
+    <div class="label c-frost" style="opacity:0.7">Delegation Science</div>
+    <div class="display c-paper" style="max-width:53ch">Delegate<br>the Task,<br>Not the <em style="color:var(--amber);font-style:italic">Judgment.</em></div>
+    <div class="rule" style="background:var(--amber)"></div>
+    <div class="body-text c-frost">
+      The golden rule of hybrid delegation: AI executes, humans decide in ambiguity. Any task with a clear success metric and bounded inputs is fair delegation territory. Any task requiring moral reasoning, relationship nuance, or creative risk-taking demands human lead. Map your team's work against this axis before assigning.
+    </div>
+  </div>
+
+  <!-- SLIDE 12 — COMMUNICATION -->
+  <div class="slide bg-ink" id="s12">
+    <div class="slash c-paper" style="right:-3vw;top:5vh;opacity:0.06;font-size:clamp(10rem,26vw,20rem)">💬</div>
+    <div class="label c-amber">Communication Design</div>
+    <div class="display c-paper" style="max-width:63ch">AI Doesn't Read<br>Between the Lines.</div>
+    <div class="rule" style="background:var(--amber)"></div>
+    <div class="body-text c-frost">
+      Human communication relies on context, relationship history, and unspoken norms. AI has none of these. Leaders must train their teams to communicate with AI precisely — and to recognize when vagueness will produce garbage output. <strong>Clarity is not optional in a hybrid team.</strong>
+    </div>
+    <div class="tags" style="margin-top:1.5rem">
+      <span class="tag c-frost">Prompt Literacy</span>
+      <span class="tag c-frost">Explicit Instruction</span>
+      <span class="tag c-frost">Feedback Loops</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 13 — CULTURE -->
+  <div class="slide bg-frost" id="s13">
+    <div class="label c-teal">Organisational Culture</div>
+    <div class="display c-teal" style="max-width:13ch">Culture Doesn't<br>Scale to Silicon.</div>
+    <div class="rule" style="background:var(--rust)"></div>
+    <div class="body-text c-ink">
+      Culture — the invisible rules that govern how teams behave — is built by humans, for humans. But AI behaviour shapes culture too: it models work norms, sets speed expectations, and can inadvertently reward volume over depth. Leaders must consciously defend culture against AI drift.
+    </div>
+    <ul class="check-list c-ink" style="margin-top:1rem">
+      <li>Establish AI-free zones for creativity and reflection</li>
+      <li>Celebrate human judgment, not just AI-enabled speed</li>
+      <li>Name and address AI's effect on psychological safety</li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 14 — ETHICS -->
+  <div class="slide bg-ink" id="s14">
+    <div class="big-num c-paper">14</div>
+    <div class="label c-rust">Ethics & Integrity</div>
+    <div class="display c-paper" style="max-width:72ch">Bias<br>Without a <em style="color:var(--rust);font-style:italic">Face.</em></div>
+    <div class="rule" style="background:var(--rust)"></div>
+    <div class="body-text c-frost">
+      AI systems inherit the biases of their training data — and their outputs carry authority because they appear objective and tireless. Leaders must actively audit for bias, build diverse review processes, and resist the temptation to outsource ethical judgment to an algorithm.
+    </div>
+    <div class="quote-block" style="margin-top:1.2rem;border-left-color:var(--rust)">
+      "An AI that discriminates quietly is more dangerous than one that does so loudly."
+    </div>
+  </div>
+
+  <!-- SLIDE 15 — HUMAN SKILLS -->
+  <div class="slide bg-amber" id="s15">
+    <div class="slash c-ink" style="right:-2vw;bottom:-5vh;opacity:0.07;font-size:clamp(10rem,28vw,22rem)">★</div>
+    <div class="label c-ink">The Human Edge</div>
+    <div class="display c-ink" style="max-width:13ch">What AI<br>Cannot<br>Replace.</div>
+    <div class="rule" style="background:var(--ink)"></div>
+    <ul class="check-list c-ink">
+      <li><strong>Empathy</strong> — sensing unspoken emotional dynamics</li>
+      <li><strong>Ethical courage</strong> — saying the hard thing when it matters</li>
+      <li><strong>Contextual wisdom</strong> — knowing when rules should bend</li>
+      <li><strong>Creative risk</strong> — imagining what has never been tried</li>
+      <li><strong>Trust-building</strong> — earning loyalty through relationship</li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 16 — UPSKILLING -->
+  <div class="slide bg-paper" id="s16">
+    <div class="label c-ink">Workforce Development</div>
+    <div class="display c-ink" style="font-size:clamp(1.8rem,4.5vw,3.2rem)">Your Job Is<br>to Make<br>Your Team Fluent.</div>
+    <div class="rule" style="background:var(--teal)"></div>
+    <div class="body-text c-ink" style="margin-bottom:1rem">
+      AI fluency is the new baseline. Leaders who invest in it now will lead teams that compound their advantage. Those who don't will watch their best talent leave for organisations that do.
+    </div>
+    <ul class="check-list c-ink">
+      <li>Prompt engineering and AI communication skills</li>
+      <li>Critical evaluation of AI outputs</li>
+      <li>Data literacy and model awareness</li>
+      <li>Workflow redesign and automation thinking</li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 17 — HYBRID RITUALS -->
+  <div class="slide bg-teal" id="s17">
+    <div class="big-num c-frost" style="opacity:0.08">17</div>
+    <div class="label c-frost" style="opacity:0.7">Team Design</div>
+    <div class="display c-paper" style="max-width:73ch">Design Rituals for<br>Hybrid Teams.</div>
+    <div class="rule" style="background:var(--amber)"></div>
+    <ul class="check-list c-frost">
+      <li><strong>AI stand-ups</strong> — review what agents did overnight</li>
+      <li><strong>Human retrospectives</strong> — assess what AI got wrong and why</li>
+      <li><strong>Judgment reviews</strong> — celebrate decisions AI couldn't make</li>
+      <li><strong>Drift audits</strong> — check if AI is quietly reshaping team norms</li>
+      <li><strong>Transparency reports</strong> — share AI usage openly across the team</li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 18 — FAILURE MODES -->
+  <div class="slide bg-rust" id="s18">
+    <div class="slash c-paper" style="left:-2vw;top:5vh;opacity:0.08;font-size:clamp(10rem,28vw,22rem)">✕</div>
+    <div class="label c-paper" style="opacity:0.7">Failure Modes</div>
+    <div class="display c-paper" style="max-width:13ch">How Hybrid<br>Teams<br>Break.</div>
+    <div class="rule" style="background:var(--paper)"></div>
+    <ul class="check-list c-paper">
+      <li><strong>Automation complacency</strong> — humans stop verifying AI output</li>
+      <li><strong>Ghost accountability</strong> — no one owns what AI decides</li>
+      <li><strong>Skill atrophy</strong> — critical human capabilities quietly erode</li>
+      <li><strong>Invisible bias amplification</strong> — AI scales flawed assumptions</li>
+      <li><strong>Culture homogenisation</strong> — AI enforces one way of thinking</li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 19 — THE NEW LEADER PROFILE -->
+  <div class="slide bg-paper" id="s19">
+    <div class="label c-ink">Leadership Identity</div>
+    <div class="display c-ink" style="font-size:clamp(1.8rem,4.5vw,3.2rem)">The Leader<br>the Hybrid<br>Age Needs.</div>
+    <div class="rule" style="background:var(--amber)"></div>
+    <div class="stat-grid" style="margin-top:0.5rem">
+      <div class="stat-item">
+        <div class="stat-num c-amber" style="font-size:clamp(1.6rem,5.5vw,2.8rem);opacity:1">Curious</div>
+        <div class="stat-desc c-ink">Experiments with AI tools before mandating them</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num c-teal" style="font-size:clamp(1.6rem,5.5vw,2.8rem);opacity:1">Sceptical</div>
+        <div class="stat-desc c-ink">Questions AI output and builds critical review into every workflow</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num c-rust" style="font-size:clamp(1.6rem,5.5vw,2.8rem);opacity:1">Empathic</div>
+        <div class="stat-desc c-ink">Protects human dignity in a system that rewards machine speed</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num c-ink" style="font-size:clamp(1.6rem,5.5vw,2.8rem);opacity:1">Decisive</div>
+        <div class="stat-desc c-ink">Claims accountability rather than hiding behind AI ambiguity</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 20 — CLOSING -->
+  <div class="slide bg-ink" id="s20">
+    <div class="slash c-paper" style="right:-3vw;bottom:-4vh;opacity:0.05;font-size:clamp(12rem,32vw,26rem)">∞</div>
+    <div class="label c-amber">The Mandate</div>
+    <div class="display c-paper" style="max-width:14ch">Lead the Humans.<br><em style="color:var(--amber);font-style:italic">Direct</em> the Machines.</div>
+    <div class="rule" style="background:var(--amber)"></div>
+    <div class="body-text c-frost" style="margin-bottom:1.5rem;max-width:84ch">
+      The most dangerous myth of the AI era is that leadership becomes less important. The opposite is true. In a world where machines can execute at scale, human leadership — judgment, ethics, empathy, accountability — becomes the only irreplaceable differentiator.
+    </div>
+    <div class="quote-block" style="border-left-color:var(--amber);font-size:clamp(0.95rem,2vw,1.3rem)">
+      The future doesn't belong to those who fear AI or those who worship it — but to those who lead wisely through it.
+    </div>
+    <div class="tags" style="margin-top:2rem">
+      <span class="tag c-amber">Lead Humans</span>
+      <span class="tag c-amber">Direct Machines</span>
+      <span class="tag c-amber">Own Accountability</span>
+    </div>
+  </div>
+
+</div><!-- /deck -->
+
+<!-- Progress & Controls -->
+<div id="progress" style="width:5%"></div>
+<div id="counter">01 / 20</div>
+<div id="controls">
+  <button class="ctrl-btn" id="prevBtn" aria-label="Previous">&#8592;</button>
+  <button class="ctrl-btn" id="nextBtn" aria-label="Next">&#8594;</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+  let transitioning = false;
+
+  const progressBar = document.getElementById('progress');
+  const counter = document.getElementById('counter');
+
+  function pad(n){ return String(n).padStart(2,'0'); }
+
+  function goTo(idx) {
+    if(idx < 0 || idx >= total || transitioning) return;
+    transitioning = true;
+
+    const old = slides[current];
+    old.classList.remove('active');
+    old.classList.add('exit');
+
+    setTimeout(() => { old.classList.remove('exit'); }, 550);
+
+    current = idx;
+    const next = slides[current];
+    next.classList.add('active');
+
+    progressBar.style.width = ((current + 1) / total * 100) + '%';
+    counter.textContent = pad(current + 1) + ' / ' + pad(total);
+
+    setTimeout(() => { transitioning = false; }, 560);
+  }
+
+  document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+  document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+
+  document.addEventListener('keydown', e => {
+    if(e.key === 'ArrowRight' || e.key === ' ') goTo(current + 1);
+    if(e.key === 'ArrowLeft') goTo(current - 1);
+  });
+
+  // Touch/swipe
+  let touchX = null;
+  document.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    if(touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    if(Math.abs(dx) > 50) { dx < 0 ? goTo(current + 1) : goTo(current - 1); }
+    touchX = null;
+  });
+</script>
+</body>
+</html>

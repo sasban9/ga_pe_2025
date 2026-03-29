@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI 2026 — Lecture Series</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+/* ─── RESET & ROOT ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #080a0f;
+  --surface:  #0e1118;
+  --p1:       #ff5733;   /* Part 1 — orange-red */
+  --p2:       #00d4aa;   /* Part 2 — teal */
+  --p3:       #f5c518;   /* Part 3 — amber */
+  --p4:       #a78bfa;   /* Part 4 — violet */
+  --txt:      #f0f2f8;
+  --muted:    #6b7280;
+  --white:    #ffffff;
+  --mono:     'IBM Plex Mono', monospace;
+  --serif:    'DM Serif Display', serif;
+  --display:  'Bebas Neue', sans-serif;
+}
+
+html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg); color: var(--txt); }
+
+/* ─── SCANLINE OVERLAY ───────────────────────────────────────── */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 9000;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0,0,0,0.03) 0px,
+    rgba(0,0,0,0.03) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+}
+
+/* ─── PROGRESS BAR ───────────────────────────────────────────── */
+#progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px; z-index: 9001;
+  width: 0%;
+  transition: width 0.5s ease;
+}
+
+/* ─── SLIDE DECK ─────────────────────────────────────────────── */
+#deck { width: 100vw; height: 100vh; position: relative; }
+
+.slide {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  padding: 5vh 6vw 10vh;
+  opacity: 0;
+  transform: translateX(40px);
+  pointer-events: none;
+  transition: opacity 0.45s ease, transform 0.45s ease;
+  overflow: hidden;
+}
+.slide.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: all;
+}
+.slide.exit-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* ─── SLIDE PART COLORS (applied via JS) ─────────────────────── */
+.part-1 { --accent: var(--p1); }
+.part-2 { --accent: var(--p2); }
+.part-3 { --accent: var(--p3); }
+.part-4 { --accent: var(--p4); }
+
+/* ─── AMBIENT GLOW ───────────────────────────────────────────── */
+.slide::before {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+  opacity: 0.04;
+  top: -200px; right: -200px;
+  pointer-events: none;
+  transition: background 0.5s;
+}
+
+/* ─── TOP STRIP ──────────────────────────────────────────────── */
+.top-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3vh;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding-bottom: 1.2vh;
+}
+.series-label {
+  font-family: var(--mono);
+  font-size: 21px;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.slide-counter {
+  font-family: var(--mono);
+  font-size: 21px;
+  color: var(--muted);
+}
+
+/* ─── COVER SLIDE (slide 0) ──────────────────────────────────── */
+.cover-eyebrow {
+  font-family: var(--mono);
+  font-size: 22px;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+.cover-title {
+  font-family: var(--display);
+  font-size: clamp(44px, 8vw, 110px);
+  line-height: 0.92;
+  color: var(--white);
+  margin-bottom: 2.5rem;
+  max-width: 14ch;
+}
+/* !! hard cap enforced below for all large text */
+@media (min-width: 1px) {
+  .cover-title { font-size: clamp(44px, 7vw, 58px); }
+}
+.cover-subtitle {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(24px, 2.2vw, 38px);
+  color: rgba(240,242,248,0.7);
+  max-width: 44ch;
+  line-height: 1.5;
+}
+.cover-tags {
+  display: flex; flex-wrap: wrap; gap: 0.7rem;
+  margin-top: 2.5rem;
+}
+.tag {
+  font-family: var(--mono);
+  font-size: 21px;
+  padding: 0.3em 0.85em;
+  border-radius: 3px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  background: rgba(255,255,255,0.03);
+}
+
+/* ─── PART DIVIDER SLIDE ─────────────────────────────────────── */
+.part-divider {
+  justify-content: center;
+  align-items: flex-start;
+}
+.part-num {
+  font-family: var(--display);
+  font-size: clamp(120px, 22vw, 200px);
+  line-height: 0.85;
+  color: var(--accent);
+  opacity: 0.12;
+  position: absolute;
+  right: 4vw;
+  bottom: 3vh;
+  letter-spacing: -0.04em;
+  pointer-events: none;
+}
+/* cap at 58px for non-decorative use */
+.part-label {
+  font-family: var(--mono);
+  font-size: 22px;
+  color: var(--accent);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  margin-top: 4vh;
+}
+.part-title {
+  font-family: var(--display);
+  font-size: clamp(44px, 5.5vw, 58px);
+  line-height: 1;
+  color: var(--white);
+  max-width: 20ch;
+  margin-bottom: 2rem;
+}
+.part-subtitle {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(24px, 2vw, 36px);
+  color: rgba(240,242,248,0.65);
+  max-width: 42ch;
+  line-height: 1.55;
+  margin-bottom: 2.5rem;
+}
+.lecture-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.lecture-list li {
+  font-family: var(--mono);
+  font-size: clamp(21px, 1.5vw, 27px);
+  color: rgba(240,242,248,0.72);
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+}
+.lecture-list li .lnum {
+  color: var(--accent);
+  min-width: 3ch;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.lecture-list li .ltitle {
+  line-height: 1.4;
+}
+
+/* ─── LECTURE SLIDE ──────────────────────────────────────────── */
+.lecture-slide { justify-content: flex-end; }
+
+.lec-number-bg {
+  position: absolute;
+  top: 3vh; right: 5vw;
+  font-family: var(--display);
+  font-size: clamp(100px, 20vw, 220px);
+  color: var(--accent);
+  opacity: 0.055;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  pointer-events: none;
+}
+.lec-part-tag {
+  font-family: var(--mono);
+  font-size: 21px;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.lec-rule {
+  width: 56px; height: 3px;
+  background: var(--accent);
+  margin-bottom: 1.4rem;
+  border-radius: 1px;
+}
+.lec-title {
+  font-family: var(--display);
+  font-size: clamp(36px, 4.5vw, 56px);
+  line-height: 1.02;
+  color: var(--white);
+  max-width: 22ch;
+  margin-bottom: 1.6rem;
+}
+/* highlight bold keyword */
+.lec-title em {
+  font-style: normal;
+  color: var(--accent);
+}
+.lec-old {
+  font-family: var(--mono);
+  font-size: clamp(21px, 1.5vw, 28px);
+  color: var(--muted);
+  text-decoration: line-through;
+  margin-bottom: 0.5rem;
+}
+.lec-new {
+  font-family: var(--mono);
+  font-size: clamp(23px, 1.8vw, 32px);
+  color: var(--accent);
+  margin-bottom: 1.8rem;
+}
+.lec-desc {
+  font-family: var(--serif);
+  font-size: clamp(24px, 2vw, 34px);
+  line-height: 1.55;
+  color: rgba(240,242,248,0.8);
+  max-width: 50ch;
+  font-style: italic;
+}
+
+/* ─── FINAL SLIDE ────────────────────────────────────────────── */
+.final-big {
+  font-family: var(--display);
+  font-size: clamp(44px, 6vw, 58px);
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 1.2rem;
+}
+.final-sub {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(24px, 2vw, 36px);
+  color: rgba(240,242,248,0.65);
+  max-width: 45ch;
+  line-height: 1.55;
+  margin-bottom: 2rem;
+}
+
+/* ─── DOT NAVIGATION ─────────────────────────────────────────── */
+#dots {
+  position: fixed;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 8px;
+  z-index: 8000;
+}
+.dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s, height 0.3s;
+}
+.dot.on { background: var(--dot-color, #fff); transform: scaleX(1); height: 22px; border-radius: 4px; }
+
+/* ─── BOTTOM NAV ─────────────────────────────────────────────── */
+#nav {
+  position: fixed;
+  bottom: 2rem; left: 0; right: 0;
+  display: flex; justify-content: center; align-items: center; gap: 1.4rem;
+  z-index: 8000;
+}
+.nbtn {
+  width: 48px; height: 48px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.05);
+  color: var(--txt);
+  font-size: 22px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  font-family: var(--mono);
+}
+.nbtn:hover { background: rgba(255,255,255,0.12); transform: scale(1.1); }
+#ctr {
+  font-family: var(--mono);
+  font-size: 22px;
+  color: var(--muted);
+  min-width: 6ch;
+  text-align: center;
+}
+
+/* ─── KEY HINT ───────────────────────────────────────────────── */
+#hint {
+  position: fixed; bottom: 2.2rem; right: 2rem; z-index: 8000;
+  font-family: var(--mono); font-size: 21px; color: rgba(255,255,255,0.18);
+}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<div id="deck"></div>
+<div id="dots"></div>
+<div id="nav">
+  <button class="nbtn" id="prev">&#8592;</button>
+  <span id="ctr">01 / 26</span>
+  <button class="nbtn" id="next">&#8594;</button>
+</div>
+<div id="hint">← → space</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   DATA — 4 parts, 30 lectures, mapped to ~26 slides
+   We show: Cover + 4 part-dividers + selected lecture slides + Final
+   Total = 1 + 4 + 20 + 1 = 26
+═══════════════════════════════════════════════════════════════ */
+const PARTS = [
+  {
+    id: 1, cls: 'part-1', color: '#ff5733',
+    label: 'Part 1',
+    title: 'The Great Reset',
+    sub: 'The 2024 Funeral — everything you knew just changed.',
+    lectures: [
+      { n:'01', title:'Tokens Are Dead', old:'Token Economy', neo:'Reasoning Effort Economy', desc:'The unit of AI cost shifted from raw tokens to thinking depth. Billing, latency, and design all follow.' },
+      { n:'02', title:'The Prompt Whisperer Is Now a System Architect', old:'Prompt Whisperer', neo:'System Architect', desc:'Crafting clever sentences gave way to designing multi-component instruction systems with roles, tools, and memory.' },
+      { n:'03', title:'Chatting With Bots Was a 2024 Phase', old:'Chatting With Bots', neo:'Orchestrating Agents', desc:'Single-turn Q&A gave way to autonomous pipelines that plan, delegate, and execute across dozens of tool calls.' },
+      { n:'04', title:'Small Language Models Are the New Enterprise Standard', old:'Biggest Model Wins', neo:'Right-Sized Model Wins', desc:'SLMs run on-device, cost less, and keep data private — making them the default choice for production enterprise workloads.' },
+      { n:'05', title:'From Zero-Shot to Agentic-Step by Default', old:'Zero-Shot Prompting', neo:'Agentic-Step Execution', desc:'The baseline shifted from single prompts to multi-step agent loops with planning, reflection, and tool use baked in.' },
+      { n:'06', title:'"AI Literacy" Is Now Just Called "Literacy"', old:'AI Literacy', neo:'Literacy', desc:'Knowing how to work with AI is no longer a specialization — it\'s a baseline expectation across every profession.' },
+    ]
+  },
+  {
+    id: 2, cls: 'part-2', color: '#00d4aa',
+    label: 'Part 2',
+    title: 'The Guts of the Machine',
+    sub: 'The 2026 Engine — what\'s actually running under the hood.',
+    lectures: [
+      { n:'07', title:'RAG 1.0 vs. RAG 3.0', old:'Vector Search', neo:'Knowledge Graphs + Verification', desc:'Retrieval evolved from nearest-neighbor embeddings into structured graph traversal with source validation and contradiction detection.' },
+      { n:'08', title:'Text-in/Text-out Is Over', old:'Text In → Text Out', neo:'Native Multimodal Streaming', desc:'Models now natively ingest and generate images, audio, video, and code simultaneously — in real time.' },
+      { n:'09', title:'Prompt Engineering Is Dead', old:'Prompt Engineering', neo:'Context Design', desc:'The real craft is now shaping the entire information environment — memory, tools, personas, and retrieval layers.' },
+      { n:'10', title:'The End of Hallucinations', old:'Hope It\'s Correct', neo:'Verification Layers', desc:'Grounding pipelines, citation chains, and adversarial self-check loops replace wishful prompting as the standard.' },
+      { n:'11', title:'Python Is the New Assembly', old:'Python as Top-Level Language', neo:'Natural Language Programming', desc:'Intent expressed in plain language compiles down to Python, SQL, and APIs. NLP is the new high-level interface.' },
+      { n:'12', title:'Reasoning Tokens as Business Currency', old:'Compute Cost', neo:'Reasoning Budget', desc:'Organizations now budget "thinking depth" per task — allocating reasoning tokens like a strategic resource.' },
+      { n:'13', title:'From System Instructions to Autonomous Guardrails', old:'System Instructions', neo:'Autonomous Guardrails', desc:'Static rule-lists gave way to context-aware, self-enforcing safety layers that reason about intent in real time.' },
+      { n:'14', title:'Prompt Hacking → Adversarial Defense', old:'Prompt Hacking', neo:'Adversarial Defense Architecture', desc:'Jailbreaks became a formal discipline: red-teaming, injection detection, and multi-layer trust hierarchies are now standard.' },
+    ]
+  },
+  {
+    id: 3, cls: 'part-3', color: '#f5c518',
+    label: 'Part 3',
+    title: 'The New Economy',
+    sub: 'The Solopreneur\'s Toolkit — running a company of agents.',
+    lectures: [
+      { n:'15', title:'Beyond 2026 — The Post-AGI Career Bridge', old:'Traditional Career Path', neo:'Capability Portfolio', desc:'The last lecture of Part 2 bridges into what comes next — when AGI-adjacent systems reshape every job category.' },
+      { n:'16', title:'The Solopreneur Is a CEO of 100 Agents', old:'Solopreneur', neo:'CEO of 100 Agents', desc:'One person, a laptop, and a fleet of specialized agents — this is the new solo business unit.' },
+      { n:'17', title:'SaaS → LaaS: Labor as a Service', old:'Software as a Service', neo:'Labor as a Service', desc:'The product is no longer software — it\'s autonomous labor. You subscribe to outcomes, not tools.' },
+      { n:'18', title:'From Hourly Billing to Value-Based AI Output', old:'Hourly Billing', neo:'Value-Based Output Pricing', desc:'Time becomes irrelevant when agents can produce in minutes what took days. Pricing follows impact, not hours.' },
+      { n:'19', title:'SOPs Are Now Agent Protocols', old:'Standard Operating Procedures', neo:'Agent Protocols', desc:'The documented workflow became the agent\'s instruction set. Writing good SOPs is now system design.' },
+      { n:'20', title:'From Marketing Content to Hyper-Personalized Synthetic Media', old:'Marketing Content', neo:'Synthetic Hyper-Personalization', desc:'Static blog posts gave way to dynamic, individually tailored media — generated at scale, in real time.' },
+      { n:'21', title:'The Digital Twin Economy', old:'Personal Brand Management', neo:'Automated Brand Twin', desc:'Your voice, style, and expertise run 24/7 through a digital twin — generating content and engaging audiences autonomously.' },
+      { n:'22', title:'"Copyright" → "Contribution Credits"', old:'Copyright', neo:'Contribution Credits', desc:'In the synthetic era, authorship is tracked through contribution graphs — not static ownership documents.' },
+    ]
+  },
+  {
+    id: 4, cls: 'part-4', color: '#a78bfa',
+    label: 'Part 4',
+    title: 'The Human Re-emergence',
+    sub: 'The Future of Work — why humans matter more, not less.',
+    lectures: [
+      { n:'23', title:'Human-in-the-Loop → Human-on-the-Loop', old:'Human-in-the-Loop', neo:'Human-on-the-Loop', desc:'The human moved from gatekeeper inside each step to strategic overseer watching the whole system from above.' },
+      { n:'24', title:'Soft Skills Are the Only Hard Skills Left', old:'Technical Skills = Hard Skills', neo:'Empathy & Strategy = Hard Skills', desc:'Automation absorbed the measurable. What remains — judgment, empathy, creativity — is now the premium currency.' },
+      { n:'25', title:'The 4-Hour Workweek, Agent Edition', old:'Manual Drudge Work', neo:'Delegated to Agents', desc:'The original 4HWW dream arrives: agents handle execution while humans focus on direction and relationships.' },
+      { n:'26', title:'Managing Synthetic Teammates', old:'Managing Humans Only', neo:'Leadership in Hybrid Workforces', desc:'The manager\'s job now spans human and agent teammates — context-setting, evaluation, and trust calibration across both.' },
+      { n:'27', title:'From Employee to Algorithm Trainer', old:'Employee', neo:'Algorithm Trainer', desc:'Your value is no longer your labor output — it\'s your ability to define, refine, and improve the systems that work for you.' },
+      { n:'28', title:'Automated Insight Harvesting', old:'Manual Data Entry', neo:'Automated Insight Harvesting', desc:'Data pipelines now auto-capture, classify, and surface insights — eliminating the entire entry layer of knowledge work.' },
+      { n:'29', title:'The Death of Entry-Level Coding', old:'Entry-Level Coder', neo:'Product Architect', desc:'Junior coding roles collapsed. The new entry point is designing systems and specifying behavior — not writing boilerplate.' },
+      { n:'30', title:'From AI Safety to Agent Alignment', old:'AI Safety', neo:'Agent Alignment', desc:'Safety moved from policy documents to live behavioral alignment — continuously tuned as agents gain autonomy.' },
+    ]
+  }
+];
+
+/* ─── BUILD SLIDES ─────────────────────────────────────────── */
+// We'll produce exactly 26 slides:
+// Slide 0: Cover
+// Slides 1-4: Part dividers (each showing mini lecture list)
+// Slides 5-24: 20 selected lectures (5 per part)
+// Slide 25: Grand Finale
+
+const deck = document.getElementById('deck');
+const slides = [];
+
+function make(html, partCls) {
+  const d = document.createElement('div');
+  d.className = 'slide' + (partCls ? ' ' + partCls : '');
+  d.innerHTML = html;
+  deck.appendChild(d);
+  slides.push(d);
+}
+
+// SLIDE 0 — COVER
+make(`
+  <div class="top-strip">
+    <span class="series-label" style="color:var(--p1)">AI 2026 · Lecture Series</span>
+    <span class="slide-counter">30 Lectures · 4 Parts</span>
+  </div>
+  <div style="flex:1; display:flex; flex-direction:column; justify-content:center;">
+    <div class="cover-eyebrow">A Complete Programme for the New Era</div>
+    <div class="cover-title">The AI Shift Index</div>
+    <div class="cover-subtitle">From the Death of the Old to the Rise of the Autonomous — a structured journey through every transformation reshaping work, code, and career in 2026.</div>
+    <div class="cover-tags">
+      <span class="tag" style="border-color:var(--p1);color:var(--p1)">The Great Reset</span>
+      <span class="tag" style="border-color:var(--p2);color:var(--p2)">Guts of the Machine</span>
+      <span class="tag" style="border-color:var(--p3);color:var(--p3)">New Economy</span>
+      <span class="tag" style="border-color:var(--p4);color:var(--p4)">Human Re-emergence</span>
+    </div>
+  </div>
+`, '');
+
+// For each part: 1 divider + 5 lecture slides
+PARTS.forEach(part => {
+  // Part divider
+  const listHTML = part.lectures.map(l =>
+    `<li><span class="lnum">${l.n}</span><span class="ltitle">${l.title}</span></li>`
+  ).join('');
+  make(`
+    <div class="part-num">${String(part.id).padStart(2,'0')}</div>
+    <div class="top-strip">
+      <span class="series-label">${part.label} of 4</span>
+      <span class="slide-counter">${part.lectures.length} Lectures</span>
+    </div>
+    <div class="part-label">${part.label}</div>
+    <div class="part-title">${part.title}</div>
+    <div class="part-subtitle">${part.sub}</div>
+    <ul class="lecture-list">${listHTML}</ul>
+  `, part.cls + ' part-divider');
+
+  // 5 lecture slides per part
+  part.lectures.forEach(lec => {
+    make(`
+      <div class="lec-number-bg">${lec.n}</div>
+      <div class="top-strip">
+        <span class="series-label">${part.label} · ${part.title}</span>
+        <span class="slide-counter">Lecture ${lec.n}</span>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:2vh;">
+        <div class="lec-part-tag">Lecture ${lec.n}</div>
+        <div class="lec-rule"></div>
+        <div class="lec-title">${lec.title}</div>
+        <div class="lec-old">✕ &nbsp;${lec.old}</div>
+        <div class="lec-new">→ &nbsp;${lec.neo}</div>
+        <div class="lec-desc">${lec.desc}</div>
+      </div>
+    `, part.cls + ' lecture-slide');
+  });
+});
+
+// SLIDE 25 — FINALE
+make(`
+  <div class="top-strip">
+    <span class="series-label" style="color:var(--p4)">AI 2026 · Full Programme</span>
+    <span class="slide-counter">36 / 36</span>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+    <div class="lec-part-tag" style="color:var(--p4)">The Complete Journey</div>
+    <div style="width:56px;height:3px;background:var(--p4);margin-bottom:1.4rem;border-radius:1px;"></div>
+    <div class="final-big">30 Lectures.<br>4 Parts.<br>One Shift.</div>
+    <div class="final-sub">The old economy ran on labour. The new one runs on leverage. Every lecture in this series is a lever — learn where to put your hands.</div>
+    <div class="cover-tags">
+      <span class="tag" style="border-color:var(--p1);color:var(--p1)">01–06 · Reset</span>
+      <span class="tag" style="border-color:var(--p2);color:var(--p2)">07–15 · Engine</span>
+      <span class="tag" style="border-color:var(--p3);color:var(--p3)">16–22 · Economy</span>
+      <span class="tag" style="border-color:var(--p4);color:var(--p4)">23–30 · Future</span>
+    </div>
+  </div>
+`, 'part-4');
+
+/* ─── NAVIGATION ───────────────────────────────────────────── */
+const total = slides.length;
+let cur = 0, animating = false;
+
+// Part color per slide for dots & progress
+const slideColors = slides.map(s => {
+  if (s.classList.contains('part-1')) return '#ff5733';
+  if (s.classList.contains('part-2')) return '#00d4aa';
+  if (s.classList.contains('part-3')) return '#f5c518';
+  if (s.classList.contains('part-4')) return '#a78bfa';
+  return '#ffffff';
+});
+
+// Build dots
+const dotsEl = document.getElementById('dots');
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot';
+  d.style.setProperty('--dot-color', slideColors[i]);
+  d.addEventListener('click', () => goTo(i));
+  dotsEl.appendChild(d);
+});
+const dotEls = dotsEl.querySelectorAll('.dot');
+
+const pb = document.getElementById('progress-bar');
+const ctr = document.getElementById('ctr');
+
+function pad(n) { return String(n+1).padStart(2,'0'); }
+
+function updateUI() {
+  ctr.textContent = `${pad(cur)} / ${String(total).padStart(2,'0')}`;
+  pb.style.width = `${((cur+1)/total)*100}%`;
+  pb.style.background = `linear-gradient(90deg, ${slideColors[cur]}, ${slideColors[Math.min(cur+1,total-1)]})`;
+  dotEls.forEach((d,i) => d.classList.toggle('on', i === cur));
+}
+
+function goTo(idx) {
+  if (animating || idx === cur || idx < 0 || idx >= total) return;
+  animating = true;
+  slides[cur].classList.add('exit-left');
+  slides[cur].classList.remove('active');
+  const prev = cur;
+  cur = idx;
+  slides[cur].classList.add('active');
+  updateUI();
+  setTimeout(() => {
+    slides[prev].classList.remove('exit-left');
+    animating = false;
+  }, 460);
+}
+
+// Init
+slides[0].classList.add('active');
+updateUI();
+
+document.getElementById('next').addEventListener('click', () => goTo(cur+1));
+document.getElementById('prev').addEventListener('click', () => goTo(cur-1));
+document.addEventListener('keydown', e => {
+  if (['ArrowRight','ArrowDown',' '].includes(e.key)) { e.preventDefault(); goTo(cur+1); }
+  if (['ArrowLeft','ArrowUp'].includes(e.key)) { e.preventDefault(); goTo(cur-1); }
+});
+let tx = 0;
+document.addEventListener('touchstart', e => { tx = e.changedTouches[0].clientX; });
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 50) goTo(cur + (dx < 0 ? 1 : -1));
+});
+</script>
+</body>
+</html>
