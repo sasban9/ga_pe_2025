@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOPs → Agent Protocols</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c10;
+    --accent1: #00f5c4;
+    --accent2: #ff4d6d;
+    --accent3: #ffd166;
+    --accent4: #6e6af5;
+    --text: #e8edf2;
+    --muted: #7a8899;
+    --glass: rgba(255,255,255,0.04);
+    --border: rgba(255,255,255,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--accent1);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: transform 0.1s, background 0.3s;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid var(--accent1);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: transform 0.18s ease, width 0.2s, height 0.2s;
+    opacity: 0.5;
+  }
+
+  /* Grid background */
+  .grid-bg {
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,245,196,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,245,196,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Noise overlay */
+  .noise {
+    position: fixed; inset: 0;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Slide container */
+  #deck {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: clamp(40px, 8vw, 100px) clamp(40px, 10vw, 140px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0s;
+  }
+  .slide.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .slide.entering { animation: slideIn 0.55s cubic-bezier(0.16,1,0.3,1) forwards; }
+  .slide.leaving  { animation: slideOut 0.4s ease-in forwards; }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(32px) skewY(1deg); }
+    to   { opacity: 1; transform: translateY(0) skewY(0); }
+  }
+  @keyframes slideOut {
+    from { opacity: 1; transform: translateY(0); }
+    to   { opacity: 0; transform: translateY(-24px); }
+  }
+
+  /* Slide tag */
+  .slide-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent1);
+    margin-bottom: 22px;
+    opacity: 0.85;
+    border-left: 2px solid var(--accent1);
+    padding-left: 12px;
+  }
+
+  /* Headlines */
+  h1 {
+    font-size: clamp(36px, 5.5vw, 58px);
+    font-weight: 800;
+    line-height: 1.05;
+    max-width: 820px;
+    letter-spacing: -0.02em;
+    margin-bottom: 28px;
+  }
+  h2 {
+    font-size: clamp(28px, 3.8vw, 48px);
+    font-weight: 700;
+    line-height: 1.1;
+    max-width: 900px;
+    letter-spacing: -0.01em;
+    margin-bottom: 22px;
+  }
+  h3 {
+    font-size: clamp(22px, 2.5vw, 36px);
+    font-weight: 700;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+  p {
+    font-size: clamp(21px, 2vw, 30px);
+    line-height: 1.55;
+    max-width: 780px;
+    color: #b8c4cf;
+    font-weight: 400;
+  }
+
+  .accent { color: var(--accent1); }
+  .accent2 { color: var(--accent2); }
+  .accent3 { color: var(--accent3); }
+  .accent4 { color: var(--accent4); }
+
+  /* Big label */
+  .big-label {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(80px, 14vw, 180px);
+    font-weight: 700;
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    opacity: 0.07;
+    position: absolute;
+    right: -20px;
+    bottom: 30px;
+    pointer-events: none;
+    user-select: none;
+    color: var(--accent1);
+  }
+
+  /* Divider */
+  .divider {
+    width: 60px;
+    height: 3px;
+    background: var(--accent1);
+    margin-bottom: 28px;
+    border-radius: 2px;
+  }
+
+  /* Cards */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1000px;
+    margin-top: 10px;
+  }
+  .card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .card:hover {
+    border-color: var(--accent1);
+    transform: translateY(-3px);
+  }
+  .card .card-icon { font-size: 28px; margin-bottom: 12px; }
+  .card .card-title {
+    font-size: clamp(21px, 1.5vw, 26px);
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+  .card .card-body {
+    font-size: clamp(21px, 1.2vw, 22px);
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* Comparison */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0;
+    width: 100%;
+    max-width: 960px;
+    align-items: center;
+    margin-top: 10px;
+  }
+  .compare-box {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+  }
+  .compare-box.old { border-color: rgba(255,77,109,0.3); }
+  .compare-box.new { border-color: rgba(0,245,196,0.3); }
+  .compare-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .compare-box.old .compare-label { color: var(--accent2); }
+  .compare-box.new .compare-label { color: var(--accent1); }
+  .compare-box ul { list-style: none; padding: 0; }
+  .compare-box ul li {
+    font-size: clamp(21px, 1.4vw, 24px);
+    color: #b8c4cf;
+    margin-bottom: 10px;
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.3;
+  }
+  .compare-box.old ul li::before { content: '—'; position: absolute; left: 0; color: var(--accent2); opacity: 0.6; }
+  .compare-box.new ul li::before { content: '→'; position: absolute; left: 0; color: var(--accent1); }
+  .arrow-mid {
+    font-size: clamp(28px, 3vw, 48px);
+    color: var(--accent3);
+    padding: 0 20px;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  /* List style */
+  .bullet-list { list-style: none; padding: 0; margin-top: 10px; }
+  .bullet-list li {
+    font-size: clamp(21px, 1.6vw, 26px);
+    color: #b8c4cf;
+    margin-bottom: 14px;
+    padding-left: 26px;
+    position: relative;
+    line-height: 1.35;
+  }
+  .bullet-list li::before {
+    content: '▹';
+    position: absolute; left: 0;
+    color: var(--accent1);
+    font-size: 18px;
+  }
+
+  /* Code-style box */
+  .code-box {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(21px, 1.6vw, 26px);
+    background: rgba(0,245,196,0.05);
+    border: 1px solid rgba(0,245,196,0.15);
+    border-left: 3px solid var(--accent1);
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin-top: 16px;
+    color: var(--accent1);
+    max-width: 760px;
+    line-height: 1.7;
+  }
+
+  /* Highlight box */
+  .highlight-box {
+    background: rgba(255,209,102,0.07);
+    border: 1px solid rgba(255,209,102,0.25);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-top: 20px;
+    max-width: 820px;
+  }
+  .highlight-box p { color: var(--accent3); font-size: clamp(21px, 1.8vw, 28px); }
+
+  /* Hero slide specifics */
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(21px, 1.5vw, 26px);
+    color: var(--accent1);
+    letter-spacing: 0.08em;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 40px; height: 2px;
+    background: var(--accent1);
+  }
+
+  .slash {
+    color: var(--accent2);
+    font-weight: 800;
+    opacity: 0.6;
+    margin: 0 6px;
+  }
+
+  /* Stat row */
+  .stat-row {
+    display: flex;
+    gap: 40px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .stat-item { text-align: left; }
+  .stat-num {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 700;
+    color: var(--accent1);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: clamp(21px, 1.2vw, 22px);
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.06em;
+  }
+
+  /* Timeline */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 12px;
+    max-width: 800px;
+    width: 100%;
+  }
+  .tl-item {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .tl-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--accent1);
+    flex-shrink: 0;
+    margin-top: 6px;
+    position: relative;
+  }
+  .tl-dot::after {
+    content: '';
+    position: absolute;
+    top: 14px; left: 50%;
+    transform: translateX(-50%);
+    width: 1px; height: 24px;
+    background: rgba(0,245,196,0.2);
+  }
+  .tl-item:last-child .tl-dot::after { display: none; }
+  .tl-text { flex: 1; }
+  .tl-title {
+    font-size: clamp(21px, 1.6vw, 26px);
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .tl-desc {
+    font-size: clamp(21px, 1.2vw, 22px);
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* Nav */
+  #nav {
+    position: fixed;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    z-index: 100;
+    background: rgba(8,12,16,0.85);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 10px 20px;
+  }
+  .nav-btn {
+    width: 40px; height: 40px;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    color: var(--text);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    font-family: monospace;
+  }
+  .nav-btn:hover { background: var(--accent1); color: #000; border-color: var(--accent1); }
+  #slide-counter {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    min-width: 60px;
+    text-align: center;
+    letter-spacing: 0.1em;
+  }
+  .dots {
+    display: flex; gap: 6px; align-items: center;
+  }
+  .dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .dot.active {
+    background: var(--accent1);
+    width: 18px;
+    border-radius: 3px;
+  }
+
+  /* Progress bar */
+  #progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent1), var(--accent4));
+    z-index: 200;
+    transition: width 0.4s ease;
+  }
+
+  /* Slide number badge */
+  .slide-num-badge {
+    position: fixed;
+    top: 28px; right: 36px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    z-index: 100;
+  }
+
+  /* Decorative corner bracket */
+  .corner-bracket {
+    position: fixed;
+    top: 24px; left: 32px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--accent1);
+    opacity: 0.5;
+    letter-spacing: 0.1em;
+    z-index: 100;
+  }
+
+  /* Ambient glow */
+  .glow {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(100px);
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.08;
+  }
+  .glow-1 { width: 500px; height: 500px; background: var(--accent1); top: -200px; right: -100px; }
+  .glow-2 { width: 400px; height: 400px; background: var(--accent4); bottom: -150px; left: -100px; }
+
+  /* Centered slide variant */
+  .slide.centered {
+    align-items: center;
+    text-align: center;
+  }
+  .slide.centered h1, .slide.centered h2, .slide.centered p, .slide.centered .bullet-list { text-align: center; max-width: 860px; }
+  .slide.centered .bullet-list li { padding-left: 0; }
+  .slide.centered .bullet-list li::before { display: none; }
+  .slide.centered .divider { margin: 0 auto 28px; }
+  .slide.centered h1 { max-width: 860px; }
+
+  /* Keyboard hint */
+  .key-hint {
+    position: fixed;
+    bottom: 100px;
+    right: 36px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    opacity: 0.5;
+    letter-spacing: 0.1em;
+    z-index: 100;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  /* Stagger children animation */
+  .slide.active .stagger > * {
+    animation: fadeUp 0.5s ease forwards;
+    opacity: 0;
+  }
+  .slide.active .stagger > *:nth-child(1) { animation-delay: 0.1s; }
+  .slide.active .stagger > *:nth-child(2) { animation-delay: 0.2s; }
+  .slide.active .stagger > *:nth-child(3) { animation-delay: 0.3s; }
+  .slide.active .stagger > *:nth-child(4) { animation-delay: 0.4s; }
+  .slide.active .stagger > *:nth-child(5) { animation-delay: 0.5s; }
+  .slide.active .stagger > *:nth-child(6) { animation-delay: 0.6s; }
+  .slide.active .stagger > *:nth-child(7) { animation-delay: 0.7s; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+    width: 100%;
+    max-width: 1000px;
+  }
+  .col-box {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+  }
+  .col-box h3 { font-size: clamp(22px, 2vw, 30px); margin-bottom: 14px; }
+  .col-box ul { list-style: none; padding: 0; }
+  .col-box ul li {
+    font-size: clamp(21px, 1.3vw, 23px);
+    color: var(--muted);
+    margin-bottom: 10px;
+    padding-left: 18px;
+    position: relative;
+    line-height: 1.3;
+  }
+  .col-box ul li::before { content: '›'; position: absolute; left: 0; color: var(--accent4); }
+
+  .pill {
+    display: inline-block;
+    background: rgba(0,245,196,0.1);
+    border: 1px solid rgba(0,245,196,0.25);
+    border-radius: 100px;
+    padding: 4px 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--accent1);
+    letter-spacing: 0.08em;
+    margin-right: 8px;
+    margin-bottom: 8px;
+  }
+
+  .big-quote {
+    font-size: clamp(24px, 3vw, 42px);
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--text);
+    max-width: 840px;
+    position: relative;
+    padding-left: 36px;
+    border-left: 3px solid var(--accent2);
+  }
+  .big-quote::before {
+    content: '"';
+    font-size: clamp(60px, 8vw, 100px);
+    color: var(--accent2);
+    opacity: 0.15;
+    position: absolute;
+    left: -10px;
+    top: -20px;
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="grid-bg"></div>
+<div class="noise"></div>
+<div class="glow glow-1"></div>
+<div class="glow glow-2"></div>
+<div id="progress"></div>
+<div class="corner-bracket">// AGENT_PROTOCOLS_DECK</div>
+<div class="slide-num-badge" id="slideNumBadge">01 / 23</div>
+<div class="key-hint">← → NAVIGATE</div>
+
+<div id="deck">
+
+  <!-- SLIDE 1: TITLE -->
+  <div class="slide active" id="s1">
+    <div class="stagger">
+      <div class="hero-eyebrow">THE FUTURE OF OPERATIONS</div>
+      <h1>SOPs Are Now<br><span class="accent">Agent Protocols</span></h1>
+      <div class="divider"></div>
+      <p>How the rise of AI agents is transforming the language, logic, and execution of standard operating procedures — forever.</p>
+    </div>
+    <div class="big-label">AP</div>
+  </div>
+
+  <!-- SLIDE 2: THE OLD WORLD -->
+  <div class="slide" id="s2">
+    <div class="stagger">
+      <div class="slide-tag">Chapter 01 — The Old World</div>
+      <h2>What Was an <span class="accent2">SOP</span>?</h2>
+      <div class="divider" style="background:var(--accent2)"></div>
+      <p>Standard Operating Procedures were written for humans — static documents, binder-bound, rarely updated, siloed in departments.</p>
+      <div class="code-box" style="color:var(--accent2); border-left-color:var(--accent2); border-color:rgba(255,77,109,0.2);">
+        Step 1. Open the spreadsheet.<br>
+        Step 2. Enter the data manually.<br>
+        Step 3. Email manager for approval.<br>
+        Step 4. Wait 3–5 business days.
+      </div>
+    </div>
+    <div class="big-label" style="color:var(--accent2)">SOP</div>
+  </div>
+
+  <!-- SLIDE 3: THE SHIFT -->
+  <div class="slide" id="s3">
+    <div class="stagger">
+      <div class="slide-tag">Chapter 02 — The Inflection Point</div>
+      <h2>The World Changed.<br><span class="accent">Procedures Didn't.</span></h2>
+      <div class="divider"></div>
+      <p>AI agents can now read, decide, act, and report — yet most organizations still write procedures as if a human with a checklist is the executor.</p>
+      <div class="highlight-box">
+        <p>The gap between <strong>what agents can do</strong> and <strong>how we instruct them</strong> is the biggest operational risk of the decade.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: DEFINITION -->
+  <div class="slide" id="s4">
+    <div class="stagger">
+      <div class="slide-tag">Chapter 02 — Definition</div>
+      <h2>What Is an <span class="accent">Agent Protocol</span>?</h2>
+      <div class="divider"></div>
+      <p>An Agent Protocol is a structured instruction set designed for autonomous AI systems — encoding not just steps, but context, decision logic, error handling, and escalation paths.</p>
+      <div class="code-box">
+        protocol: onboard_new_client<br>
+        trigger: contract_signed == true<br>
+        executor: agent_cluster_A<br>
+        fallback: human_review<br>
+        success_criteria: 95% confidence
+      </div>
+    </div>
+    <div class="big-label">DEF</div>
+  </div>
+
+  <!-- SLIDE 5: COMPARISON -->
+  <div class="slide" id="s5">
+    <div class="stagger">
+      <div class="slide-tag">Chapter 03 — Side by Side</div>
+      <h2>SOP <span class="accent3">vs</span> Agent Protocol</h2>
+      <div class="compare">
+        <div class="compare-box old">
+          <div class="compare-label">Legacy SOP</div>
+          <ul>
+            <li>Written in plain prose</li>
+            <li>Human executor assumed</li>
+            <li>Linear, step-by-step</li>
+            <li>Static, rarely versioned</li>
+            <li>No embedded logic</li>
+          </ul>
+        </div>
+        <div class="arrow-mid">→</div>
+        <div class="compare-box new">
+          <div class="compare-label">Agent Protocol</div>
+          <ul>
+            <li>Structured & machine-readable</li>
+            <li>AI executor + human oversight</li>
+            <li>Branching conditional logic</li>
+            <li>Version-controlled, live</li>
+            <li>Error states & fallbacks built in</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: WHY NOW -->
+  <div class="slide" id="s6">
+    <div class="stagger">
+      <div class="slide-tag">Chapter 04 — Timing</div>
+      <h2>Why Now?</h2>
+      <div class="divider"></div>
+      <div class="stat-row">
+        <div class="stat-item">
+          <div class="stat-num">73%</div>
+          <div class="stat-label">of Fortune 500 piloting AI agents</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">10×</div>
+          <div class="stat-label">faster process execution</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">2026</div>
+          <div class="stat-label">agent-first orgs dominant</div>
+        </div>
+      </div>
+      <p style="margin-top:24px">The technology matured. The infrastructure arrived. The only bottleneck left is <span class="accent">how we write instructions</span>.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: ANATOMY -->
+  <div class="slide" id="s7">
+    <div class="stagger">
+      <div class="slide-tag">Chapter 05 — Structure</div>
+      <h2>Anatomy of an <span class="accent">Agent Protocol</span></h2>
+      <div class="divider"></div>
+      <div class="cards">
+        <div class="card">
+          <div class="card-icon">🎯</div>
+          <div class="card-title">Trigger</div>
+          <div class="card-body">Event or condition that activates the protocol</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🧠</div>
+          <div class="card-title">Context</div>
+          <div class="card-body">Data, state, and constraints the agent needs</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚙️</div>
+          <div class="card-title">Action Graph</div>
+          <div class="card-body">Branching decisions and executable steps</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🚨</div>
+          <div class="card-title">Fallback</div>
+          <div class="card-body">Error states, escalation, and human handoff</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: HUMAN IN THE LOOP -->
+  <div class="slide" id="s8">
+    <div class="stagger">
+      <div class="slide-tag">Chapter 05 — Oversight</div>
+      <h2>Humans Are Still <span class="accent">In The Loop</span></h2>
+      <div class="divider"></div>
+      <p>Agent Protocols don't eliminate human judgment — they <em>reserve it</em> for the moments it matters most.</p>
+      <ul class="bullet-list">
+        <li>Routine, high-volume tasks → fully autonomous</li>
+        <li>Ambiguous or high-stakes decisions → human review gate</li>
+        <li>Novel edge cases → protocol flags for escalation</li>
+        <li>Audit & compliance checks → human sign-off required</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: THE LANGUAGE SHIFT -->
+  <div class="slide" id="s9">
+    <div class="stagger">
+      <div class="slide-tag">Chapter 06 — Language</div>
+      <h2>The Language of <span class="accent">Operations</span> Is Changing</h2>
+      <div class="divider"></div>
+      <div class="two-col">
+        <div class="col-box">
+          <h3 style="color:var(--accent2)">Old Vocabulary</h3>
+          <ul>
+            <li>Procedure manual</li>
+            <li>Checklist</li>
+            <li>Department policy</li>
+            <li>Process owner</li>
+            <li>Review cycle (annual)</li>
+          </ul>
+        </div>
+        <div class="col-box" style="border-color:rgba(0,245,196,0.2)">
+          <h3 style="color:var(--accent1)">New Vocabulary</h3>
+          <ul>
+            <li>Agent protocol</li>
+            <li>Execution graph</li>
+            <li>System prompt policy</li>
+            <li>Protocol orchestrator</li>
+            <li>Live version control</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: REAL EXAMPLES -->
+  <div class="slide" id="s10">
+    <div class="stagger">
+      <div class="slide-tag">Chapter 07 — In Practice</div>
+      <h2>SOPs You Already Know,<br><span class="accent">Rewritten as Protocols</span></h2>
+      <div class="divider"></div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-text">
+            <div class="tl-title">Customer Onboarding SOP → <span class="accent">Onboard Agent Protocol</span></div>
+            <div class="tl-desc">Triggers on CRM status change; orchestrates welcome email, account setup, data migration, and first-call scheduling autonomously.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--accent3)"></div>
+          <div class="tl-text">
+            <div class="tl-title">Invoice Approval SOP → <span class="accent3">Finance Clearance Protocol</span></div>
+            <div class="tl-desc">Auto-validates invoice fields, checks budget limits, routes approvals by tier, and flags anomalies for human review.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--accent4)"></div>
+          <div class="tl-text">
+            <div class="tl-title">Incident Response SOP → <span class="accent4">Crisis Triage Protocol</span></div>
+            <div class="tl-desc">Detects incident signals, classifies severity, notifies stakeholders, initiates rollback, and opens war-room channel — all within 90 seconds.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 11: WRITING AGENT PROTOCOLS -->
+  <div class="slide" id="s11">
+    <div class="stagger">
+      <div class="slide-tag">Chapter 08 — Craft</div>
+      <h2>How to <span class="accent">Write</span> an Agent Protocol</h2>
+      <div class="divider"></div>
+      <ul class="bullet-list">
+        <li><strong>Be precise:</strong> Ambiguity in human SOPs is forgiven; agents execute literally</li>
+        <li><strong>Define success:</strong> What constitutes task completion? What metrics confirm it?</li>
+        <li><strong>Map failure modes:</strong> Every branch must have a defined error path</li>
+        <li><strong>Version everything:</strong> Protocols evolve — track changes like code</li>
+        <li><strong>Test before deploying:</strong> Simulate with sandboxed agents first</li>
+      </ul>
+    </div>
+    <div class="big-label">HOW</div>
+  </div>
+
+  <!-- SLIDE 12: THE 5 PILLARS -->
+  <div class="slide" id="s12">
+    <div class="stagger">
+      <div class="slide-tag">Chapter 08 — Framework</div>
+      <h2>The <span class="accent">5 Pillars</span> of Protocol Design</h2>
+      <div class="divider"></div>
+      <div class="cards">
+        <div class="card">
+          <div class="card-title accent">01. Clarity</div>
+          <div class="card-body">One instruction = one unambiguous action</div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="color:var(--accent3)">02. Context</div>
+          <div class="card-body">Agents need the "why", not just the "what"</div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="color:var(--accent4)">03. Conditionals</div>
+          <div class="card-body">If-this-then-that branches, explicitly mapped</div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="color:var(--accent2)">04. Constraints</div>
+          <div class="card-body">Guardrails: what the agent must never do</div>
+        </div>
+      </div>
+      <div style="margin-top:14px">
+        <span class="pill">05. Continuity</span> — Handoffs to humans or other agents must be seamless
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 13: TOOLS & STACK -->
+  <div class="slide" id="s13">
+    <div class="stagger">
+      <div class="slide-tag">Chapter 09 — Tooling</div>
+      <h2>The <span class="accent">Protocol Stack</span></h2>
+      <div class="divider"></div>
+      <p>Modern protocol engineering requires a new operational stack:</p>
+      <div class="code-box" style="margin-top:16px">
+        <span style="color:var(--accent3)">LAYER 4:</span> Human Oversight Dashboard<br>
+        <span style="color:var(--accent4)">LAYER 3:</span> Orchestration Engine (LangGraph, CrewAI)<br>
+        <span style="color:var(--accent1)">LAYER 2:</span> Agent Runtime (Claude, GPT-4, Gemini)<br>
+        <span style="color:var(--muted)">LAYER 1:</span> Protocol Repository (Git-versioned YAML/JSON)
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 14: COMPLIANCE & AUDIT -->
+  <div class="slide" id="s14">
+    <div class="stagger">
+      <div class="slide-tag">Chapter 10 — Governance</div>
+      <h2>Compliance Is Now <span class="accent">Embedded</span></h2>
+      <div class="divider"></div>
+      <p>Agent Protocols don't just execute — they document. Every action is logged, timestamped, and traceable, making compliance a byproduct of operations, not an afterthought.</p>
+      <div class="highlight-box" style="background:rgba(110,106,245,0.07); border-color:rgba(110,106,245,0.25)">
+        <p style="color:var(--accent4)">Audit trails are automatic. Regulators get a full execution log, not a reconstruction from memory.</p>
+      </div>
+    </div>
+    <div class="big-label" style="color:var(--accent4)">⚖</div>
+  </div>
+
+  <!-- SLIDE 15: RISK & FAILURE -->
+  <div class="slide" id="s15">
+    <div class="stagger">
+      <div class="slide-tag">Chapter 11 — Risk</div>
+      <h2>What Breaks When <span class="accent2">Protocols Fail</span></h2>
+      <div class="divider" style="background:var(--accent2)"></div>
+      <ul class="bullet-list">
+        <li><strong>Ambiguous trigger conditions</strong> → agent fires at wrong time</li>
+        <li><strong>Missing fallback states</strong> → process hangs indefinitely</li>
+        <li><strong>No confidence threshold</strong> → low-quality outputs accepted</li>
+        <li><strong>Stale context</strong> → agent acts on outdated information</li>
+        <li><strong>No kill switch</strong> → runaway agent can't be stopped</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 16: ROLES THAT CHANGE -->
+  <div class="slide" id="s16">
+    <div class="stagger">
+      <div class="slide-tag">Chapter 12 — People</div>
+      <h2>New Roles Born from <span class="accent">This Shift</span></h2>
+      <div class="divider"></div>
+      <div class="cards">
+        <div class="card">
+          <div class="card-icon">📋</div>
+          <div class="card-title">Protocol Engineer</div>
+          <div class="card-body">Designs and maintains agent instruction sets</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔍</div>
+          <div class="card-title">Agent Auditor</div>
+          <div class="card-body">Reviews execution logs and flags anomalies</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🎛️</div>
+          <div class="card-title">Ops Orchestrator</div>
+          <div class="card-body">Manages multi-agent workflow coordination</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🧭</div>
+          <div class="card-title">Protocol Strategist</div>
+          <div class="card-body">Aligns agent behavior with business goals</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 17: INDUSTRIES -->
+  <div class="slide" id="s17">
+    <div class="stagger">
+      <div class="slide-tag">Chapter 13 — Sectors</div>
+      <h2>Every Industry Is <span class="accent">Rewriting Its SOPs</span></h2>
+      <div class="divider"></div>
+      <div class="two-col">
+        <div class="col-box">
+          <ul>
+            <li>🏥 <strong style="color:var(--text)">Healthcare</strong> — triage protocols, claims processing</li>
+            <li>🏦 <strong style="color:var(--text)">Finance</strong> — trade execution, fraud detection</li>
+            <li>⚖️ <strong style="color:var(--text)">Legal</strong> — contract review, due diligence</li>
+            <li>🛒 <strong style="color:var(--text)">Retail</strong> — inventory, returns, personalization</li>
+          </ul>
+        </div>
+        <div class="col-box">
+          <ul>
+            <li>🏗️ <strong style="color:var(--text)">Construction</strong> — safety checks, procurement</li>
+            <li>✈️ <strong style="color:var(--text)">Logistics</strong> — routing, customs, tracking</li>
+            <li>🎓 <strong style="color:var(--text)">Education</strong> — grading, enrollment, advising</li>
+            <li>💻 <strong style="color:var(--text)">Tech</strong> — DevOps, deployment, QA</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 18: THE QUOTE -->
+  <div class="slide centered" id="s18">
+    <div class="stagger">
+      <div class="slide-tag">Chapter 14 — Perspective</div>
+      <div class="big-quote">
+        "An SOP told humans what to do.<br>An Agent Protocol tells the future<br>how to operate."
+      </div>
+      <p style="margin-top:28px; font-family:'Space Mono',monospace; font-size:18px; color:var(--muted)">— The Agentic Operations Manifesto, 2025</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 19: MIGRATION PATH -->
+  <div class="slide" id="s19">
+    <div class="stagger">
+      <div class="slide-tag">Chapter 15 — Transition</div>
+      <h2>Migrating from SOPs to <span class="accent">Agent Protocols</span></h2>
+      <div class="divider"></div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--accent2)"></div>
+          <div class="tl-text">
+            <div class="tl-title">Phase 1 — Audit</div>
+            <div class="tl-desc">Catalog all existing SOPs; rank by frequency, complexity, and risk</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--accent3)"></div>
+          <div class="tl-text">
+            <div class="tl-title">Phase 2 — Translate</div>
+            <div class="tl-desc">Rewrite top candidates as structured protocols with decision trees</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--accent1)"></div>
+          <div class="tl-text">
+            <div class="tl-title">Phase 3 — Pilot</div>
+            <div class="tl-desc">Deploy with supervised agents; monitor, measure, and iterate</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--accent4)"></div>
+          <div class="tl-text">
+            <div class="tl-title">Phase 4 — Scale</div>
+            <div class="tl-desc">Expand protocol library across the organization</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 20: WHAT DOESN'T CHANGE -->
+  <div class="slide" id="s20">
+    <div class="stagger">
+      <div class="slide-tag">Chapter 16 — Continuity</div>
+      <h2>What <span class="accent3">Doesn't</span> Change</h2>
+      <div class="divider" style="background:var(--accent3)"></div>
+      <p>At their core, SOPs and Agent Protocols share the same purpose: <span class="accent3">consistency, quality, and accountability.</span></p>
+      <ul class="bullet-list" style="margin-top:20px">
+        <li>The goal of reducing variation and error remains</li>
+        <li>Human values and business ethics must still guide every protocol</li>
+        <li>Training and comprehension — now of the agents, not just people</li>
+        <li>Continuous improvement remains the north star</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 21: COMMON MISTAKES -->
+  <div class="slide" id="s21">
+    <div class="stagger">
+      <div class="slide-tag">Chapter 17 — Pitfalls</div>
+      <h2>5 Mistakes <span class="accent2">to Avoid</span></h2>
+      <div class="divider" style="background:var(--accent2)"></div>
+      <ul class="bullet-list">
+        <li>Copy-pasting SOPs verbatim as agent prompts</li>
+        <li>Assuming the agent understands implicit context humans take for granted</li>
+        <li>Building protocols without a defined success metric</li>
+        <li>Skipping edge-case mapping and treating "happy path" as the only path</li>
+        <li>Deploying at scale before human-supervised pilot testing</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 22: THE FUTURE -->
+  <div class="slide" id="s22">
+    <div class="stagger">
+      <div class="slide-tag">Chapter 18 — Horizon</div>
+      <h2>The <span class="accent">Protocol-Native</span> Organization</h2>
+      <div class="divider"></div>
+      <p>Within five years, the most competitive organizations will be those where every business process is encoded as a living, versioned, AI-executable protocol — not a PDF in a shared drive.</p>
+      <div class="stat-row" style="margin-top:24px">
+        <div class="stat-item">
+          <div class="stat-num accent4">Self-healing</div>
+          <div class="stat-label">protocols that update from outcomes</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num accent1">Real-time</div>
+          <div class="stat-label">compliance embedded in every step</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 23: CALL TO ACTION -->
+  <div class="slide centered" id="s23">
+    <div class="stagger">
+      <div class="slide-tag" style="margin:0 auto 22px">The Mandate</div>
+      <h1>Start Writing <span class="accent">Agent Protocols</span><br>Not SOPs.</h1>
+      <div class="divider"></div>
+      <p>Your competitors are. Your agents are ready. The only question is whether your instructions are written for the world that existed — or the one that's already here.</p>
+      <div style="margin-top:32px; display:flex; gap:12px; flex-wrap:wrap; justify-content:center">
+        <span class="pill">Protocol-First</span>
+        <span class="pill">Agent-Ready</span>
+        <span class="pill">Human-Overseen</span>
+        <span class="pill">Version-Controlled</span>
+        <span class="pill">Audit-Native</span>
+      </div>
+    </div>
+    <div class="big-label" style="opacity:0.05; font-size:clamp(60px,12vw,150px)">GO</div>
+  </div>
+
+</div><!-- end deck -->
+
+<!-- NAV -->
+<div id="nav">
+  <button class="nav-btn" id="prevBtn">←</button>
+  <div class="dots" id="dots"></div>
+  <span id="slide-counter">01 / 23</span>
+  <button class="nav-btn" id="nextBtn">→</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+  let isAnimating = false;
+
+  // Build dots
+  const dotsContainer = document.getElementById('dots');
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i));
+    dotsContainer.appendChild(d);
+  });
+
+  function updateUI() {
+    document.getElementById('slide-counter').textContent =
+      String(current + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+    document.getElementById('slideNumBadge').textContent =
+      String(current + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+    document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
+    document.querySelectorAll('.dot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+  }
+
+  function goTo(index) {
+    if (isAnimating || index === current) return;
+    isAnimating = true;
+
+    const outSlide = slides[current];
+    outSlide.classList.add('leaving');
+
+    setTimeout(() => {
+      outSlide.classList.remove('active', 'entering', 'leaving');
+      current = index;
+      const inSlide = slides[current];
+      inSlide.classList.add('active', 'entering');
+      setTimeout(() => { inSlide.classList.remove('entering'); isAnimating = false; }, 550);
+      updateUI();
+    }, 380);
+  }
+
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    if (current < total - 1) goTo(current + 1);
+  });
+  document.getElementById('prevBtn').addEventListener('click', () => {
+    if (current > 0) goTo(current - 1);
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { if (current < total - 1) goTo(current + 1); }
+    if (e.key === 'ArrowLeft') { if (current > 0) goTo(current - 1); }
+  });
+
+  // Touch swipe
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].screenX - touchStartX;
+    if (Math.abs(dx) > 50) {
+      if (dx < 0 && current < total - 1) goTo(current + 1);
+      if (dx > 0 && current > 0) goTo(current - 1);
+    }
+  });
+
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    cursor.style.left = mouseX + 'px';
+    cursor.style.top = mouseY + 'px';
+  });
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.12;
+    ringY += (mouseY - ringY) * 0.12;
+    ring.style.left = ringX + 'px';
+    ring.style.top = ringY + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  updateUI();
+</script>
+</body>
+</html>

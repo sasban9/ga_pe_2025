@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Shift: Hourly Billing → Value-Based AI Output</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@300;400;600&family=Raleway:wght@200;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080b10;
+    --gold: #f0c040;
+    --teal: #3df5d0;
+    --crimson: #ff4060;
+    --lavender: #b8a0ff;
+    --offwhite: #eeeae0;
+    --dimwhite: #aaa9a0;
+    --card-bg: rgba(255,255,255,0.04);
+    --border: rgba(255,255,255,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--offwhite);
+    font-family: 'Raleway', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* ── SLIDES CONTAINER ── */
+  #deck {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 80px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.7s ease, transform 0.7s ease;
+    transform: translateY(30px);
+    text-align: center;
+  }
+
+  .slide.active {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+  }
+
+  /* ── BACKGROUNDS PER SLIDE ── */
+  .bg-grid::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(240,192,64,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(240,192,64,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 0;
+  }
+
+  .bg-radial::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 40%, rgba(61,245,208,0.12) 0%, transparent 70%);
+    z-index: 0;
+  }
+
+  .bg-split-left::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 42%;
+    background: rgba(240,192,64,0.06);
+    border-right: 1px solid rgba(240,192,64,0.2);
+    z-index: 0;
+  }
+
+  .bg-noise::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 80%, rgba(184,160,255,0.1) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(255,64,96,0.08) 0%, transparent 60%);
+    z-index: 0;
+  }
+
+  .bg-diagonal::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(61,245,208,0.06) 0%, transparent 50%, rgba(240,192,64,0.06) 100%);
+    z-index: 0;
+  }
+
+  .slide > * { position: relative; z-index: 1; }
+
+  /* ── TYPOGRAPHY ── */
+  .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 18px;
+    opacity: 0.85;
+  }
+
+  .label.gold { color: var(--gold); }
+  .label.crimson { color: var(--crimson); }
+  .label.lavender { color: var(--lavender); }
+
+  h1.hero {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 7vw, 58px);
+    letter-spacing: 0.05em;
+    line-height: 1.05;
+    color: var(--offwhite);
+  }
+
+  h2.title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(36px, 5vw, 54px);
+    line-height: 1.15;
+    color: var(--offwhite);
+    font-style: italic;
+  }
+
+  h2.title em { font-style: normal; color: var(--gold); }
+  h2.title .teal { color: var(--teal); font-style: normal; }
+  h2.title .crimson { color: var(--crimson); font-style: normal; }
+  h2.title .lavender { color: var(--lavender); font-style: normal; }
+
+  .stat-big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(50px, 8vw, 58px);
+    color: var(--gold);
+    line-height: 1;
+    letter-spacing: 0.04em;
+  }
+
+  .stat-big.teal { color: var(--teal); }
+  .stat-big.crimson { color: var(--crimson); }
+  .stat-big.lavender { color: var(--lavender); }
+
+  p.body {
+    font-size: clamp(22px, 2.4vw, 32px);
+    font-weight: 300;
+    line-height: 1.55;
+    color: var(--offwhite);
+    max-width: 820px;
+    opacity: 0.9;
+  }
+
+  p.body strong { color: var(--gold); font-weight: 700; }
+  p.body .teal { color: var(--teal); }
+  p.body .crimson { color: var(--crimson); }
+  p.body .lavender { color: var(--lavender); }
+
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(21px, 2.2vw, 28px);
+    color: var(--dimwhite);
+    line-height: 1.6;
+  }
+
+  .mono .hi { color: var(--teal); }
+  .mono .lo { color: var(--crimson); }
+
+  /* ── DIVIDER ── */
+  .rule {
+    width: 80px;
+    height: 3px;
+    background: var(--gold);
+    margin: 24px auto;
+    border-radius: 2px;
+  }
+  .rule.teal { background: var(--teal); }
+  .rule.crimson { background: var(--crimson); }
+  .rule.lavender { background: var(--lavender); }
+
+  /* ── COMPARISON TABLE ── */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    width: 100%;
+    max-width: 900px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 10px;
+  }
+
+  .compare-col {
+    padding: 30px 36px;
+  }
+
+  .compare-col.old {
+    background: rgba(255,64,96,0.07);
+    border-right: 1px solid var(--border);
+  }
+
+  .compare-col.new {
+    background: rgba(61,245,208,0.07);
+  }
+
+  .compare-col h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px;
+    letter-spacing: 0.1em;
+    margin-bottom: 18px;
+  }
+
+  .compare-col.old h3 { color: var(--crimson); }
+  .compare-col.new h3 { color: var(--teal); }
+
+  .compare-col ul { list-style: none; }
+
+  .compare-col ul li {
+    font-size: 23px;
+    line-height: 1.5;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--offwhite);
+    opacity: 0.85;
+  }
+
+  .compare-col ul li:last-child { border-bottom: none; }
+
+  /* ── PILL TAGS ── */
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+    margin-top: 16px;
+  }
+
+  .pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    padding: 10px 24px;
+    border-radius: 50px;
+    border: 1.5px solid;
+    letter-spacing: 0.05em;
+  }
+
+  .pill.gold { border-color: var(--gold); color: var(--gold); background: rgba(240,192,64,0.08); }
+  .pill.teal { border-color: var(--teal); color: var(--teal); background: rgba(61,245,208,0.08); }
+  .pill.lavender { border-color: var(--lavender); color: var(--lavender); background: rgba(184,160,255,0.08); }
+  .pill.crimson { border-color: var(--crimson); color: var(--crimson); background: rgba(255,64,96,0.08); }
+
+  /* ── QUOTE BLOCK ── */
+  .quote-block {
+    border-left: 4px solid var(--gold);
+    padding: 18px 32px;
+    text-align: left;
+    max-width: 820px;
+    background: rgba(240,192,64,0.05);
+    border-radius: 0 10px 10px 0;
+  }
+
+  .quote-block.teal { border-color: var(--teal); background: rgba(61,245,208,0.05); }
+  .quote-block.lavender { border-color: var(--lavender); background: rgba(184,160,255,0.05); }
+
+  .quote-text {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: clamp(26px, 3vw, 40px);
+    line-height: 1.4;
+    color: var(--offwhite);
+  }
+
+  /* ── NUMBER CALLOUT ── */
+  .number-row {
+    display: flex;
+    gap: 60px;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+
+  .number-item { text-align: center; }
+  .number-item .num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 54px;
+    line-height: 1;
+    display: block;
+  }
+  .number-item .desc {
+    font-size: 23px;
+    color: var(--dimwhite);
+    max-width: 180px;
+    margin-top: 8px;
+  }
+
+  /* ── STEP LIST ── */
+  .steps {
+    list-style: none;
+    max-width: 820px;
+    width: 100%;
+    text-align: left;
+    margin-top: 10px;
+  }
+
+  .steps li {
+    display: flex;
+    align-items: flex-start;
+    gap: 22px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 25px;
+    line-height: 1.45;
+  }
+
+  .steps li:last-child { border-bottom: none; }
+
+  .step-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 34px;
+    color: var(--gold);
+    min-width: 36px;
+    line-height: 1.1;
+  }
+
+  .step-num.teal { color: var(--teal); }
+  .step-num.lavender { color: var(--lavender); }
+
+  /* ── FORMULA BOX ── */
+  .formula {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(24px, 3vw, 40px);
+    padding: 28px 48px;
+    border: 1.5px solid var(--gold);
+    border-radius: 12px;
+    background: rgba(240,192,64,0.06);
+    color: var(--gold);
+    letter-spacing: 0.04em;
+    margin-top: 10px;
+  }
+
+  .formula.teal { border-color: var(--teal); background: rgba(61,245,208,0.06); color: var(--teal); }
+
+  /* ── SLIDE COUNTER & CONTROLS ── */
+  #ui {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 40px;
+    background: rgba(8,11,16,0.85);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid var(--border);
+    z-index: 100;
+  }
+
+  #counter {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    color: var(--dimwhite);
+    letter-spacing: 0.12em;
+  }
+
+  #progress-bar {
+    flex: 1;
+    height: 3px;
+    background: rgba(255,255,255,0.1);
+    margin: 0 32px;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  #progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal), var(--gold));
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+
+  .btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    background: none;
+    border: 1.5px solid var(--border);
+    color: var(--offwhite);
+    padding: 8px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.06em;
+  }
+
+  .btn:hover { border-color: var(--gold); color: var(--gold); }
+  .btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  /* ── SLIDE NUM BADGE ── */
+  .slide-tag {
+    position: absolute;
+    top: 28px;
+    right: 40px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 21px;
+    color: rgba(255,255,255,0.15);
+    letter-spacing: 0.1em;
+    z-index: 2;
+  }
+
+  /* ── BIG ARROW ── */
+  .arrow-row {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin: 16px 0;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+  }
+  .arrow-row .from { color: var(--crimson); }
+  .arrow-row .arr { color: var(--dimwhite); font-size: 40px; }
+  .arrow-row .to { color: var(--teal); }
+
+  /* keyboard hint */
+  #keyhint {
+    position: fixed;
+    top: 20px;
+    right: 40px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.08em;
+    z-index: 100;
+  }
+</style>
+</head>
+<body>
+
+<div id="deck">
+
+  <!-- SLIDE 1: TITLE -->
+  <div class="slide bg-grid active" id="s1">
+    <div class="slide-tag">01 / 20</div>
+    <div class="label gold">A Paradigm Shift</div>
+    <h1 class="hero" style="font-size:clamp(44px,6vw,58px); max-width:900px;">The End of the<br>Billable Hour</h1>
+    <div class="rule gold"></div>
+    <p class="body" style="font-size:clamp(24px,2.6vw,34px); color:var(--dimwhite);">
+      How AI is dismantling the time-for-money model<br>and replacing it with <strong>pure value delivery</strong>
+    </p>
+  </div>
+
+  <!-- SLIDE 2: THE OLD WORLD -->
+  <div class="slide bg-noise" id="s2">
+    <div class="slide-tag">02 / 20</div>
+    <div class="label crimson">The Old World</div>
+    <h2 class="title">You sold <em>time.</em><br>Not results.</h2>
+    <div class="rule crimson"></div>
+    <p class="body">
+      For a century, professional services ran on a simple equation:<br>
+      <span class="crimson">hours worked × rate = invoice</span>.<br>
+      It rewarded slowness. It punished efficiency.
+    </p>
+  </div>
+
+  <!-- SLIDE 3: THE ABSURDITY -->
+  <div class="slide bg-radial" id="s3">
+    <div class="slide-tag">03 / 20</div>
+    <div class="label crimson">The Perverse Incentive</div>
+    <div class="quote-block" style="border-color:var(--crimson); background:rgba(255,64,96,0.05);">
+      <div class="quote-text">"A lawyer who solves your problem in 20 minutes earns less than one who takes 3 hours."</div>
+    </div>
+    <div class="rule crimson"></div>
+    <p class="body" style="margin-top:10px;">
+      Hourly billing <span class="crimson">penalizes expertise</span> and <span class="crimson">rewards inefficiency</span>.<br>
+      It was always broken. AI just made it undeniable.
+    </p>
+  </div>
+
+  <!-- SLIDE 4: AI CHANGES EVERYTHING -->
+  <div class="slide bg-grid" id="s4">
+    <div class="slide-tag">04 / 20</div>
+    <div class="label teal">The Disruption</div>
+    <h2 class="title">AI compresses<br><span class="teal">hours into seconds.</span></h2>
+    <div class="rule teal"></div>
+    <p class="body">
+      A task that once took a junior analyst 8 hours<br>
+      now takes a well-prompted AI <strong>90 seconds</strong>.<br>
+      What do you bill for?
+    </p>
+  </div>
+
+  <!-- SLIDE 5: THE MATH BREAKS -->
+  <div class="slide bg-noise" id="s5">
+    <div class="slide-tag">05 / 20</div>
+    <div class="label gold">When the Math Breaks</div>
+    <div class="number-row">
+      <div class="number-item">
+        <span class="num" style="color:var(--crimson);">8 hrs</span>
+        <div class="desc" style="color:var(--dimwhite);">Manual research task (2019)</div>
+      </div>
+      <div class="number-item">
+        <span class="num" style="color:var(--gold);">→</span>
+      </div>
+      <div class="number-item">
+        <span class="num" style="color:var(--teal);">90 sec</span>
+        <div class="desc" style="color:var(--dimwhite);">Same task with AI (2025)</div>
+      </div>
+    </div>
+    <div class="rule gold" style="margin-top:28px;"></div>
+    <p class="body">Charging by the hour for AI-assisted work is <strong>intellectually dishonest</strong> — and clients are waking up.</p>
+  </div>
+
+  <!-- SLIDE 6: WHAT IS VALUE-BASED? -->
+  <div class="slide bg-diagonal" id="s6">
+    <div class="slide-tag">06 / 20</div>
+    <div class="label lavender">Value-Based Pricing</div>
+    <h2 class="title">You price the <em>outcome</em>,<br>not the clock.</h2>
+    <div class="rule lavender"></div>
+    <p class="body">
+      Value-based pricing asks: <span class="lavender">"What is this result worth to the client?"</span><br>
+      Not: "How long did it take us?"
+    </p>
+  </div>
+
+  <!-- SLIDE 7: THE FORMULA -->
+  <div class="slide bg-radial" id="s7">
+    <div class="slide-tag">07 / 20</div>
+    <div class="label gold">The New Equation</div>
+    <div class="formula">Price = f (Value Delivered)</div>
+    <div class="rule gold" style="margin-top:28px;"></div>
+    <p class="body">
+      Value = revenue generated, cost saved, risk eliminated,<br>
+      time freed, decisions improved, competitive edge gained.
+    </p>
+    <p class="body" style="margin-top:18px; font-size:24px; color:var(--dimwhite);">
+      Time spent is <strong>irrelevant</strong> to this equation.
+    </p>
+  </div>
+
+  <!-- SLIDE 8: COMPARE -->
+  <div class="slide bg-grid" id="s8">
+    <div class="slide-tag">08 / 20</div>
+    <div class="label gold">Side by Side</div>
+    <div class="compare">
+      <div class="compare-col old">
+        <h3>HOURLY</h3>
+        <ul>
+          <li>Sell hours</li>
+          <li>Incentivize slowness</li>
+          <li>Client watches the clock</li>
+          <li>Expertise penalized</li>
+          <li>AI destroys your income</li>
+        </ul>
+      </div>
+      <div class="compare-col new">
+        <h3>VALUE-BASED AI</h3>
+        <ul>
+          <li>Sell outcomes</li>
+          <li>Incentivize speed + quality</li>
+          <li>Client measures results</li>
+          <li>Expertise rewarded</li>
+          <li>AI multiplies your income</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: AI AS LEVERAGE -->
+  <div class="slide bg-noise" id="s9">
+    <div class="slide-tag">09 / 20</div>
+    <div class="label teal">The Leverage Shift</div>
+    <h2 class="title">AI is <span class="teal">leverage</span>,<br>not replacement.</h2>
+    <div class="rule teal"></div>
+    <p class="body">
+      The consultant who uses AI to deliver in 2 hours<br>
+      what used to take 20 <em>earns more per project</em>,<br>
+      not less — if they've left hourly billing behind.
+    </p>
+  </div>
+
+  <!-- SLIDE 10: WHO WINS -->
+  <div class="slide bg-diagonal" id="s10">
+    <div class="slide-tag">10 / 20</div>
+    <div class="label gold">The Winners</div>
+    <div class="pills">
+      <div class="pill gold">Strategic Consultants</div>
+      <div class="pill teal">AI-Native Agencies</div>
+      <div class="pill lavender">Productized Services</div>
+      <div class="pill gold">Expert Freelancers</div>
+      <div class="pill teal">Specialized SaaS</div>
+      <div class="pill lavender">Knowledge Firms</div>
+    </div>
+    <div class="rule gold" style="margin-top:28px;"></div>
+    <p class="body">Those who define and <strong>own their outcome</strong> — and price it accordingly.</p>
+  </div>
+
+  <!-- SLIDE 11: WHO LOSES -->
+  <div class="slide bg-noise" id="s11">
+    <div class="slide-tag">11 / 20</div>
+    <div class="label crimson">The Losers</div>
+    <div class="pills">
+      <div class="pill crimson">Hours-Only Billing</div>
+      <div class="pill crimson">Commodity Research</div>
+      <div class="pill crimson">Low-Skill Data Entry</div>
+      <div class="pill crimson">Rote Writing</div>
+      <div class="pill crimson">Basic Code Factories</div>
+    </div>
+    <div class="rule crimson" style="margin-top:28px;"></div>
+    <p class="body">Any business that sells <span class="crimson">repetition at scale</span> — AI can undercut them at near-zero cost.</p>
+  </div>
+
+  <!-- SLIDE 12: NEW MENTAL MODEL -->
+  <div class="slide bg-radial" id="s12">
+    <div class="slide-tag">12 / 20</div>
+    <div class="label lavender">New Mental Model</div>
+    <h2 class="title">Stop thinking<br>"What's my <em>rate</em>?"</h2>
+    <div class="rule lavender"></div>
+    <h2 class="title" style="margin-top:20px;">Start thinking<br>"<span class="lavender">What's the outcome worth?</span>"</h2>
+  </div>
+
+  <!-- SLIDE 13: AI OUTPUT TYPES -->
+  <div class="slide bg-grid" id="s13">
+    <div class="slide-tag">13 / 20</div>
+    <div class="label teal">AI Output Categories</div>
+    <ul class="steps" style="max-width:860px;">
+      <li><span class="step-num teal">01</span><span><strong>Analysis &amp; Insight</strong> — synthesizing data into decisions</span></li>
+      <li><span class="step-num teal">02</span><span><strong>Content &amp; Copy</strong> — high-volume, on-brand at speed</span></li>
+      <li><span class="step-num teal">03</span><span><strong>Code &amp; Automation</strong> — building systems, not just scripts</span></li>
+      <li><span class="step-num teal">04</span><span><strong>Strategy Drafts</strong> — frameworks, plans, playbooks</span></li>
+      <li><span class="step-num teal">05</span><span><strong>Research Summaries</strong> — distilling 100 pages to 1</span></li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 14: PRICING MODELS -->
+  <div class="slide bg-noise" id="s14">
+    <div class="slide-tag">14 / 20</div>
+    <div class="label gold">Emerging Pricing Models</div>
+    <ul class="steps">
+      <li><span class="step-num">A</span><span><strong>Per-outcome</strong> — flat fee per deliverable</span></li>
+      <li><span class="step-num">B</span><span><strong>Per-result</strong> — % of savings/revenue generated</span></li>
+      <li><span class="step-num">C</span><span><strong>Subscription</strong> — ongoing AI-powered service retainer</span></li>
+      <li><span class="step-num">D</span><span><strong>Tiered output</strong> — packages by impact level, not hours</span></li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 15: THE TRUST EQUATION -->
+  <div class="slide bg-diagonal" id="s15">
+    <div class="slide-tag">15 / 20</div>
+    <div class="label lavender">The Trust Equation</div>
+    <div class="quote-block lavender">
+      <div class="quote-text">"Clients don't care how long you worked. They care whether their problem is solved."</div>
+    </div>
+    <div class="rule lavender"></div>
+    <p class="body">
+      Value-based pricing forces you to <span class="lavender">define success upfront</span>.<br>
+      That clarity builds trust faster than any timesheet ever did.
+    </p>
+  </div>
+
+  <!-- SLIDE 16: HOW TO TRANSITION -->
+  <div class="slide bg-grid" id="s16">
+    <div class="slide-tag">16 / 20</div>
+    <div class="label gold">How to Transition</div>
+    <ul class="steps">
+      <li><span class="step-num">1</span><span>Audit your services — identify clear, measurable outcomes</span></li>
+      <li><span class="step-num">2</span><span>Research client ROI — what is your result actually worth to them?</span></li>
+      <li><span class="step-num">3</span><span>Package outputs — not time blocks</span></li>
+      <li><span class="step-num">4</span><span>Pilot with trusted clients first</span></li>
+      <li><span class="step-num">5</span><span>Collect proof — case studies, numbers, testimonials</span></li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 17: THE AI MULTIPLIER -->
+  <div class="slide bg-radial" id="s17">
+    <div class="slide-tag">17 / 20</div>
+    <div class="label teal">The AI Multiplier Effect</div>
+    <div class="number-row">
+      <div class="number-item">
+        <span class="num" style="color:var(--crimson);">1×</span>
+        <div class="desc">Human alone (old model)</div>
+      </div>
+      <div class="number-item">
+        <span class="num" style="color:var(--gold);">5–20×</span>
+        <div class="desc">Human + AI (new model)</div>
+      </div>
+      <div class="number-item">
+        <span class="num" style="color:var(--teal);">∞×</span>
+        <div class="desc">Productized AI output (future)</div>
+      </div>
+    </div>
+    <div class="rule teal" style="margin-top:28px;"></div>
+    <p class="body">Your output per hour doesn't matter anymore.<br><strong>Your output per project does.</strong></p>
+  </div>
+
+  <!-- SLIDE 18: THE OBJECTIONS -->
+  <div class="slide bg-noise" id="s18">
+    <div class="slide-tag">18 / 20</div>
+    <div class="label crimson">Common Objections</div>
+    <ul class="steps">
+      <li><span class="step-num lo">?</span><span><em>"Clients won't pay more for less time."</em><br>
+        <span style="color:var(--teal); font-size:22px;">→ They'll pay for results. Reframe the conversation.</span></span></li>
+      <li><span class="step-num lo">?</span><span><em>"Hard to quantify value in my field."</em><br>
+        <span style="color:var(--teal); font-size:22px;">→ Every service has an outcome. Find yours.</span></span></li>
+      <li><span class="step-num lo">?</span><span><em>"What if I underestimate the work?"</em><br>
+        <span style="color:var(--teal); font-size:22px;">→ Buffer for AI-assisted delivery; margins improve.</span></span></li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 19: THE FUTURE -->
+  <div class="slide bg-diagonal" id="s19">
+    <div class="slide-tag">19 / 20</div>
+    <div class="label gold">The Near Future</div>
+    <h2 class="title">Clients will buy<br><em>AI-produced assets</em><br>like they buy <span class="teal">software.</span></h2>
+    <div class="rule gold"></div>
+    <p class="body">
+      Recurring outputs. Subscriptions. Outcome guarantees.<br>
+      The professional services firm of 2030 looks more like <strong>a SaaS company</strong> than a law firm.
+    </p>
+  </div>
+
+  <!-- SLIDE 20: CLOSING -->
+  <div class="slide bg-grid" id="s20">
+    <div class="slide-tag">20 / 20</div>
+    <div class="label gold">The Bottom Line</div>
+    <div class="arrow-row">
+      <span class="from">HOURLY</span>
+      <span class="arr">━━▶</span>
+      <span class="to">VALUE</span>
+    </div>
+    <div class="formula teal" style="margin-top:10px; font-size:clamp(22px,2.6vw,34px);">
+      Expertise × AI Speed = Premium Outcomes
+    </div>
+    <div class="rule gold" style="margin-top:28px;"></div>
+    <p class="body" style="margin-top:10px;">
+      The clock was never your friend.<br>
+      <strong>AI just gave you permission to stop watching it.</strong>
+    </p>
+  </div>
+
+</div><!-- /deck -->
+
+<!-- CONTROLS -->
+<div id="ui">
+  <button class="btn" id="prevBtn" disabled>← PREV</button>
+  <div id="progress-bar"><div id="progress-fill" style="width:5%"></div></div>
+  <span id="counter">01 / 20</span>
+  <button class="btn" id="nextBtn">NEXT →</button>
+</div>
+
+<div id="keyhint">← → ARROW KEYS</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let cur = 0;
+
+  function go(n) {
+    slides[cur].classList.remove('active');
+    cur = Math.max(0, Math.min(total - 1, n));
+    slides[cur].classList.add('active');
+    document.getElementById('counter').textContent =
+      String(cur + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+    document.getElementById('progress-fill').style.width =
+      ((cur + 1) / total * 100) + '%';
+    document.getElementById('prevBtn').disabled = cur === 0;
+    document.getElementById('nextBtn').disabled = cur === total - 1;
+  }
+
+  document.getElementById('prevBtn').addEventListener('click', () => go(cur - 1));
+  document.getElementById('nextBtn').addEventListener('click', () => go(cur + 1));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') go(cur + 1);
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') go(cur - 1);
+  });
+
+  // Touch swipe
+  let tx = null;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    if (tx === null) return;
+    const dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 50) go(dx < 0 ? cur + 1 : cur - 1);
+    tx = null;
+  });
+</script>
+</body>
+</html>

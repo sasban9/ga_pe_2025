@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero-Shot → Agentic Step</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080b10;
+    --amber: #f5a623;
+    --cyan: #00e5ff;
+    --pink: #ff3c6e;
+    --green: #00ff9d;
+    --lavender: #c8b8ff;
+    --white: #eef2ff;
+    --dim: rgba(238,242,255,0.55);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    font-family: 'Syne', sans-serif;
+    color: var(--white);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 12px; height: 12px;
+    border: 2px solid var(--cyan);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: transform 0.1s, border-color 0.3s;
+  }
+
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.35;
+  }
+
+  /* Slides container */
+  #slides {
+    width: 100%; height: 100%;
+    position: relative;
+  }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: flex-start;
+    padding: 6vw 8vw;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1),
+                transform 0.7s cubic-bezier(0.4,0,0.2,1);
+    transform: translateY(30px);
+  }
+  .slide.active {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+  }
+  .slide.exit {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+
+  /* Decorative line top-left */
+  .slide-number {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    color: var(--dim);
+    letter-spacing: 0.12em;
+    margin-bottom: 3.5vh;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .slide-number::before {
+    content: '';
+    display: block;
+    width: 40px; height: 2px;
+    background: currentColor;
+    opacity: 0.5;
+  }
+
+  .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 21px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    padding: 5px 14px;
+    border-radius: 3px;
+    margin-bottom: 2.5vh;
+    display: inline-block;
+  }
+  .tag.zero  { background: rgba(245,166,35,0.15); color: var(--amber); border: 1px solid rgba(245,166,35,0.35); }
+  .tag.agent { background: rgba(0,229,255,0.12);  color: var(--cyan);  border: 1px solid rgba(0,229,255,0.3); }
+  .tag.shift { background: rgba(255,60,110,0.12); color: var(--pink);  border: 1px solid rgba(255,60,110,0.3); }
+  .tag.green { background: rgba(0,255,157,0.1);   color: var(--green); border: 1px solid rgba(0,255,157,0.28); }
+  .tag.lav   { background: rgba(200,184,255,0.1); color: var(--lavender); border: 1px solid rgba(200,184,255,0.28); }
+
+  h1 {
+    font-size: clamp(36px, 5.5vw, 58px);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    max-width: 88%;
+    margin-bottom: 3vh;
+  }
+  h2 {
+    font-size: clamp(28px, 3.8vw, 50px);
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    max-width: 85%;
+    margin-bottom: 2.5vh;
+  }
+  p {
+    font-size: clamp(21px, 2.1vw, 34px);
+    line-height: 1.55;
+    color: var(--dim);
+    max-width: 72%;
+  }
+  p strong { color: var(--white); font-weight: 700; }
+
+  /* Accent highlight words */
+  .hl-amber  { color: var(--amber); }
+  .hl-cyan   { color: var(--cyan); }
+  .hl-pink   { color: var(--pink); }
+  .hl-green  { color: var(--green); }
+  .hl-lav    { color: var(--lavender); }
+
+  /* Two column */
+  .cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5vw;
+    width: 100%;
+    margin-top: 1vh;
+  }
+  .col-block {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 12px;
+    padding: 3.5vh 2.5vw;
+  }
+  .col-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 21px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1.8vh;
+  }
+  .col-body {
+    font-size: clamp(21px, 1.9vw, 30px);
+    line-height: 1.55;
+    color: var(--dim);
+  }
+  .col-body strong { color: var(--white); }
+
+  /* Bullet list */
+  ul.slide-list {
+    list-style: none;
+    margin-top: 1.5vh;
+    display: flex;
+    flex-direction: column;
+    gap: 1.4vh;
+    max-width: 78%;
+  }
+  ul.slide-list li {
+    font-size: clamp(21px, 2vw, 32px);
+    line-height: 1.45;
+    color: var(--dim);
+    display: flex; align-items: flex-start; gap: 1rem;
+  }
+  ul.slide-list li::before {
+    content: '→';
+    color: var(--cyan);
+    font-family: 'Space Mono', monospace;
+    font-size: 21px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  ul.slide-list li strong { color: var(--white); }
+
+  /* Big quote style */
+  .bigquote {
+    font-size: clamp(27px, 3.5vw, 50px);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: var(--white);
+    max-width: 82%;
+    border-left: 4px solid var(--cyan);
+    padding-left: 3.5vw;
+    margin-top: 1vh;
+  }
+
+  /* Code-style mono block */
+  .mono-block {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(21px, 1.9vw, 30px);
+    line-height: 1.65;
+    background: rgba(0,229,255,0.06);
+    border: 1px solid rgba(0,229,255,0.18);
+    border-radius: 10px;
+    padding: 2.5vh 2.5vw;
+    margin-top: 2vh;
+    max-width: 80%;
+    color: var(--cyan);
+  }
+  .mono-block .comment { color: rgba(0,229,255,0.4); }
+  .mono-block .key { color: var(--pink); }
+  .mono-block .val { color: var(--green); }
+
+  /* Background geometric decorations per slide */
+  .deco {
+    position: absolute;
+    pointer-events: none;
+    z-index: -1;
+  }
+  .circle-deco {
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.12;
+  }
+
+  /* Progress bar */
+  #progress {
+    position: fixed;
+    bottom: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--cyan), var(--pink));
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+    z-index: 500;
+  }
+
+  /* Nav dots */
+  #nav-dots {
+    position: fixed;
+    bottom: 28px; right: 32px;
+    display: flex; gap: 8px;
+    z-index: 500;
+  }
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.22);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+  }
+  .dot.active { background: var(--cyan); transform: scale(1.4); }
+
+  /* Arrow buttons */
+  #arrows {
+    position: fixed;
+    bottom: 22px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; gap: 18px;
+    z-index: 500;
+  }
+  .arrow-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.14);
+    color: var(--white);
+    padding: 8px 22px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    user-select: none;
+  }
+  .arrow-btn:hover { background: rgba(0,229,255,0.12); border-color: var(--cyan); }
+
+  /* Title slide special layout */
+  #slide-0 {
+    align-items: center;
+    text-align: center;
+  }
+  #slide-0 h1 { max-width: 92%; font-size: clamp(38px, 6vw, 58px); }
+  #slide-0 p  { max-width: 60%; text-align: center; margin: 0 auto; }
+  #slide-0 .slide-number { justify-content: center; }
+
+  /* Arrow diagram */
+  .arrow-flow {
+    display: flex; align-items: center; gap: 2vw;
+    margin-top: 2.5vh; flex-wrap: wrap;
+  }
+  .flow-box {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 2vh 2vw;
+    font-size: clamp(21px, 1.8vw, 29px);
+    text-align: center;
+    min-width: 14vw;
+  }
+  .flow-arrow {
+    font-size: clamp(22px, 2.5vw, 38px);
+    color: var(--cyan);
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* Closing slide */
+  #slide-20 { align-items: center; text-align: center; }
+  #slide-20 h1 { max-width: 90%; }
+  #slide-20 p { max-width: 62%; margin: 0 auto; }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div id="progress"></div>
+<div id="nav-dots"></div>
+<div id="arrows">
+  <button class="arrow-btn" id="prev">← Prev</button>
+  <button class="arrow-btn" id="next">Next →</button>
+</div>
+<div id="slides"></div>
+
+<script>
+const slides = [
+  // 0 — Title
+  {
+    id: 'slide-0',
+    tag: null,
+    content: `
+      <div class="slide-number">00 / 20</div>
+      <h1>From <span class="hl-amber">Zero-Shot</span><br>to <span class="hl-cyan">Agentic Step</span></h1>
+      <p>How AI reasoning shifted from single-prompt answers to multi-step autonomous action — and why it changes everything.</p>
+      <div class="deco circle-deco" style="width:500px;height:500px;background:var(--cyan);top:-15%;right:5%;"></div>
+      <div class="deco circle-deco" style="width:320px;height:320px;background:var(--pink);bottom:-10%;left:-5%;"></div>
+    `
+  },
+  // 1 — What is Zero-Shot?
+  {
+    tag: { text: 'Zero-Shot Era', cls: 'zero' },
+    content: `
+      <div class="slide-number">01 / 20</div>
+      <h2>What is <span class="hl-amber">Zero-Shot</span> prompting?</h2>
+      <p>A model receives a <strong>single prompt</strong> and produces a <strong>single response</strong> — no history, no iteration, no tools. The whole task lives inside one turn.</p>
+      <div class="mono-block" style="margin-top:3vh;">
+        <span class="comment"># Classic Zero-Shot</span><br>
+        <span class="key">prompt</span>: <span class="val">"Translate 'hello' to French"</span><br>
+        <span class="key">response</span>: <span class="val">"Bonjour"</span><br>
+        <span class="comment"># Done. One shot.</span>
+      </div>
+      <div class="deco circle-deco" style="width:380px;height:380px;background:var(--amber);bottom:-10%;right:0%;"></div>
+    `
+  },
+  // 2 — The Zero-Shot assumption
+  {
+    tag: { text: 'Zero-Shot Era', cls: 'zero' },
+    content: `
+      <div class="slide-number">02 / 20</div>
+      <h2>The Core <span class="hl-amber">Assumption</span></h2>
+      <p>Early AI systems assumed the user would <strong>do all the decomposing</strong>. The model answered; the human handled context, retries, tool calls, and error correction. Intelligence was <strong>input → output</strong>.</p>
+      <div class="deco circle-deco" style="width:420px;height:420px;background:var(--amber);top:-20%;left:60%;"></div>
+    `
+  },
+  // 3 — Limits of Zero-Shot
+  {
+    tag: { text: 'Zero-Shot Era', cls: 'zero' },
+    content: `
+      <div class="slide-number">03 / 20</div>
+      <h2>Where <span class="hl-amber">Zero-Shot</span> Breaks</h2>
+      <ul class="slide-list">
+        <li><strong>Complex, multi-step tasks</strong> collapse into vague outputs</li>
+        <li><strong>Ambiguous instructions</strong> produce confident but wrong answers</li>
+        <li><strong>No memory</strong> — context resets every prompt</li>
+        <li><strong>No correction loop</strong> — one bad assumption = broken result</li>
+        <li><strong>No tools</strong> — the model can't browse, run code, or verify</li>
+      </ul>
+      <div class="deco circle-deco" style="width:300px;height:300px;background:var(--pink);bottom:-5%;right:5%;"></div>
+    `
+  },
+  // 4 — Chain-of-Thought bridge
+  {
+    tag: { text: 'The Bridge', cls: 'shift' },
+    content: `
+      <div class="slide-number">04 / 20</div>
+      <h2><span class="hl-pink">Chain-of-Thought</span> — the First Crack</h2>
+      <p>Prompting models to <strong>"think step by step"</strong> revealed hidden reasoning capacity. A single prompt now contained <strong>multiple internal steps</strong> — the seed of agentic behavior.</p>
+      <div class="bigquote">"Let's think step by step…" unlocked reasoning that pure zero-shot buried.</div>
+      <div class="deco circle-deco" style="width:350px;height:350px;background:var(--pink);top:-15%;right:-5%;"></div>
+    `
+  },
+  // 5 — Defining Agentic Step
+  {
+    tag: { text: 'Agentic AI', cls: 'agent' },
+    content: `
+      <div class="slide-number">05 / 20</div>
+      <h2>What is an <span class="hl-cyan">Agentic Step</span>?</h2>
+      <p>An agentic step is a <strong>unit of goal-directed action</strong>: the model <strong>observes</strong> its environment, <strong>reasons</strong> about what to do next, <strong>acts</strong> (calls a tool, writes code, sends a query), and <strong>incorporates feedback</strong> before continuing.</p>
+      <div class="arrow-flow">
+        <div class="flow-box"><span class="hl-cyan">Observe</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box"><span class="hl-lav">Reason</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box"><span class="hl-pink">Act</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box"><span class="hl-green">Feedback</span></div>
+        <div class="flow-arrow">⟳</div>
+      </div>
+      <div class="deco circle-deco" style="width:400px;height:400px;background:var(--cyan);bottom:-15%;right:-5%;"></div>
+    `
+  },
+  // 6 — The shift in default
+  {
+    tag: { text: 'Paradigm Shift', cls: 'shift' },
+    content: `
+      <div class="slide-number">06 / 20</div>
+      <h2>The <span class="hl-pink">Default</span> Has Changed</h2>
+      <p>Modern AI systems no longer <em>default</em> to "answer once and stop." The default is now: <strong>plan → act → observe → revise → complete</strong>. Agentic behavior is the assumed mode of operation.</p>
+      <div class="cols" style="margin-top:2.5vh;">
+        <div class="col-block">
+          <div class="col-label hl-amber">Before</div>
+          <div class="col-body">One prompt → one answer → human takes over</div>
+        </div>
+        <div class="col-block">
+          <div class="col-label hl-cyan">Now</div>
+          <div class="col-body">Prompt → <strong>loop of actions</strong> → autonomous completion</div>
+        </div>
+      </div>
+      <div class="deco circle-deco" style="width:350px;height:350px;background:var(--pink);top:-10%;right:10%;"></div>
+    `
+  },
+  // 7 — Tool use
+  {
+    tag: { text: 'Agentic AI', cls: 'agent' },
+    content: `
+      <div class="slide-number">07 / 20</div>
+      <h2><span class="hl-cyan">Tools</span> as Limbs</h2>
+      <p>Agentic models aren't limited to language. They call <strong>external tools</strong> as extensions of reasoning — web search, code execution, file I/O, APIs, databases.</p>
+      <ul class="slide-list" style="margin-top:2vh;">
+        <li><strong>Web search</strong> — real-time grounding</li>
+        <li><strong>Code interpreter</strong> — verify logic by running it</li>
+        <li><strong>File system</strong> — read, write, iterate on outputs</li>
+        <li><strong>APIs</strong> — interact with the real world</li>
+      </ul>
+      <div class="deco circle-deco" style="width:360px;height:360px;background:var(--green);bottom:-10%;right:0%;"></div>
+    `
+  },
+  // 8 — Memory & Context
+  {
+    tag: { text: 'Agentic AI', cls: 'agent' },
+    content: `
+      <div class="slide-number">08 / 20</div>
+      <h2><span class="hl-cyan">Memory</span> Across Steps</h2>
+      <p>Zero-shot forgets everything. Agentic systems maintain <strong>working memory</strong> — a growing scratchpad of observations, partial results, and intermediate decisions that informs every next action.</p>
+      <div class="mono-block">
+        <span class="comment"># Agentic memory model</span><br>
+        step 1 → <span class="val">search("climate data 2024")</span><br>
+        step 2 → <span class="val">read(results)</span> → <span class="key">remember</span><br>
+        step 3 → <span class="val">analyze(remembered data)</span><br>
+        step 4 → <span class="val">write_report()</span>
+      </div>
+      <div class="deco circle-deco" style="width:380px;height:380px;background:var(--lavender);top:-20%;right:5%;"></div>
+    `
+  },
+  // 9 — Planning
+  {
+    tag: { text: 'Agentic AI', cls: 'agent' },
+    content: `
+      <div class="slide-number">09 / 20</div>
+      <h2>Planning as a <span class="hl-cyan">First Step</span></h2>
+      <p>Before acting, agentic models now <strong>produce an explicit plan</strong>: decompose the goal into sub-tasks, identify unknowns, sequence actions. Planning itself became a compute step, not a human responsibility.</p>
+      <div class="bigquote">"What do I need to know first, and in what order?"</div>
+      <div class="deco circle-deco" style="width:420px;height:420px;background:var(--cyan);bottom:-15%;right:-8%;"></div>
+    `
+  },
+  // 10 — ReAct pattern
+  {
+    tag: { text: 'Architecture', cls: 'lav' },
+    content: `
+      <div class="slide-number">10 / 20</div>
+      <h2>The <span class="hl-lav">ReAct</span> Pattern</h2>
+      <p><strong>Re</strong>asoning + <strong>Act</strong>ing interleaved — the model writes its thought, then takes action, then updates its thought based on the result. Introduced the idea that <strong>thinking and doing alternate</strong>.</p>
+      <div class="cols" style="margin-top:2vh;">
+        <div class="col-block">
+          <div class="col-label hl-lav">Thought</div>
+          <div class="col-body">"I need to find the population of Tokyo"</div>
+        </div>
+        <div class="col-block">
+          <div class="col-label hl-cyan">Action</div>
+          <div class="col-body">search("Tokyo population 2024") → <strong>13.96 million</strong></div>
+        </div>
+      </div>
+      <div class="deco circle-deco" style="width:350px;height:350px;background:var(--lavender);top:-15%;right:5%;"></div>
+    `
+  },
+  // 11 — Human in the loop
+  {
+    tag: { text: 'Human + AI', cls: 'green' },
+    content: `
+      <div class="slide-number">11 / 20</div>
+      <h2><span class="hl-green">Human-in-the-Loop</span> Evolves</h2>
+      <p>Zero-shot required humans at every step. Agentic AI shifts humans to <strong>supervisory roles</strong> — setting goals, reviewing checkpoints, approving high-stakes actions — while the agent handles execution autonomously.</p>
+      <ul class="slide-list" style="margin-top:2vh;">
+        <li>Human defines <strong>goal</strong> + <strong>constraints</strong></li>
+        <li>Agent executes, logs, and surfaces <strong>decision points</strong></li>
+        <li>Human approves or redirects at key forks</li>
+      </ul>
+      <div class="deco circle-deco" style="width:380px;height:380px;background:var(--green);bottom:-10%;right:-5%;"></div>
+    `
+  },
+  // 12 — Failure modes
+  {
+    tag: { text: 'Risk', cls: 'shift' },
+    content: `
+      <div class="slide-number">12 / 20</div>
+      <h2>New <span class="hl-pink">Failure Modes</span></h2>
+      <p>Agentic systems introduce <strong>compounding errors</strong> — a wrong assumption in step 2 can cascade through 10 more steps before anyone notices. The stakes of each decision multiply.</p>
+      <ul class="slide-list" style="margin-top:2vh;">
+        <li><strong>Goal mis-specification</strong> — optimizing for the wrong objective</li>
+        <li><strong>Action side effects</strong> — real-world consequences at each step</li>
+        <li><strong>Infinite loops</strong> — agents stuck retrying failed strategies</li>
+        <li><strong>Tool abuse</strong> — over-reliance on a single data source</li>
+      </ul>
+      <div class="deco circle-deco" style="width:340px;height:340px;background:var(--pink);top:-10%;right:0%;"></div>
+    `
+  },
+  // 13 — Trust & Autonomy spectrum
+  {
+    tag: { text: 'Trust', cls: 'lav' },
+    content: `
+      <div class="slide-number">13 / 20</div>
+      <h2>The <span class="hl-lav">Autonomy Spectrum</span></h2>
+      <p>Not all agentic systems are equal. Autonomy is a dial — from <strong>fully supervised</strong> (approve every step) to <strong>fully autonomous</strong> (fire and forget). The correct setting depends on stakes and trust.</p>
+      <div class="arrow-flow" style="margin-top:3vh;">
+        <div class="flow-box" style="border-color:rgba(245,166,35,0.35);"><span class="hl-amber">Supervised</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box" style="border-color:rgba(200,184,255,0.3);"><span class="hl-lav">Assisted</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box" style="border-color:rgba(0,229,255,0.3);"><span class="hl-cyan">Delegated</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box" style="border-color:rgba(0,255,157,0.3);"><span class="hl-green">Autonomous</span></div>
+      </div>
+      <div class="deco circle-deco" style="width:380px;height:380px;background:var(--lavender);bottom:-15%;right:-5%;"></div>
+    `
+  },
+  // 14 — Multi-agent
+  {
+    tag: { text: 'Multi-Agent', cls: 'agent' },
+    content: `
+      <div class="slide-number">14 / 20</div>
+      <h2><span class="hl-cyan">Agents</span> Orchestrating Agents</h2>
+      <p>The agentic step extends beyond a single model. <strong>Orchestrator agents</strong> delegate sub-tasks to <strong>specialist agents</strong> — a coordinator, a researcher, a coder, a reviewer — each running their own agentic loops.</p>
+      <div class="mono-block">
+        <span class="comment"># Multi-agent pipeline</span><br>
+        <span class="key">orchestrator</span> → <span class="val">research_agent(topic)</span><br>
+        <span class="key">orchestrator</span> → <span class="val">code_agent(spec)</span><br>
+        <span class="key">orchestrator</span> → <span class="val">review_agent(output)</span><br>
+        <span class="key">orchestrator</span> ← <span class="val">final_result</span>
+      </div>
+      <div class="deco circle-deco" style="width:400px;height:400px;background:var(--cyan);top:-20%;right:-5%;"></div>
+    `
+  },
+  // 15 — Industry adoption
+  {
+    tag: { text: 'In Practice', cls: 'green' },
+    content: `
+      <div class="slide-number">15 / 20</div>
+      <h2>Where It's <span class="hl-green">Happening Now</span></h2>
+      <ul class="slide-list">
+        <li><strong>Software engineering</strong> — agents write, test, debug, and deploy code end-to-end</li>
+        <li><strong>Research</strong> — agents search literature, synthesize, generate hypotheses</li>
+        <li><strong>Customer support</strong> — agents resolve tickets by querying systems, not just scripts</li>
+        <li><strong>Data analysis</strong> — agents pull data, clean, model, and report autonomously</li>
+        <li><strong>Personal assistants</strong> — manage calendars, emails, travel, purchases</li>
+      </ul>
+      <div class="deco circle-deco" style="width:360px;height:360px;background:var(--green);bottom:-10%;right:0%;"></div>
+    `
+  },
+  // 16 — Safety & alignment
+  {
+    tag: { text: 'Safety', cls: 'shift' },
+    content: `
+      <div class="slide-number">16 / 20</div>
+      <h2><span class="hl-pink">Safety</span> in Agentic Systems</h2>
+      <p>Autonomy amplifies both capability <strong>and risk</strong>. Agentic AI safety requires <strong>minimal footprint principles</strong> — take the least permissive action, prefer reversibility, flag uncertainty before acting, and never assume implicit permission.</p>
+      <div class="bigquote">"If in doubt, don't act — ask."</div>
+      <div class="deco circle-deco" style="width:380px;height:380px;background:var(--pink);top:-15%;right:-5%;"></div>
+    `
+  },
+  // 17 — The new developer role
+  {
+    tag: { text: 'Builders', cls: 'lav' },
+    content: `
+      <div class="slide-number">17 / 20</div>
+      <h2>The New Role of <span class="hl-lav">Developers</span></h2>
+      <p>Building AI systems shifted from <strong>crafting the perfect prompt</strong> to <strong>designing agentic architectures</strong>: defining tool sets, memory schemas, error recovery strategies, and human intervention triggers.</p>
+      <div class="cols" style="margin-top:2vh;">
+        <div class="col-block">
+          <div class="col-label hl-amber">Before (Prompt Eng.)</div>
+          <div class="col-body">Write the best single instruction</div>
+        </div>
+        <div class="col-block">
+          <div class="col-label hl-lav">Now (Agent Design)</div>
+          <div class="col-body">Design <strong>systems that reason, retry, and recover</strong></div>
+        </div>
+      </div>
+      <div class="deco circle-deco" style="width:350px;height:350px;background:var(--lavender);bottom:-10%;right:5%;"></div>
+    `
+  },
+  // 18 — Evaluation challenge
+  {
+    tag: { text: 'Evaluation', cls: 'zero' },
+    content: `
+      <div class="slide-number">18 / 20</div>
+      <h2>The <span class="hl-amber">Evaluation</span> Challenge</h2>
+      <p>Zero-shot evals are easy: one input, one output, one score. Agentic evals are <strong>trajectories</strong> — did the agent take efficient steps? Handle errors? Know when to stop? Evaluation complexity scales with autonomy.</p>
+      <ul class="slide-list" style="margin-top:2vh;">
+        <li>Measure <strong>trajectory quality</strong>, not just final output</li>
+        <li>Penalize <strong>unnecessary tool calls</strong></li>
+        <li>Reward <strong>graceful failure and escalation</strong></li>
+      </ul>
+      <div class="deco circle-deco" style="width:360px;height:360px;background:var(--amber);top:-10%;right:0%;"></div>
+    `
+  },
+  // 19 — What this means for users
+  {
+    tag: { text: 'For Everyone', cls: 'green' },
+    content: `
+      <div class="slide-number">19 / 20</div>
+      <h2>What This Means <span class="hl-green">For You</span></h2>
+      <p>The shift isn't just technical — it's <strong>relational</strong>. You no longer give an AI an instruction; you give it a <strong>goal</strong>. You're not a prompter; you're a <strong>delegator</strong>.</p>
+      <ul class="slide-list" style="margin-top:2vh;">
+        <li>Think in <strong>outcomes</strong>, not instructions</li>
+        <li>Define <strong>constraints</strong> and <strong>success criteria</strong> upfront</li>
+        <li>Review <strong>checkpoints</strong>, not every micro-step</li>
+        <li>Build <strong>trust incrementally</strong> — expand autonomy as it's earned</li>
+      </ul>
+      <div class="deco circle-deco" style="width:380px;height:380px;background:var(--green);bottom:-15%;right:-5%;"></div>
+    `
+  },
+  // 20 — Closing
+  {
+    id: 'slide-20',
+    tag: null,
+    content: `
+      <div class="slide-number" style="justify-content:center;">20 / 20</div>
+      <h1>The <span class="hl-amber">default</span> was one shot.<br>The future is <span class="hl-cyan">every step.</span></h1>
+      <p>Zero-shot was a starting point — a proof of capability. Agentic AI is where that capability becomes <strong>action in the world</strong>. We are at the beginning of this transition, not the end.</p>
+      <div class="deco circle-deco" style="width:500px;height:500px;background:var(--cyan);top:-20%;left:55%;"></div>
+      <div class="deco circle-deco" style="width:300px;height:300px;background:var(--amber);bottom:-5%;left:5%;"></div>
+    `
+  }
+];
+
+// Build slides
+const container = document.getElementById('slides');
+slides.forEach((s, i) => {
+  const el = document.createElement('div');
+  el.className = 'slide' + (i === 0 ? ' active' : '');
+  if (s.id) el.id = s.id;
+  else el.id = `slide-${i}`;
+  let inner = '';
+  if (s.tag) inner += `<div class="tag ${s.tag.cls}">${s.tag.text}</div>`;
+  inner += s.content;
+  el.innerHTML = inner;
+  container.appendChild(el);
+});
+
+// Build nav dots
+const dotsEl = document.getElementById('nav-dots');
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.addEventListener('click', () => goTo(i));
+  dotsEl.appendChild(d);
+});
+
+let current = 0;
+const total = slides.length;
+
+function goTo(n) {
+  const allSlides = document.querySelectorAll('.slide');
+  const allDots = document.querySelectorAll('.dot');
+  allSlides[current].classList.add('exit');
+  setTimeout(() => allSlides[current].classList.remove('exit'), 700);
+  allSlides[current].classList.remove('active');
+  allDots[current].classList.remove('active');
+  current = (n + total) % total;
+  allSlides[current].classList.add('active');
+  allDots[current].classList.add('active');
+  // progress bar
+  document.getElementById('progress').style.width = ((current / (total - 1)) * 100) + '%';
+}
+
+document.getElementById('next').addEventListener('click', () => goTo(current + 1));
+document.getElementById('prev').addEventListener('click', () => goTo(current - 1));
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') goTo(current + 1);
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goTo(current - 1);
+});
+
+// Touch/swipe
+let touchStartX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 50) goTo(current + (dx < 0 ? 1 : -1));
+});
+
+// Custom cursor
+const cursor = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+});
+
+// Init progress
+document.getElementById('progress').style.width = '0%';
+</script>
+</body>
+</html>

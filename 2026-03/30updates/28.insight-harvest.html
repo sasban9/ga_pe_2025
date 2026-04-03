@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Manual Data Entry to Automated Insight Harvesting</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c14;
+    --accent1: #00e5ff;
+    --accent2: #ff4d6d;
+    --accent3: #c8ff57;
+    --accent4: #ffb347;
+    --text: #e8f0fe;
+    --muted: #7a8fad;
+    --grid: rgba(0,229,255,0.04);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 14px; height: 14px;
+    background: var(--accent1);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: transform 0.1s, background 0.2s;
+    mix-blend-mode: exclusion;
+  }
+
+  /* Grid background */
+  .grid-bg {
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Noise overlay */
+  .noise {
+    position: fixed; inset: 0;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Slide container */
+  .slideshow {
+    position: relative;
+    width: 100vw; height: 100vh;
+    z-index: 1;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 6vh 8vw;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.05s;
+    overflow: hidden;
+  }
+
+  .slide.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* Slide-in animation */
+  .slide.active .slide-content {
+    animation: slideIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(32px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Decorative accent bar */
+  .accent-bar {
+    width: 60px; height: 5px;
+    background: var(--accent1);
+    margin-bottom: 28px;
+    border-radius: 3px;
+    animation: barGrow 0.6s cubic-bezier(0.16,1,0.3,1) 0.1s both;
+  }
+
+  @keyframes barGrow {
+    from { width: 0; }
+    to   { width: 60px; }
+  }
+
+  .slide-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  h1 { font-size: clamp(32px, 5.5vw, 58px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; }
+  h2 { font-size: clamp(28px, 4vw, 50px); font-weight: 700; line-height: 1.15; }
+  h3 { font-size: clamp(24px, 3vw, 42px); font-weight: 700; }
+
+  .body-text {
+    font-size: clamp(22px, 2.2vw, 36px);
+    line-height: 1.55;
+    color: #c5d5e8;
+    max-width: 820px;
+    margin-top: 20px;
+  }
+
+  .highlight { color: var(--accent1); }
+  .highlight2 { color: var(--accent2); }
+  .highlight3 { color: var(--accent3); }
+  .highlight4 { color: var(--accent4); }
+
+  /* Big number stat */
+  .stat-block {
+    display: flex;
+    gap: 60px;
+    margin-top: 36px;
+    flex-wrap: wrap;
+  }
+
+  .stat-item .stat-num {
+    font-size: clamp(40px, 6vw, 58px);
+    font-weight: 800;
+    color: var(--accent3);
+    line-height: 1;
+  }
+
+  .stat-item .stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  /* Two-col layout */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 30px;
+    width: 100%;
+    max-width: 1100px;
+  }
+
+  .col-block {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 28px 30px;
+  }
+
+  .col-block h4 {
+    font-size: clamp(22px, 2vw, 32px);
+    margin-bottom: 14px;
+  }
+
+  .col-block p {
+    font-size: clamp(20px, 1.6vw, 28px);
+    color: #9fb3cc;
+    line-height: 1.5;
+  }
+
+  /* List */
+  .fancy-list {
+    list-style: none;
+    margin-top: 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .fancy-list li {
+    font-size: clamp(21px, 2vw, 32px);
+    color: #c5d5e8;
+    padding-left: 28px;
+    position: relative;
+    line-height: 1.4;
+  }
+
+  .fancy-list li::before {
+    content: '→';
+    position: absolute; left: 0;
+    color: var(--accent1);
+    font-weight: 700;
+  }
+
+  /* Code-style box */
+  .code-box {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(21px, 1.8vw, 30px);
+    background: rgba(0,229,255,0.06);
+    border: 1px solid rgba(0,229,255,0.18);
+    border-left: 4px solid var(--accent1);
+    padding: 24px 28px;
+    border-radius: 8px;
+    margin-top: 28px;
+    line-height: 1.7;
+    color: #b8f0ff;
+    max-width: 880px;
+  }
+
+  /* Timeline */
+  .timeline {
+    display: flex;
+    gap: 0;
+    margin-top: 36px;
+    width: 100%;
+    max-width: 1060px;
+    align-items: stretch;
+  }
+
+  .tl-step {
+    flex: 1;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 22px 20px;
+    position: relative;
+    text-align: center;
+  }
+
+  .tl-step + .tl-step { margin-left: 10px; }
+
+  .tl-step .tl-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    color: var(--accent4);
+    margin-bottom: 8px;
+  }
+
+  .tl-step .tl-label {
+    font-size: clamp(20px, 1.6vw, 28px);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .tl-step .tl-sub {
+    font-size: 21px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  /* Progress bar */
+  .progress-wrap {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: rgba(255,255,255,0.06);
+    z-index: 100;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
+    transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* Nav */
+  .nav {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    z-index: 100;
+    background: rgba(8,12,20,0.85);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 10px 22px;
+    border-radius: 40px;
+    backdrop-filter: blur(12px);
+  }
+
+  .nav button {
+    background: none; border: none;
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 6px;
+    transition: color 0.2s, background 0.2s;
+  }
+
+  .nav button:hover { color: var(--accent1); background: rgba(0,229,255,0.08); }
+
+  .slide-counter {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    color: var(--muted);
+    min-width: 60px;
+    text-align: center;
+  }
+
+  /* Decorative BG shapes */
+  .bg-shape {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(80px);
+    opacity: 0.12;
+  }
+
+  .slide-content { position: relative; z-index: 1; width: 100%; }
+
+  /* Tag pill */
+  .pill {
+    display: inline-block;
+    background: rgba(0,229,255,0.1);
+    border: 1px solid rgba(0,229,255,0.25);
+    color: var(--accent1);
+    font-family: 'Space Mono', monospace;
+    font-size: 21px;
+    padding: 5px 16px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+  }
+
+  /* Divider */
+  .divider {
+    width: 100%;
+    max-width: 700px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent1), transparent);
+    margin: 22px 0;
+    opacity: 0.3;
+  }
+
+  /* Quote */
+  .quote-block {
+    border-left: 4px solid var(--accent2);
+    padding-left: 28px;
+    margin-top: 30px;
+    max-width: 860px;
+  }
+
+  .quote-block p {
+    font-size: clamp(24px, 2.5vw, 40px);
+    font-style: italic;
+    color: #dde8f5;
+    line-height: 1.45;
+  }
+
+  .quote-block span {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    color: var(--muted);
+    margin-top: 12px;
+    display: block;
+  }
+
+  /* vs compare */
+  .vs-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 20px;
+    align-items: center;
+    margin-top: 30px;
+    max-width: 1060px;
+  }
+
+  .vs-side { border-radius: 12px; padding: 26px 28px; }
+  .vs-side.old { background: rgba(255,77,109,0.08); border: 1px solid rgba(255,77,109,0.2); }
+  .vs-side.new { background: rgba(0,229,255,0.07); border: 1px solid rgba(0,229,255,0.2); }
+  .vs-side h4 { font-size: clamp(22px, 1.8vw, 30px); margin-bottom: 10px; }
+  .vs-side p  { font-size: clamp(20px, 1.6vw, 26px); color: #9fb3cc; line-height: 1.5; }
+  .vs-label { font-family: 'Space Mono', monospace; font-size: 28px; color: var(--muted); text-align: center; font-weight: 700; }
+
+  /* Final CTA */
+  .cta-big {
+    font-size: clamp(30px, 4.5vw, 56px);
+    font-weight: 800;
+    line-height: 1.15;
+    background: linear-gradient(135deg, var(--accent1), var(--accent3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Keyboard hint */
+  .key-hint {
+    position: fixed;
+    top: 24px; right: 30px;
+    font-family: 'Space Mono', monospace;
+    font-size: 20px;
+    color: rgba(122,143,173,0.5);
+    z-index: 100;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="grid-bg"></div>
+<div class="noise"></div>
+<div class="key-hint">← → to navigate</div>
+
+<div class="slideshow" id="slideshow">
+
+  <!-- Slide 1: Title -->
+  <div class="slide active" id="slide-1">
+    <div class="bg-shape" style="width:500px;height:500px;background:var(--accent1);top:-100px;right:-100px;"></div>
+    <div class="bg-shape" style="width:350px;height:350px;background:var(--accent2);bottom:-80px;left:200px;"></div>
+    <div class="slide-content">
+      <div class="pill">THE DATA EVOLUTION</div>
+      <h1>From <span class="highlight2">Manual Data Entry</span><br>to <span class="highlight">"Automated Insight<br>Harvesting"</span></h1>
+      <p class="body-text" style="margin-top:28px;">How organizations are escaping the spreadsheet prison and unlocking intelligence at machine speed.</p>
+    </div>
+  </div>
+
+  <!-- Slide 2: The Old World -->
+  <div class="slide" id="slide-2">
+    <div class="bg-shape" style="width:420px;height:420px;background:var(--accent2);top:50px;right:80px;"></div>
+    <div class="slide-content">
+      <div class="accent-bar" style="background:var(--accent2);"></div>
+      <div class="slide-tag">The Old World</div>
+      <h2>The <span class="highlight2">Human Typewriter</span> Era</h2>
+      <p class="body-text">For decades, businesses ran on a simple but brutal model: a person reads a document, types the data into a form, and prays for no typos. Rinse. Repeat. 8 hours a day.</p>
+      <div class="quote-block">
+        <p>"80% of a data analyst's time is spent finding, cleaning, and organizing data — not analyzing it."</p>
+        <span>— IBM Data & AI study</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 3: Pain Points -->
+  <div class="slide" id="slide-3">
+    <div class="bg-shape" style="width:380px;height:380px;background:var(--accent4);bottom:0;right:0;"></div>
+    <div class="slide-content">
+      <div class="accent-bar" style="background:var(--accent4);"></div>
+      <div class="slide-tag">Pain Points</div>
+      <h2>What Was <span class="highlight4">Actually</span> Happening</h2>
+      <ul class="fancy-list" style="margin-top:22px;">
+        <li>Employees spent 40%+ of their day re-keying data between systems</li>
+        <li>Human error rates of 1–4% per field — catastrophic at scale</li>
+        <li>Data arrived stale — insights were always hours or days late</li>
+        <li>Knowledge siloed in spreadsheets nobody else could find</li>
+        <li>Decisions made on gut feeling, not real-time signal</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Slide 4: The Hidden Cost -->
+  <div class="slide" id="slide-4">
+    <div class="bg-shape" style="width:450px;height:450px;background:var(--accent2);top:-80px;left:300px;"></div>
+    <div class="slide-content">
+      <div class="accent-bar" style="background:var(--accent2);"></div>
+      <div class="slide-tag">The Real Cost</div>
+      <h2>It Was <span class="highlight2">Expensive</span> to Be Slow</h2>
+      <div class="stat-block">
+        <div class="stat-item">
+          <div class="stat-num">$3.1T</div>
+          <div class="stat-label">annual cost of poor data quality (US)</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">27%</div>
+          <div class="stat-label">of data workers' time wasted on bad data</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">88%</div>
+          <div class="stat-label">of spreadsheets contain at least one error</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 5: The Shift Begins -->
+  <div class="slide" id="slide-5">
+    <div class="bg-shape" style="width:400px;height:400px;background:var(--accent1);bottom:50px;right:100px;"></div>
+    <div class="slide-content">
+      <div class="accent-bar"></div>
+      <div class="slide-tag">The Inflection Point</div>
+      <h2>The Shift <span class="highlight">Begins</span></h2>
+      <div class="timeline">
+        <div class="tl-step">
+          <div class="tl-num">1990s</div>
+          <div class="tl-label">ERP & Databases</div>
+          <div class="tl-sub">Structured storage, but still manual input</div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-num">2000s</div>
+          <div class="tl-label">ETL Pipelines</div>
+          <div class="tl-sub">Move data between systems, but rigid & brittle</div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-num">2010s</div>
+          <div class="tl-label">Big Data & APIs</div>
+          <div class="tl-sub">Volume exploded; tooling scrambled to keep up</div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-num">2020s</div>
+          <div class="tl-label">AI-Powered Harvesting</div>
+          <div class="tl-sub">Machines extract meaning autonomously</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 6: What is Insight Harvesting -->
+  <div class="slide" id="slide-6">
+    <div class="bg-shape" style="width:500px;height:500px;background:var(--accent3);top:-120px;right:-120px;opacity:0.09;"></div>
+    <div class="slide-content">
+      <div class="accent-bar" style="background:var(--accent3);"></div>
+      <div class="slide-tag">Core Concept</div>
+      <h2>What <span class="highlight3">Is</span> Automated Insight Harvesting?</h2>
+      <p class="body-text">It's the practice of deploying intelligent systems that continuously ingest raw signals — from documents, sensors, transactions, conversations — and surface decision-ready insights without human intervention in the loop.</p>
+      <div class="code-box">
+        Raw Data Stream → Ingest → Clean → Parse → Model → Insight → Action<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↑<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ALL of this runs autonomously
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 7: The Stack -->
+  <div class="slide" id="slide-7">
+    <div class="bg-shape" style="width:380px;height:380px;background:var(--accent1);bottom:0;right:200px;"></div>
+    <div class="slide-content">
+      <div class="accent-bar"></div>
+      <div class="slide-tag">The Technology Stack</div>
+      <h2>The <span class="highlight">Five Layers</span> of the Machine</h2>
+      <ul class="fancy-list">
+        <li><span class="highlight">Ingestion:</span> APIs, webhooks, stream processors (Kafka, Kinesis)</li>
+        <li><span class="highlight3">Storage:</span> Data lakes, lakehouses, vector databases</li>
+        <li><span class="highlight4">Processing:</span> Spark, dbt, cloud-native transforms</li>
+        <li><span class="highlight2">Intelligence:</span> ML models, LLMs, anomaly detectors</li>
+        <li><span class="highlight">Delivery:</span> Dashboards, alerts, embedded AI recommendations</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Slide 8: Old vs New -->
+  <div class="slide" id="slide-8">
+    <div class="bg-shape" style="width:400px;height:400px;background:var(--accent2);top:0;right:0;opacity:0.1;"></div>
+    <div class="slide-content">
+      <div class="accent-bar" style="background:var(--accent2);"></div>
+      <div class="slide-tag">Paradigm Shift</div>
+      <h2>Manual Entry <span class="highlight2">vs</span> Intelligent Harvesting</h2>
+      <div class="vs-grid">
+        <div class="vs-side old">
+          <h4 class="highlight2">Manual Entry</h4>
+          <p>Human transcribes, field by field. Hours to produce a report. High error rate. Reactive and backward-looking.</p>
+        </div>
+        <div class="vs-label">VS</div>
+        <div class="vs-side new">
+          <h4 class="highlight">Automated Harvesting</h4>
+          <p>System ingests and enriches in milliseconds. Continuous, proactive, forward-looking intelligence. Zero transcription errors.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 9: OCR & Document AI -->
+  <div class="slide" id="slide-9">
+    <div class="bg-shape" style="width:420px;height:420px;background:var(--accent3);bottom:-60px;left:400px;opacity:0.09;"></div>
+    <div class="slide-content">
+      <div class="accent-bar" style="background:var(--accent3);"></div>
+      <div class="slide-tag">Unstructured → Structured</div>
+      <h2>Document AI: <span class="highlight3">Reading</span> What Humans Wrote</h2>
+      <p class="body-text">OCR grew up. Modern document intelligence doesn't just read characters — it understands context, extracts entities, classifies intent, and maps fields to schemas automatically.</p>
+      <ul class="fancy-list" style="margin-top:18px;">
+        <li>Invoices processed in &lt; 2 seconds with 99.5% accuracy</li>
+        <li>Contracts analyzed for risk clauses without a lawyer reading them</li>
+        <li>Handwritten forms digitized and validated in real-time</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Slide 10: Streaming & Real-Time -->
+  <div class="slide" id="slide-10">
+    <div class="bg-shape" style="width:460px;height:460px;background:var(--accent1);top:-100px;right:0;"></div>
+    <div class="slide-content">
+      <div class="accent-bar"></div>
+      <div class="slide-tag">Speed Is the Insight</div>
+      <h2>From <span class="highlight">Batch Runs</span> to Live Streams</h2>
+      <div class="two-col">
+        <div class="col-block">
+          <h4 class="highlight4">The Old Way</h4>
+          <p>Run the weekly report every Monday. Insights are 7 days stale. Problems are discovered after damage is done.</p>
+        </div>
+        <div class="col-block">
+          <h4 class="highlight">The Stream Way</h4>
+          <p>Events trigger analysis in under 100ms. Anomalies surface in real-time. Decisions happen before problems escalate.</p>
+        </div>
+      </div>
+      <p class="body-text" style="margin-top:22px;">Real-time streaming turns data from a history book into a <span class="highlight">live instrument.</span></p>
+    </div>
+  </div>
+
+  <!-- Slide 11: NLP & LLMs -->
+  <div class="slide" id="slide-11">
+    <div class="bg-shape" style="width:400px;height:400px;background:var(--accent2);bottom:0;right:0;"></div>
+    <div class="slide-content">
+      <div class="accent-bar" style="background:var(--accent2);"></div>
+      <div class="slide-tag">Language as Data</div>
+      <h2>LLMs: The <span class="highlight2">Meaning Layer</span></h2>
+      <p class="body-text">Large language models can now read support tickets, earnings calls, news feeds, and customer reviews — and extract structured insight from them at industrial scale.</p>
+      <div class="code-box">
+        INPUT: "The delivery was late and the packaging was crushed. Disappointed."<br><br>
+        OUTPUT: sentiment=negative, topics=[delivery, packaging], urgency=medium,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action=refund_offer, escalate=false
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 12: Industry Use Cases -->
+  <div class="slide" id="slide-12">
+    <div class="bg-shape" style="width:500px;height:500px;background:var(--accent3);top:-120px;left:400px;opacity:0.08;"></div>
+    <div class="slide-content">
+      <div class="accent-bar" style="background:var(--accent3);"></div>
+      <div class="slide-tag">Real World</div>
+      <h2>Industries <span class="highlight3">Already Transformed</span></h2>
+      <div class="two-col">
+        <div class="col-block">
+          <h4 class="highlight3">Finance</h4>
+          <p>Automated fraud detection, real-time risk scoring, regulatory filings drafted by AI</p>
+        </div>
+        <div class="col-block">
+          <h4 class="highlight">Healthcare</h4>
+          <p>Clinical notes turned into structured EHR data instantly; lab results auto-flagged for review</p>
+        </div>
+      </div>
+      <div class="two-col" style="margin-top:16px;">
+        <div class="col-block">
+          <h4 class="highlight4">Retail</h4>
+          <p>Purchase signals predict demand; pricing adjusted in milliseconds based on competitor data</p>
+        </div>
+        <div class="col-block">
+          <h4 class="highlight2">Logistics</h4>
+          <p>IoT sensors harvest supply chain data continuously; delays predicted before they happen</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 13: The Human Role Changes -->
+  <div class="slide" id="slide-13">
+    <div class="bg-shape" style="width:380px;height:380px;background:var(--accent1);bottom:50px;right:80px;"></div>
+    <div class="slide-content">
+      <div class="accent-bar"></div>
+      <div class="slide-tag">People + Machines</div>
+      <h2>The Human Role <span class="highlight">Doesn't Disappear</span> — It Evolves</h2>
+      <p class="body-text">Manual entry workers don't become obsolete. They become insight curators — training models, validating edge cases, defining what matters, and acting on what machines surface.</p>
+      <div class="divider"></div>
+      <ul class="fancy-list">
+        <li>Data entry clerk → <span class="highlight">AI trainer & quality validator</span></li>
+        <li>Report builder → <span class="highlight3">Insight strategist</span></li>
+        <li>Analyst → <span class="highlight4">Decision orchestrator</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Slide 14: Challenges -->
+  <div class="slide" id="slide-14">
+    <div class="bg-shape" style="width:420px;height:420px;background:var(--accent2);top:0;right:0;opacity:0.1;"></div>
+    <div class="slide-content">
+      <div class="accent-bar" style="background:var(--accent2);"></div>
+      <div class="slide-tag">Not Without Friction</div>
+      <h2>The <span class="highlight2">Hard Parts</span> Nobody Advertises</h2>
+      <ul class="fancy-list">
+        <li>Legacy system integration — the real enterprise nightmare</li>
+        <li>Data quality debt: garbage in, garbage insight out</li>
+        <li>Model drift — yesterday's trained model fails on today's data</li>
+        <li>Governance: who owns the automated decision and its consequences?</li>
+        <li>Trust gap: staff who don't trust what they didn't build</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Slide 15: The Architecture of Trust -->
+  <div class="slide" id="slide-15">
+    <div class="bg-shape" style="width:460px;height:460px;background:var(--accent4);bottom:-80px;right:0;opacity:0.1;"></div>
+    <div class="slide-content">
+      <div class="accent-bar" style="background:var(--accent4);"></div>
+      <div class="slide-tag">Foundation Matters</div>
+      <h2>Building on <span class="highlight4">Trustworthy Data</span></h2>
+      <p class="body-text">Insight harvesting is only as valuable as the data beneath it. You can't automate your way out of bad foundations.</p>
+      <div class="code-box">
+        Data Contract → Schema Validation → Lineage Tracking<br>
+        → Observability Monitors → SLA Alerting → Certified Insight<br><br>
+        Trust is engineered, not assumed.
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 16: The Agentic Future -->
+  <div class="slide" id="slide-16">
+    <div class="bg-shape" style="width:500px;height:500px;background:var(--accent1);top:-100px;right:-100px;"></div>
+    <div class="slide-content">
+      <div class="accent-bar"></div>
+      <div class="slide-tag">What's Next</div>
+      <h2>The Next Frontier: <span class="highlight">Agentic Intelligence</span></h2>
+      <p class="body-text">The next step isn't just harvesting insights — it's deploying AI agents that act on them autonomously. Reorder inventory. Adjust pricing. Escalate support tickets. No human in the loop.</p>
+      <div class="stat-block">
+        <div class="stat-item">
+          <div class="stat-num">67%</div>
+          <div class="stat-label">of enterprises plan agentic AI workflows by 2026</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">10×</div>
+          <div class="stat-label">faster decision cycles vs manual processes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 17: How to Start -->
+  <div class="slide" id="slide-17">
+    <div class="bg-shape" style="width:400px;height:400px;background:var(--accent3);bottom:0;right:200px;opacity:0.09;"></div>
+    <div class="slide-content">
+      <div class="accent-bar" style="background:var(--accent3);"></div>
+      <div class="slide-tag">Actionable Roadmap</div>
+      <h2>Where to <span class="highlight3">Start</span> the Journey</h2>
+      <div class="timeline">
+        <div class="tl-step">
+          <div class="tl-num">Step 1</div>
+          <div class="tl-label">Audit your manual workflows</div>
+          <div class="tl-sub">Find where humans touch data repeatedly</div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-num">Step 2</div>
+          <div class="tl-label">Fix data quality first</div>
+          <div class="tl-sub">Don't automate broken inputs</div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-num">Step 3</div>
+          <div class="tl-label">Automate the mundane</div>
+          <div class="tl-sub">Ingestion, cleaning, alerting first</div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-num">Step 4</div>
+          <div class="tl-label">Build insight loops</div>
+          <div class="tl-sub">Connect insight directly to action</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 18: The Competitive Edge -->
+  <div class="slide" id="slide-18">
+    <div class="bg-shape" style="width:450px;height:450px;background:var(--accent2);top:-80px;right:0;opacity:0.1;"></div>
+    <div class="slide-content">
+      <div class="accent-bar" style="background:var(--accent2);"></div>
+      <div class="slide-tag">The Stakes</div>
+      <h2>This Is Now a <span class="highlight2">Competitive Moat</span></h2>
+      <p class="body-text">The gap between organizations that harvest insight automatically and those still doing it manually isn't just efficiency — it's survival. The manual enterprise is making decisions in the past.</p>
+      <div class="quote-block">
+        <p>The company that sees today's signal will always outmaneuver the one still reading last week's report.</p>
+        <span>— The new competitive reality</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 19: The Takeaway -->
+  <div class="slide" id="slide-19">
+    <div class="bg-shape" style="width:600px;height:600px;background:var(--accent1);top:-150px;right:-150px;opacity:0.1;"></div>
+    <div class="bg-shape" style="width:400px;height:400px;background:var(--accent3);bottom:-100px;left:-50px;opacity:0.08;"></div>
+    <div class="slide-content">
+      <div class="slide-tag">The Bottom Line</div>
+      <div class="cta-big">Stop Transcribing.<br>Start Harvesting.</div>
+      <p class="body-text" style="margin-top:28px;">Manual data entry was never the goal — it was a workaround. Automated insight harvesting is what data was always supposed to become: a living, breathing system that transforms signal into action at the speed of business.</p>
+      <div class="divider" style="margin-top:30px;"></div>
+      <p style="font-family:'Space Mono',monospace;font-size:22px;color:var(--muted);margin-top:0;">The future belongs to organizations that let machines do what machines do best — and free humans to do what only humans can.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Progress -->
+<div class="progress-wrap">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button id="prevBtn">←</button>
+  <span class="slide-counter" id="counter">01 / 19</span>
+  <button id="nextBtn">→</button>
+</div>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top  = e.clientY + 'px';
+  });
+
+  // Slides logic
+  const slides = document.querySelectorAll('.slide');
+  const total  = slides.length;
+  let current  = 0;
+
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    current = (n + total) % total;
+    slides[current].classList.add('active');
+    document.getElementById('counter').textContent =
+      String(current + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+    document.getElementById('progressBar').style.width =
+      ((current + 1) / total * 100) + '%';
+  }
+
+  document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+  document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(current + 1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   goTo(current - 1);
+  });
+
+  // Touch swipe
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend',   e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) diff > 0 ? goTo(current + 1) : goTo(current - 1);
+  });
+
+  // Init progress
+  goTo(0);
+</script>
+</body>
+</html>

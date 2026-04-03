@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Digital Twin Economy</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050810;
+    --accent1: #00FFD1;
+    --accent2: #FF3CAC;
+    --accent3: #FFD700;
+    --accent4: #5B8EFF;
+    --text: #E8EDF8;
+    --dim: #7A8AAA;
+    --card: rgba(255,255,255,0.04);
+    --border: rgba(0,255,209,0.18);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  #cursor {
+    position: fixed;
+    width: 14px; height: 14px;
+    background: var(--accent1);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.08s, opacity 0.2s;
+    mix-blend-mode: screen;
+  }
+  #cursor-ring {
+    position: fixed;
+    width: 40px; height: 40px;
+    border: 1.5px solid var(--accent1);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.25s cubic-bezier(.22,1,.36,1), width 0.2s, height 0.2s, opacity 0.2s;
+    opacity: 0.5;
+  }
+
+  /* Background grid */
+  .grid-bg {
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,255,209,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,209,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Orbs */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(100px);
+    pointer-events: none;
+    z-index: 0;
+    animation: drift 20s ease-in-out infinite alternate;
+  }
+  .orb1 { width: 500px; height: 500px; background: rgba(0,255,209,0.06); top: -150px; left: -100px; animation-duration: 22s; }
+  .orb2 { width: 400px; height: 400px; background: rgba(255,60,172,0.06); bottom: -100px; right: -80px; animation-duration: 18s; animation-delay: -8s; }
+  .orb3 { width: 300px; height: 300px; background: rgba(91,142,255,0.07); top: 40%; left: 40%; animation-duration: 25s; animation-delay: -5s; }
+
+  @keyframes drift {
+    from { transform: translate(0,0) scale(1); }
+    to { transform: translate(60px, 40px) scale(1.08); }
+  }
+
+  /* Slideshow */
+  #slideshow {
+    position: relative;
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 80px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s cubic-bezier(.4,0,.2,1), transform 0.6s cubic-bezier(.4,0,.2,1);
+    transform: translateY(30px);
+  }
+  .slide.active {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+  }
+  .slide.exit {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+
+  .slide-inner {
+    max-width: 1100px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  /* Typography */
+  .label {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent1);
+    opacity: 0.85;
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(38px, 5.5vw, 58px);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(30px, 4vw, 50px);
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(22px, 2.8vw, 38px);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--accent1);
+  }
+
+  p {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(21px, 1.9vw, 30px);
+    line-height: 1.65;
+    color: #B8C8E0;
+    max-width: 820px;
+  }
+
+  .highlight { color: var(--accent1); }
+  .highlight2 { color: var(--accent2); }
+  .highlight3 { color: var(--accent3); }
+  .highlight4 { color: var(--accent4); }
+
+  .accent-line {
+    width: 72px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
+    border-radius: 2px;
+  }
+
+  /* Cards grid */
+  .cards {
+    display: grid;
+    gap: 18px;
+    width: 100%;
+  }
+  .cards.col2 { grid-template-columns: 1fr 1fr; }
+  .cards.col3 { grid-template-columns: 1fr 1fr 1fr; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent1), transparent);
+    opacity: 0.7;
+  }
+  .card.pink::before { background: linear-gradient(90deg, var(--accent2), transparent); }
+  .card.gold::before { background: linear-gradient(90deg, var(--accent3), transparent); }
+  .card.blue::before { background: linear-gradient(90deg, var(--accent4), transparent); }
+
+  .card-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--accent1);
+    opacity: 0.25;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .card.pink .card-num { color: var(--accent2); }
+  .card.gold .card-num { color: var(--accent3); }
+  .card.blue .card-num { color: var(--accent4); }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(21px, 2vw, 28px);
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .card-body {
+    font-size: clamp(16px, 1.3vw, 21px);
+    color: #8AA0C0;
+    line-height: 1.55;
+  }
+  .card-body.big { font-size: clamp(21px, 1.7vw, 26px); color: #B8C8E0; }
+
+  /* Big stat */
+  .stat-block {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(60px, 9vw, 100px);
+    font-weight: 800;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--accent1), var(--accent4));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-label {
+    font-size: clamp(22px, 2vw, 30px);
+    color: var(--dim);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  /* Timeline / steps */
+  .steps { display: flex; flex-direction: column; gap: 16px; }
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 22px;
+    padding: 18px 24px;
+    background: var(--card);
+    border-radius: 12px;
+    border-left: 3px solid var(--accent1);
+  }
+  .step.pink { border-left-color: var(--accent2); }
+  .step.gold { border-left-color: var(--accent3); }
+  .step.blue { border-left-color: var(--accent4); }
+
+  .step-icon {
+    font-size: 28px;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-text {
+    font-size: clamp(20px, 1.7vw, 26px);
+    color: #B8C8E0;
+    line-height: 1.5;
+  }
+  .step-text strong { color: var(--accent1); font-weight: 700; }
+  .step.pink .step-text strong { color: var(--accent2); }
+  .step.gold .step-text strong { color: var(--accent3); }
+  .step.blue .step-text strong { color: var(--accent4); }
+
+  /* Quote / hero callout */
+  .quote-block {
+    border-left: 5px solid var(--accent1);
+    padding: 24px 36px;
+    background: rgba(0,255,209,0.04);
+    border-radius: 0 16px 16px 0;
+  }
+  .quote-text {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(26px, 3vw, 42px);
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--text);
+    font-style: italic;
+  }
+  .quote-attr {
+    margin-top: 14px;
+    font-size: clamp(17px, 1.4vw, 22px);
+    color: var(--dim);
+  }
+
+  /* Tags */
+  .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+  .tag {
+    padding: 8px 20px;
+    border-radius: 100px;
+    font-size: clamp(17px, 1.4vw, 22px);
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    border: 1.5px solid;
+  }
+  .tag.teal { border-color: var(--accent1); color: var(--accent1); background: rgba(0,255,209,0.07); }
+  .tag.pink { border-color: var(--accent2); color: var(--accent2); background: rgba(255,60,172,0.07); }
+  .tag.gold { border-color: var(--accent3); color: var(--accent3); background: rgba(255,215,0,0.07); }
+  .tag.blue { border-color: var(--accent4); color: var(--accent4); background: rgba(91,142,255,0.07); }
+
+  /* Two-col layout */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  /* Cover slide extras */
+  .cover-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 20px;
+    border: 1px solid var(--accent1);
+    border-radius: 100px;
+    font-size: 14px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent1);
+    background: rgba(0,255,209,0.07);
+    width: fit-content;
+  }
+  .cover-badge::before {
+    content: '';
+    width: 8px; height: 8px;
+    background: var(--accent1);
+    border-radius: 50%;
+    animation: blink 1.4s infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  /* Divider */
+  .divider { width: 100%; height: 1px; background: var(--border); }
+
+  /* CTA / final slide */
+  .cta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    width: 100%;
+  }
+  .cta-item {
+    text-align: center;
+    padding: 28px 20px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--card);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .cta-icon { font-size: 40px; }
+  .cta-label {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(20px, 1.8vw, 26px);
+    font-weight: 700;
+    color: var(--text);
+  }
+  .cta-sub { font-size: clamp(16px, 1.2vw, 20px); color: var(--dim); line-height: 1.4; }
+
+  /* Big centered text */
+  .centered { text-align: center; align-items: center; }
+
+  /* Navigation */
+  #nav {
+    position: fixed;
+    bottom: 36px;
+    left: 84%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: rgba(5,8,16,0.85);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 12px 28px;
+    backdrop-filter: blur(16px);opacity: 0.5;
+  }
+
+  #nav button {
+    background: none;
+    border: none;
+    color: var(--accent1);
+    font-size: 22px;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
+    font-family: 'Space Mono', monospace;
+  }
+  #nav button:hover { background: rgba(0,255,209,0.12); }
+  #nav button:disabled { color: var(--dim); cursor: default; }
+  #nav button:disabled:hover { background: none; }
+
+  #slide-counter {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    color: var(--dim);
+    min-width: 60px;
+    text-align: center;
+    letter-spacing: 0.1em;
+  }
+
+  /* Progress bar */
+  #progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
+    z-index: 100;
+    transition: width 0.5s cubic-bezier(.4,0,.2,1);
+    box-shadow: 0 0 12px var(--accent1);
+  }
+
+  /* Slide number top-right */
+  #slide-num {
+    position: fixed;
+    top: 28px; right: 40px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--dim);
+    letter-spacing: 0.2em;
+    z-index: 100;
+  }
+
+  /* Logo top-left */
+  #logo {
+    position: fixed;
+    top: 24px; left: 40px;
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--accent1);
+    letter-spacing: 0.05em;
+    z-index: 100;
+    opacity: 0.7;
+  }
+
+  /* Scan line effect */
+  .scanlines {
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(0,0,0,0.03) 3px,
+      rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 50;
+  }
+
+  /* Keyboard hint */
+  #hint {
+    position: fixed;
+    bottom: 92px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 13px;
+    color: var(--dim);
+    opacity: 0.6;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.1em;
+    z-index: 100;
+  }
+
+  /* Pill number */
+  .pill-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px; height: 34px;
+    background: var(--accent1);
+    color: var(--bg);
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .pill-num.pink { background: var(--accent2); }
+  .pill-num.gold { background: var(--accent3); }
+  .pill-num.blue { background: var(--accent4); }
+
+  /* List */
+  .fancy-list { display: flex; flex-direction: column; gap: 14px; }
+  .fancy-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    font-size: clamp(21px, 1.8vw, 28px);
+    color: #B8C8E0;
+    line-height: 1.5;
+  }
+  .fancy-item strong { color: var(--text); }
+
+  @media (max-width: 768px) {
+    .slide { padding: 40px 28px; }
+    .cards.col2, .cards.col3, .two-col, .cta-grid { grid-template-columns: 1fr; }
+    #logo { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<div class="grid-bg"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+<div class="scanlines"></div>
+
+<div id="progress"></div>
+<div id="slide-num"></div>
+<div id="logo">DT/ECON</div>
+
+<div id="slideshow">
+
+  <!-- SLIDE 1: Cover -->
+  <div class="slide active" data-index="0">
+    <div class="slide-inner">
+      <div class="cover-badge">2025–2030 · Personal Brand Intelligence</div>
+      <h1>The <span class="highlight">"Digital Twin"</span><br>Economy</h1>
+      <div class="accent-line"></div>
+      <p>How to automate your personal brand using AI clones, synthetic content, and intelligent agents — while you sleep, travel, or simply live.</p>
+      <div class="tags">
+        <span class="tag teal">AI Identity</span>
+        <span class="tag pink">Brand Automation</span>
+        <span class="tag gold">Creator Economy</span>
+        <span class="tag blue">Digital Self</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: The Problem -->
+  <div class="slide" data-index="1">
+    <div class="slide-inner">
+      <span class="label">The Problem Space</span>
+      <h2>Your brand is a <span class="highlight2">full-time job</span> you never signed up for.</h2>
+      <div class="accent-line"></div>
+      <div class="steps">
+        <div class="step pink">
+          <span class="step-icon">⏳</span>
+          <span class="step-text">Creators spend <strong>60–80%</strong> of their time on content logistics — not creation.</span>
+        </div>
+        <div class="step gold">
+          <span class="step-icon">📉</span>
+          <span class="step-text">Algorithms reward <strong>daily posting</strong>, but humans need rest, depth, and real life.</span>
+        </div>
+        <div class="step blue">
+          <span class="step-icon">🔁</span>
+          <span class="step-text">Personal brands <strong>stall or die</strong> the moment you step away from the keyboard.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: What IS a Digital Twin -->
+  <div class="slide" data-index="2">
+    <div class="slide-inner">
+      <span class="label">Core Concept</span>
+      <h2>What is a <span class="highlight">Digital Twin</span>?</h2>
+      <div class="accent-line"></div>
+      <div class="two-col">
+        <div>
+          <p style="margin-bottom:20px">In engineering, a <strong style="color:var(--accent1)">digital twin</strong> is a real-time virtual replica of a physical system — used to simulate, test, and optimize.</p>
+          <p>Applied to personal branding: it's an <strong style="color:var(--accent1)">AI-powered version of you</strong> — trained on your voice, values, knowledge, and content patterns.</p>
+        </div>
+        <div class="card" style="align-self:center">
+          <div class="card-num">≈</div>
+          <div class="card-title">Your Brand Engine</div>
+          <div class="card-body big">Voice · Style · Knowledge · Values · Tone · Strategy<br><br>Running 24 / 7 / 365</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: Big Stat -->
+  <div class="slide centered" data-index="3">
+    <div class="slide-inner centered">
+      <span class="label">The Opportunity</span>
+      <div class="stat-block" style="justify-content:center">
+        <div class="stat-num">4.7B</div>
+        <div class="stat-label">people online.<br>Most brands<br>sound identical.</div>
+      </div>
+      <div class="accent-line" style="margin:0 auto"></div>
+      <p style="text-align:center; max-width:700px">The creators who build <span class="highlight">distinctive, scalable AI identities</span> will own the next decade of attention and trust.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: The 5 Pillars -->
+  <div class="slide" data-index="4">
+    <div class="slide-inner">
+      <span class="label">Framework</span>
+      <h2>The <span class="highlight">5 Pillars</span> of Your Digital Twin</h2>
+      <div class="accent-line"></div>
+      <div class="cards col3">
+        <div class="card">
+          <div class="card-num">01</div>
+          <div class="card-title">Voice Model</div>
+          <div class="card-body">Your linguistic fingerprint — how you phrase, punctuate, and persuade.</div>
+        </div>
+        <div class="card pink">
+          <div class="card-num">02</div>
+          <div class="card-title">Knowledge Base</div>
+          <div class="card-body">Your proprietary insights, frameworks, and lived experience — indexed.</div>
+        </div>
+        <div class="card gold">
+          <div class="card-num">03</div>
+          <div class="card-title">Visual Identity</div>
+          <div class="card-body">Face clone, style guide, design tokens that signal YOU instantly.</div>
+        </div>
+      </div>
+      <div class="cards col2" style="margin-top:0">
+        <div class="card blue">
+          <div class="card-num">04</div>
+          <div class="card-title">Belief System</div>
+          <div class="card-body">Your values, red lines, and opinion patterns — so the AI never contradicts your brand.</div>
+        </div>
+        <div class="card">
+          <div class="card-num">05</div>
+          <div class="card-title">Audience Model</div>
+          <div class="card-body">Who you serve: their fears, desires, and the language that moves them.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: Building Your Voice -->
+  <div class="slide" data-index="5">
+    <div class="slide-inner">
+      <span class="label">Pillar 01</span>
+      <h2>Training Your <span class="highlight">Voice Model</span></h2>
+      <div class="accent-line"></div>
+      <div class="fancy-list">
+        <div class="fancy-item"><span class="pill-num">1</span><span>Collect <strong>50+ pieces</strong> of your best writing — posts, emails, essays, threads.</span></div>
+        <div class="fancy-item"><span class="pill-num">2</span><span>Extract <strong>style patterns</strong>: sentence rhythm, transition words, opening hooks, closing moves.</span></div>
+        <div class="fancy-item"><span class="pill-num pink">3</span><span>Build a <strong>Style Guide Doc</strong> — feed it as system prompt context to every AI tool you use.</span></div>
+        <div class="fancy-item"><span class="pill-num gold">4</span><span>A/B test outputs with your audience — <strong>iterate monthly</strong> as your real voice evolves.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: Content Automation Stack -->
+  <div class="slide" data-index="6">
+    <div class="slide-inner">
+      <span class="label">Automation Layer</span>
+      <h2>The <span class="highlight">Content Flywheel</span> Stack</h2>
+      <div class="accent-line"></div>
+      <div class="steps">
+        <div class="step">
+          <span class="step-icon">🎙️</span>
+          <span class="step-text"><strong>Raw Idea Capture</strong> — voice memo, rough note, or a 3-sentence brief. This is the only thing you create.</span>
+        </div>
+        <div class="step pink">
+          <span class="step-icon">🤖</span>
+          <span class="step-text"><strong>AI Expansion Engine</strong> — your twin drafts long-form article, LinkedIn post, tweet thread, email blast.</span>
+        </div>
+        <div class="step gold">
+          <span class="step-icon">📸</span>
+          <span class="step-text"><strong>Visual Automation</strong> — avatar video (HeyGen), branded graphics (Canva AI), thumbnail variants.</span>
+        </div>
+        <div class="step blue">
+          <span class="step-icon">📅</span>
+          <span class="step-text"><strong>Smart Distribution</strong> — platform-specific scheduling, engagement auto-reply, analytics loop-back.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: The Tool Landscape -->
+  <div class="slide" data-index="7">
+    <div class="slide-inner">
+      <span class="label">Tool Ecosystem</span>
+      <h2>Your Digital Twin <span class="highlight3">Toolkit</span></h2>
+      <div class="accent-line"></div>
+      <div class="cards col2">
+        <div class="card">
+          <div class="card-title">🗣️ Voice & Writing</div>
+          <div class="card-body big">Claude · ChatGPT · Jasper<br>ElevenLabs · Descript</div>
+        </div>
+        <div class="card pink">
+          <div class="card-title">🎬 Avatar & Video</div>
+          <div class="card-body big">HeyGen · Synthesia<br>D-ID · Runway ML</div>
+        </div>
+        <div class="card gold">
+          <div class="card-title">📊 Memory & RAG</div>
+          <div class="card-body big">Notion AI · Mem.ai<br>LangChain · Pinecone</div>
+        </div>
+        <div class="card blue">
+          <div class="card-title">⚙️ Orchestration</div>
+          <div class="card-body big">Make · Zapier · n8n<br>Beehiiv · Buffer</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: Avatar Economy -->
+  <div class="slide" data-index="8">
+    <div class="slide-inner">
+      <span class="label">The Visual Layer</span>
+      <h2>Your <span class="highlight2">AI Avatar</span>: the face that never sleeps</h2>
+      <div class="accent-line"></div>
+      <div class="two-col">
+        <div class="fancy-list">
+          <div class="fancy-item"><span class="pill-num pink">✓</span><span>Record a <strong>2-hour consent video</strong> — train a photorealistic avatar once.</span></div>
+          <div class="fancy-item"><span class="pill-num pink">✓</span><span>Generate <strong>video content in any language</strong> without reshooting.</span></div>
+          <div class="fancy-item"><span class="pill-num pink">✓</span><span>Lip-sync to AI-generated audio in <strong>your cloned voice</strong>.</span></div>
+          <div class="fancy-item"><span class="pill-num pink">✓</span><span>Appear on <strong>podcasts, webinars, courses</strong> asynchronously.</span></div>
+        </div>
+        <div class="card pink" style="align-self:center; text-align:center; padding:36px">
+          <div style="font-size:60px; margin-bottom:12px">👤</div>
+          <div class="card-title" style="font-size:28px; color:var(--accent2)">You × ∞</div>
+          <div class="card-body big">Infinite presence.<br>Zero extra camera time.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: Monetization -->
+  <div class="slide" data-index="9">
+    <div class="slide-inner">
+      <span class="label">Revenue Models</span>
+      <h2>How to <span class="highlight3">Monetize</span> Your Digital Twin</h2>
+      <div class="accent-line"></div>
+      <div class="cards col3">
+        <div class="card gold">
+          <div class="card-num">$</div>
+          <div class="card-title">Licensing Your Twin</div>
+          <div class="card-body">Brands pay to feature your AI voice & likeness in their campaigns.</div>
+        </div>
+        <div class="card">
+          <div class="card-num">$</div>
+          <div class="card-title">AI-Gated Community</div>
+          <div class="card-body">Subscribers get 24/7 access to an AI trained on your entire library.</div>
+        </div>
+        <div class="card blue">
+          <div class="card-num">$</div>
+          <div class="card-title">Scalable Courses</div>
+          <div class="card-body">Your avatar delivers hyper-personalized coaching at any scale.</div>
+        </div>
+      </div>
+      <div class="quote-block" style="border-left-color:var(--accent3); background:rgba(255,215,0,0.04)">
+        <div class="quote-text" style="font-size: clamp(22px,2vw,32px)">"Your knowledge earns while you exist — not just while you perform."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 11: The Ethics Line -->
+  <div class="slide" data-index="10">
+    <div class="slide-inner">
+      <span class="label">Critical Consideration</span>
+      <h2>The <span class="highlight2">Ethics</span> of Automation</h2>
+      <div class="accent-line"></div>
+      <div class="two-col">
+        <div>
+          <p style="margin-bottom:22px">Automation is powerful. <span class="highlight2">Deception is dangerous.</span></p>
+          <div class="fancy-list">
+            <div class="fancy-item"><span class="pill-num pink">✗</span><span>Never pass off AI content as <strong>real-time human presence</strong> without disclosure.</span></div>
+            <div class="fancy-item"><span class="pill-num pink">✗</span><span>Don't let your twin contradict your <strong>actual beliefs</strong> or use someone else's data.</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="fancy-list">
+            <div class="fancy-item"><span class="pill-num">✓</span><span>Label AI-generated content <strong>clearly and consistently</strong>.</span></div>
+            <div class="fancy-item"><span class="pill-num">✓</span><span>Keep a <strong>human review layer</strong> on anything sensitive or opinion-based.</span></div>
+            <div class="fancy-item"><span class="pill-num">✓</span><span>Treat your twin as an <strong>amplifier</strong>, not a replacement for genuine connection.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 12: Audience Trust Architecture -->
+  <div class="slide" data-index="11">
+    <div class="slide-inner">
+      <span class="label">Trust Framework</span>
+      <h2>Building <span class="highlight">Trust</span> at Machine Speed</h2>
+      <div class="accent-line"></div>
+      <p style="margin-bottom:22px">Audiences can smell inauthenticity. Your digital twin must feel unmistakably <em>you</em> — not a generic AI.</p>
+      <div class="steps">
+        <div class="step">
+          <span class="step-icon">🔑</span>
+          <span class="step-text"><strong>Signature Opinions:</strong> Your AI must hold your actual stances — boldly, not blandly.</span>
+        </div>
+        <div class="step pink">
+          <span class="step-icon">💬</span>
+          <span class="step-text"><strong>Live touchpoints:</strong> Reserve live Q&As and DM windows so people KNOW real-you exists.</span>
+        </div>
+        <div class="step gold">
+          <span class="step-icon">📖</span>
+          <span class="step-text"><strong>Radical transparency:</strong> Tell your audience how you use AI. It builds, not breaks, trust.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 13: The 90-Day Plan -->
+  <div class="slide" data-index="12">
+    <div class="slide-inner">
+      <span class="label">Implementation Roadmap</span>
+      <h2>Your <span class="highlight">90-Day</span> Digital Twin Launchpad</h2>
+      <div class="accent-line"></div>
+      <div class="cards col3">
+        <div class="card">
+          <div class="card-num">30</div>
+          <div class="card-title">Days 1–30: Foundation</div>
+          <div class="card-body big">Build voice model. Audit your best content. Define belief system. Choose your tool stack.</div>
+        </div>
+        <div class="card gold">
+          <div class="card-num">60</div>
+          <div class="card-title">Days 31–60: Automation</div>
+          <div class="card-body big">Wire the content flywheel. Launch avatar. Test distribution pipelines. Iterate on AI outputs.</div>
+        </div>
+        <div class="card pink">
+          <div class="card-num">90</div>
+          <div class="card-title">Days 61–90: Scale</div>
+          <div class="card-body big">Monetize. Expand to new platforms. Refine twin based on engagement data. Hire a human editor.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 14: Common Mistakes -->
+  <div class="slide" data-index="13">
+    <div class="slide-inner">
+      <span class="label">Pitfalls</span>
+      <h2>5 Mistakes That <span class="highlight2">Kill</span> Digital Twins</h2>
+      <div class="accent-line"></div>
+      <div class="fancy-list">
+        <div class="fancy-item"><span class="pill-num pink">1</span><span><strong>Generic system prompts</strong> — your AI sounds like everyone else's AI.</span></div>
+        <div class="fancy-item"><span class="pill-num pink">2</span><span><strong>No human review</strong> — automated errors compound publicly and damage credibility fast.</span></div>
+        <div class="fancy-item"><span class="pill-num pink">3</span><span><strong>Over-automating engagement</strong> — AI replies to DMs without escalation paths = broken trust.</span></div>
+        <div class="fancy-item"><span class="pill-num pink">4</span><span><strong>Static knowledge base</strong> — your twin goes stale if you don't feed it new thinking monthly.</span></div>
+        <div class="fancy-item"><span class="pill-num pink">5</span><span><strong>Platform monoculture</strong> — building only on one algorithm is existential risk.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 15: The Compound Effect -->
+  <div class="slide" data-index="14">
+    <div class="slide-inner centered">
+      <span class="label">Why This Matters</span>
+      <div class="stat-block" style="justify-content:center; align-items:center; flex-direction:column; gap:8px">
+        <div class="stat-num">10×</div>
+        <div class="stat-label" style="text-align:center; font-size: clamp(22px,2vw,30px)">more touchpoints.<br>Same human effort.</div>
+      </div>
+      <div class="accent-line" style="margin: 0 auto"></div>
+      <div class="cards col3" style="margin-top:8px">
+        <div class="card" style="text-align:center">
+          <div class="card-title" style="color:var(--accent1)">Presence</div>
+          <div class="card-body">Every platform, every timezone, every format — simultaneously.</div>
+        </div>
+        <div class="card gold" style="text-align:center">
+          <div class="card-title" style="color:var(--accent3)">Depth</div>
+          <div class="card-body">You focus on thinking. Your twin handles distribution and delivery.</div>
+        </div>
+        <div class="card pink" style="text-align:center">
+          <div class="card-title" style="color:var(--accent2)">Leverage</div>
+          <div class="card-body">One insight becomes 12 pieces of content in 12 formats in one hour.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 16: The Future -->
+  <div class="slide" data-index="15">
+    <div class="slide-inner">
+      <span class="label">Looking Ahead</span>
+      <h2>The <span class="highlight4">Next Frontier</span> — 2027 and Beyond</h2>
+      <div class="accent-line"></div>
+      <div class="steps">
+        <div class="step blue">
+          <span class="step-icon">🌐</span>
+          <span class="step-text"><strong>Autonomous Brand Agents:</strong> Your twin negotiates partnerships, responds to press, and manages collab pipelines.</span>
+        </div>
+        <div class="step">
+          <span class="step-icon">🧠</span>
+          <span class="step-text"><strong>Memory-Augmented Twins:</strong> AI that remembers every fan conversation and personalizes every reply at scale.</span>
+        </div>
+        <div class="step gold">
+          <span class="step-icon">🔗</span>
+          <span class="step-text"><strong>On-Chain Identity:</strong> Verifiable, ownable digital selves — your twin as a protected IP asset you license.</span>
+        </div>
+        <div class="step pink">
+          <span class="step-icon">🤝</span>
+          <span class="step-text"><strong>Twin-to-Twin Commerce:</strong> AI agents representing creators negotiate and transact autonomously.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 17: Key Principles -->
+  <div class="slide" data-index="16">
+    <div class="slide-inner">
+      <span class="label">Core Philosophy</span>
+      <h2>The <span class="highlight">Golden Rules</span></h2>
+      <div class="accent-line"></div>
+      <div class="quote-block">
+        <div class="quote-text">"Automate the distribution. Never automate the thinking."</div>
+      </div>
+      <div class="quote-block" style="border-left-color:var(--accent2); background:rgba(255,60,172,0.04)">
+        <div class="quote-text" style="color:var(--text)">"Your twin is only as interesting as the human behind it."</div>
+      </div>
+      <div class="quote-block" style="border-left-color:var(--accent3); background:rgba(255,215,0,0.04)">
+        <div class="quote-text" style="color:var(--text)">"Scale trust, not just content."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 18: Call to Action / Close -->
+  <div class="slide centered" data-index="17">
+    <div class="slide-inner centered">
+      <span class="label">Start Today</span>
+      <h2 style="text-align:center">You are <span class="highlight">already a brand.</span><br>Now make it work <span class="highlight2">without you.</span></h2>
+      <div class="accent-line" style="margin: 0 auto"></div>
+      <div class="cta-grid">
+        <div class="cta-item">
+          <div class="cta-icon">📝</div>
+          <div class="cta-label">Document Your Voice</div>
+          <div class="cta-sub">Export your best 50 posts this week.</div>
+        </div>
+        <div class="cta-item">
+          <div class="cta-icon">🛠️</div>
+          <div class="cta-label">Pick One Tool</div>
+          <div class="cta-sub">Start with Claude or ChatGPT. Go deep before going wide.</div>
+        </div>
+        <div class="cta-item">
+          <div class="cta-icon">🚀</div>
+          <div class="cta-label">Ship Week One</div>
+          <div class="cta-sub">Publish one AI-assisted piece. Iterate from real feedback.</div>
+        </div>
+      </div>
+      <p style="text-align:center; font-size: clamp(17px,1.4vw,22px); color:var(--dim)">The Digital Twin Economy is not coming — <span class="highlight">it's here.</span></p>
+    </div>
+  </div>
+
+</div><!-- end slideshow -->
+
+<div id="hint">← → arrow keys or click buttons to navigate</div>
+<nav id="nav">
+  <button id="btn-prev" disabled>←</button>
+  <span id="slide-counter">1 / 18</span>
+  <button id="btn-next">→</button>
+</nav>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursor-ring');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    cursorRing.style.left = e.clientX + 'px';
+    cursorRing.style.top = e.clientY + 'px';
+  });
+  document.addEventListener('mousedown', () => { cursor.style.transform = 'translate(-50%,-50%) scale(0.6)'; });
+  document.addEventListener('mouseup', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; });
+
+  // Slideshow
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+  let transitioning = false;
+
+  const progressBar = document.getElementById('progress');
+  const slideNum = document.getElementById('slide-num');
+  const slideCounter = document.getElementById('slide-counter');
+  const btnPrev = document.getElementById('btn-prev');
+  const btnNext = document.getElementById('btn-next');
+
+  function updateUI() {
+    const pct = ((current + 1) / total) * 100;
+    progressBar.style.width = pct + '%';
+    slideNum.textContent = String(current + 1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
+    slideCounter.textContent = (current + 1) + ' / ' + total;
+    btnPrev.disabled = current === 0;
+    btnNext.disabled = current === total - 1;
+  }
+
+  function goTo(idx) {
+    if (transitioning || idx === current || idx < 0 || idx >= total) return;
+    transitioning = true;
+    const oldSlide = slides[current];
+    const newSlide = slides[idx];
+    oldSlide.classList.add('exit');
+    setTimeout(() => {
+      oldSlide.classList.remove('active', 'exit');
+      newSlide.classList.add('active');
+      current = idx;
+      updateUI();
+      transitioning = false;
+    }, 300);
+  }
+
+  btnNext.addEventListener('click', () => goTo(current + 1));
+  btnPrev.addEventListener('click', () => goTo(current - 1));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+  });
+
+  // Touch swipe
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (dx < -50) goTo(current + 1);
+    if (dx > 50) goTo(current - 1);
+  });
+
+  // Hide hint after 4s
+  setTimeout(() => {
+    const hint = document.getElementById('hint');
+    hint.style.transition = 'opacity 1s';
+    hint.style.opacity = '0';
+  }, 4000);
+
+  updateUI();
+</script>
+</body>
+</html>

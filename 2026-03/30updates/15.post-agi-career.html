@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beyond 2026: The Bridge to the Post-AGI Career Landscape</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080b12;
+    --surface: #0d1220;
+    --accent1: #00e5ff;
+    --accent2: #ff6b35;
+    --accent3: #a8ff3e;
+    --accent4: #c77dff;
+    --text: #e8edf7;
+    --muted: #7a8aaa;
+    --grid: rgba(0,229,255,0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--accent1);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: width 0.2s, height 0.2s, background 0.2s;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--accent1);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: all 0.12s ease;
+    opacity: 0.5;
+  }
+
+  /* Grid background */
+  .grid-bg {
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Slides */
+  .slideshow {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 80px;
+    opacity: 0;
+    transform: translateX(60px);
+    transition: opacity 0.55s cubic-bezier(0.77,0,0.18,1), transform 0.55s cubic-bezier(0.77,0,0.18,1);
+    pointer-events: none;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .slide.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: all;
+  }
+
+  .slide.exit {
+    opacity: 0;
+    transform: translateX(-60px);
+  }
+
+  /* Slide number */
+  .slide-num {
+    position: fixed;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 3px;
+    z-index: 100;
+  }
+
+  /* Nav */
+  .nav-btn {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    background: none;
+    border: 1.5px solid rgba(255,255,255,0.12);
+    color: var(--muted);
+    font-size: 22px;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    cursor: none;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    backdrop-filter: blur(6px);
+  }
+  .nav-btn:hover { border-color: var(--accent1); color: var(--accent1); }
+  #prev { left: 24px; }
+  #next { right: 24px; }
+
+  /* Progress bar */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent1), var(--accent4));
+    z-index: 200;
+    transition: width 0.4s ease;
+    box-shadow: 0 0 12px var(--accent1);
+  }
+
+  /* Typography */
+  .eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent1);
+    margin-bottom: 18px;
+    opacity: 0.85;
+  }
+
+  h1.hero {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(40px, 6vw, 58px);
+    line-height: 1.1;
+    color: #fff;
+    margin-bottom: 24px;
+  }
+
+  h2.title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 4.5vw, 52px);
+    line-height: 1.15;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+
+  p.body {
+    font-size: clamp(21px, 2vw, 28px);
+    line-height: 1.65;
+    color: var(--text);
+    max-width: 820px;
+    font-weight: 400;
+  }
+
+  p.body strong {
+    color: var(--accent1);
+    font-weight: 700;
+  }
+
+  .highlight {
+    color: var(--accent2);
+  }
+
+  .highlight2 { color: var(--accent3); }
+  .highlight3 { color: var(--accent4); }
+
+  /* Tag chip */
+  .chip {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    padding: 6px 16px;
+    border-radius: 99px;
+    border: 1.5px solid;
+    margin: 6px;
+    letter-spacing: 1px;
+  }
+  .chip-cyan { border-color: var(--accent1); color: var(--accent1); background: rgba(0,229,255,0.07); }
+  .chip-orange { border-color: var(--accent2); color: var(--accent2); background: rgba(255,107,53,0.07); }
+  .chip-green { border-color: var(--accent3); color: var(--accent3); background: rgba(168,255,62,0.07); }
+  .chip-purple { border-color: var(--accent4); color: var(--accent4); background: rgba(199,125,255,0.07); }
+
+  /* Big stat */
+  .stat {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(52px, 9vw, 58px);
+    color: var(--accent1);
+    line-height: 1;
+    margin-bottom: 10px;
+    text-shadow: 0 0 40px rgba(0,229,255,0.3);
+  }
+
+  .stat-label {
+    font-size: clamp(22px, 2.2vw, 28px);
+    color: var(--muted);
+    font-weight: 400;
+    margin-bottom: 28px;
+  }
+
+  /* List */
+  .slide-list {
+    text-align: left;
+    max-width: 860px;
+    width: 100%;
+  }
+
+  .slide-list li {
+    font-size: clamp(21px, 2vw, 27px);
+    line-height: 1.55;
+    padding: 12px 0 12px 28px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    position: relative;
+    color: var(--text);
+    list-style: none;
+  }
+
+  .slide-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent1);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .slide-list li:last-child { border-bottom: none; }
+
+  /* Two-col layout */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    max-width: 1000px;
+    width: 100%;
+    text-align: left;
+  }
+
+  .col-box {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 32px;
+  }
+
+  .col-box h3 {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .col-box p {
+    font-size: clamp(20px, 1.8vw, 24px);
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  /* Timeline */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 860px;
+    width: 100%;
+    text-align: left;
+  }
+
+  .timeline-item {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .timeline-year {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    color: var(--accent1);
+    min-width: 70px;
+    padding-top: 4px;
+    letter-spacing: 1px;
+  }
+
+  .timeline-text {
+    font-size: clamp(20px, 1.8vw, 24px);
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  /* Glow line accent */
+  .glow-line {
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent1), transparent);
+    border-radius: 2px;
+    margin: 20px auto;
+    box-shadow: 0 0 12px var(--accent1);
+  }
+
+  /* Ambient orbs */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(80px);
+    opacity: 0.12;
+    z-index: 0;
+    animation: drift 12s ease-in-out infinite alternate;
+  }
+
+  @keyframes drift {
+    from { transform: translate(0,0); }
+    to { transform: translate(30px, 20px); }
+  }
+
+  .orb1 { width: 500px; height: 500px; background: var(--accent1); top: -100px; left: -100px; }
+  .orb2 { width: 400px; height: 400px; background: var(--accent4); bottom: -80px; right: -80px; animation-delay: -5s; }
+  .orb3 { width: 300px; height: 300px; background: var(--accent2); top: 40%; left: 40%; animation-delay: -8s; opacity: 0.07; }
+
+  /* Quote slide */
+  .big-quote {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(26px, 3.5vw, 42px);
+    line-height: 1.4;
+    color: #fff;
+    max-width: 900px;
+    font-style: italic;
+    position: relative;
+  }
+
+  .big-quote::before {
+    content: '"';
+    font-size: 100px;
+    color: var(--accent1);
+    opacity: 0.25;
+    position: absolute;
+    top: -40px;
+    left: -30px;
+    line-height: 1;
+    font-family: 'DM Serif Display', serif;
+  }
+
+  .attribution {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 20px;
+    letter-spacing: 2px;
+  }
+
+  /* Keyboard hint */
+  .kbd-hint {
+    position: fixed;
+    bottom: 36px;
+    right: 36px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 2px;
+  }
+
+  /* Slide-specific accents */
+  .slide-accent-bar {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent1), var(--accent4), transparent);
+    border-radius: 2px;
+    margin: 28px 0;
+    max-width: 820px;
+  }
+
+  /* Matrix-style number decoration */
+  .deco-number {
+    position: absolute;
+    font-family: 'Space Mono', monospace;
+    font-size: 180px;
+    color: rgba(0,229,255,0.025);
+    font-weight: 700;
+    pointer-events: none;
+    line-height: 1;
+    z-index: -1;
+  }
+
+  /* Scanline on title */
+  @keyframes scanline {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(200%); }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="grid-bg"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+<div class="progress-bar" id="progress"></div>
+
+<button class="nav-btn" id="prev">&#8592;</button>
+<button class="nav-btn" id="next">&#8594;</button>
+
+<div class="slideshow" id="slideshow">
+
+  <!-- SLIDE 1: TITLE -->
+  <div class="slide active" data-index="0">
+    <div class="eyebrow">A careers briefing for the inflection point</div>
+    <h1 class="hero">Beyond 2026:<br>The Bridge to the<br><span style="color:var(--accent1)">Post-AGI</span> Career Landscape</h1>
+    <div class="glow-line"></div>
+    <p class="body" style="color:var(--muted);font-size:22px;">What changes. What endures. And how to cross the bridge.</p>
+  </div>
+
+  <!-- SLIDE 2: THE INFLECTION MOMENT -->
+  <div class="slide" data-index="1">
+    <div class="deco-number" style="right:-20px;top:-40px;">26</div>
+    <div class="eyebrow">The moment we are in</div>
+    <h2 class="title">We are not in a <span class="highlight">disruption</span>.<br>We are in a <span style="color:var(--accent4)">phase transition.</span></h2>
+    <div class="slide-accent-bar"></div>
+    <p class="body">Disruptions reshape industries. Phase transitions reshape the <strong>rules of participation</strong>. The shift from agricultural to industrial economies wasn't just a job change — it was a renegotiation of what human labor means. AGI is that kind of shift.</p>
+  </div>
+
+  <!-- SLIDE 3: STAT -->
+  <div class="slide" data-index="2">
+    <div class="eyebrow">Scale of change</div>
+    <div class="stat">300M</div>
+    <div class="stat-label">jobs affected by AI automation by 2030 — Goldman Sachs</div>
+    <div class="stat" style="color:var(--accent3);margin-top:20px;">85%</div>
+    <div class="stat-label">of jobs in 2030 don't exist yet — Institute for the Future</div>
+    <p class="body" style="margin-top:16px;font-size:22px;color:var(--muted)">The numbers are staggering — but the story isn't joblessness. It's <strong>role metamorphosis</strong>.</p>
+  </div>
+
+  <!-- SLIDE 4: WHAT IS AGI? -->
+  <div class="slide" data-index="3">
+    <div class="eyebrow">Defining the destination</div>
+    <h2 class="title">What do we mean by <span class="highlight3">AGI</span>?</h2>
+    <div class="glow-line"></div>
+    <p class="body">Artificial General Intelligence: a system that can <strong>learn, reason, and adapt</strong> across any domain at or beyond human expert level — without task-specific training. Not one AI. Not ChatGPT. A system that can do what a doctor, lawyer, engineer, and artist each do — and do it simultaneously.</p>
+  </div>
+
+  <!-- SLIDE 5: TIMELINE -->
+  <div class="slide" data-index="4">
+    <div class="eyebrow">The bridge timeline</div>
+    <h2 class="title" style="margin-bottom:28px;text-align:left;max-width:860px;width:100%">From here to <span class="highlight">there</span></h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-year">2024–25</div>
+        <div class="timeline-text">Narrow AI tools colonize every profession. Co-pilot era begins.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year" style="color:var(--accent2)">2026–28</div>
+        <div class="timeline-text">Agentic AI executes multi-step tasks autonomously. Role compression accelerates.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year" style="color:var(--accent3)">2028–31</div>
+        <div class="timeline-text">Early AGI candidates emerge. Cognitive labor market undergoes structural reset.</div>
+      </div>
+      <div class="timeline-item" style="border-bottom:none">
+        <div class="timeline-year" style="color:var(--accent4)">2032+</div>
+        <div class="timeline-text">Post-AGI economy: new scarcity, new value, new contracts between human and machine.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: THE BRIDGE METAPHOR -->
+  <div class="slide" data-index="5">
+    <div class="eyebrow">The core metaphor</div>
+    <h2 class="title">Every bridge has two ends —<br>and a <span class="highlight2">span you must cross.</span></h2>
+    <div class="slide-accent-bar"></div>
+    <div class="two-col">
+      <div class="col-box">
+        <h3 style="color:var(--accent1)">This side (2026)</h3>
+        <p>Skills valued for <strong>execution</strong>: coding, writing, analysis, data work, legal drafting, diagnosis.</p>
+      </div>
+      <div class="col-box">
+        <h3 style="color:var(--accent4)">Other side (Post-AGI)</h3>
+        <p>Skills valued for <strong>judgment</strong>: taste, ethics, narrative, relationship, embodied wisdom.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: WHAT AI WILL TAKE -->
+  <div class="slide" data-index="6">
+    <div class="eyebrow">Honest accounting</div>
+    <h2 class="title">What <span class="highlight">automation</span> will absorb</h2>
+    <ul class="slide-list">
+      <li>Routine cognitive work: data entry, summarization, basic legal/financial drafting</li>
+      <li>Pattern-recognition diagnostics in medicine, law, and finance</li>
+      <li>First-draft generation of code, marketing copy, reports</li>
+      <li>Customer service at scale — tier-1 and tier-2 support</li>
+      <li>Standardized teaching and instructional design</li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 8: WHAT REMAINS -->
+  <div class="slide" data-index="7">
+    <div class="eyebrow">The durable core</div>
+    <h2 class="title">What <span class="highlight2">humans</span> will still own</h2>
+    <ul class="slide-list">
+      <li>Ethical judgment in high-stakes, novel situations</li>
+      <li>Relational intelligence — trust, negotiation, empathy at depth</li>
+      <li>Original creative vision (not just generation, but <em>curation of meaning</em>)</li>
+      <li>Physical presence, embodied skill, hands-on craft</li>
+      <li>Cultural authority — the weight of lived experience</li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 9: THE NEW SCARCITY -->
+  <div class="slide" data-index="8">
+    <div class="eyebrow">Economics of the post-AGI world</div>
+    <h2 class="title">When intelligence is <span class="highlight">abundant</span>,<br>what becomes <span class="highlight3">scarce</span>?</h2>
+    <div class="glow-line"></div>
+    <p class="body">Attention. Trust. Accountability. Taste. Embodiment. Originality. The post-AGI economy will be shaped by a profound inversion: <strong>the rarest resource will be human judgment, not human computation.</strong></p>
+  </div>
+
+  <!-- SLIDE 10: QUOTE -->
+  <div class="slide" data-index="9">
+    <div class="big-quote">"The future belongs not to those who can do what machines can do, but to those who can do what machines <em>cannot imagine</em> wanting to do."</div>
+    <div class="attribution">— A synthesis for the post-AGI moment</div>
+  </div>
+
+  <!-- SLIDE 11: THE 5 BRIDGES -->
+  <div class="slide" data-index="10">
+    <div class="eyebrow">Strategic framework</div>
+    <h2 class="title">5 bridges to cross <span class="highlight">before</span> AGI arrives</h2>
+    <div class="glow-line"></div>
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;max-width:900px;">
+      <div class="chip chip-cyan">1. AI Fluency</div>
+      <div class="chip chip-orange">2. Human Depth</div>
+      <div class="chip chip-green">3. Domain Mastery</div>
+      <div class="chip chip-purple">4. Taste & Judgment</div>
+      <div class="chip chip-cyan">5. Antifragile Positioning</div>
+    </div>
+    <p class="body" style="margin-top:28px;font-size:22px;color:var(--muted)">Each bridge is a bet on a different kind of durability.</p>
+  </div>
+
+  <!-- SLIDE 12: BRIDGE 1 - AI FLUENCY -->
+  <div class="slide" data-index="11">
+    <div class="deco-number" style="right:40px;bottom:-60px;opacity:0.03">01</div>
+    <div class="eyebrow">Bridge 1 of 5</div>
+    <h2 class="title" style="color:var(--accent1)">AI Fluency</h2>
+    <div class="slide-accent-bar" style="background:linear-gradient(90deg,var(--accent1),transparent)"></div>
+    <p class="body">Don't just use AI tools. <strong>Understand their grain.</strong> Know when to trust them, when they hallucinate, how to prompt with precision, and how to orchestrate agents. The professional who can direct AI like a conductor will outperform one who merely plays an instrument.</p>
+    <div style="margin-top:24px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
+      <div class="chip chip-cyan">Prompt engineering</div>
+      <div class="chip chip-cyan">Agent orchestration</div>
+      <div class="chip chip-cyan">AI evaluation</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 13: BRIDGE 2 - HUMAN DEPTH -->
+  <div class="slide" data-index="12">
+    <div class="deco-number" style="right:40px;bottom:-60px;opacity:0.03">02</div>
+    <div class="eyebrow">Bridge 2 of 5</div>
+    <h2 class="title" style="color:var(--accent2)">Human Depth</h2>
+    <div class="slide-accent-bar" style="background:linear-gradient(90deg,var(--accent2),transparent)"></div>
+    <p class="body">Invest in what AI cannot simulate: <strong>genuine curiosity, complex empathy, and embodied wisdom.</strong> Read widely. Build real relationships. Develop the capacity to sit with ambiguity and emerge with insight. The depth of your humanity is your professional moat.</p>
+    <div style="margin-top:24px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
+      <div class="chip chip-orange">Deep listening</div>
+      <div class="chip chip-orange">Philosophical breadth</div>
+      <div class="chip chip-orange">Ethical reasoning</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 14: BRIDGE 3 - DOMAIN MASTERY -->
+  <div class="slide" data-index="13">
+    <div class="deco-number" style="right:40px;bottom:-60px;opacity:0.03">03</div>
+    <div class="eyebrow">Bridge 3 of 5</div>
+    <h2 class="title" style="color:var(--accent3)">Domain Mastery</h2>
+    <div class="slide-accent-bar" style="background:linear-gradient(90deg,var(--accent3),transparent)"></div>
+    <p class="body">Generalism is fragile in the post-AGI world. <strong>Genuine expertise</strong> — the kind that took 10,000 hours and real failure — is what earns you the right to audit AI outputs and overrule them. Be the irreplaceable expert in the room who knows what "wrong" looks like.</p>
+    <div style="margin-top:24px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
+      <div class="chip chip-green">Deep specialization</div>
+      <div class="chip chip-green">Tacit knowledge</div>
+      <div class="chip chip-green">Failure experience</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 15: BRIDGE 4 - TASTE -->
+  <div class="slide" data-index="14">
+    <div class="deco-number" style="right:40px;bottom:-60px;opacity:0.03">04</div>
+    <div class="eyebrow">Bridge 4 of 5</div>
+    <h2 class="title" style="color:var(--accent4)">Taste & Judgment</h2>
+    <div class="slide-accent-bar" style="background:linear-gradient(90deg,var(--accent4),transparent)"></div>
+    <p class="body">AI generates. Humans <strong>curate, critique, and consecrate.</strong> Taste — knowing what's beautiful, true, meaningful, and ethical — is not a soft skill. In the post-AGI economy, it is the hardest skill. Develop aesthetic intelligence in your domain.</p>
+    <div style="margin-top:24px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
+      <div class="chip chip-purple">Aesthetic discernment</div>
+      <div class="chip chip-purple">Quality standards</div>
+      <div class="chip chip-purple">Curatorial vision</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 16: BRIDGE 5 - ANTIFRAGILE -->
+  <div class="slide" data-index="15">
+    <div class="deco-number" style="right:40px;bottom:-60px;opacity:0.03">05</div>
+    <div class="eyebrow">Bridge 5 of 5</div>
+    <h2 class="title" style="color:var(--accent1)">Antifragile Positioning</h2>
+    <div class="slide-accent-bar"></div>
+    <p class="body">Don't build a career that merely survives disruption. Build one that <strong>gains from it.</strong> Seek roles at the frontier — where AI is being deployed but not yet mastered. Be the person who trains the system, audits the output, and sets the direction.</p>
+    <div style="margin-top:24px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
+      <div class="chip chip-cyan">Frontier adjacency</div>
+      <div class="chip chip-cyan">Optionality thinking</div>
+      <div class="chip chip-cyan">Portfolio identity</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 17: NEW ROLES EMERGING -->
+  <div class="slide" data-index="16">
+    <div class="eyebrow">New job morphology</div>
+    <h2 class="title">Roles being <span class="highlight2">born</span> right now</h2>
+    <ul class="slide-list">
+      <li><strong>AI Behavior Designer</strong> — architects of how AI agents communicate and decide</li>
+      <li><strong>Human-AI Workflow Architect</strong> — optimizes hybrid human/machine processes</li>
+      <li><strong>AI Ethicist-in-Residence</strong> — embedded governance inside tech organizations</li>
+      <li><strong>Synthetic Data Curator</strong> — builds training ecosystems for next-gen models</li>
+      <li><strong>Algorithmic Auditor</strong> — validates AI outputs for bias, safety, and accuracy</li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 18: PROFESSIONS UNDER STRESS -->
+  <div class="slide" data-index="17">
+    <div class="eyebrow">Sector-by-sector view</div>
+    <h2 class="title">Professions under <span class="highlight">pressure</span></h2>
+    <div class="two-col">
+      <div class="col-box">
+        <h3 style="color:var(--accent2)">High automation risk</h3>
+        <p style="font-size:21px;line-height:1.7">Entry-level law &amp; finance, junior coding, basic radiology reads, call centers, transcription, paralegal work, data journalism</p>
+      </div>
+      <div class="col-box">
+        <h3 style="color:var(--accent3)">Emerging resilience</h3>
+        <p style="font-size:21px;line-height:1.7">Surgical specialties, senior strategy, primary care relationships, creative direction, education leadership, skilled trades</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 19: EDUCATION RETHINK -->
+  <div class="slide" data-index="18">
+    <div class="eyebrow">The learning imperative</div>
+    <h2 class="title">Education must be <span class="highlight3">rebuilt</span> from first principles</h2>
+    <div class="slide-accent-bar" style="background:linear-gradient(90deg,var(--accent4),transparent)"></div>
+    <p class="body">A 4-year degree optimized for 1990 is a liability in 2030. The post-AGI professional needs <strong>continuous, modular, adaptive learning.</strong> Certifications over credentials. Project portfolios over transcripts. Demonstrable judgment over tested recall.</p>
+  </div>
+
+  <!-- SLIDE 20: PSYCHOLOGICAL REFRAME -->
+  <div class="slide" data-index="19">
+    <div class="eyebrow">The inner work</div>
+    <h2 class="title">The <span class="highlight">identity crisis</span> is the first crisis to solve</h2>
+    <div class="glow-line"></div>
+    <p class="body">Most career anxiety about AI is actually an <strong>identity crisis</strong>. "If AI can do my job, who am I?" The answer: you are not your task list. You are your judgment, your relationships, your values, your narrative. Build a career identity rooted in those — and it becomes AI-proof.</p>
+  </div>
+
+  <!-- SLIDE 21: THREE ARCHETYPES -->
+  <div class="slide" data-index="20">
+    <div class="eyebrow">Who will thrive</div>
+    <h2 class="title">Three archetypes for the <span class="highlight">post-AGI</span> era</h2>
+    <div class="timeline" style="margin-top:8px;">
+      <div class="timeline-item">
+        <div class="timeline-year" style="color:var(--accent1);min-width:130px">The Conductor</div>
+        <div class="timeline-text">Orchestrates AI agents, sets direction, evaluates outputs. High leverage.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year" style="color:var(--accent2);min-width:130px">The Craftsperson</div>
+        <div class="timeline-text">Masters physical, relational, or deeply contextual skills AI can't replicate.</div>
+      </div>
+      <div class="timeline-item" style="border-bottom:none">
+        <div class="timeline-year" style="color:var(--accent3);min-width:130px">The Philosopher</div>
+        <div class="timeline-text">Provides ethical, cultural, and existential guidance in an AI-saturated world.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 22: CLOSING CALL TO ACTION -->
+  <div class="slide" data-index="21">
+    <div class="eyebrow">The charge</div>
+    <h2 class="title">Cross the bridge — <span class="highlight">now</span>.<br>It won't be there <span class="highlight3">forever.</span></h2>
+    <div class="slide-accent-bar"></div>
+    <p class="body">The window to position yourself on the right side of AGI is open — and it is closing. The professionals who will thrive aren't those who panic or those who deny. They are those who <strong>adapt with intention, depth, and speed.</strong></p>
+    <div style="margin-top:32px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
+      <div class="chip chip-cyan">Learn AI fluency today</div>
+      <div class="chip chip-orange">Deepen your humanity</div>
+      <div class="chip chip-green">Master your domain</div>
+      <div class="chip chip-purple">Develop taste</div>
+    </div>
+    <p style="margin-top:24px;font-family:'Space Mono',monospace;font-size:14px;color:var(--muted);letter-spacing:2px;">BEYOND 2026 · THE POST-AGI CAREER LANDSCAPE</p>
+  </div>
+
+</div>
+
+<div class="slide-num" id="slideNum">01 / 22</div>
+<div class="kbd-hint">← → or click to navigate</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+  let animating = false;
+
+  function goTo(n) {
+    if (animating || n === current) return;
+    animating = true;
+    const prev = current;
+    current = Math.max(0, Math.min(total - 1, n));
+
+    slides[prev].classList.remove('active');
+    slides[prev].classList.add('exit');
+    setTimeout(() => slides[prev].classList.remove('exit'), 600);
+
+    slides[current].classList.add('active');
+
+    document.getElementById('slideNum').textContent =
+      String(current + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+
+    document.getElementById('progress').style.width =
+      ((current + 1) / total * 100) + '%';
+
+    setTimeout(() => animating = false, 600);
+  }
+
+  document.getElementById('next').addEventListener('click', () => goTo(current + 1));
+  document.getElementById('prev').addEventListener('click', () => goTo(current - 1));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') goTo(current + 1);
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goTo(current - 1);
+  });
+
+  // Touch support
+  let touchX = null;
+  document.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 50) goTo(current + (dx < 0 ? 1 : -1));
+    touchX = null;
+  });
+
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    rx += (e.clientX - rx) * 0.12;
+    ry += (e.clientY - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+  });
+
+  function updateRing() {
+    requestAnimationFrame(updateRing);
+  }
+  updateRing();
+
+  // Init progress
+  document.getElementById('progress').style.width = (1 / total * 100) + '%';
+</script>
+</body>
+</html>

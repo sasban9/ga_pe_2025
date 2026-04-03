@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NLP-as-Code: Python is the new Assembly</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c14;
+    --accent1: #00f5c4;
+    --accent2: #ff4f8b;
+    --accent3: #f5c400;
+    --accent4: #4f8bff;
+    --text: #e8f0ff;
+    --muted: #8899bb;
+    --glass: rgba(255,255,255,0.04);
+    --border: rgba(0,245,196,0.18);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%; height: 100%; overflow: hidden;
+    background: var(--bg);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed; width: 14px; height: 14px;
+    background: var(--accent1); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: transform 0.1s, background 0.2s;
+    mix-blend-mode: difference;
+  }
+  .cursor-trail {
+    position: fixed; width: 36px; height: 36px;
+    border: 1.5px solid var(--accent1); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: left 0.18s ease, top 0.18s ease, opacity 0.3s;
+    opacity: 0.5;
+  }
+
+  /* Starfield */
+  canvas#stars {
+    position: fixed; inset: 0; z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Slide container */
+  .deck {
+    position: relative; z-index: 1;
+    width: 100vw; height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 60px 80px;
+    opacity: 0; pointer-events: none;
+    transform: translateY(32px) scale(0.98);
+    transition: opacity 0.55s cubic-bezier(0.4,0,0.2,1),
+                transform 0.55s cubic-bezier(0.4,0,0.2,1);
+  }
+  .slide.active {
+    opacity: 1; pointer-events: all;
+    transform: translateY(0) scale(1);
+  }
+  .slide.exit {
+    opacity: 0;
+    transform: translateY(-32px) scale(1.02);
+  }
+
+  /* Slide variants */
+  .slide--title { text-align: center; }
+  .slide--split { flex-direction: row; gap: 60px; align-items: center; }
+  .slide--code { align-items: flex-start; }
+  .slide--quote { text-align: center; }
+  .slide--list { align-items: flex-start; }
+
+  /* Typography system — ALL sizes 21–58px */
+  .eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    color: var(--accent1);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+
+  h1.mega {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(46px, 7vw, 58px);
+    line-height: 1.0;
+    letter-spacing: 0.04em;
+    color: var(--text);
+  }
+
+  h2.headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(38px, 5vw, 52px);
+    line-height: 1.05;
+    letter-spacing: 0.03em;
+  }
+
+  h3.subhead {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(26px, 3vw, 34px);
+    font-weight: 500;
+    line-height: 1.25;
+  }
+
+  p.body {
+    font-size: clamp(21px, 2.2vw, 28px);
+    line-height: 1.6;
+    color: var(--text);
+    max-width: 820px;
+    font-weight: 300;
+  }
+
+  p.body strong { font-weight: 500; color: var(--accent1); }
+
+  .accent-line {
+    display: block;
+    width: 60px; height: 4px;
+    background: var(--accent1);
+    margin: 22px 0;
+    border-radius: 2px;
+  }
+
+  /* Code block */
+  .code-block {
+    background: rgba(0,245,196,0.05);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent1);
+    border-radius: 10px;
+    padding: 28px 36px;
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(21px, 1.9vw, 26px);
+    line-height: 1.7;
+    color: var(--accent1);
+    width: 100%;
+    max-width: 860px;
+    position: relative;
+    overflow: hidden;
+  }
+  .code-block .cm { color: var(--muted); }
+  .code-block .kw { color: var(--accent3); }
+  .code-block .fn { color: var(--accent4); }
+  .code-block .st { color: var(--accent2); }
+  .code-block .hi { color: var(--text); }
+  .code-block .nl { color: var(--accent1); }
+
+  /* Quote */
+  .big-quote {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(32px, 4.5vw, 50px);
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    max-width: 900px;
+    text-align: center;
+  }
+  .big-quote em {
+    color: var(--accent2);
+    font-style: normal;
+  }
+  .quote-attr {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    color: var(--muted);
+    margin-top: 22px;
+    letter-spacing: 0.1em;
+  }
+
+  /* Lists */
+  .bullet-list {
+    list-style: none;
+    width: 100%;
+    max-width: 860px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .bullet-list li {
+    font-size: clamp(21px, 2.1vw, 27px);
+    line-height: 1.45;
+    color: var(--text);
+    font-weight: 300;
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+  }
+  .bullet-list li::before {
+    content: '▸';
+    color: var(--accent1);
+    font-size: 22px;
+    margin-top: 3px;
+    flex-shrink: 0;
+  }
+  .bullet-list li strong { color: var(--accent3); font-weight: 500; }
+
+  /* Split layout */
+  .split-left, .split-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .split-right { align-items: flex-start; }
+
+  /* Stat block */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    width: 100%;
+    max-width: 860px;
+  }
+  .stat-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(38px, 4vw, 50px);
+    color: var(--accent1);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 22px;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.06em;
+  }
+
+  /* Tag pill */
+  .tag {
+    display: inline-block;
+    background: rgba(0,245,196,0.12);
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    padding: 6px 20px;
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    color: var(--accent1);
+    margin: 6px 6px 6px 0;
+  }
+
+  /* Evolution bar */
+  .evo-bar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+    max-width: 860px;
+    margin-top: 12px;
+  }
+  .evo-step {
+    flex: 1;
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    color: var(--muted);
+    padding: 18px 8px;
+    border: 1px solid rgba(255,255,255,0.08);
+    position: relative;
+    transition: color 0.3s;
+  }
+  .evo-step.hi {
+    color: var(--accent1);
+    border-color: var(--accent1);
+    background: rgba(0,245,196,0.07);
+  }
+  .evo-step .evo-sub {
+    display: block;
+    font-size: 21px;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    margin-top: 4px;
+  }
+  .evo-arrow {
+    font-size: 24px;
+    color: var(--accent2);
+    padding: 0 2px;
+    flex-shrink: 0;
+  }
+
+  /* Glow text */
+  .glow { text-shadow: 0 0 30px rgba(0,245,196,0.5); }
+  .glow2 { text-shadow: 0 0 30px rgba(255,79,139,0.5); }
+  .glow3 { text-shadow: 0 0 30px rgba(245,196,0,0.4); }
+
+  /* Divider line on split */
+  .vdivider {
+    width: 1px;
+    align-self: stretch;
+    background: linear-gradient(to bottom, transparent, var(--accent1), transparent);
+    flex-shrink: 0;
+  }
+
+  /* Progress bar */
+  #progress {
+    position: fixed; bottom: 0; left: 0; height: 3px;
+    background: linear-gradient(to right, var(--accent1), var(--accent4));
+    transition: width 0.5s ease;
+    z-index: 100;
+  }
+
+  /* Slide counter */
+  #counter {
+    position: fixed; bottom: 18px; right: 28px;
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    color: var(--muted);
+    z-index: 100;
+    letter-spacing: 0.1em;
+  }
+
+  /* Nav arrows */
+  .nav-btn {
+    position: fixed; top: 50%; z-index: 100;
+    transform: translateY(-50%);
+    background: rgba(0,245,196,0.08);
+    border: 1px solid var(--border);
+    color: var(--accent1);
+    font-size: 28px;
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    font-family: 'Space Mono', monospace;
+  }
+  .nav-btn:hover {
+    background: rgba(0,245,196,0.18);
+    transform: translateY(-50%) scale(1.1);
+  }
+  #prev { left: 24px; }
+  #next { right: 24px; }
+
+  /* Slide number indicator */
+  #dots {
+    position: fixed; bottom: 22px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; gap: 8px; z-index: 100;
+  }
+  .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--muted); opacity: 0.4;
+    transition: background 0.3s, opacity 0.3s, transform 0.3s;
+    cursor: pointer;
+  }
+  .dot.active { background: var(--accent1); opacity: 1; transform: scale(1.4); }
+
+  /* Noise overlay */
+  .noise {
+    position: fixed; inset: 0; z-index: 0;
+    pointer-events: none;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px;
+  }
+
+  /* Scanline effect on some slides */
+  .scanlines::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 3px,
+      rgba(0,0,0,0.08) 3px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  /* Terminal blink */
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  .blink { animation: blink 1s step-end infinite; }
+
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  .float { animation: float 4s ease-in-out infinite; }
+
+  @keyframes slideInLeft {
+    from { opacity:0; transform: translateX(-30px); }
+    to { opacity:1; transform: translateX(0); }
+  }
+  .slide.active .animate-in {
+    animation: slideInLeft 0.5s ease forwards;
+  }
+  .slide.active .animate-in:nth-child(2) { animation-delay: 0.1s; opacity: 0; }
+  .slide.active .animate-in:nth-child(3) { animation-delay: 0.2s; opacity: 0; }
+  .slide.active .animate-in:nth-child(4) { animation-delay: 0.3s; opacity: 0; }
+  .slide.active .animate-in:nth-child(5) { animation-delay: 0.4s; opacity: 0; }
+  .slide.active .animate-in:nth-child(6) { animation-delay: 0.5s; opacity: 0; }
+
+  /* Gradient mesh backgrounds per slide */
+  .bg-teal   { background: radial-gradient(ellipse at 20% 50%, rgba(0,245,196,0.12) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(79,139,255,0.10) 0%, transparent 60%), var(--bg); }
+  .bg-pink   { background: radial-gradient(ellipse at 80% 60%, rgba(255,79,139,0.12) 0%, transparent 60%), radial-gradient(ellipse at 20% 30%, rgba(0,245,196,0.08) 0%, transparent 60%), var(--bg); }
+  .bg-gold   { background: radial-gradient(ellipse at 50% 30%, rgba(245,196,0,0.12) 0%, transparent 60%), radial-gradient(ellipse at 80% 80%, rgba(255,79,139,0.07) 0%, transparent 60%), var(--bg); }
+  .bg-blue   { background: radial-gradient(ellipse at 30% 70%, rgba(79,139,255,0.14) 0%, transparent 60%), radial-gradient(ellipse at 70% 20%, rgba(0,245,196,0.08) 0%, transparent 60%), var(--bg); }
+  .bg-deep   { background: radial-gradient(ellipse at 50% 50%, rgba(0,245,196,0.07) 0%, transparent 70%), var(--bg); }
+
+  .slide--title .mega span.a1 { color: var(--accent1); }
+  .slide--title .mega span.a2 { color: var(--accent2); }
+  .slide--title .mega span.a3 { color: var(--accent3); }
+
+  .tag-row { display: flex; flex-wrap: wrap; margin-top: 14px; }
+
+  .wide { max-width: 100%; }
+  .center { text-align: center; }
+
+  /* Horizontal rule */
+  hr.rule {
+    border: none;
+    border-top: 1px solid var(--border);
+    width: 100%;
+    max-width: 860px;
+    margin: 18px 0;
+  }
+
+  /* Comparison table */
+  .cmp-table {
+    width: 100%; max-width: 860px;
+    border-collapse: collapse;
+  }
+  .cmp-table th {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    color: var(--accent1);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+  }
+  .cmp-table td {
+    font-size: 23px;
+    color: var(--text);
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-weight: 300;
+  }
+  .cmp-table td strong { color: var(--accent3); }
+  .cmp-table tr:last-child td { border-bottom: none; }
+
+  /* Highlight box */
+  .hbox {
+    background: rgba(0,245,196,0.07);
+    border: 1px solid rgba(0,245,196,0.25);
+    border-radius: 12px;
+    padding: 24px 32px;
+    max-width: 860px;
+    width: 100%;
+  }
+  .hbox p { font-size: clamp(21px, 2vw, 26px); line-height: 1.55; }
+
+  /* Small label above stat */
+  .stat-card .stat-label { font-size: 21px; }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+<div class="noise"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="cursorTrail"></div>
+
+<div class="deck" id="deck">
+
+  <!-- SLIDE 1: Title -->
+  <div class="slide slide--title bg-teal active" id="s1">
+    <div class="eyebrow animate-in">A Paradigm Shift in Computing</div>
+    <h1 class="mega glow animate-in">
+      <span class="a1">NATURAL LANGUAGE</span><br>
+      <span>PROGRAMMING</span>
+    </h1>
+    <h1 class="mega animate-in" style="color:var(--accent2);">NLP-AS-CODE</h1>
+    <span class="accent-line animate-in" style="margin:24px auto;"></span>
+    <p class="body animate-in" style="text-align:center;">
+      <strong>Python is the new Assembly</strong> — and humans are the new compilers.
+    </p>
+    <div class="tag-row animate-in" style="justify-content:center;">
+      <span class="tag">#NLP</span>
+      <span class="tag">#AI</span>
+      <span class="tag">#FutureOfCode</span>
+      <span class="tag">#LLMs</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: The Central Thesis -->
+  <div class="slide slide--title bg-pink" id="s2">
+    <div class="eyebrow animate-in">The Core Argument</div>
+    <h2 class="headline glow2 animate-in" style="text-align:center; max-width:860px;">
+      The programming language of the future<br>is <em style="color:var(--accent3);font-style:normal;">English.</em>
+    </h2>
+    <span class="accent-line animate-in" style="margin:24px auto; background:var(--accent2);"></span>
+    <p class="body animate-in" style="text-align:center;">
+      LLMs have turned plain prose into a first-class interface for computing. Code is becoming an <strong>intermediate representation</strong>, not the primary language of intent.
+    </p>
+  </div>
+
+  <!-- SLIDE 3: The Abstraction Stack -->
+  <div class="slide slide--code bg-deep" id="s3">
+    <div class="eyebrow animate-in">History of Abstraction</div>
+    <h2 class="headline animate-in">Every Era Gets a<br><span style="color:var(--accent1);">New Abstraction Layer</span></h2>
+    <span class="accent-line animate-in"></span>
+    <div class="evo-bar animate-in">
+      <div class="evo-step">
+        BINARY<span class="evo-sub">1950s</span>
+      </div>
+      <div class="evo-arrow">→</div>
+      <div class="evo-step">
+        ASSEMBLY<span class="evo-sub">1960s</span>
+      </div>
+      <div class="evo-arrow">→</div>
+      <div class="evo-step">
+        C / FORTRAN<span class="evo-sub">1970s</span>
+      </div>
+      <div class="evo-arrow">→</div>
+      <div class="evo-step">
+        PYTHON<span class="evo-sub">1990s–now</span>
+      </div>
+      <div class="evo-arrow">→</div>
+      <div class="evo-step hi">
+        ENGLISH<span class="evo-sub">TODAY</span>
+      </div>
+    </div>
+    <p class="body animate-in" style="margin-top:28px;">
+      Each step made the computer <strong>easier to command</strong>. The next step is <strong>natural language itself</strong>.
+    </p>
+  </div>
+
+  <!-- SLIDE 4: What is NLP-as-Code? -->
+  <div class="slide slide--list bg-teal" id="s4">
+    <div class="eyebrow animate-in">Definition</div>
+    <h2 class="headline animate-in">What Is <span style="color:var(--accent1);">NLP-as-Code?</span></h2>
+    <span class="accent-line animate-in"></span>
+    <ul class="bullet-list animate-in">
+      <li>Using <strong>natural language prompts</strong> as the primary unit of software construction</li>
+      <li>LLMs act as <strong>compilers</strong> that translate intent → executable code</li>
+      <li>Iteration happens in conversation, <strong>not in an IDE</strong></li>
+      <li>The "program" is the prompt stack + generated artifacts</li>
+      <li>Testing = <strong>describing expected behavior</strong> in plain language</li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 5: Code Example — Old Way -->
+  <div class="slide slide--code bg-blue" id="s5">
+    <div class="eyebrow animate-in">Before — Traditional Code</div>
+    <h2 class="headline animate-in" style="margin-bottom:20px;">The <span style="color:var(--accent4);">Old Ritual</span></h2>
+    <div class="code-block scanlines animate-in">
+<span class="cm"># Sort users by signup date, then email 30-day inactives</span>
+<span class="kw">import</span> <span class="hi">datetime</span>
+<span class="kw">from</span> <span class="hi">db</span> <span class="kw">import</span> <span class="fn">get_users</span>, <span class="fn">send_email</span>
+
+<span class="hi">users</span> = <span class="fn">get_users</span>()
+<span class="hi">sorted_users</span> = <span class="fn">sorted</span>(<span class="hi">users</span>, <span class="kw">key</span>=<span class="kw">lambda</span> <span class="hi">u</span>: <span class="hi">u</span>.<span class="hi">signup</span>)
+<span class="hi">threshold</span> = <span class="hi">datetime</span>.<span class="fn">datetime.now</span>() - <span class="hi">datetime</span>.<span class="fn">timedelta</span>(<span class="hi">days</span>=<span class="hi">30</span>)
+<span class="kw">for</span> <span class="hi">u</span> <span class="kw">in</span> <span class="hi">sorted_users</span>:
+    <span class="kw">if</span> <span class="hi">u</span>.<span class="hi">last_active</span> &lt; <span class="hi">threshold</span>:
+        <span class="fn">send_email</span>(<span class="hi">u</span>, <span class="st">"We miss you!"</span>)
+    </div>
+    <p class="body animate-in" style="margin-top:20px; color:var(--muted);">
+      Hours of writing, testing, and debugging — for a task you described in one sentence.
+    </p>
+  </div>
+
+  <!-- SLIDE 6: Code Example — New Way -->
+  <div class="slide slide--code bg-pink" id="s6">
+    <div class="eyebrow animate-in">After — NLP-as-Code</div>
+    <h2 class="headline animate-in" style="margin-bottom:20px;">The <span style="color:var(--accent2);">New Ritual</span></h2>
+    <div class="code-block animate-in" style="border-left-color:var(--accent2); background:rgba(255,79,139,0.06); color:var(--text);">
+<span style="color:var(--accent2);">PROMPT →</span> <span style="color:var(--text);">Get all users from the database sorted
+by signup date. Find anyone inactive for
+30+ days and send them a "We miss you!"
+re-engagement email.</span>
+
+<span style="color:var(--accent2);">OUTPUT →</span> <span style="color:var(--accent1);">Working Python code generated instantly.</span>
+<span style="color:var(--muted);">         Tests, edge cases, error handling</span>
+<span style="color:var(--muted);">         included on request.<span class="blink">█</span></span>
+    </div>
+    <p class="body animate-in" style="margin-top:20px;">
+      The <strong>intent</strong> is the code. Language is the interface.
+    </p>
+  </div>
+
+  <!-- SLIDE 7: Python is the New Assembly -->
+  <div class="slide slide--title bg-gold" id="s7">
+    <div class="eyebrow animate-in">The Headline Claim</div>
+    <h2 class="headline glow3 animate-in" style="text-align:center;">
+      Python is now what<br>Assembly was in 1975.
+    </h2>
+    <span class="accent-line animate-in" style="background:var(--accent3); margin: 24px auto;"></span>
+    <p class="body animate-in" style="text-align:center;">
+      Assembly didn't disappear — but only specialists write it. <strong>Python is becoming the low-level target</strong> that LLMs emit. Humans define outcomes; machines produce syntax.
+    </p>
+    <div class="hbox animate-in" style="margin-top:24px; border-color:rgba(245,196,0,0.3); background:rgba(245,196,0,0.06);">
+      <p style="text-align:center; color:var(--accent3);">Nobody writes Assembly to build a web app.<br>Soon, nobody will write Python to build one either.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: The Evidence — Stats -->
+  <div class="slide slide--list bg-teal" id="s8">
+    <div class="eyebrow animate-in">The Numbers</div>
+    <h2 class="headline animate-in">Evidence on the <span style="color:var(--accent1);">Ground</span></h2>
+    <span class="accent-line animate-in"></span>
+    <div class="stat-grid animate-in">
+      <div class="stat-card">
+        <div class="stat-num">55%</div>
+        <div class="stat-label">GitHub Copilot adoption among devs (2024)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">10×</div>
+        <div class="stat-label">Speed gain on boilerplate with LLM assistance</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">30%</div>
+        <div class="stat-label">Of new code at some firms AI-generated</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">↑ 4×</div>
+        <div class="stat-label">Growth in no-code / LLM-powered app builders</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: Tools Enabling NLP-as-Code -->
+  <div class="slide slide--list bg-blue" id="s9">
+    <div class="eyebrow animate-in">The Ecosystem</div>
+    <h2 class="headline animate-in">Tools Powering the <span style="color:var(--accent4);">Shift</span></h2>
+    <span class="accent-line animate-in" style="background:var(--accent4);"></span>
+    <ul class="bullet-list animate-in">
+      <li><strong>GitHub Copilot / Cursor</strong> — inline code generation from comments</li>
+      <li><strong>Claude Code / GPT-4o</strong> — full project generation from specs</li>
+      <li><strong>Devin / SWE-agent</strong> — autonomous software engineering agents</li>
+      <li><strong>v0 / Bolt / Lovable</strong> — UI apps from a single paragraph</li>
+      <li><strong>LangChain / CrewAI</strong> — orchestrating agents with prompts-as-logic</li>
+      <li><strong>Replit AI</strong> — full stack from natural language in the browser</li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 10: The New Developer -->
+  <div class="slide slide--split bg-pink" id="s10">
+    <div class="split-left">
+      <div class="eyebrow animate-in">Role Evolution</div>
+      <h2 class="headline animate-in">The <span style="color:var(--accent2);">New</span><br>Developer</h2>
+      <span class="accent-line animate-in" style="background:var(--accent2);"></span>
+      <p class="body animate-in">The best programmers of 2026 are <strong>exceptionally precise communicators</strong>. They architect systems in language, not in syntax.</p>
+    </div>
+    <div class="vdivider animate-in"></div>
+    <div class="split-right">
+      <ul class="bullet-list animate-in">
+        <li><strong>Spec writing</strong> replaces boilerplate coding</li>
+        <li><strong>Prompt engineering</strong> is the new algorithm design</li>
+        <li><strong>Verification</strong> becomes the primary skill</li>
+        <li><strong>Taste & judgment</strong> over memorizing APIs</li>
+        <li><strong>Systems thinking</strong> over line-by-line debugging</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 11: Prompt Engineering is Engineering -->
+  <div class="slide slide--code bg-teal" id="s11">
+    <div class="eyebrow animate-in">The New Craft</div>
+    <h2 class="headline animate-in">Prompt Engineering<br><span style="color:var(--accent1);">IS Engineering</span></h2>
+    <span class="accent-line animate-in"></span>
+    <div class="code-block animate-in">
+<span class="cm"># A well-engineered prompt is a specification:</span>
+
+<span class="kw">CONTEXT:</span>  <span class="hi">SaaS billing system, Stripe integration</span>
+<span class="kw">TASK:</span>     <span class="hi">Handle failed payments with exponential retry</span>
+<span class="kw">RULES:</span>    <span class="hi">Max 3 retries, notify user on 2nd fail</span>
+<span class="kw">OUTPUT:</span>   <span class="hi">Python service + unit tests + error logs</span>
+<span class="kw">AVOID:</span>    <span class="hi">Polling loops; use webhooks<span class="blink">█</span></span>
+    </div>
+    <p class="body animate-in" style="margin-top:20px;">
+      Ambiguous prompts produce ambiguous code. <strong>Precision in language = precision in output.</strong>
+    </p>
+  </div>
+
+  <!-- SLIDE 12: The Compilation Chain -->
+  <div class="slide slide--list bg-gold" id="s12">
+    <div class="eyebrow animate-in">Mental Model</div>
+    <h2 class="headline animate-in">The New <span style="color:var(--accent3);">Compilation Chain</span></h2>
+    <span class="accent-line animate-in" style="background:var(--accent3);"></span>
+    <div class="evo-bar animate-in" style="flex-direction:column; gap:10px;">
+      <div style="display:flex; align-items:center; gap:16px; width:100%;">
+        <div class="evo-step hi" style="flex:2; border-color:var(--accent3);">HUMAN INTENT<span class="evo-sub">Natural Language Spec</span></div>
+        <div class="evo-arrow" style="color:var(--accent3);">↓</div>
+        <div class="evo-step hi" style="flex:2; border-color:var(--accent1);">LLM COMPILER<span class="evo-sub">Translates → Python</span></div>
+        <div class="evo-arrow" style="color:var(--accent1);">↓</div>
+        <div class="evo-step" style="flex:2;">PYTHON VM<span class="evo-sub">Runs Bytecode</span></div>
+        <div class="evo-arrow">↓</div>
+        <div class="evo-step" style="flex:2;">CPU<span class="evo-sub">Executes</span></div>
+      </div>
+    </div>
+    <p class="body animate-in" style="margin-top:24px;">
+      Python is now a <strong>mid-tier IR</strong> — an intermediate representation — not the final human-facing interface.
+    </p>
+  </div>
+
+  <!-- SLIDE 13: What Python Still Does Well -->
+  <div class="slide slide--list bg-deep" id="s13">
+    <div class="eyebrow animate-in">Balance</div>
+    <h2 class="headline animate-in">Python Doesn't <span style="color:var(--accent1);">Die</span> — It Descends</h2>
+    <span class="accent-line animate-in"></span>
+    <ul class="bullet-list animate-in">
+      <li><strong>Systems programmers</strong> still write raw Python for performance-critical paths</li>
+      <li><strong>ML researchers</strong> hand-craft training loops, custom kernels</li>
+      <li><strong>Security engineers</strong> audit generated code at the Python level</li>
+      <li>Python becomes the <strong>inspection layer</strong>, not the composition layer</li>
+      <li>Just as C is still used — but <strong>not by most developers</strong>, most of the time</li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 14: LLMs as Compilers — Deep Dive -->
+  <div class="slide slide--split bg-blue" id="s14">
+    <div class="split-left">
+      <div class="eyebrow animate-in">Architecture</div>
+      <h2 class="headline animate-in">LLMs<br>as <span style="color:var(--accent4);">Compilers</span></h2>
+      <span class="accent-line animate-in" style="background:var(--accent4);"></span>
+      <p class="body animate-in">Traditional compilers transform one formal language to another. LLMs transform <strong>informal human intent</strong> into formal executable code.</p>
+    </div>
+    <div class="vdivider animate-in"></div>
+    <div class="split-right">
+      <table class="cmp-table animate-in">
+        <tr><th>Compiler</th><th>LLM</th></tr>
+        <tr><td>Source: C</td><td>Source: <strong>English</strong></td></tr>
+        <tr><td>Target: Assembly</td><td>Target: <strong>Python</strong></td></tr>
+        <tr><td>Deterministic</td><td>Probabilistic</td></tr>
+        <tr><td>Syntax-checked</td><td>Intent-checked</td></tr>
+        <tr><td>No creativity</td><td><strong>Fills ambiguity</strong></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- SLIDE 15: Vibe Coding -->
+  <div class="slide slide--title bg-pink" id="s15">
+    <div class="eyebrow animate-in">Cultural Moment</div>
+    <h2 class="headline glow2 animate-in" style="text-align:center; color:var(--accent2);">
+      "VIBE CODING"<br>IS REAL NOW
+    </h2>
+    <span class="accent-line animate-in" style="background:var(--accent2); margin:24px auto;"></span>
+    <p class="body animate-in" style="text-align:center;">
+      Andrej Karpathy coined it: you describe the vibe, the AI writes the code. You iterate <strong>at the level of outcomes</strong>, not implementation details.
+    </p>
+    <div class="hbox animate-in" style="border-color:rgba(255,79,139,0.3); background:rgba(255,79,139,0.06); margin-top:20px;">
+      <p style="color:var(--text); text-align:center;">"I just describe what I want and the machine figures out the Python." — Every developer, 2025.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 16: Risks & Critiques -->
+  <div class="slide slide--list bg-gold" id="s16">
+    <div class="eyebrow animate-in">The Other Side</div>
+    <h2 class="headline animate-in">Risks & <span style="color:var(--accent3);">Critiques</span></h2>
+    <span class="accent-line animate-in" style="background:var(--accent3);"></span>
+    <ul class="bullet-list animate-in">
+      <li><strong>Hallucinated code</strong> — LLMs confidently write plausible-but-broken logic</li>
+      <li><strong>Security surface</strong> — generated code often misses auth, injection, race conditions</li>
+      <li><strong>Skill atrophy</strong> — developers who can't read generated code can't fix it</li>
+      <li><strong>Prompt lock-in</strong> — proprietary prompt stacks become unmaintainable</li>
+      <li><strong>Non-determinism</strong> — same prompt, different behavior next week</li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 17: The Verification Problem -->
+  <div class="slide slide--split bg-teal" id="s17">
+    <div class="split-left">
+      <div class="eyebrow animate-in">Critical Skill</div>
+      <h2 class="headline animate-in">Verification<br>is the <span style="color:var(--accent1);">New Coding</span></h2>
+      <span class="accent-line animate-in"></span>
+      <p class="body animate-in">If you can't read what the LLM wrote, you can't ship it safely. <strong>Code literacy remains essential</strong> — just not code authorship.</p>
+    </div>
+    <div class="vdivider animate-in"></div>
+    <div class="split-right">
+      <div class="hbox animate-in" style="margin-bottom:16px;">
+        <p style="font-size:24px; color:var(--accent1);">Write tests in natural language →<br>Generate test code →<br>Validate LLM output against spec</p>
+      </div>
+      <p class="body animate-in" style="font-size:23px;">The new developer loop:<br><strong>Specify → Generate → Verify → Iterate</strong></p>
+    </div>
+  </div>
+
+  <!-- SLIDE 18: Real-World Pipeline -->
+  <div class="slide slide--code bg-deep" id="s18">
+    <div class="eyebrow animate-in">In Practice</div>
+    <h2 class="headline animate-in">A Real <span style="color:var(--accent1);">NLP-as-Code</span> Pipeline</h2>
+    <span class="accent-line animate-in"></span>
+    <div class="code-block animate-in">
+<span class="kw">1. SPEC</span>   <span class="cm">→  Write intent in plain English (Notion, doc)</span>
+<span class="kw">2. GEN</span>    <span class="cm">→  LLM generates Python + tests + docs</span>
+<span class="kw">3. REVIEW</span> <span class="cm">→  Human reads & audits generated code</span>
+<span class="kw">4. TEST</span>   <span class="cm">→  CI runs generated test suite</span>
+<span class="kw">5. SHIP</span>   <span class="cm">→  Deploy; LLM monitors logs, suggests fixes</span>
+<span class="kw">6. ITER</span>   <span class="cm">→  New behavior? Update the prompt spec.<span class="blink">█</span></span>
+    </div>
+    <p class="body animate-in" style="margin-top:18px; font-size:23px;">
+      The <strong>prompt spec becomes the source of truth</strong>. Python becomes an artifact.
+    </p>
+  </div>
+
+  <!-- SLIDE 19: The Non-Programmer Programmer -->
+  <div class="slide slide--title bg-pink" id="s19">
+    <div class="eyebrow animate-in">Democratization</div>
+    <h2 class="headline glow2 animate-in" style="text-align:center;">
+      The Billion-Person<br><span style="color:var(--accent2);">Programming Force</span>
+    </h2>
+    <span class="accent-line animate-in" style="background:var(--accent2); margin:24px auto;"></span>
+    <p class="body animate-in" style="text-align:center;">
+      NLP-as-Code unlocks software creation for <strong>domain experts who can't code</strong>: doctors building clinical tools, teachers building learning apps, scientists building data pipelines — all in plain language.
+    </p>
+    <div class="tag-row animate-in" style="justify-content:center; margin-top:16px;">
+      <span class="tag">Biologists</span>
+      <span class="tag">Lawyers</span>
+      <span class="tag">Designers</span>
+      <span class="tag">Scientists</span>
+      <span class="tag">Educators</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 20: Business Impact -->
+  <div class="slide slide--list bg-gold" id="s20">
+    <div class="eyebrow animate-in">Industry Impact</div>
+    <h2 class="headline animate-in">What Changes for <span style="color:var(--accent3);">Business?</span></h2>
+    <span class="accent-line animate-in" style="background:var(--accent3);"></span>
+    <ul class="bullet-list animate-in">
+      <li><strong>Product velocity</strong> jumps — prototype to MVP in days, not months</li>
+      <li><strong>Team composition shifts</strong> — fewer syntax experts, more domain thinkers</li>
+      <li><strong>Tech debt changes shape</strong> — prompt drift replaces spaghetti code</li>
+      <li><strong>Documentation writes itself</strong> — the prompt IS the spec IS the doc</li>
+      <li><strong>Junior roles transform</strong> — entry-level is now prompt QA + verification</li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 21: Where Formal Code Still Wins -->
+  <div class="slide slide--split bg-blue" id="s21">
+    <div class="split-left">
+      <div class="eyebrow animate-in">Nuance</div>
+      <h2 class="headline animate-in">When to Write<br><span style="color:var(--accent4);">Real Code</span></h2>
+      <span class="accent-line animate-in" style="background:var(--accent4);"></span>
+      <ul class="bullet-list animate-in" style="font-size:22px;">
+        <li>Cryptographic primitives</li>
+        <li>Real-time embedded systems</li>
+        <li>Novel ML architectures</li>
+        <li>Safety-critical infrastructure</li>
+      </ul>
+    </div>
+    <div class="vdivider animate-in"></div>
+    <div class="split-right">
+      <div class="eyebrow animate-in" style="color:var(--accent1);">When NLP-as-Code Wins</div>
+      <ul class="bullet-list animate-in" style="font-size:22px;">
+        <li>CRUD apps & APIs</li>
+        <li>Data pipelines & ETL</li>
+        <li>Business logic automation</li>
+        <li>Dashboards & internal tools</li>
+        <li>Prototypes & MVPs</li>
+        <li>Test generation</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 22: The Analogy Fully Unpacked -->
+  <div class="slide slide--code bg-teal" id="s22">
+    <div class="eyebrow animate-in">The Analogy — Fully Unpacked</div>
+    <h2 class="headline animate-in">Assembly Then vs <span style="color:var(--accent1);">Python Now</span></h2>
+    <span class="accent-line animate-in"></span>
+    <table class="cmp-table animate-in">
+      <tr><th>Assembly (1975)</th><th>Python (2025+)</th></tr>
+      <tr><td>Expert-only skill</td><td><strong>Still valuable but optional</strong></td></tr>
+      <tr><td>Compiled from C</td><td><strong>Generated by LLMs</strong></td></tr>
+      <tr><td>Debugged by specialists</td><td><strong>Audited by senior devs</strong></td></tr>
+      <tr><td>Hardware-specific</td><td>Model-specific prompting</td></tr>
+      <tr><td>Still exists today</td><td><strong>Python isn't going away</strong></td></tr>
+    </table>
+  </div>
+
+  <!-- SLIDE 23: What to Learn Now -->
+  <div class="slide slide--list bg-pink" id="s23">
+    <div class="eyebrow animate-in">Actionable</div>
+    <h2 class="headline animate-in">What To <span style="color:var(--accent2);">Learn Now</span></h2>
+    <span class="accent-line animate-in" style="background:var(--accent2);"></span>
+    <ul class="bullet-list animate-in">
+      <li><strong>Precision writing</strong> — describe systems with zero ambiguity</li>
+      <li><strong>Code literacy</strong> — read & audit Python even if you don't write it</li>
+      <li><strong>LLM orchestration</strong> — chain prompts, manage context, build agents</li>
+      <li><strong>Systems design</strong> — architecture thinking beats syntax memorization</li>
+      <li><strong>Evaluation mindset</strong> — define what "correct" looks like before generating</li>
+      <li><strong>Domain expertise</strong> — the human context LLMs can't replace</li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 24: The Future -->
+  <div class="slide slide--title bg-teal" id="s24">
+    <div class="eyebrow animate-in">Looking Ahead</div>
+    <h2 class="headline glow animate-in" style="text-align:center;">
+      The <span style="color:var(--accent1);">Future</span> Is a<br>Conversation
+    </h2>
+    <span class="accent-line animate-in" style="margin:24px auto;"></span>
+    <p class="body animate-in" style="text-align:center; max-width:760px;">
+      Programming is evolving from <strong>writing instructions for machines</strong> to <strong>negotiating outcomes with intelligent systems</strong>. The codebase of the future is a living document written in human language.
+    </p>
+    <div class="hbox animate-in" style="margin-top:26px; text-align:center;">
+      <p style="font-size:24px; color:var(--accent1);">
+        The best code is the code<br>you never had to write.
+      </p>
+    </div>
+    <div class="tag-row animate-in" style="justify-content:center; margin-top:18px;">
+      <span class="tag">#NLPasCode</span>
+      <span class="tag">#Python = Assembly</span>
+      <span class="tag">#FutureOfDev</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- Controls -->
+<button class="nav-btn" id="prev">←</button>
+<button class="nav-btn" id="next">→</button>
+<div id="progress" style="width:4.17%;"></div>
+<div id="counter">1 / 24</div>
+<div id="dots"></div>
+
+<script>
+// Cursor
+const cursor = document.getElementById('cursor');
+const trail = document.getElementById('cursorTrail');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+  trail.style.left = e.clientX + 'px';
+  trail.style.top = e.clientY + 'px';
+});
+
+// Stars canvas
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+let stars = [];
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  stars = Array.from({length: 120}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.4 + 0.3,
+    o: Math.random() * 0.5 + 0.1,
+    s: Math.random() * 0.0008 + 0.0002
+  }));
+}
+function drawStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  stars.forEach(s => {
+    s.o += s.s;
+    if (s.o > 0.7 || s.o < 0.05) s.s *= -1;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(200,225,255,${s.o})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(drawStars);
+}
+resize();
+window.addEventListener('resize', resize);
+drawStars();
+
+// Slides
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+let animating = false;
+
+// Dots
+const dotsEl = document.getElementById('dots');
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.addEventListener('click', () => goTo(i));
+  dotsEl.appendChild(d);
+});
+
+function updateUI() {
+  document.getElementById('counter').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progress').style.width = `${((current + 1) / total) * 100}%`;
+  document.querySelectorAll('.dot').forEach((d, i) => {
+    d.classList.toggle('active', i === current);
+  });
+}
+
+function goTo(idx) {
+  if (animating || idx === current) return;
+  animating = true;
+  slides[current].classList.remove('active');
+  slides[current].classList.add('exit');
+  const prev = current;
+  current = idx;
+  slides[current].classList.add('active');
+  updateUI();
+  setTimeout(() => {
+    slides[prev].classList.remove('exit');
+    animating = false;
+  }, 600);
+}
+
+document.getElementById('next').addEventListener('click', () => {
+  goTo((current + 1) % total);
+});
+document.getElementById('prev').addEventListener('click', () => {
+  goTo((current - 1 + total) % total);
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') goTo((current + 1) % total);
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goTo((current - 1 + total) % total);
+});
+
+// Touch / swipe
+let tx = 0;
+document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+document.addEventListener('touchend', e => {
+  const dx = tx - e.changedTouches[0].clientX;
+  if (Math.abs(dx) > 50) goTo(dx > 0 ? (current + 1) % total : (current - 1 + total) % total);
+}, {passive:true});
+
+updateUI();
+</script>
+</body>
+</html>
