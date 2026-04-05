@@ -1,0 +1,1539 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Job Seeker to Job Creator — The AI Agent Manual</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0a0a;
+    --paper: #f5f0e8;
+    --gold: #c8a84b;
+    --rust: #c0392b;
+    --slate: #2c3e50;
+    --cream: #faf7f2;
+    --accent: #1a6b4a;
+    --light-gold: #f0e4c2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--ink);
+    font-family: 'Space Mono', monospace;
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* COVER */
+  .cover {
+    min-height: 100vh;
+    background: var(--paper);
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(0,0,0,0.06) 39px, rgba(0,0,0,0.06) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(0,0,0,0.04) 39px, rgba(0,0,0,0.04) 40px);
+    pointer-events: none;
+  }
+
+  .cover-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 3rem;
+    border-bottom: 3px solid var(--ink);
+    position: relative;
+    z-index: 1;
+  }
+
+  .edition-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.4rem 0.8rem;
+  }
+
+  .cover-issue {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.5;
+  }
+
+  .cover-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    position: relative;
+    z-index: 1;
+    padding: 4rem 3rem 2rem;
+    align-items: center;
+  }
+
+  .cover-title-block h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 10vw, 9rem);
+    line-height: 0.9;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+  }
+
+  .cover-title-block h1 em {
+    color: var(--rust);
+    font-style: normal;
+    display: block;
+  }
+
+  .cover-title-block h1 span {
+    color: var(--accent);
+    display: block;
+  }
+
+  .cover-subtitle {
+    margin-top: 2rem;
+    font-size: 0.8rem;
+    line-height: 1.7;
+    max-width: 380px;
+    opacity: 0.75;
+    border-left: 3px solid var(--gold);
+    padding-left: 1rem;
+  }
+
+  .cover-graphic {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  .orbit-diagram {
+    width: 340px;
+    height: 340px;
+    position: relative;
+  }
+
+  .orbit-center {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90px; height: 90px;
+    background: var(--ink);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    font-family: 'Bebas Neue', monospace;
+    font-size: 1rem;
+    text-align: center;
+    line-height: 1.2;
+    z-index: 10;
+  }
+
+  .orbit-ring {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1.5px dashed rgba(0,0,0,0.2);
+    border-radius: 50%;
+    animation: spin linear infinite;
+  }
+
+  .orbit-ring:nth-child(2) { width: 160px; height: 160px; animation-duration: 8s; }
+  .orbit-ring:nth-child(3) { width: 240px; height: 240px; animation-duration: 14s; animation-direction: reverse; }
+  .orbit-ring:nth-child(4) { width: 320px; height: 320px; animation-duration: 20s; }
+
+  @keyframes spin {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+
+  .orbit-node {
+    position: absolute;
+    width: 44px; height: 44px;
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    top: 50%; left: 50%;
+    transform-origin: center;
+  }
+
+  .ring2 .orbit-node:nth-child(1) { transform: translate(-50%, -50%) rotate(0deg) translateX(80px) rotate(0deg); }
+  .ring2 .orbit-node:nth-child(2) { transform: translate(-50%, -50%) rotate(120deg) translateX(80px) rotate(-120deg); }
+  .ring2 .orbit-node:nth-child(3) { transform: translate(-50%, -50%) rotate(240deg) translateX(80px) rotate(-240deg); }
+
+  .ring3 .orbit-node:nth-child(1) { transform: translate(-50%, -50%) rotate(60deg) translateX(120px) rotate(-60deg); }
+  .ring3 .orbit-node:nth-child(2) { transform: translate(-50%, -50%) rotate(180deg) translateX(120px) rotate(-180deg); }
+  .ring3 .orbit-node:nth-child(3) { transform: translate(-50%, -50%) rotate(300deg) translateX(120px) rotate(-300deg); }
+
+  .cover-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 3rem;
+    border-top: 3px solid var(--ink);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* SECTIONS */
+  .section {
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* MANIFESTO */
+  .manifesto {
+    background: var(--ink);
+    color: var(--paper);
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 0;
+  }
+
+  .manifesto-sidebar {
+    border-right: 1px solid rgba(255,255,255,0.15);
+    padding: 4rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+
+  .section-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    align-self: flex-start;
+  }
+
+  .manifesto-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 8rem;
+    line-height: 1;
+    color: rgba(255,255,255,0.08);
+    align-self: flex-end;
+  }
+
+  .manifesto-content {
+    padding: 4rem 3rem 4rem 4rem;
+  }
+
+  .manifesto-content h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    line-height: 1.1;
+    margin-bottom: 2rem;
+    font-style: italic;
+  }
+
+  .manifesto-content h2 strong {
+    font-style: normal;
+    color: var(--gold);
+  }
+
+  .drop-cap::first-letter {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    line-height: 0.7;
+    float: left;
+    margin-right: 0.1em;
+    color: var(--gold);
+  }
+
+  .manifesto-content p {
+    font-size: 0.85rem;
+    line-height: 2;
+    opacity: 0.8;
+    margin-bottom: 1.5rem;
+  }
+
+  .pull-quote {
+    border-left: 4px solid var(--rust);
+    padding: 1rem 1.5rem;
+    margin: 2.5rem 0;
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    font-style: italic;
+    line-height: 1.4;
+    color: var(--paper);
+  }
+
+  /* CHAPTER GRID */
+  .chapters {
+    background: var(--cream);
+  }
+
+  .chapters-header {
+    padding: 4rem 3rem 2rem;
+    border-bottom: 2px solid var(--ink);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .chapters-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    color: var(--ink);
+  }
+
+  .chapters-header span {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.4;
+  }
+
+  .chapters-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-left: 2px solid var(--ink);
+  }
+
+  .chapter-card {
+    border-right: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    padding: 2.5rem 2rem;
+    transition: background 0.2s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .chapter-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  .chapter-card:hover::after { transform: scaleX(1); }
+  .chapter-card:hover { background: var(--light-gold); }
+
+  .chapter-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    color: rgba(0,0,0,0.1);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .chapter-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .chapter-card h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+  }
+
+  .chapter-card p {
+    font-size: 0.7rem;
+    line-height: 1.8;
+    opacity: 0.65;
+  }
+
+  /* CHAPTER PAGES */
+  .chapter-page {
+    background: var(--paper);
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr;
+    min-height: 100vh;
+  }
+
+  .chapter-spine {
+    background: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
+  }
+
+  .chapter-spine span {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+  }
+
+  .chapter-main {
+    padding: 4rem 3rem;
+    border-right: 2px solid var(--ink);
+  }
+
+  .chapter-main .ch-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 6rem;
+    color: var(--ink);
+    line-height: 1;
+    opacity: 0.12;
+  }
+
+  .chapter-main h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.5rem;
+    font-style: italic;
+    margin-bottom: 2rem;
+    line-height: 1.2;
+  }
+
+  .chapter-main h2 em {
+    font-style: normal;
+    border-bottom: 3px solid var(--rust);
+  }
+
+  .chapter-main p {
+    font-size: 0.8rem;
+    line-height: 2;
+    opacity: 0.75;
+    margin-bottom: 1.5rem;
+  }
+
+  .chapter-main h3 {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 2rem 0 0.75rem;
+    font-weight: 700;
+  }
+
+  .chapter-sidebar {
+    padding: 4rem 2.5rem;
+  }
+
+  /* CALLOUT BOXES */
+  .callout {
+    border: 2px solid var(--ink);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+
+  .callout-label {
+    position: absolute;
+    top: -0.75rem;
+    left: 1rem;
+    background: var(--paper);
+    padding: 0 0.5rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--rust);
+  }
+
+  .callout p {
+    font-size: 0.75rem;
+    line-height: 1.8;
+    opacity: 0.8;
+  }
+
+  .callout.gold { border-color: var(--gold); background: var(--light-gold); }
+  .callout.gold .callout-label { background: var(--light-gold); color: var(--accent); }
+  .callout.dark { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+  .callout.dark p { opacity: 0.85; }
+  .callout.dark .callout-label { background: var(--ink); color: var(--gold); }
+
+  /* AGENT STACK */
+  .agent-stack {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 5rem 4rem;
+    position: relative;
+  }
+
+  .agent-stack::before {
+    content: 'AGENT STACK';
+    position: absolute;
+    top: 2rem; right: 3rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 8rem;
+    color: rgba(255,255,255,0.03);
+    letter-spacing: 0.05em;
+  }
+
+  .stack-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .stack-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    letter-spacing: 0.05em;
+    color: var(--gold);
+  }
+
+  .stack-header p {
+    font-size: 0.8rem;
+    opacity: 0.5;
+    margin-top: 0.5rem;
+    letter-spacing: 0.1em;
+  }
+
+  .stack-layers {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .stack-layer {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 0;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-bottom: none;
+    transition: background 0.2s;
+  }
+
+  .stack-layer:last-child { border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .stack-layer:hover { background: rgba(200,168,75,0.08); }
+
+  .layer-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    color: var(--gold);
+    padding: 1.5rem;
+  }
+
+  .layer-body {
+    padding: 1.5rem;
+  }
+
+  .layer-body h4 {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+  }
+
+  .layer-body p {
+    font-size: 0.72rem;
+    line-height: 1.7;
+    opacity: 0.6;
+  }
+
+  /* WORKFLOW DIAGRAM */
+  .workflow-section {
+    background: var(--cream);
+    padding: 5rem 4rem;
+  }
+
+  .workflow-section h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+
+  .workflow-section .subtitle {
+    font-size: 0.75rem;
+    opacity: 0.5;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+  }
+
+  .workflow-diagram {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+  }
+
+  .workflow-step {
+    min-width: 160px;
+    padding: 1.5rem;
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    position: relative;
+  }
+
+  .workflow-step .step-tag {
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rust);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .workflow-step .step-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+
+  .workflow-step h4 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .workflow-step p {
+    font-size: 0.65rem;
+    line-height: 1.6;
+    opacity: 0.6;
+  }
+
+  .workflow-arrow {
+    font-size: 1.5rem;
+    color: var(--gold);
+    padding: 0 0.5rem;
+    flex-shrink: 0;
+    font-weight: 900;
+  }
+
+  /* BUSINESS MODELS TABLE */
+  .models-section {
+    background: var(--paper);
+    padding: 5rem 4rem;
+    border-top: 3px solid var(--ink);
+  }
+
+  .models-section h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .models-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.75rem;
+  }
+
+  .models-table th {
+    background: var(--ink);
+    color: var(--gold);
+    padding: 1rem 1.5rem;
+    text-align: left;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .models-table td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    line-height: 1.6;
+    vertical-align: top;
+  }
+
+  .models-table tr:nth-child(even) td { background: var(--cream); }
+  .models-table tr:hover td { background: var(--light-gold); }
+
+  .tag {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    border-radius: 2px;
+  }
+
+  .tag.easy { background: #d4edda; color: #155724; }
+  .tag.medium { background: #fff3cd; color: #856404; }
+  .tag.advanced { background: #f8d7da; color: #721c24; }
+
+  /* MINDSET SHIFT */
+  .mindset {
+    background: var(--rust);
+    color: var(--paper);
+    padding: 6rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  .mindset h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    line-height: 0.9;
+    margin-bottom: 2rem;
+  }
+
+  .compare-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .compare-col h4 {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    opacity: 0.6;
+  }
+
+  .compare-col.old h4 { text-decoration: line-through; }
+
+  .compare-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    opacity: 0.9;
+  }
+
+  .compare-item .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--paper);
+    margin-top: 0.45rem;
+    flex-shrink: 0;
+    opacity: 0.4;
+  }
+
+  .compare-col.new .dot { opacity: 1; background: var(--gold); }
+
+  /* ROADMAP */
+  .roadmap {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 5rem 4rem;
+  }
+
+  .roadmap h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    color: var(--gold);
+    margin-bottom: 3rem;
+  }
+
+  .roadmap-phases {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .phase {
+    padding: 2rem 1.5rem;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    position: relative;
+  }
+
+  .phase:last-child { border-right: none; }
+
+  .phase-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    color: var(--gold);
+    line-height: 1;
+    opacity: 0.3;
+  }
+
+  .phase-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+
+  .phase h4 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    font-style: italic;
+  }
+
+  .phase ul {
+    list-style: none;
+    font-size: 0.7rem;
+    line-height: 2;
+    opacity: 0.6;
+  }
+
+  .phase ul li::before {
+    content: '→ ';
+    color: var(--gold);
+    opacity: 0.8;
+  }
+
+  .phase-time {
+    margin-top: 1.5rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--rust);
+    font-weight: 700;
+  }
+
+  /* CTA */
+  .cta {
+    background: var(--paper);
+    padding: 7rem 4rem;
+    text-align: center;
+    border-top: 3px solid var(--ink);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta::before {
+    content: 'ACT NOW';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20rem;
+    color: rgba(0,0,0,0.03);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .cta h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 4vw, 4rem);
+    font-style: italic;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+
+  .cta p {
+    font-size: 0.85rem;
+    opacity: 0.6;
+    max-width: 600px;
+    margin: 0 auto 3rem;
+    line-height: 2;
+    position: relative;
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+  }
+
+  .btn {
+    padding: 1rem 2.5rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: 2px solid var(--ink);
+    cursor: pointer;
+    font-weight: 700;
+    transition: all 0.2s;
+  }
+
+  .btn-primary {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .btn-primary:hover { background: var(--accent); border-color: var(--accent); }
+  .btn-secondary:hover { background: var(--light-gold); }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 3rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 3rem;
+    border-top: 4px solid var(--gold);
+  }
+
+  footer h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  footer ul {
+    list-style: none;
+    font-size: 0.7rem;
+    line-height: 2;
+    opacity: 0.5;
+  }
+
+  footer p {
+    font-size: 0.7rem;
+    line-height: 1.8;
+    opacity: 0.5;
+  }
+
+  .footer-bottom {
+    background: var(--ink);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 1.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    opacity: 0.3;
+    color: var(--paper);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .cover-title-block h1 { animation: fadeUp 1s ease 0.2s both; }
+  .cover-subtitle { animation: fadeUp 1s ease 0.5s both; }
+  .orbit-diagram { animation: fadeUp 1s ease 0.4s both; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .cover-hero { grid-template-columns: 1fr; }
+    .orbit-diagram { display: none; }
+    .manifesto { grid-template-columns: 1fr; }
+    .manifesto-sidebar { display: none; }
+    .chapters-grid { grid-template-columns: 1fr; }
+    .chapter-page { grid-template-columns: 40px 1fr; }
+    .chapter-sidebar { display: none; }
+    .compare-cols { grid-template-columns: 1fr; }
+    .roadmap-phases { grid-template-columns: 1fr 1fr; }
+    footer { grid-template-columns: 1fr; }
+    .models-section { padding: 3rem 1.5rem; }
+    .mindset { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 1.5rem; }
+    .workflow-section { padding: 3rem 1.5rem; }
+    .agent-stack { padding: 3rem 1.5rem; }
+    .roadmap { padding: 3rem 1.5rem; }
+    .roadmap-phases { grid-template-columns: 1fr; }
+    .cta { padding: 4rem 2rem; }
+    footer { padding: 2rem; }
+    .cover-top, .cover-bottom { padding: 1.5rem; }
+    .cover-hero { padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<section class="cover">
+  <div class="cover-top">
+    <div class="edition-tag">The Definitive Field Manual</div>
+    <div class="cover-issue">Vol. I · The AI Era · 2025–2030</div>
+  </div>
+
+  <div class="cover-hero">
+    <div class="cover-title-block">
+      <h1>
+        Stop<br>
+        <em>Seeking</em><br>
+        <span>Jobs.</span><br>
+        Create<br>
+        Them.
+      </h1>
+      <p class="cover-subtitle">
+        A practical manual for turning AI agents and automated workflows into a global business — without a team, without an office, without permission from anyone.
+      </p>
+    </div>
+
+    <div class="cover-graphic">
+      <div class="orbit-diagram">
+        <!-- Center -->
+        <div class="orbit-center">YOU<br>CEO</div>
+
+        <!-- Ring 2 -->
+        <div class="orbit-ring ring2" style="width:160px;height:160px;">
+          <div class="orbit-node">🤖</div>
+          <div class="orbit-node">📊</div>
+          <div class="orbit-node">✍️</div>
+        </div>
+
+        <!-- Ring 3 -->
+        <div class="orbit-ring ring3" style="width:240px;height:240px;">
+          <div class="orbit-node">🌍</div>
+          <div class="orbit-node">💰</div>
+          <div class="orbit-node">📦</div>
+        </div>
+
+        <!-- Ring 4 -->
+        <div class="orbit-ring" style="width:320px;height:320px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cover-bottom">
+    <span>AI-Powered Solopreneur Edition</span>
+    <span>●</span>
+    <span>Build · Automate · Scale · Repeat</span>
+    <span>●</span>
+    <span>Global From Day One</span>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section class="section manifesto">
+  <div class="manifesto-sidebar">
+    <span class="section-label">Manifesto</span>
+    <div class="manifesto-num">01</div>
+  </div>
+
+  <div class="manifesto-content">
+    <h2>The <strong>résumé</strong> was never<br>supposed to be<br>your entire future.</h2>
+
+    <p class="drop-cap">
+      Every morning, millions of talented people open their laptops, update their résumés, and begin the ritual of asking strangers for permission to earn a living. They polish LinkedIn profiles, rehearse elevator pitches, and wait — sometimes weeks, sometimes months — for a single email that may never arrive.
+    </p>
+
+    <p>
+      Meanwhile, a growing number of individuals — many with no technical degree, no venture capital, no MBA — are quietly building businesses that serve thousands of customers across dozens of countries. Their secret is not genius. It is leverage. Specifically: AI agents and automated workflows that do the repetitive, time-consuming work of delivery at scale.
+    </p>
+
+    <div class="pull-quote">
+      "You don't need more skills. You need a different relationship with the skills you already have."
+    </div>
+
+    <p>
+      This manual is for the person who has been told they need to fit into someone else's box. It is written for the professional who suspects that their expertise — in writing, design, analysis, research, marketing, operations, teaching, or any other domain — is worth far more than a salary. It is a field guide for making that suspicion real.
+    </p>
+
+    <p>
+      The shift from job seeker to job creator is not primarily a technical one. AI handles most of the technical labor now. The shift is conceptual: you must stop seeing yourself as a skilled employee waiting to be activated and start seeing yourself as a system architect whose product is valuable outcomes delivered at scale.
+    </p>
+
+    <p>
+      What follows is a practical map for making that journey — chapter by chapter, tool by tool, workflow by workflow.
+    </p>
+  </div>
+</section>
+
+<!-- CHAPTER INDEX -->
+<section class="section chapters">
+  <div class="chapters-header">
+    <h2>Table of Contents</h2>
+    <span>Seven Chapters · One Transformation</span>
+  </div>
+
+  <div class="chapters-grid">
+    <div class="chapter-card">
+      <div class="chapter-num">01</div>
+      <div class="chapter-icon">🧠</div>
+      <h3>The New Mental Model</h3>
+      <p>Why thinking like an employee is holding you back — and how to rewire your worldview toward systems, leverage, and value creation at scale.</p>
+    </div>
+    <div class="chapter-card">
+      <div class="chapter-num">02</div>
+      <div class="chapter-icon">🤖</div>
+      <h3>Understanding AI Agents</h3>
+      <p>What agents actually are, how they differ from simple AI tools, and why they are the fundamental unit of the new solopreneur economy.</p>
+    </div>
+    <div class="chapter-card">
+      <div class="chapter-num">03</div>
+      <div class="chapter-icon">⚙️</div>
+      <h3>Building Your Agent Stack</h3>
+      <p>The exact architecture of tools, agents, and workflows that let one person deliver what once required a team of ten — or a hundred.</p>
+    </div>
+    <div class="chapter-card">
+      <div class="chapter-num">04</div>
+      <div class="chapter-icon">💼</div>
+      <h3>Business Models That Scale</h3>
+      <p>Seven proven ways to package AI-powered work into offers customers pay for repeatedly — from productized services to SaaS and beyond.</p>
+    </div>
+    <div class="chapter-card">
+      <div class="chapter-num">05</div>
+      <div class="chapter-icon">🌍</div>
+      <h3>Going Global From Day One</h3>
+      <p>How to design your offer, pricing, and delivery to serve customers in any timezone, currency, or language — without a physical presence anywhere.</p>
+    </div>
+    <div class="chapter-card">
+      <div class="chapter-num">06</div>
+      <div class="chapter-icon">📈</div>
+      <h3>Your 90-Day Launch Roadmap</h3>
+      <p>A phase-by-phase action plan to go from idea to paying customers in 90 days — with weekly milestones and decision checkpoints.</p>
+    </div>
+    <div class="chapter-card">
+      <div class="chapter-num">07</div>
+      <div class="chapter-icon">🔄</div>
+      <h3>Staying Ahead of the Curve</h3>
+      <p>How to treat your business as a living system — continuously improving your agents, expanding your moat, and building an asset that compounds.</p>
+    </div>
+    <div class="chapter-card">
+      <div class="chapter-num">✦</div>
+      <div class="chapter-icon">📋</div>
+      <h3>Tools &amp; Resources Appendix</h3>
+      <p>A curated stack of platforms, marketplaces, communities, and reference resources to shortcut your first year of building.</p>
+    </div>
+    <div class="chapter-card">
+      <div class="chapter-num">✦</div>
+      <div class="chapter-icon">💬</div>
+      <h3>Real Founder Stories</h3>
+      <p>Brief profiles of six real solopreneurs who made the shift — what they sold, what agents they used, and what their first dollar looked like.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CHAPTER 1 -->
+<section class="section chapter-page">
+  <div class="chapter-spine"><span>Chapter One · The Mental Model</span></div>
+
+  <div class="chapter-main">
+    <div class="ch-number">01</div>
+    <h2>The <em>New</em> Mental Model</h2>
+
+    <p>
+      Before a single workflow is built or an agent is deployed, the most important transformation happens inside your own thinking. Most people who have spent years in the job market carry a deeply embedded mental model: <em>I trade time for money. My value is determined by an employer. Growth means a promotion or a raise.</em>
+    </p>
+
+    <h3>The Time-for-Money Trap</h3>
+    <p>
+      The traditional employment model is fundamentally capped. You have approximately 2,000 working hours per year. Every dollar you earn is tied to one of those hours. Even the highest-paid employee eventually hits a ceiling because hours are finite and non-duplicable.
+    </p>
+    <p>
+      The job creator's mental model is different: <em>I build systems that deliver value. My time is spent designing and improving those systems, not executing every task within them.</em> When an AI agent does the execution, your hours are freed for higher-order work — strategy, relationships, new offers — while the system continues earning.
+    </p>
+
+    <h3>From Skill to System</h3>
+    <p>
+      You likely have real expertise. The question is whether that expertise lives inside your head — locked behind your personal availability — or whether it has been codified into a repeatable, scalable system. A writer who writes every article manually is a freelancer. A writer who has built an AI-powered content system that produces 50 articles per week for a portfolio of clients is an operator of a publishing business.
+    </p>
+
+    <h3>The Permission Illusion</h3>
+    <p>
+      Job seeking is fundamentally a permission-seeking activity. You apply. You wait. Someone else decides your worth. Job creation requires no permission. The market decides your value — not a hiring manager, not an algorithm reviewing your résumé, but actual customers voting with actual money. This is more honest, more direct, and ultimately more empowering.
+    </p>
+  </div>
+
+  <div class="chapter-sidebar">
+    <div class="callout gold">
+      <span class="callout-label">Key Insight</span>
+      <p>The employee thinks: <em>"How do I sell my time?"</em><br>The creator thinks: <em>"How do I build a machine that delivers value while I sleep?"</em></p>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">The Leverage Equation</span>
+      <p><strong>1 person × AI agents × good systems = the output of a team</strong><br><br>This is not a metaphor. It is a literal description of what is happening in the market right now.</p>
+    </div>
+
+    <div class="callout dark">
+      <span class="callout-label">Reality Check</span>
+      <p>You do not need to quit your job to start. Many successful AI-powered solopreneurs built their first $1,000/month in evenings and weekends before making any transitions. Start small, prove the model, then accelerate.</p>
+    </div>
+  </div>
+</section>
+
+<!-- AGENT STACK -->
+<section class="section agent-stack">
+  <div class="stack-header">
+    <h2>Your AI Agent Stack</h2>
+    <p>Six layers. One machine. Infinite leverage.</p>
+  </div>
+
+  <div class="stack-layers">
+    <div class="stack-layer">
+      <div class="layer-num">L6</div>
+      <div class="layer-body">
+        <h4>Strategic Layer — You</h4>
+        <p>Vision, relationships, offer design, quality decisions. The only layer that requires your human judgment. Goal: spend 90% of your time here.</p>
+      </div>
+    </div>
+    <div class="stack-layer">
+      <div class="layer-num">L5</div>
+      <div class="layer-body">
+        <h4>Orchestration — Claude / GPT-4o / Gemini</h4>
+        <p>Your primary reasoning agent. Understands context, plans multi-step tasks, writes, analyzes, decides. The "brain" of your operation that coordinates other agents.</p>
+      </div>
+    </div>
+    <div class="stack-layer">
+      <div class="layer-num">L4</div>
+      <div class="layer-body">
+        <h4>Workflow Automation — Make / Zapier / n8n</h4>
+        <p>The nervous system. Connects tools, triggers actions, moves data between systems. When X happens → AI does Y → result goes to Z. No code required for most flows.</p>
+      </div>
+    </div>
+    <div class="stack-layer">
+      <div class="layer-num">L3</div>
+      <div class="layer-body">
+        <h4>Specialized Agents — Research, Design, Code, Voice</h4>
+        <p>Perplexity for research, Midjourney/DALL·E for visuals, Cursor/Replit for code, ElevenLabs for voice. Each expert in its domain; orchestrated by L5.</p>
+      </div>
+    </div>
+    <div class="stack-layer">
+      <div class="layer-num">L2</div>
+      <div class="layer-body">
+        <h4>Distribution &amp; Delivery — CRM, Email, Marketplace, CMS</h4>
+        <p>Beehiiv, ConvertKit, Gumroad, Shopify, Notion, Webflow. Automated publishing, fulfillment, and customer communication. Products delivered without your manual involvement.</p>
+      </div>
+    </div>
+    <div class="stack-layer">
+      <div class="layer-num">L1</div>
+      <div class="layer-body">
+        <h4>Payments &amp; Operations — Stripe, Notion, Airtable</h4>
+        <p>Money in, data organized, contracts signed. The business infrastructure layer. Once set up, runs invisibly in the background of every transaction.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKFLOW -->
+<section class="section workflow-section">
+  <h2>A Workflow In Action</h2>
+  <p class="subtitle">Example: AI-Powered Content Agency → Client receives 20 articles/month → You reviewed 2</p>
+
+  <div class="workflow-diagram">
+    <div class="workflow-step">
+      <div class="step-tag">Step 1</div>
+      <div class="step-icon">📋</div>
+      <h4>Client Brief</h4>
+      <p>Client submits a monthly content brief via form. Triggers the entire workflow automatically.</p>
+    </div>
+    <div class="workflow-arrow">→</div>
+    <div class="workflow-step">
+      <div class="step-tag">Step 2</div>
+      <div class="step-icon">🔍</div>
+      <h4>Research Agent</h4>
+      <p>Perplexity searches for current data, competitors, angles. Sends findings to orchestrator.</p>
+    </div>
+    <div class="workflow-arrow">→</div>
+    <div class="workflow-step">
+      <div class="step-tag">Step 3</div>
+      <div class="step-icon">✍️</div>
+      <h4>Writing Agent</h4>
+      <p>Claude drafts articles using brand voice guidelines + research. Structured prompts ensure quality.</p>
+    </div>
+    <div class="workflow-arrow">→</div>
+    <div class="workflow-step">
+      <div class="step-tag">Step 4</div>
+      <div class="step-icon">✅</div>
+      <h4>QA + Your Review</h4>
+      <p>Automated quality check flags low-confidence outputs. You review edge cases only.</p>
+    </div>
+    <div class="workflow-arrow">→</div>
+    <div class="workflow-step">
+      <div class="step-tag">Step 5</div>
+      <div class="step-icon">🚀</div>
+      <h4>Auto-Delivery</h4>
+      <p>Approved content published to client's CMS or delivered via Notion. Invoice triggered automatically.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BUSINESS MODELS TABLE -->
+<section class="section models-section">
+  <h2>Business Models That Scale With AI</h2>
+
+  <table class="models-table">
+    <thead>
+      <tr>
+        <th>Model</th>
+        <th>What You Sell</th>
+        <th>AI Does</th>
+        <th>Monthly Revenue Potential</th>
+        <th>Difficulty</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Productized Service</strong></td>
+        <td>Fixed deliverable at fixed price (e.g., "10 blog posts/month")</td>
+        <td>90% of production, research, formatting, delivery</td>
+        <td>$2,000 – $15,000</td>
+        <td><span class="tag easy">Beginner</span></td>
+      </tr>
+      <tr>
+        <td><strong>AI Newsletter</strong></td>
+        <td>Weekly expert curation + insight to a paid subscriber list</td>
+        <td>Research, summarization, draft generation, formatting</td>
+        <td>$500 – $10,000</td>
+        <td><span class="tag easy">Beginner</span></td>
+      </tr>
+      <tr>
+        <td><strong>Digital Products</strong></td>
+        <td>Templates, playbooks, courses, swipe files</td>
+        <td>Content creation, design, translation, marketing copy</td>
+        <td>$1,000 – $20,000</td>
+        <td><span class="tag easy">Beginner</span></td>
+      </tr>
+      <tr>
+        <td><strong>AI Agency</strong></td>
+        <td>Packaged AI transformation for SMB clients</td>
+        <td>Workflow building, prompt engineering, reporting, delivery</td>
+        <td>$5,000 – $50,000</td>
+        <td><span class="tag medium">Intermediate</span></td>
+      </tr>
+      <tr>
+        <td><strong>Lead Generation Business</strong></td>
+        <td>Qualified leads or booked calls delivered to clients</td>
+        <td>Research, personalization, outreach, follow-up sequences</td>
+        <td>$3,000 – $30,000</td>
+        <td><span class="tag medium">Intermediate</span></td>
+      </tr>
+      <tr>
+        <td><strong>Micro-SaaS</strong></td>
+        <td>A small software product solving one specific pain point</td>
+        <td>Code generation, debugging, customer support, documentation</td>
+        <td>$2,000 – $100,000+</td>
+        <td><span class="tag advanced">Advanced</span></td>
+      </tr>
+      <tr>
+        <td><strong>AI-Powered Media Co.</strong></td>
+        <td>Audience at scale (YouTube, podcast, blog) + monetization layers</td>
+        <td>Scripts, SEO research, thumbnails, editing notes, distribution</td>
+        <td>$5,000 – $200,000+</td>
+        <td><span class="tag advanced">Advanced</span></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- MINDSET SHIFT -->
+<section class="section mindset">
+  <div>
+    <h2>The Shift In<br>Plain Terms</h2>
+    <p style="font-size: 0.8rem; line-height: 2; opacity: 0.8;">
+      This is not about replacing human effort with cold automation. It is about freeing your human effort for the work that only humans can do — building relationships, exercising judgment, creating genuine value — while letting AI handle the execution that doesn't require your presence.
+    </p>
+  </div>
+
+  <div class="compare-cols">
+    <div class="compare-col old">
+      <h4>Job Seeker Thinking</h4>
+      <div class="compare-item"><span class="dot"></span><span>Waits for permission to earn</span></div>
+      <div class="compare-item"><span class="dot"></span><span>Sells hours, caps income</span></div>
+      <div class="compare-item"><span class="dot"></span><span>One boss, one salary, one risk</span></div>
+      <div class="compare-item"><span class="dot"></span><span>Improves self to get promoted</span></div>
+      <div class="compare-item"><span class="dot"></span><span>Fears AI will take their job</span></div>
+      <div class="compare-item"><span class="dot"></span><span>Serves one employer</span></div>
+      <div class="compare-item"><span class="dot"></span><span>Vulnerable to single points of failure</span></div>
+    </div>
+    <div class="compare-col new">
+      <h4>Job Creator Thinking</h4>
+      <div class="compare-item"><span class="dot"></span><span>Earns based on value delivered</span></div>
+      <div class="compare-item"><span class="dot"></span><span>Sells outcomes, scales infinitely</span></div>
+      <div class="compare-item"><span class="dot"></span><span>Multiple clients, diversified income</span></div>
+      <div class="compare-item"><span class="dot"></span><span>Improves systems to scale output</span></div>
+      <div class="compare-item"><span class="dot"></span><span>Uses AI as their unfair advantage</span></div>
+      <div class="compare-item"><span class="dot"></span><span>Serves a global customer base</span></div>
+      <div class="compare-item"><span class="dot"></span><span>Builds redundancy and resilience in</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section class="section roadmap">
+  <h2>Your 90-Day Roadmap</h2>
+
+  <div class="roadmap-phases">
+    <div class="phase">
+      <div class="phase-num">01</div>
+      <div class="phase-label">Phase One</div>
+      <h4>Clarity &amp; Foundation</h4>
+      <ul>
+        <li>Choose your niche & offer</li>
+        <li>Identify your first 3 target clients</li>
+        <li>Set up payment infrastructure</li>
+        <li>Build your minimal agent stack</li>
+        <li>Define your core workflow</li>
+      </ul>
+      <div class="phase-time">Days 1 – 14</div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-num">02</div>
+      <div class="phase-label">Phase Two</div>
+      <h4>First Revenue</h4>
+      <ul>
+        <li>Launch outreach to 50 prospects</li>
+        <li>Deliver your first paid project</li>
+        <li>Document your system</li>
+        <li>Collect testimonials</li>
+        <li>Identify automation gaps</li>
+      </ul>
+      <div class="phase-time">Days 15 – 45</div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-num">03</div>
+      <div class="phase-label">Phase Three</div>
+      <h4>Systems &amp; Scale</h4>
+      <ul>
+        <li>Automate delivery end-to-end</li>
+        <li>Add 3–5 recurring clients</li>
+        <li>Build a distribution channel</li>
+        <li>Launch a second offer</li>
+        <li>Track key metrics weekly</li>
+      </ul>
+      <div class="phase-time">Days 46 – 75</div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-num">04</div>
+      <div class="phase-label">Phase Four</div>
+      <h4>Compound Growth</h4>
+      <ul>
+        <li>Raise prices with new clients</li>
+        <li>Create a referral loop</li>
+        <li>Build a waitlist or community</li>
+        <li>Hire first human or AI VA</li>
+        <li>Plan Year 2 product roadmap</li>
+      </ul>
+      <div class="phase-time">Days 76 – 90+</div>
+    </div>
+  </div>
+</section>
+
+<!-- CHAPTER 5 PREVIEW: GOING GLOBAL -->
+<section class="section chapter-page">
+  <div class="chapter-spine"><span>Chapter Five · Going Global</span></div>
+
+  <div class="chapter-main">
+    <div class="ch-number">05</div>
+    <h2>Global From <em>Day One</em></h2>
+
+    <p>
+      One of the most counterintuitive advantages of an AI-powered business is that geography becomes largely irrelevant. A content operation built on AI agents serves a client in Singapore just as easily as one in Sao Paulo. A lead generation system sends personalized outreach in French, Mandarin, or Spanish without you speaking a word of any of them.
+    </p>
+
+    <h3>Design for Asynchronous Delivery</h3>
+    <p>
+      The key architectural principle for global reach is asynchronous delivery: your system produces and delivers value without requiring you and the customer to be online at the same time. AI agents don't sleep. They don't observe holidays. Your workflow can process a request filed at 3AM by a customer in Tokyo and have a polished deliverable waiting in their inbox when they wake up.
+    </p>
+
+    <h3>Localization at Scale</h3>
+    <p>
+      Translation and localization, which once required teams of specialist writers, is now a workflow step. Large language models handle nuanced translation with cultural context. An AI agent can adapt a piece of content for a UK audience versus an Australian one versus an American one, adjusting idiom, spelling, and reference points automatically.
+    </p>
+
+    <h3>Pricing Across Markets</h3>
+    <p>
+      Purchasing power parity is real. A $500/month retainer is an easy decision for a US client and an enormous commitment for a client in Southeast Asia. Consider offering tiered pricing, geographic pricing, or a lower-tier self-serve product that lets you capture value across income brackets. AI makes it economically viable to serve markets that would have been unprofitable to service manually.
+    </p>
+
+    <h3>Legal and Payment Infrastructure</h3>
+    <p>
+      Stripe, Wise, and Paddle handle multi-currency payments, tax compliance, and international invoicing automatically. You do not need an accountant in every country. You need one solid payment layer that handles the complexity beneath the surface.
+    </p>
+  </div>
+
+  <div class="chapter-sidebar">
+    <div class="callout gold">
+      <span class="callout-label">Global Platforms to List On</span>
+      <p>
+        <strong>Upwork / Toptal</strong> — Service delivery<br>
+        <strong>Gumroad / Lemon Squeezy</strong> — Digital products<br>
+        <strong>Fiverr</strong> — Productized micro-services<br>
+        <strong>AppSumo</strong> — SaaS lifetime deals<br>
+        <strong>Product Hunt</strong> — Product launches<br>
+        <strong>Etsy</strong> — Creative digital products<br>
+        <strong>Substack / Beehiiv</strong> — Paid newsletters
+      </p>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">The 24/7 Advantage</span>
+      <p>An AI agent doesn't need sleep. While you rest in Lagos, your system can be processing a lead from London, delivering a report to a client in Los Angeles, and onboarding a customer from Tokyo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <h2>The world does not need another résumé.<br>It needs what only <em>you</em> can build.</h2>
+  <p>
+    The tools exist. The market is global and growing. The barrier to entry has never been lower. The only thing that stands between where you are and where you want to be is the decision to start — and the willingness to build systems instead of asking for shifts.
+  </p>
+  <div class="cta-actions">
+    <button class="btn btn-primary">Start With Chapter One</button>
+    <button class="btn btn-secondary">Download PDF Version</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <h4>From Job Seeker to Job Creator</h4>
+    <p>A practical field manual for the age of AI agents. Built for ambitious individuals who refuse to wait for a seat at someone else's table.</p>
+  </div>
+
+  <div>
+    <h4>Key Chapters</h4>
+    <ul>
+      <li>The New Mental Model</li>
+      <li>Understanding AI Agents</li>
+      <li>Building Your Agent Stack</li>
+      <li>Business Models That Scale</li>
+      <li>Going Global From Day One</li>
+      <li>Your 90-Day Roadmap</li>
+    </ul>
+  </div>
+
+  <div>
+    <h4>Core Tools Referenced</h4>
+    <ul>
+      <li>Claude / GPT-4o / Gemini</li>
+      <li>Make / Zapier / n8n</li>
+      <li>Perplexity / Midjourney</li>
+      <li>Stripe / Wise / Paddle</li>
+      <li>Beehiiv / ConvertKit</li>
+      <li>Notion / Airtable / Webflow</li>
+    </ul>
+  </div>
+</footer>
+
+<div class="footer-bottom">
+  <span>© 2025 The AI Era Manual</span>
+  <span>Build · Automate · Scale · Repeat</span>
+  <span>Global From Day One</span>
+</div>
+
+</body>
+</html>

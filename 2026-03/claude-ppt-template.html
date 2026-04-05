@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Future — A Visual Journey</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0d0d0d;
+    --paper: #f5f0e8;
+    --cream: #ede8da;
+    --rust: #c94b2e;
+    --gold: #e8b84b;
+    --teal: #2a7c7c;
+    --navy: #1a2744;
+    --lilac: #c5b8d8;
+    --slide-w: 100vw;
+    --slide-h: 100vh;
+  }
+
+  html, body { width: 100%; height: 100%; overflow: hidden; background: var(--ink); }
+
+  /* ─── STAGE ─── */
+  #stage {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* ─── SLIDE BASE ─── */
+  .slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(100%);
+    transition: transform 0.7s cubic-bezier(0.77,0,0.175,1), opacity 0.7s ease;
+    overflow: hidden;
+  }
+
+  .slide.active {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateX(0);
+  }
+
+  .slide.exit-left  { transform: translateX(-100%); opacity: 0; }
+  .slide.exit-right { transform: translateX(100%);  opacity: 0; }
+
+  /* inner animations fire when slide becomes active */
+  .slide.active .anim-up    { animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+  .slide.active .anim-up-2  { animation: fadeUp 0.7s 0.15s cubic-bezier(0.22,1,0.36,1) both; }
+  .slide.active .anim-up-3  { animation: fadeUp 0.7s 0.3s cubic-bezier(0.22,1,0.36,1) both; }
+  .slide.active .anim-scale { animation: scaleIn 0.6s 0.1s cubic-bezier(0.22,1,0.36,1) both; }
+  .slide.active .anim-fade  { animation: fadeIn 0.9s 0.2s ease both; }
+  .slide.active .anim-line  { animation: lineGrow 0.8s 0.3s ease both; }
+  .slide.active .count-up   { animation: countUp 1.5s 0.4s ease both; }
+
+  @keyframes fadeUp   { from { opacity:0; transform:translateY(40px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeIn   { from { opacity:0; } to { opacity:1; } }
+  @keyframes scaleIn  { from { opacity:0; transform:scale(0.85); } to { opacity:1; transform:scale(1); } }
+  @keyframes lineGrow { from { transform:scaleX(0); } to { transform:scaleX(1); } }
+  @keyframes countUp  { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes spin     { to { transform: rotate(360deg); } }
+  @keyframes float    { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-18px); } }
+  @keyframes pulse    { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+  @keyframes shimmer  { from { background-position: -200% center; } to { background-position: 200% center; } }
+  @keyframes dash { to { stroke-dashoffset: 0; } }
+  @keyframes barGrow  { from { height: 0; } to { } }
+  @keyframes marquee  { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ═══════════════════════════════════════════
+     SLIDE 1 — HERO
+  ═══════════════════════════════════════════ */
+  #s1 { background: var(--ink); color: var(--paper); }
+  #s1 .bg-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(245,240,232,0.04) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(245,240,232,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  #s1 .big-circle {
+    position: absolute; width: 600px; height: 600px;
+    border-radius: 50%;
+    border: 1px solid rgba(245,240,232,0.1);
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+    animation: spinCircle 20s linear infinite;
+  }
+  @keyframes spinCircle {
+    from { transform: translate(-50%,-50%) rotate(0deg); }
+    to   { transform: translate(-50%,-50%) rotate(360deg); }
+  }
+  #s1 .big-circle::after {
+    content: '';
+    position: absolute;
+    width: 12px; height: 12px; background: var(--gold);
+    border-radius: 50%; top: -6px; left: 50%; margin-left: -6px;
+  }
+  #s1 .hero-label {
+    font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 20px;
+  }
+  #s1 h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 12vw, 160px);
+    line-height: 0.9; text-align: center;
+    background: linear-gradient(135deg, #f5f0e8 30%, #e8b84b 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  #s1 .sub {
+    margin-top: 28px; font-size: 15px; font-weight: 300;
+    color: rgba(245,240,232,0.5); letter-spacing: 1px;
+  }
+  #s1 .scroll-hint {
+    position: absolute; bottom: 40px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    color: rgba(245,240,232,0.3); font-size: 10px; letter-spacing: 3px;
+    text-transform: uppercase; animation: fadeIn 1s 1s both;
+  }
+  #s1 .scroll-hint span {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, rgba(245,240,232,0.3), transparent);
+    animation: pulse 1.5s infinite;
+  }
+
+  /* ═══════════════════════════════════════════
+     SLIDE 2 — QUOTE / STATEMENT
+  ═══════════════════════════════════════════ */
+  #s2 { background: var(--rust); color: var(--paper); }
+  #s2 .noise {
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+    opacity: 0.3;
+  }
+  #s2 blockquote {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 4.5vw, 58px);
+    font-style: italic;
+    text-align: center;
+    max-width: 860px;
+    line-height: 1.25;
+    padding: 0 40px;
+    position: relative; z-index: 1;
+  }
+  #s2 cite {
+    display: block; margin-top: 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-style: normal; font-weight: 500;
+    letter-spacing: 3px; text-transform: uppercase;
+    opacity: 0.65;
+  }
+  #s2 .deco-line {
+    width: 60px; height: 2px; background: var(--paper); opacity: 0.4;
+    transform-origin: left; margin: 24px auto 0;
+  }
+  #s2 .corner {
+    position: absolute; width: 120px; height: 120px;
+    border: 2px solid rgba(245,240,232,0.2);
+  }
+  #s2 .corner.tl { top: 30px; left: 30px; border-right: none; border-bottom: none; }
+  #s2 .corner.br { bottom: 30px; right: 30px; border-left: none; border-top: none; }
+
+  /* ═══════════════════════════════════════════
+     SLIDE 3 — IMAGE GRID
+  ═══════════════════════════════════════════ */
+  #s3 { background: var(--paper); color: var(--ink); flex-direction: row; align-items: stretch; }
+  #s3 .left-text {
+    width: 35%; padding: 60px 50px;
+    display: flex; flex-direction: column; justify-content: center;
+    border-right: 1px solid rgba(13,13,13,0.1);
+  }
+  #s3 .left-text .label {
+    font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--rust); margin-bottom: 16px;
+  }
+  #s3 h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(42px, 5vw, 72px);
+    line-height: 1; margin-bottom: 20px;
+  }
+  #s3 p { font-size: 14px; line-height: 1.7; color: rgba(13,13,13,0.6); }
+  #s3 .grid {
+    flex: 1; display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 4px; padding: 4px;
+  }
+  #s3 .grid-item {
+    position: relative; overflow: hidden;
+    background: var(--cream);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: transform 0.3s ease;
+  }
+  #s3 .grid-item:hover { transform: scale(0.98); }
+  #s3 .grid-item img { width: 100%; height: 100%; object-fit: cover; }
+  #s3 .grid-item .ph {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 8px; color: rgba(13,13,13,0.25);
+  }
+  #s3 .grid-item .ph svg { width: 36px; height: 36px; }
+  #s3 .grid-item .ph span { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
+  #s3 .grid-item:first-child { grid-row: span 2; }
+
+  /* ═══════════════════════════════════════════
+     SLIDE 4 — STATS / NUMBERS
+  ═══════════════════════════════════════════ */
+  #s4 { background: var(--navy); color: var(--paper); }
+  #s4 .label { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 50px; }
+  #s4 .stats-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 60px; max-width: 860px; width: 100%;
+    padding: 0 40px;
+  }
+  #s4 .stat { text-align: center; }
+  #s4 .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(56px, 7vw, 90px);
+    line-height: 1;
+    background: linear-gradient(135deg, #e8b84b, #f5f0e8);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  #s4 .stat-label {
+    margin-top: 10px; font-size: 12px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: rgba(245,240,232,0.45);
+  }
+  #s4 .stat-bar {
+    margin-top: 16px; height: 2px; background: rgba(245,240,232,0.1);
+    border-radius: 2px; overflow: hidden;
+  }
+  #s4 .stat-bar-fill {
+    height: 100%; background: var(--gold);
+    transform-origin: left; transform: scaleX(0);
+    transition: transform 1s 0.6s ease;
+  }
+  #s4.active .stat-bar-fill { transform: scaleX(1); }
+  #s4 .divider {
+    width: 1px; background: rgba(245,240,232,0.12);
+    position: absolute; height: 80px; top: 50%; margin-top: -40px;
+  }
+
+  /* ═══════════════════════════════════════════
+     SLIDE 5 — CHART / BAR GRAPH
+  ═══════════════════════════════════════════ */
+  #s5 { background: var(--cream); color: var(--ink); }
+  #s5 .inner { max-width: 900px; width: 100%; padding: 0 40px; }
+  #s5 .label { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
+  #s5 h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 4vw, 56px); margin-bottom: 40px;
+  }
+  #s5 .chart { display: flex; align-items: flex-end; gap: 16px; height: 220px; padding-bottom: 40px; position: relative; }
+  #s5 .chart::after {
+    content: ''; position: absolute; bottom: 40px; left: 0; right: 0;
+    height: 1px; background: rgba(13,13,13,0.12);
+  }
+  #s5 .bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  #s5 .bar {
+    width: 100%; border-radius: 4px 4px 0 0;
+    transform-origin: bottom; transform: scaleY(0);
+    transition: transform 0.7s cubic-bezier(0.22,1,0.36,1);
+    position: relative;
+  }
+  #s5.active .bar { transform: scaleY(1); }
+  #s5 .bar-val {
+    position: absolute; top: -26px; left: 50%; transform: translateX(-50%);
+    font-size: 12px; font-weight: 500;
+    opacity: 0; transition: opacity 0.3s 0.8s ease;
+  }
+  #s5.active .bar-val { opacity: 1; }
+  #s5 .bar-lbl { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: rgba(13,13,13,0.45); }
+  .bar-1 { background: var(--teal); height: 140px; transition-delay:0.1s; }
+  .bar-2 { background: var(--rust); height: 180px; transition-delay:0.2s; }
+  .bar-3 { background: var(--navy); height: 100px; transition-delay:0.3s; }
+  .bar-4 { background: var(--gold); height: 200px; transition-delay:0.4s; }
+  .bar-5 { background: var(--teal); height: 130px; transition-delay:0.5s; }
+  .bar-6 { background: var(--rust); height: 160px; transition-delay:0.6s; }
+
+  /* ═══════════════════════════════════════════
+     SLIDE 6 — FEATURE CARDS
+  ═══════════════════════════════════════════ */
+  #s6 { background: #111; color: var(--paper); padding: 40px; }
+  #s6 .top { text-align: center; margin-bottom: 40px; }
+  #s6 .label { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--lilac); margin-bottom: 10px; }
+  #s6 h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 4.5vw, 60px); line-height: 1;
+  }
+  #s6 .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 900px; }
+  #s6 .card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px; padding: 28px 24px;
+    transition: background 0.3s, transform 0.3s;
+    cursor: default;
+  }
+  #s6 .card:hover { background: rgba(255,255,255,0.08); transform: translateY(-4px); }
+  #s6 .card-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px; font-size: 22px;
+  }
+  #s6 .card h3 { font-size: 15px; font-weight: 500; margin-bottom: 10px; }
+  #s6 .card p  { font-size: 12px; line-height: 1.7; color: rgba(245,240,232,0.45); }
+  #s6 .card-tag {
+    display: inline-block; margin-top: 14px;
+    background: rgba(255,255,255,0.07); border-radius: 20px;
+    padding: 4px 10px; font-size: 10px; letter-spacing: 1px;
+    text-transform: uppercase; color: rgba(245,240,232,0.5);
+  }
+
+  /* ═══════════════════════════════════════════
+     SLIDE 7 — TIMELINE
+  ═══════════════════════════════════════════ */
+  #s7 { background: var(--paper); color: var(--ink); align-items: flex-start; padding: 60px; }
+  #s7 .label { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--rust); margin-bottom: 8px; }
+  #s7 h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 4vw, 56px); margin-bottom: 40px;
+  }
+  #s7 .timeline { position: relative; padding-left: 32px; max-width: 700px; }
+  #s7 .timeline::before {
+    content: '';
+    position: absolute; left: 0; top: 8px; bottom: 8px; width: 1px;
+    background: rgba(13,13,13,0.15);
+    transform-origin: top; transform: scaleY(0);
+    transition: transform 0.8s 0.3s ease;
+  }
+  #s7.active .timeline::before { transform: scaleY(1); }
+  #s7 .tl-item {
+    position: relative; margin-bottom: 30px;
+    opacity: 0; transform: translateX(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  #s7.active .tl-item { opacity: 1; transform: translateX(0); }
+  #s7.active .tl-item:nth-child(1) { transition-delay: 0.4s; }
+  #s7.active .tl-item:nth-child(2) { transition-delay: 0.55s; }
+  #s7.active .tl-item:nth-child(3) { transition-delay: 0.7s; }
+  #s7.active .tl-item:nth-child(4) { transition-delay: 0.85s; }
+  #s7 .tl-dot {
+    position: absolute; left: -36px; top: 6px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--rust);
+    box-shadow: 0 0 0 3px rgba(201,75,46,0.2);
+  }
+  #s7 .tl-year {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px; line-height: 1; color: var(--rust);
+    display: inline-block; margin-bottom: 4px;
+  }
+  #s7 .tl-title { font-weight: 500; font-size: 14px; margin-bottom: 4px; }
+  #s7 .tl-desc  { font-size: 13px; color: rgba(13,13,13,0.55); line-height: 1.6; }
+
+  /* ═══════════════════════════════════════════
+     SLIDE 8 — SPLIT IMAGE + TEXT
+  ═══════════════════════════════════════════ */
+  #s8 { background: var(--teal); color: var(--paper); flex-direction: row; }
+  #s8 .img-half {
+    width: 50%; height: 100%;
+    position: relative; overflow: hidden;
+    background: rgba(0,0,0,0.2);
+    display: flex; align-items: center; justify-content: center;
+  }
+  #s8 .img-half .ph-img {
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, rgba(0,0,0,0.15) 0%, transparent 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 12px;
+  }
+  #s8 .img-half .ph-img svg { width: 80px; height: 80px; opacity: 0.3; }
+  #s8 .img-half .ph-img span { font-size: 10px; letter-spacing: 3px; opacity: 0.3; text-transform: uppercase; }
+  #s8 .text-half {
+    width: 50%; padding: 60px 50px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  #s8 .label { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; opacity: 0.5; margin-bottom: 16px; }
+  #s8 h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 3.5vw, 50px);
+    line-height: 1.2; margin-bottom: 20px;
+  }
+  #s8 p { font-size: 14px; line-height: 1.8; opacity: 0.75; margin-bottom: 28px; }
+  #s8 .pill-list { display: flex; flex-wrap: wrap; gap: 8px; }
+  #s8 .pill {
+    padding: 6px 14px; border-radius: 20px;
+    border: 1px solid rgba(245,240,232,0.3);
+    font-size: 11px; letter-spacing: 1px; text-transform: uppercase; opacity: 0.7;
+    transition: background 0.2s, opacity 0.2s;
+    cursor: default;
+  }
+  #s8 .pill:hover { background: rgba(245,240,232,0.15); opacity: 1; }
+
+  /* ═══════════════════════════════════════════
+     SLIDE 9 — PROGRESS / SKILLS
+  ═══════════════════════════════════════════ */
+  #s9 { background: var(--ink); color: var(--paper); }
+  #s9 .inner { max-width: 700px; width: 100%; padding: 0 40px; }
+  #s9 .label { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  #s9 h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 4vw, 56px); margin-bottom: 40px;
+  }
+  #s9 .skill-row { margin-bottom: 22px; }
+  #s9 .skill-top { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; font-weight: 400; }
+  #s9 .skill-pct { color: var(--gold); font-family: 'Bebas Neue', sans-serif; font-size: 18px; }
+  #s9 .track {
+    height: 4px; background: rgba(255,255,255,0.08);
+    border-radius: 4px; overflow: hidden;
+  }
+  #s9 .fill {
+    height: 100%; border-radius: 4px;
+    transform-origin: left; transform: scaleX(0);
+    transition: transform 0.9s cubic-bezier(0.22,1,0.36,1);
+  }
+  #s9.active .fill { transform: scaleX(1); }
+  #s9.active .fill:nth-child(1) { transition-delay:0.1s; }
+  .f1{background:var(--gold);width:88%}
+  .f2{background:var(--rust);width:75%;transition-delay:0.2s!important}
+  .f3{background:var(--teal);width:92%;transition-delay:0.3s!important}
+  .f4{background:var(--lilac);width:65%;transition-delay:0.4s!important}
+  .f5{background:#e8b84b;width:80%;transition-delay:0.5s!important}
+
+  /* ═══════════════════════════════════════════
+     SLIDE 10 — TEAM / PEOPLE
+  ═══════════════════════════════════════════ */
+  #s10 { background: var(--cream); color: var(--ink); }
+  #s10 .label { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--navy); margin-bottom: 8px; }
+  #s10 h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 4.5vw, 60px); margin-bottom: 40px; text-align: center;
+  }
+  #s10 .team { display: flex; gap: 32px; }
+  #s10 .person { text-align: center; }
+  #s10 .avatar {
+    width: 90px; height: 90px; border-radius: 50%; margin: 0 auto 12px;
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif; font-size: 28px;
+    transition: transform 0.3s;
+  }
+  #s10 .avatar:hover { transform: scale(1.08); }
+  #s10 .name { font-weight: 500; font-size: 14px; margin-bottom: 4px; }
+  #s10 .role { font-size: 11px; color: rgba(13,13,13,0.45); letter-spacing: 1px; text-transform: uppercase; }
+  #s10 .social { display: flex; gap: 8px; justify-content: center; margin-top: 10px; }
+  #s10 .social-btn {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(13,13,13,0.08);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; cursor: pointer; transition: background 0.2s;
+  }
+  #s10 .social-btn:hover { background: rgba(13,13,13,0.15); }
+
+  /* ═══════════════════════════════════════════
+     SLIDE 11 — MAP / CONTACT
+  ═══════════════════════════════════════════ */
+  #s11 { background: var(--navy); color: var(--paper); flex-direction: row; }
+  #s11 .left { width: 50%; padding: 60px 50px; display: flex; flex-direction: column; justify-content: center; }
+  #s11 .label { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+  #s11 h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(42px, 5vw, 72px); line-height: 1; margin-bottom: 30px;
+  }
+  #s11 .contact-item { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+  #s11 .contact-icon {
+    width: 42px; height: 42px; border-radius: 10px;
+    background: rgba(255,255,255,0.07);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  #s11 .contact-text small { display: block; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.4; margin-bottom: 3px; }
+  #s11 .contact-text span  { font-size: 14px; }
+  #s11 .right {
+    width: 50%; background: rgba(255,255,255,0.04);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  #s11 .map-bg {
+    position: absolute; inset: 0;
+    background: 
+      radial-gradient(circle at 60% 40%, rgba(232,184,75,0.08) 0%, transparent 60%),
+      linear-gradient(135deg, rgba(42,124,124,0.1) 0%, transparent 100%);
+  }
+  #s11 .map-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(245,240,232,0.03) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(245,240,232,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  #s11 .pin { position: relative; z-index: 1; text-align: center; }
+  #s11 .pin-dot {
+    width: 16px; height: 16px; background: var(--gold); border-radius: 50%;
+    margin: 0 auto 8px; box-shadow: 0 0 0 4px rgba(232,184,75,0.25);
+    animation: pulse 1.5s infinite;
+  }
+  #s11 .pin-label { font-size: 11px; letter-spacing: 2px; opacity: 0.5; text-transform: uppercase; }
+
+  /* ═══════════════════════════════════════════
+     SLIDE 12 — CLOSING
+  ═══════════════════════════════════════════ */
+  #s12 { background: var(--ink); color: var(--paper); }
+  #s12 .bg-rings {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: none;
+  }
+  #s12 .ring {
+    position: absolute; border-radius: 50%;
+    border: 1px solid rgba(245,240,232,0.05);
+    animation: float 4s ease-in-out infinite;
+  }
+  #s12 .ring:nth-child(1) { width:200px; height:200px; animation-delay:0s; }
+  #s12 .ring:nth-child(2) { width:380px; height:380px; animation-delay:0.5s; }
+  #s12 .ring:nth-child(3) { width:560px; height:560px; animation-delay:1s; }
+  #s12 .ring:nth-child(4) { width:740px; height:740px; animation-delay:1.5s; border-color: rgba(232,184,75,0.06); }
+  #s12 .content { position: relative; z-index: 1; text-align: center; }
+  #s12 .thank {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: clamp(20px, 2.5vw, 28px);
+    color: rgba(245,240,232,0.4);
+    margin-bottom: 14px;
+  }
+  #s12 h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 12vw, 150px);
+    line-height: 0.88;
+    background: linear-gradient(135deg, #f5f0e8 0%, #e8b84b 50%, #c94b2e 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  #s12 .tagline {
+    margin-top: 28px; font-size: 13px; font-weight: 300;
+    letter-spacing: 4px; text-transform: uppercase;
+    color: rgba(245,240,232,0.35);
+  }
+  #s12 .restart {
+    margin-top: 40px;
+    display: inline-flex; align-items: center; gap: 10px;
+    border: 1px solid rgba(245,240,232,0.2);
+    padding: 12px 28px; border-radius: 40px;
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    cursor: pointer; transition: background 0.3s, border-color 0.3s;
+  }
+  #s12 .restart:hover { background: rgba(245,240,232,0.08); border-color: rgba(245,240,232,0.4); }
+
+  /* ─── TICKER ─── */
+  .ticker-wrap {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 36px; overflow: hidden;
+    background: rgba(0,0,0,0.2); backdrop-filter: blur(6px);
+    display: flex; align-items: center;
+  }
+  .ticker {
+    display: flex; gap: 60px;
+    white-space: nowrap;
+    animation: marquee 18s linear infinite;
+    font-size: 10px; letter-spacing: 3px; text-transform: uppercase; opacity: 0.4;
+  }
+  .ticker span { flex-shrink: 0; }
+  .ticker::after { content: attr(data-dup); display: contents; }
+
+  /* ─── NAV ─── */
+  #nav {
+    position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 16px;
+    z-index: 100; background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 12px 20px; border-radius: 40px;
+  }
+  .nav-btn {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: rgba(255,255,255,0.08); border: none;
+    color: #f5f0e8; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, transform 0.15s;
+    font-size: 16px;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.18); transform: scale(1.08); }
+  .nav-btn:active { transform: scale(0.94); }
+  #slide-counter {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px; color: #f5f0e8; min-width: 60px;
+    text-align: center; letter-spacing: 1px;
+  }
+  .dot-track { display: flex; gap: 6px; align-items: center; }
+  .dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    cursor: pointer; transition: background 0.3s, transform 0.3s;
+  }
+  .dot.on { background: #e8b84b; transform: scale(1.4); }
+
+  /* ─── KEYBOARD HINT ─── */
+  #hint {
+    position: fixed; top: 24px; right: 28px;
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: rgba(255,255,255,0.25); z-index: 100;
+    animation: fadeIn 1s 2s both;
+  }
+</style>
+</head>
+<body>
+
+<div id="stage">
+
+  <!-- SLIDE 1: HERO -->
+  <section class="slide active" id="s1">
+    <div class="bg-grid"></div>
+    <div class="big-circle"></div>
+    <p class="hero-label anim-up">A Visual Presentation · 2026</p>
+    <h1 class="anim-up-2">THE<br>FUTURE<br>IS NOW</h1>
+    <p class="sub anim-up-3">Twelve chapters on design, data & human potential</p>
+    <div class="scroll-hint">
+      <span></span>
+      navigate below
+    </div>
+  </section>
+
+  <!-- SLIDE 2: QUOTE -->
+  <section class="slide" id="s2">
+    <div class="noise"></div>
+    <div class="corner tl"></div>
+    <div class="corner br"></div>
+    <blockquote class="anim-up">
+      "Design is not just what it looks like — design is how it works, how it feels, and how it connects."
+      <cite class="anim-up-2">— On Creative Thinking</cite>
+      <div class="deco-line anim-line"></div>
+    </blockquote>
+  </section>
+
+  <!-- SLIDE 3: IMAGE GRID -->
+  <section class="slide" id="s3">
+    <div class="left-text">
+      <p class="label anim-up">Visual Stories</p>
+      <h2 class="anim-up-2">The World<br>in Focus</h2>
+      <p class="anim-up-3">Every image tells a thousand stories. Here we let the visuals breathe and the composition speak for itself.</p>
+    </div>
+    <div class="grid">
+      <div class="grid-item anim-fade">
+        <div class="ph">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span>Image 1</span>
+        </div>
+      </div>
+      <div class="grid-item anim-fade" style="animation-delay:0.15s">
+        <div class="ph">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span>Image 2</span>
+        </div>
+      </div>
+      <div class="grid-item anim-fade" style="animation-delay:0.25s">
+        <div class="ph">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span>Image 3</span>
+        </div>
+      </div>
+      <div class="grid-item anim-fade" style="animation-delay:0.35s">
+        <div class="ph">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span>Image 4</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4: STATS -->
+  <section class="slide" id="s4">
+    <p class="label anim-up">By the numbers</p>
+    <div class="stats-grid">
+      <div class="stat anim-up">
+        <div class="stat-num count-up">94<span style="font-size:0.5em">%</span></div>
+        <div class="stat-label">User Satisfaction</div>
+        <div class="stat-bar"><div class="stat-bar-fill" style="width:94%"></div></div>
+      </div>
+      <div class="stat anim-up-2">
+        <div class="stat-num count-up">3.2<span style="font-size:0.5em">M</span></div>
+        <div class="stat-label">Active Users</div>
+        <div class="stat-bar"><div class="stat-bar-fill" style="width:75%"></div></div>
+      </div>
+      <div class="stat anim-up-3">
+        <div class="stat-num count-up">48<span style="font-size:0.5em">H</span></div>
+        <div class="stat-label">Avg. Engagement</div>
+        <div class="stat-bar"><div class="stat-bar-fill" style="width:60%"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 5: BAR CHART -->
+  <section class="slide" id="s5">
+    <div class="inner">
+      <p class="label anim-up">Performance Metrics</p>
+      <h2 class="anim-up-2">Quarterly Growth</h2>
+      <div class="chart anim-fade">
+        <div class="bar-wrap"><div class="bar bar-1"><span class="bar-val">Q1</span></div><span class="bar-lbl">Q1</span></div>
+        <div class="bar-wrap"><div class="bar bar-2"><span class="bar-val">Q2</span></div><span class="bar-lbl">Q2</span></div>
+        <div class="bar-wrap"><div class="bar bar-3"><span class="bar-val">Q3</span></div><span class="bar-lbl">Q3</span></div>
+        <div class="bar-wrap"><div class="bar bar-4"><span class="bar-val">Q4</span></div><span class="bar-lbl">Q4</span></div>
+        <div class="bar-wrap"><div class="bar bar-5"><span class="bar-val">Q1</span></div><span class="bar-lbl">Q1'</span></div>
+        <div class="bar-wrap"><div class="bar bar-6"><span class="bar-val">Q2</span></div><span class="bar-lbl">Q2'</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 6: FEATURE CARDS -->
+  <section class="slide" id="s6">
+    <div class="top">
+      <p class="label anim-up">What we offer</p>
+      <h2 class="anim-up-2">Our Core Features</h2>
+    </div>
+    <div class="cards">
+      <div class="card anim-up">
+        <div class="card-icon" style="background:rgba(201,75,46,0.15)">🚀</div>
+        <h3>Lightning Speed</h3>
+        <p>Optimised for sub-second response times across all devices and network conditions globally.</p>
+        <span class="card-tag">Performance</span>
+      </div>
+      <div class="card anim-up-2">
+        <div class="card-icon" style="background:rgba(42,124,124,0.2)">🔒</div>
+        <h3>Zero-Trust Security</h3>
+        <p>End-to-end encryption with zero-knowledge architecture. Your data stays yours — always.</p>
+        <span class="card-tag">Security</span>
+      </div>
+      <div class="card anim-up-3">
+        <div class="card-icon" style="background:rgba(197,184,216,0.2)">✨</div>
+        <h3>AI-Powered UX</h3>
+        <p>Adaptive interfaces that learn user patterns and surface the right tools at the right moment.</p>
+        <span class="card-tag">AI / ML</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 7: TIMELINE -->
+  <section class="slide" id="s7">
+    <p class="label anim-up">Our journey</p>
+    <h2 class="anim-up-2">Key Milestones</h2>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <span class="tl-year">2020</span>
+        <div class="tl-title">Company Founded</div>
+        <div class="tl-desc">Three friends, one garage, and an obsession with solving real problems through elegant design.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <span class="tl-year">2022</span>
+        <div class="tl-title">Series A — $12M</div>
+        <div class="tl-desc">First institutional funding round closed. Team expanded from 4 to 34 people in eight months.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <span class="tl-year">2024</span>
+        <div class="tl-title">1 Million Users</div>
+        <div class="tl-desc">Crossed the milestone purely through word of mouth. Zero paid acquisition — a testament to the product.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <span class="tl-year">2026</span>
+        <div class="tl-title">Global Expansion</div>
+        <div class="tl-desc">Offices in 6 cities. Serving 3.2 million users across 54 countries and growing every day.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 8: SPLIT IMAGE + TEXT -->
+  <section class="slide" id="s8">
+    <div class="img-half anim-fade">
+      <div class="ph-img">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="color:rgba(245,240,232,0.5)"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <span>Feature Image</span>
+      </div>
+    </div>
+    <div class="text-half">
+      <p class="label anim-up">Our Philosophy</p>
+      <h2 class="anim-up-2">Design for Humans, Not Screens</h2>
+      <p class="anim-up-3">We believe the best interfaces disappear — leaving only the experience. Every pixel, every interaction, every word is obsessively considered.</p>
+      <div class="pill-list anim-fade">
+        <span class="pill">Accessibility</span>
+        <span class="pill">Inclusivity</span>
+        <span class="pill">Clarity</span>
+        <span class="pill">Delight</span>
+        <span class="pill">Speed</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 9: PROGRESS BARS -->
+  <section class="slide" id="s9">
+    <div class="inner">
+      <p class="label anim-up">Expertise</p>
+      <h2 class="anim-up-2">What We Do Best</h2>
+      <div class="skill-row">
+        <div class="skill-top"><span>Product Design</span><span class="skill-pct">88%</span></div>
+        <div class="track"><div class="fill f1"></div></div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-top"><span>Frontend Engineering</span><span class="skill-pct">75%</span></div>
+        <div class="track"><div class="fill f2"></div></div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-top"><span>Data & Analytics</span><span class="skill-pct">92%</span></div>
+        <div class="track"><div class="fill f3"></div></div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-top"><span>Brand Strategy</span><span class="skill-pct">65%</span></div>
+        <div class="track"><div class="fill f4"></div></div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-top"><span>AI & Automation</span><span class="skill-pct">80%</span></div>
+        <div class="track"><div class="fill f5"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 10: TEAM -->
+  <section class="slide" id="s10">
+    <p class="label anim-up">The People Behind It</p>
+    <h2 class="anim-up-2">Meet the Team</h2>
+    <div class="team">
+      <div class="person anim-up" style="animation-delay:0.1s">
+        <div class="avatar" style="background:linear-gradient(135deg,#c94b2e,#e8b84b); color:#fff">AL</div>
+        <div class="name">Alex Lim</div>
+        <div class="role">Founder & CEO</div>
+        <div class="social"><span class="social-btn">in</span><span class="social-btn">𝕏</span></div>
+      </div>
+      <div class="person anim-up" style="animation-delay:0.2s">
+        <div class="avatar" style="background:linear-gradient(135deg,#2a7c7c,#1a2744); color:#f5f0e8">MR</div>
+        <div class="name">Maya Reyes</div>
+        <div class="role">Head of Design</div>
+        <div class="social"><span class="social-btn">in</span><span class="social-btn">𝕏</span></div>
+      </div>
+      <div class="person anim-up" style="animation-delay:0.3s">
+        <div class="avatar" style="background:linear-gradient(135deg,#1a2744,#c5b8d8); color:#fff">JK</div>
+        <div class="name">Jonas Kim</div>
+        <div class="role">CTO</div>
+        <div class="social"><span class="social-btn">in</span><span class="social-btn">𝕏</span></div>
+      </div>
+      <div class="person anim-up" style="animation-delay:0.4s">
+        <div class="avatar" style="background:linear-gradient(135deg,#e8b84b,#c94b2e); color:#fff">SO</div>
+        <div class="name">Sara Obi</div>
+        <div class="role">VP Growth</div>
+        <div class="social"><span class="social-btn">in</span><span class="social-btn">𝕏</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 11: CONTACT -->
+  <section class="slide" id="s11">
+    <div class="left">
+      <p class="label anim-up">Get in touch</p>
+      <h2 class="anim-up-2">Let's Build<br>Together</h2>
+      <div class="contact-item anim-up-2">
+        <div class="contact-icon">📍</div>
+        <div class="contact-text">
+          <small>Location</small>
+          <span>42 Innovation Blvd, San Francisco CA</span>
+        </div>
+      </div>
+      <div class="contact-item anim-up-3">
+        <div class="contact-icon">✉️</div>
+        <div class="contact-text">
+          <small>Email</small>
+          <span>hello@thefuture.co</span>
+        </div>
+      </div>
+      <div class="contact-item anim-up-3" style="animation-delay:0.4s">
+        <div class="contact-icon">📞</div>
+        <div class="contact-text">
+          <small>Phone</small>
+          <span>+1 (415) 000-0000</span>
+        </div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="map-bg"></div>
+      <div class="map-grid"></div>
+      <div class="pin anim-scale">
+        <div class="pin-dot"></div>
+        <div class="pin-label">San Francisco</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 12: CLOSING -->
+  <section class="slide" id="s12">
+    <div class="bg-rings">
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+    </div>
+    <div class="content">
+      <p class="thank anim-up">Thank you for watching</p>
+      <h1 class="anim-up-2">THE<br>END</h1>
+      <p class="tagline anim-up-3">Ideas worth building · People worth knowing</p>
+      <div class="restart anim-fade" onclick="goTo(0)">↺ &nbsp; Restart Presentation</div>
+    </div>
+  </section>
+
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <button class="nav-btn" id="btn-prev">&#8592;</button>
+  <span id="slide-counter">01 / 12</span>
+  <button class="nav-btn" id="btn-next">&#8594;</button>
+  <div class="dot-track" id="dots"></div>
+</nav>
+
+<div id="hint">← → Arrow Keys</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const counter = document.getElementById('slide-counter');
+const dotTrack = document.getElementById('dots');
+let current = 0;
+let busy = false;
+
+// build dots
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i===0?' on':'');
+  d.addEventListener('click', () => goTo(i));
+  dotTrack.appendChild(d);
+});
+
+function goTo(next, dir) {
+  if (busy || next === current) return;
+  busy = true;
+  const direction = dir ?? (next > current ? 1 : -1);
+  const from = slides[current];
+  const to   = slides[next];
+
+  from.classList.remove('active');
+  from.classList.add(direction > 0 ? 'exit-left' : 'exit-right');
+
+  to.style.transform = direction > 0 ? 'translateX(100%)' : 'translateX(-100%)';
+  to.style.opacity   = '0';
+  to.classList.add('active');
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      to.style.transform = '';
+      to.style.opacity   = '';
+      to.style.transition = 'transform 0.7s cubic-bezier(0.77,0,0.175,1), opacity 0.7s ease';
+    });
+  });
+
+  setTimeout(() => {
+    from.classList.remove('exit-left','exit-right');
+    to.style.transition = '';
+    busy = false;
+  }, 720);
+
+  // update dots + counter
+  document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('on', i===next));
+  counter.textContent = String(next+1).padStart(2,'0') + ' / 12';
+  current = next;
+}
+
+document.getElementById('btn-prev').addEventListener('click', () => {
+  goTo(current > 0 ? current - 1 : slides.length - 1, -1);
+});
+document.getElementById('btn-next').addEventListener('click', () => {
+  goTo(current < slides.length - 1 ? current + 1 : 0, 1);
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown')
+    goTo(current < slides.length - 1 ? current + 1 : 0, 1);
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')
+    goTo(current > 0 ? current - 1 : slides.length - 1, -1);
+});
+
+// touch swipe
+let tx = 0;
+document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+document.addEventListener('touchend',   e => {
+  const dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 50) {
+    if (dx < 0) goTo(current < slides.length-1 ? current+1 : 0, 1);
+    else        goTo(current > 0 ? current-1 : slides.length-1, -1);
+  }
+}, {passive:true});
+</script>
+</body>
+</html>
