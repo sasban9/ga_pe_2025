@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HTML Tag Slideshow</title>
+
+<style>
+body {
+  font-family: Arial;
+  margin: 0;
+  background: #111;
+  color: #fff;font-size: 2.4rem;
+}
+
+.slide {
+  display: none;
+  padding: 40px;
+  height: 80vh;
+}
+
+.active {
+  display: flex;align-items: center;flex-direction: column;justify-content: center;gap: 2rem;
+  background: #222;
+}
+
+.step {
+  opacity: 0;
+  transition: 0.4s;
+}
+
+.step.visible {
+  opacity: 1;
+}
+
+.controls {
+  position: fixed;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 10px;
+  font-size: 18px;
+  cursor: pointer;
+}
+</style>
+
+</head>
+<body>
+
+<!-- SLIDE 1 -->
+<div class="slide active">
+  <h1 class="step">Heading H1</h1>
+  <p class="step">Paragraph text</p>
+  <b class="step">Bold text</b>
+  <i class="step">Italic text</i>
+</div>
+
+<!-- SLIDE 2 -->
+<div class="slide">
+  <h2 class="step">H2 Tag</h2>
+  <small class="step">Small text</small>
+  <mark class="step">Highlighted text</mark>
+  <del class="step">Deleted text</del>
+</div>
+
+<!-- SLIDE 3 -->
+<div class="slide">
+  <ul class="step">
+    <li>List Item 1</li>
+  </ul>
+  <ul class="step">
+    <li>List Item 2</li>
+  </ul>
+  <ul class="step">
+    <li>List Item 3</li>
+  </ul>
+</div>
+
+<!-- SLIDE 4 -->
+<div class="slide">
+  <ol class="step"><li>Ordered 1</li></ol>
+  <ol class="step"><li>Ordered 2</li></ol>
+  <ol class="step"><li>Ordered 3</li></ol>
+</div>
+
+<!-- SLIDE 5 -->
+<div class="slide">
+  <a href="#" class="step">Anchor Link</a><br>
+  <button class="step">Button</button><br>
+  <input class="step" placeholder="Input field">
+</div>
+
+<!-- SLIDE 6 -->
+<div class="slide">
+  <img class="step" src="https://via.placeholder.com/150"><br>
+  <video class="step" width="200" controls>
+    <source src="">
+  </video>
+</div>
+
+<!-- SLIDE 7 -->
+<div class="slide">
+  <table border="1" class="step">
+    <tr><td>Row1</td></tr>
+  </table>
+  <table border="1" class="step">
+    <tr><td>Row2</td><td>Row2</td><td>Row2</td><td>Row2</td></tr>
+  </table>
+</div>
+
+<!-- SLIDE 8 -->
+<div class="slide">
+  <div class="step">DIV Element</div>
+  <span class="step">SPAN Element</span>
+  <section class="step">SECTION</section>
+</div>
+
+<!-- SLIDE 9 -->
+<div class="slide">
+  <form class="step">
+    <input placeholder="Name">
+  </form>
+  <textarea class="step">Textarea</textarea>
+</div>
+
+<!-- SLIDE 10 -->
+<div class="slide">
+  <code class="step">Code snippet</code>
+  <pre class="step">Preformatted text</pre>
+</div>
+
+<!-- SLIDE 11 -->
+<div class="slide">
+  <progress class="step" value="50" max="100"></progress>
+  <meter class="step" value="0.6"></meter>
+</div>
+
+<!-- SLIDE 12 -->
+<div class="slide">
+  <details class="step">
+    <summary>Click me</summary>
+    Hidden content
+  </details>
+  <dialog open class="step">Dialog box</dialog>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <button onclick="prevStep()">⬅ Prev</button>
+  <button onclick="nextStep()">Next ➡</button>
+</div>
+
+<script>
+let slideIndex = 0;
+let stepIndex = 0;
+
+const slides = document.querySelectorAll(".slide");
+
+function getSteps() {
+  return slides[slideIndex].querySelectorAll(".step");
+}
+
+function showSlide(index) {
+  slides.forEach(s => s.classList.remove("active"));
+  slides[index].classList.add("active");
+
+  stepIndex = 0;
+  getSteps().forEach(s => s.classList.remove("visible"));
+}
+
+function nextStep() {
+  let steps = getSteps();
+
+  if (stepIndex < steps.length) {
+    steps[stepIndex].classList.add("visible");
+    stepIndex++;
+  } else {
+    if (slideIndex < slides.length - 1) {
+      slideIndex++;
+      showSlide(slideIndex);
+    }
+  }
+}
+
+function prevStep() {
+  let steps = getSteps();
+
+  if (stepIndex > 0) {
+    stepIndex--;
+    steps[stepIndex].classList.remove("visible");
+  } else if (slideIndex > 0) {
+    slideIndex--;
+    showSlide(slideIndex);
+
+    let prevSteps = getSteps();
+    prevSteps.forEach(s => s.classList.add("visible"));
+    stepIndex = prevSteps.length;
+  }
+}
+</script>
+
+</body>
+</html>

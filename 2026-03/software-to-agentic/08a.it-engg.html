@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT & Engineering: The Agentic Shift</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --accent: #00f2ff;
+            --accent-dim: #008a91;
+            --text: #e0e0e0;
+            --grad: linear-gradient(135deg, #00f2ff 0%, #0072ff 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: var(--bg); 
+            color: var(--text); 
+            font-family: 'Inter', sans-serif; 
+            overflow: hidden; 
+        }
+
+        h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; text-transform: uppercase; letter-spacing: 2px; }
+
+        .slider {
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem;
+            opacity: 0;
+            visibility: hidden;
+            background: radial-gradient(circle at center, #1a1a2e 0%, #0a0a0c 100%);
+        }
+
+        .slide.active { opacity: 1; visibility: visible; }
+
+        .content-box {
+            max-width: 1100px;
+            width: 100%;
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 3rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .title-accent { color: var(--accent); font-weight: 700; margin-bottom: 1rem; display: block; }
+        .highlight { color: var(--accent); }
+
+        /* Comparison Tables */
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .comp-card {
+            padding: 1.5rem;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.02);
+            border-left: 4px solid var(--accent-dim);
+        }
+
+        .comp-card.new { border-left-color: var(--accent); background: rgba(0, 242, 255, 0.05); }
+
+        /* Icons & Accents */
+        .icon-box { margin-bottom: 1rem; color: var(--accent); }
+
+        /* Navigation */
+        .nav-btns {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .btn {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 0.8rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn:hover { background: var(--accent); color: #000; }
+
+        .progress-bar {
+            position: fixed;
+            top: 0; left: 0;
+            height: 4px;
+            background: var(--grad);
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
+
+        /* Lists */
+        ul { list-style: none; }
+        li { margin-bottom: 0.8rem; display: flex; align-items: flex-start; gap: 10px; }
+        li::before { content: '→'; color: var(--accent); }
+
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 1rem; }
+
+        .tag {
+            font-size: 0.8rem;
+            background: var(--accent);
+            color: #000;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="progress-bar" id="progress"></div>
+
+    <div class="slider">
+        <div class="slide active">
+            <div class="content-box">
+                <span class="title-accent">The Structural Disruption</span>
+                <h1 style="font-size: 4rem;">Software Stack <span class="highlight">→</span> Agentic Stack</h1>
+                <p style="font-size: 1.5rem; margin-top: 1rem; opacity: 0.8;">
+                    This is not incremental. It rewires how software is built, deployed, and maintained.
+                </p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="content-box">
+                <h2>1. Core Transformation</h2>
+                <div class="comparison">
+                    <div class="comp-card">
+                        <span class="tag">Software Era</span>
+                        <h3>Deterministic</h3>
+                        <p>Input → Human writes code → System executes → Output</p>
+                        <ul style="margin-top: 1rem; font-size: 0.9rem;">
+                            <li>Requirements & Tickets</li>
+                            <li>Manual Logic</li>
+                            <li>Human-driven execution</li>
+                        </ul>
+                    </div>
+                    <div class="comp-card new">
+                        <span class="tag">Agentic Era</span>
+                        <h3>Autonomous</h3>
+                        <p>Input → AI interprets intent → Agents build → Output</p>
+                        <ul style="margin-top: 1rem; font-size: 0.9rem;">
+                            <li>Goals & Constraints</li>
+                            <li>Multi-agent collaboration</li>
+                            <li>Human-guided autonomy</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="content-box">
+                <h2>2. Requirement & Coding Layers</h2>
+                <div class="comparison">
+                    <div>
+                        <h3 class="highlight">A. Specification</h3>
+                        <p><strong>From:</strong> Static PRDs and handoffs.</p>
+                        <p><strong>To:</strong> Dynamic "Intent-to-Architecture" generation via Spec Agents.</p>
+                    </div>
+                    <div>
+                        <h3 class="highlight">B. Coding</h3>
+                        <p><strong>From:</strong> Manual syntax + IDE writing.</p>
+                        <p><strong>To:</strong> Code Agents generating full multi-file modules from functional intent.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="content-box">
+                <h2>3. QA & Deployment</h2>
+                <div class="comparison">
+                    <div class="comp-card">
+                        <h3 class="highlight">C. Testing & QA</h3>
+                        <p>Continuous autonomous validation. Test Agents simulate edge cases proactively in real-time.</p>
+                    </div>
+                    <div class="comp-card">
+                        <h3 class="highlight">D. Deployment & DevOps</h3>
+                        <p>Infrastructure is now intent-based. Auto-deploy and self-monitor via DevOps Agents.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="content-box">
+                <h2>4. Maintenance & Security</h2>
+                <div class="comparison">
+                    <div>
+                        <h3 class="highlight">E. Self-Healing</h3>
+                        <p>From Observability (Alerts) to Resolution (Detect → Diagnose → Resolve automatically).</p>
+                    </div>
+                    <div>
+                        <h3 class="highlight">F. Continuous Defense</h3>
+                        <p>Security Agents simulate attacks and auto-patch vulnerabilities 24/7.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="content-box">
+                <h2>5. Input / Output Transformation</h2>
+                <div class="grid-3">
+                    <div class="comp-card">
+                        <h4>New Inputs</h4>
+                        <p>Business Intent, Budget, Scale, Tech Stack Constraints.</p>
+                    </div>
+                    <div class="comp-card">
+                        <h4>Processing</h4>
+                        <p>Spec → Code → Test → DevOps Agents (Connected Workflows).</p>
+                    </div>
+                    <div class="comp-card">
+                        <h4>Output</h4>
+                        <p>Live, continuously improving systems.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="content-box">
+                <h2>6. Workflow Example: "E-Commerce Backend"</h2>
+                <div class="comparison">
+                    <div>
+                        <span class="tag" style="background: #444; color: #fff;">Software Era (Weeks/Months)</span>
+                        <p style="font-size: 0.8rem; margin-top: 10px;">PRD → Tickets → Manual Code → QA → Bug Fixes</p>
+                    </div>
+                    <div>
+                        <span class="tag">Agentic Flow (Hours/Days)</span>
+                        <p style="font-size: 0.8rem; margin-top: 10px;">Intent → Spec Agent → Code Agent → Test Agent → Auto-Deploy</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="content-box">
+                <h2>7. Role Transformation</h2>
+                <div class="grid-3">
+                    <div class="comp-card"><strong>Developer</strong><br>→ System Designer</div>
+                    <div class="comp-card"><strong>QA Engineer</strong><br>→ Validation Architect</div>
+                    <div class="comp-card"><strong>DevOps</strong><br>→ Infra Orchestrator</div>
+                </div>
+                <h3 style="margin-top: 2rem;">The New Engineering Stack</h3>
+                <p>1. Intent Layer | 2. Agent Layer | 3. Workflow Layer | 4. System Layer</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="content-box">
+                <span class="title-accent">The Bottom Line</span>
+                <h2>From Writing Instructions...<br>To <span class="highlight">Designing Systems</span> that build themselves.</h2>
+                <div class="comparison" style="margin-top: 2rem;">
+                    <ul>
+                        <li>Architecture Thinking > Implementation</li>
+                        <li>Constraint Definition > Detailed Specs</li>
+                    </ul>
+                    <ul>
+                        <li>Agent Orchestration > Tool Usage</li>
+                        <li>Debugging Systems > Writing Functions</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-btns">
+        <button class="btn" id="prevBtn"><i data-lucide="arrow-left"></i></button>
+        <button class="btn" id="nextBtn"><i data-lucide="arrow-right"></i></button>
+    </div>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Slide Logic
+        const slides = document.querySelectorAll('.slide');
+        const progress = document.getElementById('progress');
+        let currentSlide = 0;
+
+        function updateSlide(index) {
+            // GSAP Animation for smooth transitions
+            const prevSlide = slides[currentSlide];
+            const nextSlide = slides[index];
+
+            gsap.to(prevSlide, { opacity: 0, y: -20, duration: 0.5, onComplete: () => {
+                prevSlide.classList.remove('active');
+            }});
+
+            nextSlide.classList.add('active');
+            gsap.fromTo(nextSlide, 
+                { opacity: 0, y: 20 }, 
+                { opacity: 1, y: 0, duration: 0.7, delay: 0.2 }
+            );
+
+            // Animate internal content box
+            gsap.fromTo(nextSlide.querySelector('.content-box'),
+                { scale: 0.9, opacity: 0 },
+                { scale: 1, opacity: 1, duration: 0.8, ease: "power2.out", delay: 0.3 }
+            );
+
+            currentSlide = index;
+            progress.style.width = `${((index + 1) / slides.length) * 100}%`;
+        }
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            let next = (currentSlide + 1) % slides.length;
+            updateSlide(next);
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            let prev = (currentSlide - 1 + slides.length) % slides.length;
+            updateSlide(prev);
+        });
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') document.getElementById('nextBtn').click();
+            if (e.key === 'ArrowLeft') document.getElementById('prevBtn').click();
+        });
+
+        // Initial Progress
+        progress.style.width = `${(1 / slides.length) * 100}%`;
+    </script>
+</body>
+</html>

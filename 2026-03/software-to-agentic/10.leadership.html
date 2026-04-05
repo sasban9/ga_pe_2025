@@ -1,0 +1,1381 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leadership & Strategy — AI Decision Engines 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;400;600;700&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;1,300;1,600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #050d1a;
+  --navy2: #0a1628;
+  --teal: #00d4b4;
+  --teal2: #00a88d;
+  --gold: #f0b429;
+  --coral: #ff6b4a;
+  --white: #f0f4f8;
+  --muted: #4a6070;
+  --card: #0d1f35;
+  --card2: #071525;
+  --mono: 'Share Tech Mono', monospace;
+  --head: 'Oswald', sans-serif;
+  --body: 'Barlow Condensed', sans-serif;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--navy);
+  font-family: var(--body);
+  color: var(--white);
+  cursor: default;
+}
+
+/* ── SCANLINE OVERLAY ── */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── NOISE GRAIN ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.4;
+}
+
+/* ── SLIDE CONTAINER ── */
+#slides-wrapper {
+  width: 100%; height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem 6rem;
+  opacity: 0;
+  transform: translateX(60px);
+  transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.slide.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: all;
+}
+
+.slide.exit {
+  opacity: 0;
+  transform: translateX(-60px);
+  pointer-events: none;
+}
+
+/* ── SLIDE BACKGROUNDS ── */
+.slide { background: var(--navy); }
+.slide.dark { background: var(--navy2); }
+.slide.accent { background: #030810; }
+
+/* ── CORNER DECORATION ── */
+.slide::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: linear-gradient(90deg, var(--teal), var(--gold) 50%, transparent);
+  transform-origin: left;
+  animation: none;
+}
+.slide.active::before {
+  animation: topbar 0.8s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+@keyframes topbar {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* ── GRID BG PATTERN ── */
+.slide-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,180,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,180,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+/* ── GLOW BLOB ── */
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  animation: drift 8s ease-in-out infinite alternate;
+}
+.blob1 { width: 500px; height: 400px; background: rgba(0,212,180,0.06); top: -100px; right: -100px; }
+.blob2 { width: 400px; height: 350px; background: rgba(240,180,41,0.05); bottom: -80px; left: -80px; animation-delay: -3s; }
+
+@keyframes drift {
+  from { transform: translate(0,0) scale(1); }
+  to   { transform: translate(30px, 20px) scale(1.1); }
+}
+
+/* ── SLIDE NUMBER ── */
+.slide-num {
+  position: absolute;
+  bottom: 2rem; right: 2.5rem;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+  letter-spacing: 2px;
+}
+
+/* ── PROGRESS BAR ── */
+#progress {
+  position: fixed;
+  bottom: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--teal), var(--gold));
+  transition: width 0.4s ease;
+  z-index: 1000;
+  box-shadow: 0 0 10px var(--teal);
+}
+
+/* ── NAV DOTS ── */
+#dots {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 1000;
+}
+.dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--muted);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.dot.active {
+  background: var(--teal);
+  box-shadow: 0 0 8px var(--teal);
+  transform: scale(1.4);
+}
+
+/* ── NAV ARROWS ── */
+.nav-btn {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,212,180,0.08);
+  border: 1px solid rgba(0,212,180,0.2);
+  color: var(--teal);
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 1000;
+  transition: all 0.2s ease;
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-btn:hover { background: rgba(0,212,180,0.18); box-shadow: 0 0 20px rgba(0,212,180,0.3); }
+#prev { left: 1.2rem; }
+#next { right: 1.2rem; }
+
+/* ── TYPOGRAPHY ── */
+.kicker {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--teal);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  opacity: 0;
+  animation: none;
+}
+.slide.active .kicker { animation: fadeUp 0.5s 0.1s forwards; }
+
+h1.headline {
+  font-family: var(--head);
+  font-weight: 700;
+  font-size: clamp(2.6rem, 5vw, 4.5rem);
+  line-height: 1.0;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--white);
+  opacity: 0;
+}
+.slide.active h1.headline { animation: fadeUp 0.5s 0.2s forwards; }
+
+h1.headline .accent { color: var(--teal); }
+h1.headline .gold { color: var(--gold); }
+h1.headline .coral { color: var(--coral); }
+
+.subtitle {
+  font-size: 1.2rem;
+  color: #6a8898;
+  margin-top: 0.8rem;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  opacity: 0;
+}
+.slide.active .subtitle { animation: fadeUp 0.5s 0.35s forwards; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── SECTION LABEL ── */
+.section-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  opacity: 0;
+}
+.slide.active .section-label { animation: fadeUp 0.4s 0.15s forwards; }
+
+/* ── TWO-COL ── */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+.three-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+/* ── CARDS ── */
+.card {
+  background: var(--card);
+  border: 1px solid rgba(0,212,180,0.12);
+  border-radius: 4px;
+  padding: 1.4rem 1.6rem;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+}
+.slide.active .card { animation: cardIn 0.5s forwards; }
+.slide.active .card:nth-child(1) { animation-delay: 0.3s; }
+.slide.active .card:nth-child(2) { animation-delay: 0.45s; }
+.slide.active .card:nth-child(3) { animation-delay: 0.6s; }
+.slide.active .card:nth-child(4) { animation-delay: 0.75s; }
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: var(--teal);
+}
+.card.gold-border::before { background: var(--gold); }
+.card.coral-border::before { background: var(--coral); }
+
+.card-title {
+  font-family: var(--head);
+  font-size: 1.0rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 0.7rem;
+}
+.card.gold-border .card-title { color: var(--gold); }
+.card.coral-border .card-title { color: var(--coral); }
+
+.card ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.card ul li {
+  font-size: 1.0rem;
+  color: #8aabbc;
+  padding-left: 1.1rem;
+  position: relative;
+  font-weight: 300;
+  line-height: 1.4;
+}
+.card ul li::before {
+  content: '›';
+  position: absolute;
+  left: 0;
+  color: var(--teal);
+}
+.card.gold-border ul li::before { color: var(--gold); }
+.card.coral-border ul li::before { color: var(--coral); }
+
+/* ── COMPARISON BLOCK ── */
+.vs-block {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr;
+  gap: 0;
+  align-items: stretch;
+  margin-top: 2rem;
+}
+.vs-side {
+  padding: 1.8rem 2rem;
+  opacity: 0;
+}
+.slide.active .vs-side { animation: fadeUp 0.5s 0.3s forwards; }
+.slide.active .vs-side:last-child { animation-delay: 0.45s; }
+
+.vs-side.old {
+  background: rgba(180,80,60,0.08);
+  border: 1px solid rgba(180,80,60,0.2);
+  border-right: none;
+  border-radius: 4px 0 0 4px;
+}
+.vs-side.new {
+  background: rgba(0,212,180,0.06);
+  border: 1px solid rgba(0,212,180,0.2);
+  border-left: none;
+  border-radius: 0 4px 4px 0;
+}
+.vs-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--head);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--gold);
+  background: rgba(240,180,41,0.07);
+  border-top: 1px solid rgba(240,180,41,0.2);
+  border-bottom: 1px solid rgba(240,180,41,0.2);
+  letter-spacing: 1px;
+}
+.vs-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+.vs-side.old .vs-label { color: var(--coral); }
+.vs-side.new .vs-label { color: var(--teal); }
+
+.vs-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.vs-list li {
+  font-size: 1.05rem;
+  font-weight: 300;
+  color: #8aabbc;
+  padding-left: 1.1rem;
+  position: relative;
+  line-height: 1.4;
+}
+.vs-side.old .vs-list li::before { content: '—'; position: absolute; left: 0; color: var(--coral); font-size: 0.8em; }
+.vs-side.new .vs-list li::before { content: '›'; position: absolute; left: 0; color: var(--teal); }
+
+/* ── TABLE ── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+  font-size: 1.0rem;
+  opacity: 0;
+}
+.slide.active .data-table { animation: fadeUp 0.5s 0.3s forwards; }
+.data-table th {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--teal);
+  padding: 0.6rem 1.2rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(0,212,180,0.25);
+}
+.data-table td {
+  padding: 0.8rem 1.2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-weight: 300;
+  color: #8aabbc;
+  vertical-align: top;
+}
+.data-table tr:hover td {
+  background: rgba(0,212,180,0.04);
+  color: var(--white);
+  transition: all 0.2s;
+}
+.data-table td:first-child {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--gold);
+  letter-spacing: 1px;
+}
+.data-table td.old-val { color: #e08080; }
+.data-table td.new-val { color: var(--teal); }
+
+/* ── QUOTE CALLOUT ── */
+.callout {
+  border-left: 3px solid var(--teal);
+  padding: 1.2rem 1.8rem;
+  background: rgba(0,212,180,0.05);
+  font-size: 1.2rem;
+  font-weight: 300;
+  color: var(--white);
+  line-height: 1.5;
+  font-style: italic;
+  border-radius: 0 4px 4px 0;
+  opacity: 0;
+}
+.slide.active .callout { animation: fadeUp 0.5s 0.4s forwards; }
+.callout.gold { border-color: var(--gold); background: rgba(240,180,41,0.05); }
+.callout.coral { border-color: var(--coral); background: rgba(255,107,74,0.05); }
+
+/* ── FLOW CHAIN ── */
+.flow-chain {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+  margin-top: 1.5rem;
+  opacity: 0;
+}
+.slide.active .flow-chain { animation: fadeUp 0.5s 0.4s forwards; }
+
+.flow-node {
+  background: var(--card);
+  border: 1px solid rgba(0,212,180,0.2);
+  padding: 0.6rem 1rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--teal);
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.flow-node.gold { border-color: rgba(240,180,41,0.3); color: var(--gold); }
+.flow-arrow {
+  font-size: 1rem;
+  color: var(--muted);
+  padding: 0 0.4rem;
+}
+
+/* ── AGENT GRID ── */
+.agent-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.agent-card {
+  background: var(--card);
+  border: 1px solid rgba(0,212,180,0.1);
+  padding: 1.2rem 1.4rem;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+}
+.slide.active .agent-card { animation: cardIn 0.5s forwards; }
+.slide.active .agent-card:nth-child(1) { animation-delay: 0.25s; }
+.slide.active .agent-card:nth-child(2) { animation-delay: 0.4s; }
+.slide.active .agent-card:nth-child(3) { animation-delay: 0.55s; }
+.slide.active .agent-card:nth-child(4) { animation-delay: 0.7s; }
+.agent-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 60px; height: 60px;
+  background: radial-gradient(circle at bottom right, rgba(0,212,180,0.08), transparent 70%);
+}
+.agent-num {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--teal);
+  letter-spacing: 2px;
+  margin-bottom: 0.4rem;
+}
+.agent-name {
+  font-family: var(--head);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--white);
+  margin-bottom: 0.5rem;
+}
+.agent-card ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.agent-card ul li {
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: #6a8898;
+  padding-left: 1rem;
+  position: relative;
+}
+.agent-card ul li::before { content: '›'; position: absolute; left: 0; color: var(--teal2); }
+
+/* ── LAYERS STACK ── */
+.layer-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+}
+.layer {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  align-items: center;
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 4px;
+  overflow: hidden;
+  opacity: 0;
+}
+.slide.active .layer { animation: fadeUp 0.45s forwards; }
+.slide.active .layer:nth-child(1) { animation-delay: 0.25s; }
+.slide.active .layer:nth-child(2) { animation-delay: 0.4s; }
+.slide.active .layer:nth-child(3) { animation-delay: 0.55s; }
+.slide.active .layer:nth-child(4) { animation-delay: 0.7s; }
+.layer-tag {
+  padding: 0.9rem 1rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-align: center;
+}
+.layer:nth-child(1) .layer-tag { background: rgba(240,180,41,0.15); color: var(--gold); }
+.layer:nth-child(2) .layer-tag { background: rgba(0,212,180,0.12); color: var(--teal); }
+.layer:nth-child(3) .layer-tag { background: rgba(110,198,230,0.1); color: #6ec6e6; }
+.layer:nth-child(4) .layer-tag { background: rgba(160,143,255,0.1); color: #a08fff; }
+.layer-content { padding: 0.9rem 1.2rem; }
+.layer-name { font-family: var(--head); font-size: 0.95rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--white); margin-bottom: 0.2rem; }
+.layer-desc { font-size: 0.88rem; font-weight: 300; color: #6a8898; }
+
+/* ── SKILLS LIST ── */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.skill-item {
+  background: var(--card);
+  border: 1px solid rgba(0,212,180,0.1);
+  border-radius: 4px;
+  padding: 1.2rem 1.4rem;
+  opacity: 0;
+}
+.slide.active .skill-item { animation: cardIn 0.5s forwards; }
+.slide.active .skill-item:nth-child(1) { animation-delay: 0.25s; }
+.slide.active .skill-item:nth-child(2) { animation-delay: 0.38s; }
+.slide.active .skill-item:nth-child(3) { animation-delay: 0.51s; }
+.slide.active .skill-item:nth-child(4) { animation-delay: 0.64s; }
+.slide.active .skill-item:nth-child(5) { animation-delay: 0.77s; }
+.skill-num {
+  font-family: var(--mono);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: rgba(0,212,180,0.15);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+.skill-name {
+  font-family: var(--head);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 0.3rem;
+}
+.skill-desc {
+  font-size: 0.88rem;
+  font-weight: 300;
+  color: #6a8898;
+}
+
+/* ── BIG QUOTE ── */
+.big-quote {
+  font-family: var(--head);
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--white);
+  opacity: 0;
+}
+.slide.active .big-quote { animation: fadeUp 0.6s 0.25s forwards; }
+.big-quote .teal { color: var(--teal); }
+.big-quote .gold { color: var(--gold); }
+
+/* ── TITLE SLIDE SPECIFIC ── */
+.title-slide .title-tag {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 5px;
+  color: var(--teal);
+  margin-bottom: 1.5rem;
+  opacity: 0;
+}
+.slide.active .title-tag { animation: fadeUp 0.4s 0.1s forwards; }
+
+.title-slide .main-title {
+  font-family: var(--head);
+  font-weight: 700;
+  font-size: clamp(3rem, 7vw, 6rem);
+  line-height: 0.95;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0;
+}
+.slide.active .main-title { animation: fadeUp 0.6s 0.25s forwards; }
+
+.title-line1 { color: var(--white); display: block; }
+.title-line2 { color: var(--teal); display: block; }
+.title-line3 { color: var(--gold); display: block; font-size: 0.65em; font-weight: 200; letter-spacing: 4px; text-transform: uppercase; margin-top: 0.3em; }
+
+.title-slide .deck-desc {
+  font-size: 1.15rem;
+  font-weight: 300;
+  color: var(--muted);
+  margin-top: 1.5rem;
+  max-width: 600px;
+  line-height: 1.6;
+  opacity: 0;
+}
+.slide.active .deck-desc { animation: fadeUp 0.5s 0.5s forwards; }
+
+/* ── CLOSING SLIDE ── */
+.close-slide .big-transform {
+  font-family: var(--head);
+  font-weight: 700;
+  font-size: clamp(1.4rem, 3vw, 2.8rem);
+  line-height: 1.1;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  opacity: 0;
+}
+.slide.active .big-transform { animation: fadeUp 0.6s 0.25s forwards; }
+
+/* ── PULSE DOT ── */
+.pulse-dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  background: var(--teal);
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  animation: pulse 1.5s ease-in-out infinite;
+  box-shadow: 0 0 0 0 rgba(0,212,180,0.4);
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,212,180,0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(0,212,180,0); }
+}
+
+/* ── INLINE BOLD HIGHLIGHTS ── */
+.hl { color: var(--white); font-weight: 600; }
+.hl-teal { color: var(--teal); font-weight: 600; }
+.hl-gold { color: var(--gold); font-weight: 600; }
+.hl-coral { color: var(--coral); font-weight: 600; }
+
+/* ── EXAMPLE FLOW BOX ── */
+.example-flow {
+  background: var(--card2);
+  border: 1px solid rgba(0,212,180,0.15);
+  border-radius: 4px;
+  padding: 1.2rem 1.6rem;
+  margin-top: 1rem;
+  opacity: 0;
+}
+.slide.active .example-flow { animation: fadeUp 0.5s 0.5s forwards; }
+.example-flow .ef-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 0.7rem;
+}
+.example-flow .ef-chain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.88rem;
+  font-weight: 300;
+  color: #6a8898;
+}
+.ef-step {
+  background: rgba(0,212,180,0.07);
+  border: 1px solid rgba(0,212,180,0.15);
+  padding: 0.3rem 0.7rem;
+  border-radius: 3px;
+  color: var(--teal);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+.ef-arr { color: var(--muted); font-size: 0.9rem; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .slide { padding: 2.5rem 3rem; }
+  .two-col, .three-col { grid-template-columns: 1fr; }
+  .vs-block { grid-template-columns: 1fr; }
+  .vs-center { display: none; }
+  .skills-grid { grid-template-columns: 1fr 1fr; }
+  .agent-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div id="slides-wrapper">
+
+  <!-- ── SLIDE 1: TITLE ── -->
+  <div class="slide title-slide active" data-slide="0">
+    <div class="slide-grid"></div>
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="title-tag">— DEPARTMENT DEEP DIVE · 2026 —</div>
+    <div class="main-title">
+      <span class="title-line1">Leadership</span>
+      <span class="title-line2">&amp; Strategy</span>
+      <span class="title-line3">From Software Dashboards → AI Decision Engines</span>
+    </div>
+    <p class="deck-desc">
+      The most important shift in modern leadership — from <em>reviewing outputs</em> to <em>designing decision systems</em> that run continuously, autonomously, and at scale.
+    </p>
+    <div class="slide-num">01 / 13</div>
+  </div>
+
+  <!-- ── SLIDE 2: OLD MODEL ── -->
+  <div class="slide dark" data-slide="1">
+    <div class="slide-grid"></div>
+    <div class="blob blob1"></div>
+    <div class="section-label">Model 1 — The Old Way</div>
+    <h1 class="headline">Input → Software → <span class="accent">Output</span> → Decision</h1>
+    <div class="three-col" style="margin-top:1.8rem;">
+      <div class="card">
+        <div class="card-title">Inputs</div>
+        <ul>
+          <li>Sales reports</li>
+          <li>Marketing dashboards</li>
+          <li>Financial statements</li>
+          <li>Market research reports</li>
+        </ul>
+      </div>
+      <div class="card gold-border">
+        <div class="card-title">Software Layer</div>
+        <ul>
+          <li>BI tools (Power BI, Tableau)</li>
+          <li>CRM dashboards</li>
+          <li>Excel models</li>
+        </ul>
+      </div>
+      <div class="card coral-border">
+        <div class="card-title">Outputs</div>
+        <ul>
+          <li>Static dashboards</li>
+          <li>Weekly / monthly reports</li>
+          <li>Lagging indicators</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout coral" style="margin-top:1.2rem; font-size:1.0rem;">
+      <strong style="color:var(--coral);">Core Limitation:</strong> Decisions based on <strong>past data</strong> · Slow feedback loops · Heavy dependency on middle layers
+    </div>
+    <div class="slide-num">02 / 13</div>
+  </div>
+
+  <!-- ── SLIDE 3: LEADERSHIP ACTION (OLD) ── -->
+  <div class="slide" data-slide="2">
+    <div class="slide-grid"></div>
+    <div class="blob blob2"></div>
+    <div class="section-label">Model 1 — Leadership Action</div>
+    <h1 class="headline">What Leaders <span class="accent">Actually Did</span></h1>
+    <div class="two-col" style="margin-top:1.8rem; align-items:start;">
+      <div>
+        <div class="card" style="margin-bottom:1rem;">
+          <div class="card-title">Leadership Action</div>
+          <ul>
+            <li>Interpret reports manually</li>
+            <li>Conduct meetings to align teams</li>
+            <li>Make periodic decisions</li>
+          </ul>
+        </div>
+        <div class="callout coral">
+          <strong style="color:var(--coral);">"What happened last month?"</strong><br>
+          <span style="font-size:0.9rem; font-style:normal; color:#6a8898;">The only question the system could answer</span>
+        </div>
+      </div>
+      <div>
+        <div class="card gold-border">
+          <div class="card-title">Transition Layer</div>
+          <ul>
+            <li>Real-time dashboards (small upgrade)</li>
+            <li>Automated reporting</li>
+            <li>Alerts &amp; notifications</li>
+          </ul>
+        </div>
+        <div class="callout" style="margin-top:1rem;">
+          <strong style="color:var(--teal);">Still limited:</strong> Leaders still interpret manually, decide reactively, and depend on humans for execution
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">03 / 13</div>
+  </div>
+
+  <!-- ── SLIDE 4: NEW MODEL ── -->
+  <div class="slide dark" data-slide="3">
+    <div class="slide-grid"></div>
+    <div class="blob blob1"></div>
+    <div class="section-label">Model 2 — The Agentic Way</div>
+    <h1 class="headline"><span class="accent">Input → Agents</span> → Workflows → <span class="gold">Decisions</span></h1>
+    <p class="subtitle">A continuous loop — not a periodic review cycle</p>
+
+    <div class="two-col" style="margin-top:1.5rem; align-items:start;">
+      <div class="card" style="height:100%;">
+        <div class="card-title">Expanded Inputs</div>
+        <ul>
+          <li>Real-time internal data (sales, ops, finance)</li>
+          <li>External signals — market, competitors, news</li>
+          <li>Social sentiment streams</li>
+          <li>Customer behavior data</li>
+        </ul>
+      </div>
+      <div>
+        <div class="callout gold" style="margin-bottom:1rem; font-size:1.0rem;">
+          <strong style="color:var(--gold);">The key shift:</strong> Instead of tools, leaders now rely on <strong>specialized decision agents</strong>
+        </div>
+        <div class="flow-chain">
+          <div class="flow-node">Order / Signal</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">Agent Layer</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">Workflow</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node gold">Decision</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">Execution</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">Feedback</div>
+          <div class="flow-arrow">↺</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">04 / 13</div>
+  </div>
+
+  <!-- ── SLIDE 5: AGENT LAYER ── -->
+  <div class="slide" data-slide="4">
+    <div class="slide-grid"></div>
+    <div class="blob blob1"></div>
+    <div class="section-label">Agent Layer — The Key Shift</div>
+    <h1 class="headline">Four <span class="accent">Specialized</span> Decision Agents</h1>
+    <div class="agent-grid">
+      <div class="agent-card">
+        <div class="agent-num">AGENT 01</div>
+        <div class="agent-name">Insight Agent</div>
+        <ul>
+          <li>Continuously scans all data sources</li>
+          <li>Detects anomalies, trends, risks in real-time</li>
+        </ul>
+      </div>
+      <div class="agent-card">
+        <div class="agent-num">AGENT 02</div>
+        <div class="agent-name">Forecasting Agent</div>
+        <ul>
+          <li>Predicts revenue, churn, and demand</li>
+          <li>Runs multiple future scenario simulations</li>
+        </ul>
+      </div>
+      <div class="agent-card">
+        <div class="agent-num">AGENT 03</div>
+        <div class="agent-name">Strategy Agent</div>
+        <ul>
+          <li>Suggests actions: pricing, hiring, expansion</li>
+          <li>Benchmarks against competitor positioning</li>
+        </ul>
+      </div>
+      <div class="agent-card">
+        <div class="agent-num">AGENT 04</div>
+        <div class="agent-name">Execution Agent</div>
+        <ul>
+          <li>Translates decisions into live workflows</li>
+          <li>Triggers actions across all departments</li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-num">05 / 13</div>
+  </div>
+
+  <!-- ── SLIDE 6: WORKFLOW LAYER ── -->
+  <div class="slide dark" data-slide="5">
+    <div class="slide-grid"></div>
+    <div class="blob blob2"></div>
+    <div class="section-label">Workflow Layer — The Real Transformation</div>
+    <h1 class="headline">Where the <span class="gold">Real Transformation</span> Happens</h1>
+    <div class="two-col" style="margin-top:1.5rem; align-items:start;">
+      <div>
+        <div class="card">
+          <div class="card-title">What the Workflow Layer Does</div>
+          <ul>
+            <li>Multi-agent collaboration</li>
+            <li>Cross-functional execution across departments</li>
+            <li>Feedback loops auto-triggered without human input</li>
+          </ul>
+        </div>
+        <div style="margin-top:1rem;">
+          <div class="card gold-border">
+            <div class="card-title">New Leadership Outputs</div>
+            <ul>
+              <li><span class="hl">Decisions with reasoning</span> — not just data</li>
+              <li><span class="hl">Simulations</span> — what-if scenarios</li>
+              <li><span class="hl">Actions ranked by impact</span></li>
+              <li><span class="hl">Confidence scores</span> on every recommendation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="example-flow">
+          <div class="ef-label">Live Example — Auto Decision Loop</div>
+          <div class="ef-chain">
+            <div class="ef-step">Drop in Sales</div>
+            <div class="ef-arr">→</div>
+            <div class="ef-step">Detected</div>
+            <div class="ef-arr">→</div>
+            <div class="ef-step">Analyzed</div>
+            <div class="ef-arr">→</div>
+            <div class="ef-step">Pricing Test Launched</div>
+            <div class="ef-arr">→</div>
+            <div class="ef-step">Campaign Adjusted</div>
+            <div class="ef-arr">→</div>
+            <div class="ef-step">Results Measured</div>
+            <div class="ef-arr">→</div>
+            <div class="ef-step" style="color:var(--gold); border-color:rgba(240,180,41,0.3);">Loop Continues ↺</div>
+          </div>
+        </div>
+        <div class="callout" style="margin-top:1rem;">
+          <strong style="color:var(--teal);">Leadership Action Redefined:</strong><br>
+          Approve or override AI decisions · Set strategic direction · Monitor system performance · Handle edge cases
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">06 / 13</div>
+  </div>
+
+  <!-- ── SLIDE 7: COMPARISON TABLE ── -->
+  <div class="slide" data-slide="6">
+    <div class="slide-grid"></div>
+    <div class="blob blob1"></div>
+    <div class="section-label">Input–Output Mapping</div>
+    <h1 class="headline">Old vs New — <span class="accent">Full Comparison</span></h1>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Stage</th>
+          <th>Software Era</th>
+          <th>Agent Era</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Input</td>
+          <td class="old-val">Structured, limited</td>
+          <td class="new-val">Real-time, multi-source</td>
+        </tr>
+        <tr>
+          <td>Processing</td>
+          <td class="old-val">Human + tools (slow)</td>
+          <td class="new-val">Autonomous agents (instant)</td>
+        </tr>
+        <tr>
+          <td>Output</td>
+          <td class="old-val">Static reports</td>
+          <td class="new-val">Decisions + simulations</td>
+        </tr>
+        <tr>
+          <td>Speed</td>
+          <td class="old-val">Periodic (weekly / monthly)</td>
+          <td class="new-val">Continuous (real-time)</td>
+        </tr>
+        <tr>
+          <td>Action</td>
+          <td class="old-val">Manual execution</td>
+          <td class="new-val">Automated workflows</td>
+        </tr>
+        <tr>
+          <td>Feedback</td>
+          <td class="old-val">Delayed</td>
+          <td class="new-val">Instant loops</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="slide-num">07 / 13</div>
+  </div>
+
+  <!-- ── SLIDE 8: EXAMPLES ── -->
+  <div class="slide dark" data-slide="7">
+    <div class="slide-grid"></div>
+    <div class="blob blob2"></div>
+    <div class="section-label">Real Examples</div>
+    <h1 class="headline">Pricing &amp; <span class="accent">Market Expansion</span></h1>
+    <div class="two-col" style="margin-top:1.5rem; align-items:start;">
+      <div>
+        <div style="font-family:var(--mono); font-size:0.65rem; color:var(--gold); letter-spacing:3px; margin-bottom:0.6rem; opacity:0;" class="slide.active && 'animated'">EXAMPLE A — PRICING STRATEGY</div>
+        <div class="vs-block" style="margin-top:0;">
+          <div class="vs-side old">
+            <div class="vs-label">Software Era</div>
+            <ul class="vs-list">
+              <li>Analyst pulls data</li>
+              <li>Builds Excel model</li>
+              <li>Leadership reviews</li>
+              <li>Decision made</li>
+              <li>Execution delayed</li>
+            </ul>
+          </div>
+          <div class="vs-center">VS</div>
+          <div class="vs-side new">
+            <div class="vs-label">Agentic Era</div>
+            <ul class="vs-list">
+              <li>AI detects conversion drop</li>
+              <li>Runs pricing elasticity sims</li>
+              <li>Suggests 3 pricing options</li>
+              <li>Auto-tests on segments</li>
+              <li>Rolls out best-performer</li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout gold" style="margin-top:0.8rem; font-size:0.9rem;">
+          <strong style="color:var(--gold);">Leader Role:</strong> Set boundaries — e.g., max discount 20%
+        </div>
+      </div>
+      <div>
+        <div class="vs-block" style="margin-top:0;">
+          <div class="vs-side old">
+            <div class="vs-label">Software Era</div>
+            <ul class="vs-list">
+              <li>Commission research</li>
+              <li>Wait weeks for report</li>
+              <li>Analyze findings</li>
+              <li>Decide and execute</li>
+            </ul>
+          </div>
+          <div class="vs-center">VS</div>
+          <div class="vs-side new">
+            <div class="vs-label">Agentic Era</div>
+            <ul class="vs-list">
+              <li>AI scans global markets continuously</li>
+              <li>Identifies high-opportunity regions</li>
+              <li>Simulates entry strategies</li>
+              <li>Recommends go-to-market plan</li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout" style="margin-top:0.8rem; font-size:0.9rem;">
+          <strong style="color:var(--teal);">Leader Role:</strong> Select strategic direction
+        </div>
+        <div style="font-family:var(--mono); font-size:0.6rem; color:var(--muted); letter-spacing:2px; margin-top:0.5rem; text-align:right;">EXAMPLE B — MARKET EXPANSION</div>
+      </div>
+    </div>
+    <div class="slide-num">08 / 13</div>
+  </div>
+
+  <!-- ── SLIDE 9: DECISION EVOLUTION ── -->
+  <div class="slide" data-slide="8">
+    <div class="slide-grid"></div>
+    <div class="blob blob1"></div>
+    <div class="section-label">Decision-Making Evolution</div>
+    <h1 class="headline">The Question <span class="accent">Has Changed</span></h1>
+    <div class="two-col" style="margin-top:2rem; align-items:center;">
+      <div>
+        <div style="font-family:var(--mono); font-size:0.62rem; color:var(--coral); letter-spacing:3px; margin-bottom:0.8rem; opacity:0; animation: fadeUp 0.4s 0.3s forwards;" class="before-label">BEFORE</div>
+        <div class="callout coral" style="font-size:1.3rem;">
+          "What happened<br><strong>last month?</strong>"
+        </div>
+      </div>
+      <div>
+        <div style="font-family:var(--mono); font-size:0.62rem; color:var(--teal); letter-spacing:3px; margin-bottom:0.8rem; opacity:0; animation: fadeUp 0.4s 0.45s forwards;">NOW</div>
+        <div class="callout" style="font-size:1.1rem; line-height:1.5;">
+          "What is happening <strong style="color:var(--teal);">right now</strong>, what will happen <strong style="color:var(--gold);">next</strong>, and what should we do <strong style="color:var(--white);">automatically?</strong>"
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">09 / 13</div>
+  </div>
+
+  <!-- ── SLIDE 10: NEW LEADERSHIP STACK ── -->
+  <div class="slide dark" data-slide="9">
+    <div class="slide-grid"></div>
+    <div class="blob blob2"></div>
+    <div class="section-label">New Leadership Stack</div>
+    <h1 class="headline">Leaders Now <span class="accent">Manage Systems</span>, Not Tools</h1>
+    <div class="layer-stack" style="margin-top:1.5rem;">
+      <div class="layer">
+        <div class="layer-tag">Layer 1</div>
+        <div class="layer-content">
+          <div class="layer-name">Signal Layer</div>
+          <div class="layer-desc">What data enters the system — internal + external signals</div>
+        </div>
+      </div>
+      <div class="layer">
+        <div class="layer-tag">Layer 2</div>
+        <div class="layer-content">
+          <div class="layer-name">Agent Layer</div>
+          <div class="layer-desc">What agents exist, what they do, and how they collaborate</div>
+        </div>
+      </div>
+      <div class="layer">
+        <div class="layer-tag">Layer 3</div>
+        <div class="layer-content">
+          <div class="layer-name">Constraint Layer</div>
+          <div class="layer-desc">Rules governing agents — budget limits, brand guardrails, risk tolerance</div>
+        </div>
+      </div>
+      <div class="layer">
+        <div class="layer-tag">Layer 4</div>
+        <div class="layer-content">
+          <div class="layer-name">Decision Layer</div>
+          <div class="layer-desc">What is automated vs. what requires human approval</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">10 / 13</div>
+  </div>
+
+  <!-- ── SLIDE 11: NEW SKILLS ── -->
+  <div class="slide" data-slide="10">
+    <div class="slide-grid"></div>
+    <div class="blob blob1"></div>
+    <div class="section-label">New Leadership Skills</div>
+    <h1 class="headline">Five Skills of the <span class="accent">AI-Era Leader</span></h1>
+    <div class="skills-grid">
+      <div class="skill-item">
+        <div class="skill-num">01</div>
+        <div class="skill-name">Decision System Design</div>
+        <div class="skill-desc">Designing how decisions get made — architecture, not just choices</div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-num">02</div>
+        <div class="skill-name">Strategic Prompting</div>
+        <div class="skill-desc">Asking high-leverage questions that unlock the most valuable outputs</div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-num">03</div>
+        <div class="skill-name">Constraint Engineering</div>
+        <div class="skill-desc">Setting precise boundaries and guardrails for AI systems</div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-num">04</div>
+        <div class="skill-name">Scenario Thinking</div>
+        <div class="skill-desc">Evaluating simulations and future scenarios — not just backward-looking reports</div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-num">05</div>
+        <div class="skill-name">Judgment Under Abundance</div>
+        <div class="skill-desc">Too many insights → choosing correctly becomes the core leadership skill</div>
+      </div>
+    </div>
+    <div class="slide-num">11 / 13</div>
+  </div>
+
+  <!-- ── SLIDE 12: THE DEEP SHIFT + FINAL MENTAL MODEL ── -->
+  <div class="slide dark" data-slide="11">
+    <div class="slide-grid"></div>
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="section-label">The Deep Shift</div>
+    <h1 class="headline">Old Leadership <span class="coral">vs</span> New Leadership</h1>
+    <div class="vs-block" style="margin-top:1.5rem;">
+      <div class="vs-side old">
+        <div class="vs-label">Old Leadership</div>
+        <ul class="vs-list">
+          <li>Consumes information</li>
+          <li>Makes decisions manually</li>
+          <li>Delegates execution</li>
+        </ul>
+        <div style="margin-top:1.2rem; font-family:var(--mono); font-size:0.7rem; color:var(--muted); border-top:1px solid rgba(255,255,255,0.06); padding-top:0.8rem;">Mental Model:</div>
+        <div class="flow-chain" style="margin-top:0.5rem; flex-direction:column; align-items:flex-start; gap:0.3rem;">
+          <div class="flow-node" style="border-color:rgba(255,107,74,0.3); color:var(--coral);">Input</div>
+          <div class="flow-arrow" style="padding:0;">↓</div>
+          <div class="flow-node" style="border-color:rgba(255,107,74,0.3); color:var(--coral);">Dashboard</div>
+          <div class="flow-arrow" style="padding:0;">↓</div>
+          <div class="flow-node" style="border-color:rgba(255,107,74,0.3); color:var(--coral);">Human Thinking</div>
+          <div class="flow-arrow" style="padding:0;">↓</div>
+          <div class="flow-node" style="border-color:rgba(255,107,74,0.3); color:var(--coral);">Decision → Execution</div>
+        </div>
+      </div>
+      <div class="vs-center">→</div>
+      <div class="vs-side new">
+        <div class="vs-label">New Leadership</div>
+        <ul class="vs-list">
+          <li>Designs systems</li>
+          <li>Delegates decisions to AI</li>
+          <li>Governs outcomes</li>
+        </ul>
+        <div style="margin-top:1.2rem; font-family:var(--mono); font-size:0.7rem; color:var(--muted); border-top:1px solid rgba(0,212,180,0.1); padding-top:0.8rem;">Mental Model:</div>
+        <div class="flow-chain" style="margin-top:0.5rem; flex-direction:column; align-items:flex-start; gap:0.3rem;">
+          <div class="flow-node">Input</div>
+          <div class="flow-arrow" style="padding:0;">↓</div>
+          <div class="flow-node">Agents → Simulation</div>
+          <div class="flow-arrow" style="padding:0;">↓</div>
+          <div class="flow-node gold">Decision → Auto-Execution</div>
+          <div class="flow-arrow" style="padding:0;">↓</div>
+          <div class="flow-node" style="color:var(--gold); border-color:rgba(240,180,41,0.3);">Feedback → Repeat ↺</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">12 / 13</div>
+  </div>
+
+  <!-- ── SLIDE 13: CLOSING ── -->
+  <div class="slide close-slide accent" data-slide="12">
+    <div class="slide-grid"></div>
+    <div class="blob blob1" style="opacity:0.8;"></div>
+    <div class="blob blob2" style="opacity:0.8;"></div>
+    <div class="section-label"><span class="pulse-dot"></span>One-Line Summary</div>
+    <div style="max-width:900px;">
+      <div class="big-transform">
+        Leadership is evolving from<br>
+        <span style="color:var(--coral); font-size:1.3em;">"Person who <em>decides</em>"</span>
+      </div>
+      <div style="font-family:var(--head); font-size:clamp(1.8rem,3vw,2.8rem); font-weight:200; color:var(--muted); margin:0.6rem 0; letter-spacing:2px; opacity:0; animation: fadeUp 0.4s 0.5s forwards;">TO</div>
+      <div class="big-transform" style="animation-delay:0.6s;">
+        <span style="color:var(--teal); font-size:1.3em;">"Architect of <em>decision-making systems</em>"</span>
+      </div>
+    </div>
+    <div style="margin-top:3rem; display:flex; gap:3rem; opacity:0; animation: fadeUp 0.5s 0.9s forwards;">
+      <div>
+        <div style="font-family:var(--mono); font-size:0.62rem; color:var(--muted); letter-spacing:3px; margin-bottom:0.4rem;">WHAT STAYS</div>
+        <div style="font-size:1.05rem; font-weight:300; color:#6a8898;">Vision · Judgment · Ethics · Strategic direction</div>
+      </div>
+      <div style="width:1px; background:rgba(255,255,255,0.06);"></div>
+      <div>
+        <div style="font-family:var(--mono); font-size:0.62rem; color:var(--muted); letter-spacing:3px; margin-bottom:0.4rem;">WHAT CHANGES</div>
+        <div style="font-size:1.05rem; font-weight:300; color:#6a8898;">Information → Systems · Decisions → Governance</div>
+      </div>
+    </div>
+    <div class="slide-num">13 / 13</div>
+  </div>
+
+</div><!-- /slides-wrapper -->
+
+<!-- Controls -->
+<div id="progress"></div>
+<button class="nav-btn" id="prev">‹</button>
+<button class="nav-btn" id="next">›</button>
+<div id="dots"></div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+let animating = false;
+
+// Dots
+const dotsEl = document.getElementById('dots');
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.addEventListener('click', () => goTo(i));
+  dotsEl.appendChild(d);
+});
+
+function updateProgress() {
+  document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+}
+
+function goTo(n) {
+  if (animating || n === current) return;
+  animating = true;
+  const prev = slides[current];
+  const next = slides[n];
+  const dir = n > current ? 1 : -1;
+
+  // Reset animations on next slide elements before making it active
+  next.querySelectorAll('[style*="animation"]').forEach(el => {
+    el.style.animationName = 'none';
+    el.offsetHeight; // reflow
+    el.style.animationName = '';
+  });
+
+  prev.classList.add('exit');
+  prev.classList.remove('active');
+  next.classList.add('active');
+  next.classList.remove('exit');
+  next.style.transform = `translateX(${dir * 60}px)`;
+  next.offsetHeight;
+  next.style.transform = '';
+
+  current = n;
+  updateProgress();
+
+  setTimeout(() => {
+    prev.classList.remove('exit');
+    animating = false;
+  }, 650);
+}
+
+document.getElementById('prev').addEventListener('click', () => goTo(Math.max(0, current - 1)));
+document.getElementById('next').addEventListener('click', () => goTo(Math.min(total - 1, current + 1)));
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goTo(Math.min(total - 1, current + 1)); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(Math.max(0, current - 1)); }
+});
+
+// Touch swipe
+let ts = 0;
+document.addEventListener('touchstart', e => ts = e.touches[0].clientX, { passive: true });
+document.addEventListener('touchend', e => {
+  const diff = ts - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 40) diff > 0 ? goTo(Math.min(total-1, current+1)) : goTo(Math.max(0, current-1));
+});
+
+updateProgress();
+
+// Fix inline animation styles on slide 9
+document.querySelectorAll('.before-label').forEach(el => {
+  el.style.opacity = 0;
+  el.style.animation = 'fadeUp 0.4s 0.3s forwards';
+});
+</script>
+</body>
+</html>

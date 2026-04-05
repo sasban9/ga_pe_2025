@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IT & Engineering — AI Agentic Stack 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;1,300&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060b14;--bg2:#080f1c;--bg3:#0b1525;
+  --green:#00ff88;--green2:#00c96a;
+  --violet:#7c6fff;--amber:#ffb340;--red:#ff5e5e;
+  --white:#e8eef4;--dim:#3a5060;
+  --card:#0d1e32;--card2:#091525;
+  --mono:'JetBrains Mono',monospace;
+  --head:'Syne',sans-serif;
+  --body:'Space Grotesk',sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:var(--body);color:var(--white)}
+#matrix-canvas{position:fixed;inset:0;opacity:.04;pointer-events:none;z-index:0}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");pointer-events:none;z-index:1;opacity:.5}
+#wrap{position:relative;width:100%;height:100%;overflow:hidden;z-index:2}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:3rem 5.5rem;opacity:0;pointer-events:none;transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1);transform:translateY(38px);overflow:hidden}
+.slide.active{opacity:1;transform:translateY(0);pointer-events:all}
+.slide.exit{opacity:0;transform:translateY(-38px);pointer-events:none}
+.slide::after{content:'';position:absolute;left:0;top:0;width:3px;height:100%;background:linear-gradient(180deg,var(--green),var(--violet) 60%,transparent);transform:scaleY(0);transform-origin:top}
+.slide.active::after{animation:barIn .7s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes barIn{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.grid-bg{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(0,255,136,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,.025) 1px,transparent 1px);background-size:64px 64px}
+.glow{position:absolute;border-radius:50%;filter:blur(140px);pointer-events:none;animation:gd 9s ease-in-out infinite alternate}
+.g1{width:600px;height:500px;background:rgba(0,255,136,.04);top:-150px;right:-100px}
+.g2{width:500px;height:400px;background:rgba(124,111,255,.05);bottom:-100px;left:-100px;animation-delay:-4s}
+@keyframes gd{from{transform:translate(0,0) scale(1)}to{transform:translate(40px,25px) scale(1.12)}}
+#bar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--green),var(--violet));transition:width .4s ease;z-index:100;box-shadow:0 0 12px var(--green)}
+.nav{position:fixed;top:50%;transform:translateY(-50%);z-index:100;background:rgba(0,255,136,.06);border:1px solid rgba(0,255,136,.15);color:var(--green);width:40px;height:40px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.nav:hover{background:rgba(0,255,136,.15);box-shadow:0 0 20px rgba(0,255,136,.25)}
+#pv{left:1rem}#nx{right:1rem}
+#dots{position:fixed;bottom:1.4rem;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:100;flex-wrap:wrap;justify-content:center;max-width:80vw}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--dim);cursor:pointer;transition:all .3s}
+.dot.on{background:var(--green);box-shadow:0 0 8px var(--green);transform:scale(1.5)}
+.snum{position:absolute;bottom:1.6rem;right:2.5rem;font-family:var(--mono);font-size:.62rem;color:var(--dim);letter-spacing:2px}
+@keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes in{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes lr{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:translateX(0)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,255,136,.5)}50%{box-shadow:0 0 0 8px rgba(0,255,136,0)}}
+.au{opacity:0}
+.slide.active .au{animation:up .5s forwards}
+.slide.active .au.d1{animation-delay:.08s}.slide.active .au.d2{animation-delay:.2s}.slide.active .au.d3{animation-delay:.32s}.slide.active .au.d4{animation-delay:.44s}.slide.active .au.d5{animation-delay:.56s}.slide.active .au.d6{animation-delay:.68s}
+.kicker{font-family:var(--mono);font-size:.64rem;letter-spacing:4px;color:var(--green);text-transform:uppercase;margin-bottom:.8rem}
+.kicker.vio{color:var(--violet)}.kicker.amb{color:var(--amber)}.kicker.red{color:var(--red)}
+h1.ht{font-family:var(--head);font-weight:800;font-size:clamp(2.4rem,4.8vw,4rem);line-height:1;letter-spacing:-1px;text-transform:uppercase;color:var(--white)}
+h1.ht .g{color:var(--green)}h1.ht .v{color:var(--violet)}h1.ht .a{color:var(--amber)}h1.ht .r{color:var(--red)}
+.sub{font-size:1rem;font-weight:300;color:var(--dim);margin-top:.5rem;letter-spacing:.3px}
+.title-badge{display:inline-flex;align-items:center;gap:.6rem;background:rgba(0,255,136,.07);border:1px solid rgba(0,255,136,.2);padding:.4rem 1rem;border-radius:2px;font-family:var(--mono);font-size:.63rem;letter-spacing:3px;color:var(--green);text-transform:uppercase;margin-bottom:1.4rem}
+.title-badge::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 1.4s infinite}
+.big-title{font-family:var(--head);font-weight:800;font-size:clamp(3rem,7vw,6rem);line-height:.92;letter-spacing:-2px;text-transform:uppercase}
+.bt1{color:var(--white);display:block}.bt2{color:var(--green);display:block}
+.bt3{display:block;font-size:.45em;font-weight:400;letter-spacing:4px;color:var(--dim);margin-top:.4em;text-transform:uppercase}
+.title-desc{font-size:1.05rem;font-weight:300;color:var(--dim);margin-top:1.4rem;max-width:620px;line-height:1.65}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1.4rem}
+.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2rem;margin-top:1.4rem}
+.card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:3px;padding:1.3rem 1.6rem;position:relative;overflow:hidden;opacity:0}
+.slide.active .card{animation:in .5s forwards}
+.slide.active .card:nth-child(1){animation-delay:.18s}.slide.active .card:nth-child(2){animation-delay:.32s}.slide.active .card:nth-child(3){animation-delay:.46s}.slide.active .card:nth-child(4){animation-delay:.6s}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.card.gc::before{background:var(--green)}.card.vc::before{background:var(--violet)}.card.ac::before{background:var(--amber)}.card.rc::before{background:var(--red)}
+.ct{font-family:var(--mono);font-size:.62rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:.7rem}
+.card.gc .ct{color:var(--green)}.card.vc .ct{color:var(--violet)}.card.ac .ct{color:var(--amber)}.card.rc .ct{color:var(--red)}
+.card ul{list-style:none;display:flex;flex-direction:column;gap:.45rem}
+.card ul li{font-size:.97rem;font-weight:300;color:#6a8898;padding-left:1.1rem;position:relative;line-height:1.5}
+.card.gc ul li::before{content:'›';position:absolute;left:0;color:var(--green2)}.card.vc ul li::before{content:'›';position:absolute;left:0;color:var(--violet)}.card.ac ul li::before{content:'›';position:absolute;left:0;color:var(--amber)}.card.rc ul li::before{content:'›';position:absolute;left:0;color:var(--red)}
+.card p{font-size:.97rem;font-weight:300;color:#6a8898;line-height:1.55}
+.big-card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:3px;padding:1.8rem 2rem;position:relative;overflow:hidden;margin-top:1.3rem;opacity:0}
+.slide.active .big-card{animation:in .5s .2s forwards}
+.big-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.big-card.gc::before{background:var(--green)}.big-card.vc::before{background:var(--violet)}.big-card.ac::before{background:var(--amber)}.big-card.rc::before{background:var(--red)}
+.big-card ul{list-style:none;display:flex;flex-direction:column;gap:.55rem}
+.big-card ul li{font-size:1.03rem;font-weight:300;color:#6a8898;padding-left:1.2rem;position:relative;line-height:1.5}
+.big-card.gc ul li::before{content:'›';position:absolute;left:0;color:var(--green2)}.big-card.vc ul li::before{content:'›';position:absolute;left:0;color:var(--violet)}.big-card.ac ul li::before{content:'›';position:absolute;left:0;color:var(--amber)}.big-card.rc ul li::before{content:'›';position:absolute;left:0;color:var(--red)}
+.shift-banner{display:flex;align-items:center;gap:1.2rem;background:var(--card2);border:1px solid rgba(0,255,136,.15);border-radius:3px;padding:1rem 1.6rem;margin-top:1rem;opacity:0}
+.slide.active .shift-banner{animation:up .5s .5s forwards}
+.sb-from{font-family:var(--mono);font-size:.88rem;color:var(--red);text-decoration:line-through;opacity:.7}
+.sb-arr{font-size:1.4rem;color:var(--amber);flex-shrink:0}
+.sb-to{font-family:var(--mono);font-size:.88rem;color:var(--green)}
+.callout{border-left:2px solid var(--green);padding:1rem 1.4rem;background:rgba(0,255,136,.04);font-size:1rem;font-weight:300;color:var(--white);line-height:1.55;border-radius:0 3px 3px 0;opacity:0}
+.slide.active .callout{animation:up .5s .5s forwards}
+.callout.v{border-color:var(--violet);background:rgba(124,111,255,.04)}.callout.a{border-color:var(--amber);background:rgba(255,179,64,.04)}.callout.r{border-color:var(--red);background:rgba(255,94,94,.04)}
+.vs{display:grid;grid-template-columns:1fr 50px 1fr;align-items:stretch;margin-top:1.4rem}
+.vs-old{background:rgba(255,94,94,.05);border:1px solid rgba(255,94,94,.15);border-right:none;border-radius:3px 0 0 3px;padding:1.4rem 1.6rem;opacity:0}
+.vs-new{background:rgba(0,255,136,.04);border:1px solid rgba(0,255,136,.15);border-left:none;border-radius:0 3px 3px 0;padding:1.4rem 1.6rem;opacity:0}
+.slide.active .vs-old{animation:lr .5s .2s forwards}.slide.active .vs-new{animation:lr .5s .35s forwards}
+.vs-mid{display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:800;font-size:1.1rem;color:var(--amber);background:rgba(255,179,64,.07);border-top:1px solid rgba(255,179,64,.15);border-bottom:1px solid rgba(255,179,64,.15)}
+.vl{font-family:var(--mono);font-size:.6rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:.7rem}
+.vs-old .vl{color:var(--red)}.vs-new .vl{color:var(--green)}
+.vlist{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.vlist li{font-size:.97rem;font-weight:300;color:#6a8898;padding-left:1.1rem;position:relative;line-height:1.45}
+.vs-old .vlist li::before{content:'—';position:absolute;left:0;color:var(--red);font-size:.8em}.vs-new .vlist li::before{content:'›';position:absolute;left:0;color:var(--green2)}
+.dt{width:100%;border-collapse:collapse;margin-top:1.4rem;font-size:.95rem;opacity:0}
+.slide.active .dt{animation:up .5s .3s forwards}
+.dt th{font-family:var(--mono);font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--green);padding:.6rem 1.1rem;text-align:left;border-bottom:1px solid rgba(0,255,136,.2)}
+.dt td{padding:.75rem 1.1rem;border-bottom:1px solid rgba(255,255,255,.04);font-weight:300;color:#6a8898;vertical-align:top}
+.dt tr:hover td{background:rgba(0,255,136,.03);color:var(--white);transition:all .2s}
+.dt td:first-child{font-family:var(--mono);font-size:.78rem;color:var(--amber);letter-spacing:1px}
+.dt td.ov{color:rgba(255,94,94,.8)}.dt td.nv{color:var(--green)}
+.code-box{background:var(--card2);border:1px solid rgba(0,255,136,.12);border-radius:3px;padding:1.3rem 1.6rem;font-family:var(--mono);font-size:.84rem;line-height:1.75;color:#6a8898;margin-top:1rem;opacity:0}
+.slide.active .code-box{animation:up .5s .4s forwards}
+.cm{color:rgba(0,255,136,.35)}.kw{color:var(--violet)}.st{color:var(--amber)}.fn-nm{color:var(--green)}.vr{color:#6ec8e6}
+.layers{display:flex;flex-direction:column;gap:.75rem;margin-top:1.3rem}
+.lrow{display:grid;grid-template-columns:160px 1fr;background:var(--card);border:1px solid rgba(255,255,255,.05);border-radius:3px;overflow:hidden;opacity:0}
+.slide.active .lrow{animation:up .45s forwards}
+.slide.active .lrow:nth-child(1){animation-delay:.18s}.slide.active .lrow:nth-child(2){animation-delay:.32s}.slide.active .lrow:nth-child(3){animation-delay:.46s}.slide.active .lrow:nth-child(4){animation-delay:.6s}
+.ltag{padding:.9rem 1rem;font-family:var(--mono);font-size:.6rem;letter-spacing:2px;text-transform:uppercase;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem}
+.ltag .lnum{font-size:1.4rem;font-weight:700;opacity:.18}
+.lrow:nth-child(1) .ltag{background:rgba(0,255,136,.1);color:var(--green)}.lrow:nth-child(1) .ltag .lnum{color:var(--green)}
+.lrow:nth-child(2) .ltag{background:rgba(124,111,255,.1);color:var(--violet)}.lrow:nth-child(2) .ltag .lnum{color:var(--violet)}
+.lrow:nth-child(3) .ltag{background:rgba(255,179,64,.08);color:var(--amber)}.lrow:nth-child(3) .ltag .lnum{color:var(--amber)}
+.lrow:nth-child(4) .ltag{background:rgba(255,94,94,.08);color:var(--red)}.lrow:nth-child(4) .ltag .lnum{color:var(--red)}
+.lcontent{padding:.9rem 1.3rem}
+.lname{font-family:var(--head);font-size:.92rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:.25rem}
+.ldesc{font-size:.9rem;font-weight:300;color:var(--dim);line-height:1.5}
+.skills-col{display:flex;flex-direction:column;gap:.75rem;margin-top:1.2rem}
+.sk{background:var(--card);border:1px solid rgba(255,255,255,.05);border-radius:3px;padding:.95rem 1.3rem;display:grid;grid-template-columns:56px 1fr;align-items:center;gap:1rem;opacity:0}
+.slide.active .sk{animation:up .45s forwards}
+.slide.active .sk:nth-child(1){animation-delay:.15s}.slide.active .sk:nth-child(2){animation-delay:.27s}.slide.active .sk:nth-child(3){animation-delay:.39s}.slide.active .sk:nth-child(4){animation-delay:.51s}.slide.active .sk:nth-child(5){animation-delay:.63s}
+.sk-n{font-family:var(--mono);font-size:1.9rem;font-weight:700;color:rgba(0,255,136,.12);line-height:1}
+.sk-title{font-family:var(--head);font-size:.9rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:.2rem}
+.sk-sub{font-size:.87rem;font-weight:300;color:var(--dim)}
+.role-grid{display:grid;grid-template-columns:1fr 44px 1fr;gap:0;margin-top:1.3rem}
+.role-col{display:flex;flex-direction:column;gap:.6rem}
+.role-item{background:var(--card);border:1px solid rgba(255,255,255,.05);padding:.8rem 1.2rem;border-radius:3px;font-size:.97rem;font-weight:300;color:#6a8898;opacity:0}
+.slide.active .role-item{animation:up .45s forwards}
+.role-item.or{border-left:2px solid rgba(255,94,94,.4)}.role-item.nr{border-left:2px solid var(--green2)}
+.role-col:nth-child(1) .role-item:nth-child(1){animation-delay:.18s}.role-col:nth-child(1) .role-item:nth-child(2){animation-delay:.28s}.role-col:nth-child(1) .role-item:nth-child(3){animation-delay:.38s}.role-col:nth-child(1) .role-item:nth-child(4){animation-delay:.48s}
+.role-col:nth-child(3) .role-item:nth-child(1){animation-delay:.22s}.role-col:nth-child(3) .role-item:nth-child(2){animation-delay:.32s}.role-col:nth-child(3) .role-item:nth-child(3){animation-delay:.42s}.role-col:nth-child(3) .role-item:nth-child(4){animation-delay:.52s}
+.role-arrows{display:flex;flex-direction:column;gap:.6rem;align-items:center;padding-top:1.8rem}
+.r-arr{font-size:.9rem;color:var(--green);opacity:.4;height:calc(.8rem + .8rem + 14px + .6rem);display:flex;align-items:center}
+.ebox{background:var(--card2);border:1px solid rgba(0,255,136,.12);border-radius:3px;padding:1.1rem 1.4rem;margin-top:1rem;opacity:0}
+.slide.active .ebox{animation:up .5s .45s forwards}
+.ebox-label{font-family:var(--mono);font-size:.6rem;letter-spacing:3px;color:var(--amber);text-transform:uppercase;margin-bottom:.7rem}
+.ebox-chain{display:flex;flex-wrap:wrap;align-items:center;gap:.35rem}
+.es{background:rgba(0,255,136,.07);border:1px solid rgba(0,255,136,.15);padding:.28rem .65rem;border-radius:2px;color:var(--green);font-family:var(--mono);font-size:.73rem;white-space:nowrap}
+.ea{color:var(--dim);font-size:.85rem}
+.big-q{font-family:var(--head);font-weight:800;font-size:clamp(1.6rem,3.5vw,3rem);line-height:1.1;letter-spacing:-.5px;text-transform:uppercase;opacity:0}
+.slide.active .big-q{animation:up .6s .3s forwards}
+.hg{color:var(--green);font-weight:500}.hv{color:var(--violet);font-weight:500}.ha{color:var(--amber);font-weight:500}.hr{color:var(--red);font-weight:500}.hw{color:var(--white);font-weight:500}
+@media(max-width:900px){.slide{padding:2rem 2.5rem}.two,.three{grid-template-columns:1fr}.vs{grid-template-columns:1fr}.vs-mid{display:none}.role-grid{grid-template-columns:1fr}.role-arrows{display:none}}
+</style>
+</head>
+<body>
+<canvas id="matrix-canvas"></canvas>
+<div id="bar"></div>
+<div id="wrap">
+
+<!-- 01 TITLE -->
+<div class="slide active" data-i="0"><div class="grid-bg"></div><div class="glow g1"></div><div class="glow g2"></div>
+<div class="title-badge au d1">Department Deep Dive · 2026</div>
+<div class="big-title au d2"><span class="bt1">IT &amp;</span><span class="bt2">Engineering</span><span class="bt3">Software Stack → AI Agentic Stack · Deep Mapping</span></div>
+<p class="title-desc au d3">The most structurally disrupted function. The shift <span class="hg">rewires how software is built, deployed, and maintained</span> — not incrementally, but fundamentally. Engineers stop writing instructions for machines and start <span class="hv">designing systems that generate and execute instructions themselves</span>.</p>
+<div class="snum">01 / 28</div></div>
+
+<!-- 02 SOFTWARE ERA -->
+<div class="slide" data-i="1"><div class="grid-bg"></div><div class="glow g1"></div>
+<div class="kicker red au d1">Core Transformation · 1 of 2</div>
+<h1 class="ht au d2">Software Stack Era — <span class="r">Deterministic</span></h1>
+<p class="sub au d3">Input → Human writes code → System executes → Output</p>
+<div class="big-card rc"><ul>
+<li><span class="hw">Inputs:</span> Requirements documents, Jira tickets, technical specs</li>
+<li><span class="hw">Processing:</span> Developers write every line of logic manually</li>
+<li><span class="hw">Output:</span> Features, APIs, deployed systems</li>
+</ul></div>
+<div class="callout r" style="margin-top:1rem;"><strong class="hr">Control = Human-driven execution.</strong> Every behaviour is explicitly authored. Nothing runs unless a developer has written it. The system has zero ability to act on its own.</div>
+<div class="snum">02 / 28</div></div>
+
+<!-- 03 AGENTIC ERA -->
+<div class="slide" data-i="2"><div class="grid-bg"></div><div class="glow g2"></div>
+<div class="kicker au d1">Core Transformation · 2 of 2</div>
+<h1 class="ht au d2">AI Agentic Stack — <span class="g">Autonomous</span></h1>
+<p class="sub au d3">Input → AI interprets intent → Agents build & run workflows → Output</p>
+<div class="big-card gc"><ul>
+<li><span class="hw">Inputs:</span> Goals, constraints, natural language instructions</li>
+<li><span class="hw">Processing:</span> Multi-agent collaboration — no human in the loop for each step</li>
+<li><span class="hw">Output:</span> Working, continuously evolving systems</li>
+</ul></div>
+<div class="callout" style="margin-top:1rem;"><strong class="hg">Control = Human-guided autonomy.</strong> Humans set direction and constraints. Agents handle execution. The system builds, tests, and deploys itself.</div>
+<div class="snum">03 / 28</div></div>
+
+<!-- 04 REQUIREMENTS BEFORE -->
+<div class="slide" data-i="3"><div class="grid-bg"></div><div class="glow g1"></div>
+<div class="kicker vio au d1">Layer A — Requirement → Specification · Before</div>
+<h1 class="ht au d2">How Requirements <span class="r">Used to Work</span></h1>
+<div class="big-card rc"><ul>
+<li>Product manager writes detailed PRDs (Product Requirement Documents)</li>
+<li>Engineers interpret the specs — often introducing ambiguity and gaps</li>
+<li>Misunderstandings cause delays, rework, and scope creep</li>
+<li><span class="hr">Input type:</span> Static documents — written once, rarely updated mid-sprint</li>
+</ul></div>
+<div class="callout r" style="margin-top:1rem;">The handoff from product to engineering is the <strong class="hr">biggest single source of wasted time</strong> in the software era. Requirements are written in natural language, then re-interpreted in code — two lossy translations before anything is built.</div>
+<div class="snum">04 / 28</div></div>
+
+<!-- 05 REQUIREMENTS AFTER -->
+<div class="slide" data-i="4"><div class="grid-bg"></div><div class="glow g2"></div>
+<div class="kicker vio au d1">Layer A — Requirement → Specification · After</div>
+<h1 class="ht au d2">How Requirements <span class="g">Work Now</span></h1>
+<div class="big-card gc"><ul>
+<li>Human provides intent: <span class="ha">"Build a payment API with fraud detection"</span></li>
+<li>Spec Agent converts intent → full technical architecture automatically</li>
+<li>System iterates interactively — asks clarifying questions, refines in real time</li>
+<li><span class="hg">Input type:</span> Structured intent + constraints — living, dynamic, immediately actionable</li>
+</ul></div>
+<div class="shift-banner"><span class="sb-from">Documentation-heavy handoff</span><span class="sb-arr">→</span><span class="sb-to">Dynamic spec generation</span></div>
+<div class="snum">05 / 28</div></div>
+
+<!-- 06 CODING BEFORE -->
+<div class="slide" data-i="5"><div class="grid-bg"></div><div class="glow g1"></div>
+<div class="kicker vio au d1">Layer B — Coding · Before</div>
+<h1 class="ht au d2">How Code Was <span class="r">Written</span></h1>
+<div class="big-card rc"><ul>
+<li>Developers write every function, class, and module manually</li>
+<li>Tools: IDEs like Visual Studio Code, IntelliJ</li>
+<li>Knowledge lookup: Stack Overflow, documentation, colleagues</li>
+<li>Model: <span class="hr">Input → Write code → Compile → Debug → Repeat</span></li>
+</ul></div>
+<div class="code-box"><span class="cm">// Every line written by hand. One function at a time.</span><br>
+<span class="kw">function</span> <span class="fn-nm">validatePayment</span>(<span class="vr">amount</span>, <span class="vr">cardData</span>) {<br>
+&nbsp;&nbsp;<span class="cm">// developer researches fraud rules...</span><br>
+&nbsp;&nbsp;<span class="cm">// developer writes each check manually...</span><br>
+&nbsp;&nbsp;<span class="cm">// 3 days later: first working draft</span><br>
+}</div>
+<div class="snum">06 / 28</div></div>
+
+<!-- 07 CODING AFTER -->
+<div class="slide" data-i="6"><div class="grid-bg"></div><div class="glow g2"></div>
+<div class="kicker vio au d1">Layer B — Coding · After</div>
+<h1 class="ht au d2">How Code <span class="g">Gets Built Now</span></h1>
+<div class="big-card gc"><ul>
+<li>Code Agent generates entire modules — not just snippets</li>
+<li>Multi-file systems created from a single high-level prompt</li>
+<li>Self-debugging loops: agent identifies errors, fixes, retests — no human patch cycle</li>
+<li>Model: <span class="hg">Intent → Functional requirement → Working code</span></li>
+</ul></div>
+<div class="code-box"><span class="cm">// Agentic era: intent drives generation</span><br>
+<span class="vr">CodeAgent</span>.<span class="fn-nm">build</span>(<span class="st">"payment API with fraud detection, rate limiting, PCI-DSS"</span>)<br>
+<span class="cm">// → Full multi-file module in hours</span><br>
+<span class="cm">// → Self-tests, self-debugs, documents itself</span></div>
+<div class="shift-banner"><span class="sb-from">Syntax + logic writing</span><span class="sb-arr">→</span><span class="sb-to">System specification</span></div>
+<div class="snum">07 / 28</div></div>
+
+<!-- 08 TESTING BEFORE -->
+<div class="slide" data-i="7"><div class="grid-bg"></div><div class="glow g1"></div>
+<div class="kicker amb au d1">Layer C — Testing & QA · Before</div>
+<h1 class="ht au d2">How QA <span class="r">Used to Run</span></h1>
+<div class="big-card rc"><ul>
+<li>QA engineers manually design and write test cases for each feature</li>
+<li>Run test scenarios against builds — human effort required every cycle</li>
+<li>Bugs discovered → reported to developers → fixed → retested manually</li>
+<li><span class="hr">Output lag: High</span> — each cycle takes days; edge cases frequently missed</li>
+</ul></div>
+<div class="callout r" style="margin-top:1rem;">QA in the software era is <strong class="hr">reactive by design</strong>. Tests are written after code. Bugs are found after users encounter them. The feedback loop is always one step behind.</div>
+<div class="snum">08 / 28</div></div>
+
+<!-- 09 TESTING AFTER -->
+<div class="slide" data-i="8"><div class="grid-bg"></div><div class="glow g2"></div>
+<div class="kicker amb au d1">Layer C — Testing & QA · After</div>
+<h1 class="ht au d2">How QA <span class="g">Works Now</span></h1>
+<div class="big-card gc"><ul>
+<li>Test Agent auto-generates test cases as code is written — no separate QA cycle</li>
+<li>Runs simulations continuously in the background — always-on validation</li>
+<li>Detects edge cases <em>proactively</em> before users ever encounter them</li>
+<li><span class="hg">Output: Near real-time validation</span> — feedback in minutes, not days</li>
+</ul></div>
+<div class="shift-banner"><span class="sb-from">Reactive QA</span><span class="sb-arr">→</span><span class="sb-to">Continuous autonomous validation</span></div>
+<div class="snum">09 / 28</div></div>
+
+<!-- 10 DEVOPS BEFORE -->
+<div class="slide" data-i="9"><div class="grid-bg"></div><div class="glow g1"></div>
+<div class="kicker au d1">Layer D — Deployment & DevOps · Before</div>
+<h1 class="ht au d2">How Deployments <span class="r">Were Managed</span></h1>
+<div class="big-card rc"><ul>
+<li>CI/CD pipelines configured manually — Jenkins, CircleCI, GitHub Actions</li>
+<li>Infrastructure set up by hand: AWS consoles, Docker configs, YAML files</li>
+<li>Engineers monitor every deployment — watching logs, ready to intervene</li>
+<li><span class="hr">Workflow: Build → Test → Deploy</span> — each stage human-gated, each config handcrafted</li>
+</ul></div>
+<div class="callout r" style="margin-top:1rem;">DevOps in the software era is a <strong class="hr">highly skilled manual job</strong>. Every config, every rollback, every infra change requires a specialist who understands all moving parts.</div>
+<div class="snum">10 / 28</div></div>
+
+<!-- 11 DEVOPS AFTER -->
+<div class="slide" data-i="10"><div class="grid-bg"></div><div class="glow g2"></div>
+<div class="kicker au d1">Layer D — Deployment & DevOps · After</div>
+<h1 class="ht au d2">How Deployments <span class="g">Run Now</span></h1>
+<div class="big-card gc"><ul>
+<li>DevOps Agent handles infrastructure setup autonomously</li>
+<li>Makes deployment decisions — chooses environments, scaling strategies</li>
+<li>Performs automatic rollbacks when anomalies are detected</li>
+<li>Uses Kubernetes, Terraform, and cloud APIs <em>autonomously</em></li>
+<li><span class="hg">Workflow: Intent → Auto-deploy → Self-monitor</span></li>
+</ul></div>
+<div class="shift-banner"><span class="sb-from">Pipeline management</span><span class="sb-arr">→</span><span class="sb-to">Autonomous infrastructure</span></div>
+<div class="snum">11 / 28</div></div>
+
+<!-- 12 MONITORING -->
+<div class="slide" data-i="11"><div class="grid-bg"></div><div class="glow g1"></div>
+<div class="kicker au d1">Layer E — Monitoring & Maintenance</div>
+<h1 class="ht au d2">From <span class="r">Observability</span> to <span class="g">Self-Healing</span></h1>
+<div class="vs">
+<div class="vs-old"><div class="vl">Before — Software Era</div><ul class="vlist">
+<li>Tools: Datadog, Grafana, log monitoring</li>
+<li>Engineers respond to alerts manually</li>
+<li>Incident: paged → investigated → fixed</li>
+<li>Model: <span class="hr">Alert → Human fix</span></li>
+<li>Mean time to resolution: hours</li>
+</ul></div>
+<div class="vs-mid">→</div>
+<div class="vs-new"><div class="vl">After — Agent Era</div><ul class="vlist">
+<li>Monitoring Agent detects anomalies automatically</li>
+<li>Diagnoses root cause without human involvement</li>
+<li>Fixes issues in real-time — patches, restarts, reroutes</li>
+<li>Model: <span class="hg">Detect → Diagnose → Resolve</span></li>
+<li>No human needed for most incidents</li>
+</ul></div>
+</div>
+<div class="snum">12 / 28</div></div>
+
+<!-- 13 SECURITY -->
+<div class="slide" data-i="12"><div class="grid-bg"></div><div class="glow g2"></div>
+<div class="kicker vio au d1">Layer F — Security</div>
+<h1 class="ht au d2">From <span class="r">Periodic Audits</span> to <span class="g">Continuous Defense</span></h1>
+<div class="vs">
+<div class="vs-old"><div class="vl">Before — Software Era</div><ul class="vlist">
+<li>Periodic audits — quarterly or annually</li>
+<li>Manual vulnerability scanning by security team</li>
+<li>Pen testing on a scheduled basis</li>
+<li>Patches applied in the next release cycle</li>
+<li>Security is a <span class="hr">scheduled event</span>, not a constant</li>
+</ul></div>
+<div class="vs-mid">→</div>
+<div class="vs-new"><div class="vl">After — Agent Era</div><ul class="vlist">
+<li>Security Agent continuously scans all code and infra</li>
+<li>Auto-patches vulnerabilities as they're discovered</li>
+<li>Simulates attack scenarios proactively — finds gaps before attackers do</li>
+<li>Security is a <span class="hg">24/7 autonomous process</span></li>
+<li>Humans review only critical, high-risk decisions</li>
+</ul></div>
+</div>
+<div class="snum">13 / 28</div></div>
+
+<!-- 14 IO OLD MODEL -->
+<div class="slide" data-i="13"><div class="grid-bg"></div><div class="glow g1"></div>
+<div class="kicker amb au d1">I/O Transformation — Critical Insight · 1 of 2</div>
+<h1 class="ht au d2">Old Model — <span class="r">Software Stack</span></h1>
+<div class="three" style="margin-top:1.2rem;">
+<div class="card rc"><div class="ct">Inputs</div><ul>
+<li>Detailed requirements documents</li>
+<li>Technical specifications</li>
+<li>Jira tickets broken down by engineers</li>
+</ul></div>
+<div class="card rc"><div class="ct">Processing</div><ul>
+<li>Human interprets each ticket</li>
+<li>Human writes every line of code</li>
+<li>Human tests manually</li>
+</ul></div>
+<div class="card rc"><div class="ct">Output</div><ul>
+<li>Static software releases</li>
+<li>Versioned deployments (v1.0, v1.1…)</li>
+<li>Bug fixes in the next sprint cycle</li>
+</ul></div>
+</div>
+<div class="callout r" style="margin-top:1rem;">Core bottleneck: <strong class="hr">every single step requires a human with specialised knowledge</strong>. Scaling means hiring more engineers.</div>
+<div class="snum">14 / 28</div></div>
+
+<!-- 15 IO NEW MODEL -->
+<div class="slide" data-i="14"><div class="grid-bg"></div><div class="glow g2"></div>
+<div class="kicker amb au d1">I/O Transformation — Critical Insight · 2 of 2</div>
+<h1 class="ht au d2">New Model — <span class="g">Agent Stack</span></h1>
+<div class="three" style="margin-top:1.2rem;">
+<div class="card gc"><div class="ct">Inputs</div><ul>
+<li>Business intent in natural language</li>
+<li>Constraints: budget, scale, tech stack</li>
+<li>High-level requirements only</li>
+</ul></div>
+<div class="card gc"><div class="ct">Processing</div><ul>
+<li>Spec Agent → Code Agent → Test Agent</li>
+<li>DevOps Agent — all via connected workflows</li>
+<li>Agents collaborate in parallel</li>
+</ul></div>
+<div class="card gc"><div class="ct">Output</div><ul>
+<li>Live, deployed systems</li>
+<li>Continuously self-improving software</li>
+<li>Real-time quality and security</li>
+</ul></div>
+</div>
+<div class="callout" style="margin-top:1rem;">Scaling no longer means hiring. It means <strong class="hg">adding agents to the pipeline</strong> — the system gets faster with configuration, not headcount.</div>
+<div class="snum">15 / 28</div></div>
+
+<!-- 16 WORKFLOW: SOFTWARE ERA -->
+<div class="slide" data-i="15"><div class="grid-bg"></div><div class="glow g1"></div>
+<div class="kicker au d1">End-to-End Workflow Example · 1 of 2</div>
+<h1 class="ht au d2">Build an E-Commerce Backend — <span class="r">Software Era</span></h1>
+<p class="sub au d3" style="margin-bottom:.8rem;">"Build an e-commerce backend with payment + inventory management"</p>
+<div class="big-card rc"><ul>
+<li>Step 1 — Write the PRD (product requirement document)</li>
+<li>Step 2 — Break PRD into Jira tickets, assign to developers</li>
+<li>Step 3 — Developers code each feature independently</li>
+<li>Step 4 — QA team tests manually, reports bugs to developers</li>
+<li>Step 5 — DevOps configures deployment pipeline and ships</li>
+<li>Step 6 — Monitor for bugs in production, fix reactively</li>
+</ul></div>
+<div class="callout r" style="margin-top:1rem;"><strong class="hr">Time: Weeks to Months.</strong> Every step requires a different specialist. Each handoff introduces delay and compounding risk.</div>
+<div class="snum">16 / 28</div></div>
+
+<!-- 17 WORKFLOW: AGENTIC ERA -->
+<div class="slide" data-i="16"><div class="grid-bg"></div><div class="glow g2"></div>
+<div class="kicker au d1">End-to-End Workflow Example · 2 of 2</div>
+<h1 class="ht au d2">Same Task — <span class="g">Agentic Flow</span></h1>
+<div class="big-card gc"><ul>
+<li>Step 1 — Input intent in natural language</li>
+<li>Step 2 — Spec Agent creates full system architecture automatically</li>
+<li>Step 3 — Code Agent builds the entire backend</li>
+<li>Step 4 — Test Agent validates, catches edge cases, refines automatically</li>
+<li>Step 5 — DevOps Agent deploys and configures monitoring</li>
+<li>Step 6 — Monitoring Agent continuously optimises post-launch</li>
+</ul></div>
+<div class="ebox"><div class="ebox-label">Agent Pipeline</div>
+<div class="ebox-chain"><div class="es">Intent</div><div class="ea">→</div><div class="es">Spec Agent</div><div class="ea">→</div><div class="es">Code Agent</div><div class="ea">→</div><div class="es">Test Agent</div><div class="ea">→</div><div class="es">DevOps Agent</div><div class="ea">→</div><div class="es" style="color:var(--amber);border-color:rgba(255,179,64,.3);">Live System ✓</div></div></div>
+<div class="callout" style="margin-top:.8rem;"><strong class="hg">Time: Hours to Days.</strong> Agents run in parallel. Humans approve and steer — never manually execute each step.</div>
+<div class="snum">17 / 28</div></div>
+
+<!-- 18 TOOL MAPPING -->
+<div class="slide" data-i="17"><div class="grid-bg"></div><div class="glow g1"></div>
+<div class="kicker vio au d1">Tool Stack → Agent Stack Mapping</div>
+<h1 class="ht au d2">Every Tool Has an <span class="v">Agent Equivalent</span></h1>
+<table class="dt"><thead><tr><th>Layer</th><th>Software Tool</th><th>Agent Equivalent</th></tr></thead>
+<tbody>
+<tr><td>Coding</td><td class="ov">VS Code / IDE</td><td class="nv">Code Agent</td></tr>
+<tr><td>Knowledge</td><td class="ov">Stack Overflow / Docs</td><td class="nv">Retrieval Agent</td></tr>
+<tr><td>CI/CD</td><td class="ov">Jenkins / CircleCI</td><td class="nv">DevOps Agent</td></tr>
+<tr><td>Infrastructure</td><td class="ov">AWS Console / Docker</td><td class="nv">Infra Agent</td></tr>
+<tr><td>Monitoring</td><td class="ov">Datadog / Grafana</td><td class="nv">Monitoring Agent</td></tr>
+<tr><td>Security</td><td class="ov">Manual audits / Scanners</td><td class="nv">Security Agent</td></tr>
+</tbody></table>
+<div class="callout" style="margin-top:1rem;">Every tool that required a human operator now has an autonomous agent running 24/7 — without waiting for a human trigger.</div>
+<div class="snum">18 / 28</div></div>
+
+<!-- 19 ROLE TRANSFORMATION -->
+<div class="slide" data-i="18"><div class="grid-bg"></div><div class="glow g2"></div>
+<div class="kicker au d1">Role Transformation in Engineering</div>
+<h1 class="ht au d2">Every Role <span class="g">Evolves</span> — Not Disappears</h1>
+<div class="role-grid">
+<div class="role-col">
+<div style="font-family:var(--mono);font-size:.6rem;letter-spacing:3px;color:var(--red);margin-bottom:.5rem;opacity:0;animation:up .4s .1s forwards;">OLD ROLE</div>
+<div class="role-item or">Developer</div>
+<div class="role-item or">QA Engineer</div>
+<div class="role-item or">DevOps Engineer</div>
+<div class="role-item or">Tech Lead</div>
+</div>
+<div class="role-arrows"><div class="r-arr">→</div><div class="r-arr">→</div><div class="r-arr">→</div><div class="r-arr">→</div></div>
+<div class="role-col">
+<div style="font-family:var(--mono);font-size:.6rem;letter-spacing:3px;color:var(--green);margin-bottom:.5rem;opacity:0;animation:up .4s .1s forwards;">NEW ROLE</div>
+<div class="role-item nr"><span class="hg">System Designer</span> — defines intent-driven architectures</div>
+<div class="role-item nr"><span class="hg">Validation Architect</span> — designs how agents test and what they cover</div>
+<div class="role-item nr"><span class="hg">Infrastructure Orchestrator</span> — governs and tunes infra agents</div>
+<div class="role-item nr"><span class="hg">Multi-Agent Supervisor</span> — manages agent pipelines end to end</div>
+</div>
+</div>
+<div class="snum">19 / 28</div></div>
+
+<!-- 20 ARCH LAYERS 1+2 -->
+<div class="slide" data-i="19"><div class="grid-bg"></div><div class="glow g1"></div>
+<div class="kicker amb au d1">New Engineering Stack — Agentic Architecture · Layers 1 & 2</div>
+<h1 class="ht au d2">Intent &amp; <span class="a">Agent</span> Layers</h1>
+<div class="layers" style="margin-top:1.4rem;">
+<div class="lrow"><div class="ltag"><div class="lnum">1</div>INTENT</div><div class="lcontent"><div class="lname">Intent Layer</div><div class="ldesc">Human defines the goal in natural language. No detailed specs required. This is the only layer humans must actively maintain — everything else flows from it.</div></div></div>
+<div class="lrow"><div class="ltag"><div class="lnum">2</div>AGENTS</div><div class="lcontent"><div class="lname">Agent Layer</div><div class="ldesc">Spec Agent · Code Agent · Test Agent · DevOps Agent · Monitoring Agent · Security Agent. Each agent specialises in one function and hands off to the next automatically.</div></div></div>
+</div>
+<div class="callout" style="margin-top:1rem;">The Intent Layer is where human creativity lives. The Agent Layer is where it gets <strong class="hg">built, tested, shipped, and maintained — automatically</strong>.</div>
+<div class="snum">20 / 28</div></div>
+
+<!-- 21 ARCH LAYERS 3+4 -->
+<div class="slide" data-i="20"><div class="grid-bg"></div><div class="glow g2"></div>
+<div class="kicker amb au d1">New Engineering Stack — Agentic Architecture · Layers 3 & 4</div>
+<h1 class="ht au d2">Workflow &amp; <span class="g">System</span> Layers</h1>
+<div class="layers" style="margin-top:1.4rem;">
+<div class="lrow"><div class="ltag"><div class="lnum">3</div>WORKFLOW</div><div class="lcontent"><div class="lname">Workflow Layer</div><div class="ldesc">Orchestration across all agents. Event-driven execution — one agent's output triggers the next. Cross-agent handoffs happen automatically based on defined conditions.</div></div></div>
+<div class="lrow"><div class="ltag"><div class="lnum">4</div>SYSTEM</div><div class="lcontent"><div class="lname">System Layer</div><div class="ldesc">Live, deployed applications running in production. Software that continuously improves itself — updates, patches, optimisations — without a fixed release schedule.</div></div></div>
+</div>
+<div class="callout" style="margin-top:1rem;">The Workflow Layer is the <strong class="hg">nervous system</strong> connecting all agents. The System Layer is the <strong class="hg">living product</strong> — never static, always evolving.</div>
+<div class="snum">21 / 28</div></div>
+
+<!-- 22 SKILLS 1-3 -->
+<div class="slide" data-i="21"><div class="grid-bg"></div><div class="glow g1"></div>
+<div class="kicker au d1">New Core Skills for IT & Engineering · 1 of 2</div>
+<h1 class="ht au d2">Skills <span class="g">01 — 03</span></h1>
+<div class="skills-col">
+<div class="sk"><div class="sk-n">01</div><div><div class="sk-title">System Design &gt; Coding</div><div class="sk-sub">Architecture trumps implementation. Understanding how pieces connect matters more than being able to write each piece individually.</div></div></div>
+<div class="sk"><div class="sk-n">02</div><div><div class="sk-title">Architecture Thinking &gt; Implementation</div><div class="sk-sub">Designing systems at a structural level — data flows, service boundaries, agent responsibilities — becomes the primary engineering skill.</div></div></div>
+<div class="sk"><div class="sk-n">03</div><div><div class="sk-title">Constraint Definition &gt; Detailed Specs</div><div class="sk-sub">Instead of 50-page specs, engineers define boundaries: what the system must not do, what resources it can use, what risks are acceptable.</div></div></div>
+</div>
+<div class="snum">22 / 28</div></div>
+
+<!-- 23 SKILLS 4-5 -->
+<div class="slide" data-i="22"><div class="grid-bg"></div><div class="glow g2"></div>
+<div class="kicker au d1">New Core Skills for IT & Engineering · 2 of 2</div>
+<h1 class="ht au d2">Skills <span class="g">04 — 05</span></h1>
+<div class="skills-col" style="margin-top:1.4rem;">
+<div class="sk"><div class="sk-n">04</div><div><div class="sk-title">Agent Orchestration &gt; Tool Usage</div><div class="sk-sub">Engineers no longer operate tools — they direct agents. Knowing how to chain agents, handle failures, and define escalation paths is the new DevOps.</div></div></div>
+<div class="sk"><div class="sk-n">05</div><div><div class="sk-title">Debugging Systems &gt; Writing Functions</div><div class="sk-sub">When something breaks, engineers debug the agent pipeline — not individual functions. System-level reasoning replaces line-by-line debugging.</div></div></div>
+</div>
+<div class="callout" style="margin-top:1.4rem;">The shift is from <strong class="hr">depth in syntax and implementation</strong> to <strong class="hg">breadth in system thinking and agent governance</strong>. The best engineers will be the best architects.</div>
+<div class="snum">23 / 28</div></div>
+
+<!-- 24 FINAL SHIFT: SW ERA -->
+<div class="slide" data-i="23"><div class="grid-bg"></div><div class="glow g1"></div>
+<div class="kicker red au d1">The Final Shift · 1 of 2</div>
+<h1 class="ht au d2">Software Era — <span class="r">"Engineers Build Systems"</span></h1>
+<div class="big-card rc" style="margin-top:1.4rem;"><ul>
+<li>Engineers write every line of logic themselves</li>
+<li>Bugs are discovered and fixed reactively</li>
+<li>Deployments happen on a scheduled release cycle</li>
+<li>Systems are monitored with dashboards — humans interpret and respond</li>
+<li>Software is updated via versioned release cycles</li>
+<li>Scaling means hiring more engineers</li>
+</ul></div>
+<div class="callout r" style="margin-top:1rem;">The engineer IS the processor. Remove the engineer, remove the output. The system has no ability to act on its own.</div>
+<div class="snum">24 / 28</div></div>
+
+<!-- 25 FINAL SHIFT: AGENT ERA -->
+<div class="slide" data-i="24"><div class="grid-bg"></div><div class="glow g2"></div>
+<div class="kicker au d1">The Final Shift · 2 of 2</div>
+<h1 class="ht au d2">Agent Era — <span class="g">"Systems Build Themselves"</span></h1>
+<div class="big-card gc" style="margin-top:1.4rem;"><ul>
+<li>Engineers define intent and constraints — agents handle execution</li>
+<li>Systems self-heal in real-time — bugs are caught and fixed autonomously</li>
+<li>Agents deploy continuously — no release schedule needed</li>
+<li>Systems self-monitor and report — humans review exceptions only</li>
+<li>Software evolves autonomously between human-approved milestones</li>
+<li>Scaling means adding agents — not headcount</li>
+</ul></div>
+<div class="callout" style="margin-top:1rem;">The engineer becomes the <strong class="hg">architect of the system that builds the system</strong>. Their leverage multiplies dramatically.</div>
+<div class="snum">25 / 28</div></div>
+
+<!-- 26 BOTTOM LINE FROM -->
+<div class="slide" data-i="25"><div class="grid-bg"></div><div class="glow g1"></div><div class="glow g2"></div>
+<div class="kicker au d1">Bottom Line · 1 of 2</div>
+<h1 class="ht au d2">The Fundamental Change</h1>
+<div style="margin-top:2rem;">
+<div style="font-family:var(--mono);font-size:.9rem;font-weight:400;letter-spacing:4px;text-transform:uppercase;color:var(--dim);opacity:0;animation:up .4s .2s forwards;">FROM</div>
+<div class="big-q" style="margin-top:.6rem;"><span style="color:var(--red);">Writing instructions</span><br>for machines</div>
+<div class="callout r" style="margin-top:2rem;">In the software era, engineering is about precision: the right syntax, the right algorithm, the right library. Machines do exactly what they are told — nothing more. Human expertise = the ability to translate ideas into exact machine instructions.</div>
+</div>
+<div class="snum">26 / 28</div></div>
+
+<!-- 27 BOTTOM LINE TO -->
+<div class="slide" data-i="26"><div class="grid-bg"></div><div class="glow g1"></div><div class="glow g2"></div>
+<div class="kicker au d1">Bottom Line · 2 of 2</div>
+<h1 class="ht au d2">The Fundamental Change</h1>
+<div style="margin-top:2rem;">
+<div style="font-family:var(--mono);font-size:.9rem;font-weight:400;letter-spacing:4px;text-transform:uppercase;color:var(--dim);opacity:0;animation:up .4s .2s forwards;">TO</div>
+<div class="big-q" style="margin-top:.6rem; animation-delay:.55s;"><span style="color:var(--green);">Designing systems</span> that generate<br>&amp; execute instructions themselves</div>
+<div class="callout" style="margin-top:2rem; animation-delay:.8s;">In the agentic era, engineering is about architecture: the right agents, the right constraints, the right workflows. Human expertise = the ability to design systems that continuously improve themselves.</div>
+</div>
+<div class="snum">27 / 28</div></div>
+
+<!-- 28 CLOSING -->
+<div class="slide" data-i="27"><div class="grid-bg"></div><div class="glow g1" style="opacity:.9;"></div><div class="glow g2" style="opacity:.9;"></div>
+<div class="kicker au d1"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:.5rem;animation:pulse 1.4s infinite;vertical-align:middle;"></span>What This Means in Practice</div>
+<h1 class="ht au d2" style="font-size:clamp(2rem,4vw,3.2rem);">What Engineers <span class="g">Keep</span> — What <span class="r">Changes</span></h1>
+<div class="two" style="margin-top:1.4rem; align-items:start;">
+<div class="card gc"><div class="ct">What Engineers Keep</div><ul>
+<li>Judgment — knowing what to build and why</li>
+<li>Architecture vision — system-level thinking</li>
+<li>Taste — knowing good design from bad</li>
+<li>Ethics — ensuring systems behave responsibly</li>
+<li>Strategic direction — aligning tech to business goals</li>
+</ul></div>
+<div class="card rc"><div class="ct">What Agents Take Over</div><ul>
+<li>Syntax writing and boilerplate code</li>
+<li>Manual test case creation and regression testing</li>
+<li>Deployment pipeline configuration and management</li>
+<li>Incident response and routine monitoring</li>
+<li>Routine security scanning and patching</li>
+</ul></div>
+</div>
+<div class="callout" style="margin-top:1rem; font-size:1.05rem;">The best engineers of 2026 won't write the most code. <strong class="hg">They'll design the best systems.</strong></div>
+<div class="snum">28 / 28</div></div>
+
+</div>
+<button class="nav" id="pv">&#8249;</button>
+<button class="nav" id="nx">&#8250;</button>
+<div id="dots"></div>
+<script>
+(()=>{const c=document.getElementById('matrix-canvas');const ctx=c.getContext('2d');const resize=()=>{c.width=innerWidth;c.height=innerHeight};resize();addEventListener('resize',resize);const chars='01アイウカキクサシスタチツABCDEF{}[]<>/=+-';let drops=Array.from({length:Math.floor(c.width/18)},()=>Math.random()*-80);addEventListener('resize',()=>{drops=Array.from({length:Math.floor(c.width/18)},()=>Math.random()*-80)});setInterval(()=>{ctx.fillStyle='rgba(6,11,20,.05)';ctx.fillRect(0,0,c.width,c.height);ctx.fillStyle='#00ff88';ctx.font='13px JetBrains Mono,monospace';drops.forEach((y,i)=>{ctx.fillText(chars[Math.floor(Math.random()*chars.length)],i*18,y*18);if(y*18>c.height&&Math.random()>.97)drops[i]=0;drops[i]+=.5;});},60);})();
+const slides=document.querySelectorAll('.slide');const total=slides.length;let cur=0,busy=false;
+const dotsEl=document.getElementById('dots');slides.forEach((_,i)=>{const d=document.createElement('div');d.className='dot'+(i===0?' on':'');d.addEventListener('click',()=>go(i));dotsEl.appendChild(d);});
+function upd(){document.getElementById('bar').style.width=((cur+1)/total*100)+'%';document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));}
+const SEL='.au,.card,.big-card,.lrow,.vs-old,.vs-new,.dt,.callout,.code-box,.ebox,.sk,.role-item,.shift-banner,.big-q';
+function go(n){if(busy||n===cur||n<0||n>=total)return;busy=true;const prev=slides[cur],next=slides[n];const dir=n>cur?1:-1;next.querySelectorAll(SEL).forEach(el=>{el.style.animationName='none';void el.offsetHeight;el.style.animationName='';});prev.classList.add('exit');prev.classList.remove('active');next.style.transform='translateY('+(dir*40)+'px)';next.classList.add('active');next.classList.remove('exit');void next.offsetHeight;next.style.transform='';cur=n;upd();setTimeout(()=>{prev.classList.remove('exit');prev.style.transform='';busy=false;},560);}
+document.getElementById('pv').addEventListener('click',()=>go(cur-1));document.getElementById('nx').addEventListener('click',()=>go(cur+1));
+document.addEventListener('keydown',e=>{if(['ArrowRight',' '].includes(e.key)){e.preventDefault();go(cur+1);}if(e.key==='ArrowLeft'){e.preventDefault();go(cur-1);}});
+let ts=0;document.addEventListener('touchstart',e=>ts=e.touches[0].clientX,{passive:true});document.addEventListener('touchend',e=>{const d=ts-e.changedTouches[0].clientX;if(Math.abs(d)>40)d>0?go(cur+1):go(cur-1);});
+upd();
+</script>
+</body>
+</html>
