@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5 Trends → New Computing Paradigm</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Syne:wght@300;400;700&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:     #05080f;
+    --panel:  rgba(255,255,255,0.035);
+    --border: rgba(255,255,255,0.08);
+    --t1: #e2eaff;          /* base text   */
+    --dim: #6a7b9a;
+    --a1: #38bdf8;          /* sky blue    */
+    --a2: #fb923c;          /* orange      */
+    --a3: #a78bfa;          /* violet      */
+    --a4: #34d399;          /* emerald     */
+    --a5: #f472b6;          /* pink        */
+    --a6: #facc15;          /* yellow      */
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--t1);
+    font-family: 'Syne', sans-serif;
+    overflow: hidden;
+    height: 100vh; width: 100vw;
+    user-select: none;
+  }
+
+  /* ── starfield ── */
+  #stars {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background:
+      radial-gradient(1px 1px at  8%  12%, rgba(255,255,255,.35) 0%, transparent 100%),
+      radial-gradient(1px 1px at 22%  75%, rgba(255,255,255,.25) 0%, transparent 100%),
+      radial-gradient(1px 1px at 37%  31%, rgba(255,255,255,.30) 0%, transparent 100%),
+      radial-gradient(1px 1px at 51%  88%, rgba(255,255,255,.20) 0%, transparent 100%),
+      radial-gradient(1px 1px at 67%  19%, rgba(255,255,255,.30) 0%, transparent 100%),
+      radial-gradient(1px 1px at 78%  55%, rgba(255,255,255,.25) 0%, transparent 100%),
+      radial-gradient(1px 1px at 91%  7%,  rgba(255,255,255,.35) 0%, transparent 100%),
+      radial-gradient(1px 1px at 14%  44%, rgba(255,255,255,.20) 0%, transparent 100%),
+      radial-gradient(1px 1px at 44%  62%, rgba(255,255,255,.25) 0%, transparent 100%),
+      radial-gradient(1px 1px at 83%  80%, rgba(255,255,255,.30) 0%, transparent 100%),
+      radial-gradient(1px 1px at 59%  47%, rgba(255,255,255,.20) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30%  92%, rgba(255,255,255,.25) 0%, transparent 100%);
+  }
+
+  /* ── deck ── */
+  #deck { position: relative; width: 100vw; height: 100vh; z-index: 1; }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    padding: 56px 80px;
+    opacity: 0; pointer-events: none;
+    transform: scale(.97) translateY(20px);
+    transition: opacity .55s ease, transform .55s ease;
+    text-align: center;
+  }
+  .slide.active  { opacity: 1; pointer-events: all; transform: scale(1) translateY(0); }
+  .slide.exiting { opacity: 0; transform: scale(1.02) translateY(-18px); }
+
+  /* ── typography ── */
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 21px; letter-spacing: 3px;
+    text-transform: uppercase; margin-bottom: 18px;
+    opacity: .8;
+  }
+
+  .mega {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(46px, 7vw, 82px);
+    font-weight: 900; line-height: 1.0;
+    letter-spacing: -1px; margin-bottom: 22px;
+  }
+
+  .title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(36px, 5vw, 58px);
+    font-weight: 700; line-height: 1.1;
+    letter-spacing: 0px; margin-bottom: 22px;
+  }
+
+  .body {
+    font-size: clamp(22px, 2.1vw, 32px);
+    line-height: 1.65; max-width: 840px;
+    color: #b8cce0; font-weight: 300;
+  }
+  .body strong { font-weight: 600; color: var(--t1); }
+  .body em     { font-style: normal; font-weight: 600; }
+
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(21px, 1.8vw, 28px);
+  }
+
+  /* colours */
+  .c1{color:var(--a1)} .c2{color:var(--a2)} .c3{color:var(--a3)}
+  .c4{color:var(--a4)} .c5{color:var(--a5)} .c6{color:var(--a6)}
+
+  /* ── rule ── */
+  .rule { width:64px; height:3px; border-radius:2px; margin:0 auto 28px; background:var(--a1); }
+  .rule.o{background:var(--a2)} .rule.v{background:var(--a3)}
+  .rule.g{background:var(--a4)} .rule.p{background:var(--a5)} .rule.y{background:var(--a6)}
+
+  /* ── grid cards ── */
+  .card-grid {
+    display: grid; gap: 18px; width: 100%; max-width: 1000px; margin-top: 8px;
+  }
+  .card-grid.c5 { grid-template-columns: repeat(5,1fr); }
+  .card-grid.c3 { grid-template-columns: repeat(3,1fr); }
+  .card-grid.c2 { grid-template-columns: 1fr 1fr; }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 18px;
+    text-align: center;
+  }
+  .card .icon  { font-size: clamp(30px,4vw,48px); margin-bottom:10px; line-height:1; }
+  .card .ctitle{
+    font-family:'Orbitron',sans-serif;
+    font-size: clamp(21px,1.7vw,26px);
+    font-weight:700; margin-bottom:8px; line-height:1.2;
+  }
+  .card .cdesc { font-size:clamp(20px,1.5vw,23px); color:#7a90a8; line-height:1.4; }
+
+  /* ── list ── */
+  .vlist { list-style:none; text-align:left; max-width:780px; width:100%; }
+  .vlist li {
+    font-size: clamp(22px,2vw,30px);
+    padding: 13px 0;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    display: flex; align-items:flex-start; gap:16px;
+    line-height:1.45; color:#b8cce0;
+  }
+  .vlist li .bul { flex-shrink:0; margin-top:2px; font-size:22px; }
+  .vlist li span { color:var(--a6); }
+
+  /* ── flow chain ── */
+  .flow {
+    display: flex; align-items: center; flex-wrap: wrap;
+    justify-content: center; gap: 6px; max-width:960px;
+  }
+  .flow-node {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 22px;
+    font-family:'JetBrains Mono',monospace;
+    font-size: clamp(21px,1.7vw,26px);
+    line-height:1.3;
+    text-align:center;
+  }
+  .flow-arr { font-size:clamp(22px,2.5vw,32px); color:var(--a1); flex-shrink:0; }
+
+  /* ── two-col ── */
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:24px; max-width:960px; width:100%; text-align:left; }
+  .col-box { background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:28px 26px; }
+  .col-box h3 { font-family:'Orbitron',sans-serif; font-size:clamp(26px,2.4vw,36px); margin-bottom:14px; }
+  .col-box p  { font-size:clamp(21px,1.7vw,26px); line-height:1.55; color:#8eaabf; }
+
+  /* ── quote ── */
+  .qt {
+    border-left: 4px solid var(--a6);
+    padding: 26px 32px; text-align:left;
+    max-width:820px;
+    background:rgba(250,204,21,.05);
+    border-radius: 0 12px 12px 0;
+  }
+  .qt p  { font-size:clamp(26px,2.6vw,38px); line-height:1.5; font-style:italic; margin-bottom:14px; }
+  .qt cite{ font-family:'JetBrains Mono',monospace; font-size:22px; color:var(--a6); font-style:normal; }
+
+  /* ── big pill ── */
+  .pill-row { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; max-width:860px; margin-top:12px; }
+  .pill {
+    font-family:'JetBrains Mono',monospace;
+    font-size:21px; padding:9px 22px;
+    border-radius:100px;
+    border:1px solid rgba(56,189,248,.3);
+    background:rgba(56,189,248,.08);
+    color:var(--a1);
+  }
+  .pill.o{border-color:rgba(251,146,60,.3);background:rgba(251,146,60,.08);color:var(--a2)}
+  .pill.v{border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.08);color:var(--a3)}
+  .pill.g{border-color:rgba(52,211,153,.3);background:rgba(52,211,153,.08);color:var(--a4)}
+  .pill.p{border-color:rgba(244,114,182,.3);background:rgba(244,114,182,.08);color:var(--a5)}
+  .pill.y{border-color:rgba(250,204,21,.3);background:rgba(250,204,21,.08);color:var(--a6)}
+
+  /* ── progress ── */
+  #pbar { position:fixed; bottom:0; left:0; height:3px; background:linear-gradient(90deg,var(--a1),var(--a3),var(--a5)); transition:width .5s ease; z-index:100; }
+
+  /* ── nav ── */
+  .nb { position:fixed; top:50%; transform:translateY(-50%); background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.09); color:var(--t1); font-size:26px; width:50px; height:50px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:100; transition:background .2s,border-color .2s; }
+  .nb:hover { background:rgba(56,189,248,.12); border-color:var(--a1); }
+  #prev{left:18px} #next{right:18px}
+
+  /* ── dots ── */
+  #dots { position:fixed; bottom:18px; left:50%; transform:translateX(-50%); display:flex; gap:6px; z-index:100; }
+  .dot { width:6px; height:6px; border-radius:50%; background:var(--dim); transition:background .3s,width .3s; cursor:pointer; }
+  .dot.on{ background:var(--a1); width:18px; border-radius:3px; }
+
+  /* ── counter ── */
+  #ctr { position:fixed; bottom:16px; right:24px; font-family:'JetBrains Mono',monospace; font-size:20px; color:var(--dim); z-index:100; }
+
+  /* ── glow helpers ── */
+  .glow1{text-shadow:0 0 28px rgba(56,189,248,.55)}
+  .glow2{text-shadow:0 0 28px rgba(251,146,60,.55)}
+  .glow3{text-shadow:0 0 28px rgba(167,139,250,.55)}
+  .glow4{text-shadow:0 0 28px rgba(52,211,153,.55)}
+  .glow5{text-shadow:0 0 28px rgba(244,114,182,.55)}
+  .glow6{text-shadow:0 0 28px rgba(250,204,21,.55)}
+
+  /* ── orbit animation (title) ── */
+  @keyframes orbit { from{transform:rotate(0deg) translateX(160px) rotate(0deg)} to{transform:rotate(360deg) translateX(160px) rotate(-360deg)} }
+  @keyframes fadeup { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+  .anim1{animation:fadeup .7s ease both}
+  .anim2{animation:fadeup .7s .15s ease both}
+  .anim3{animation:fadeup .7s .30s ease both}
+  .anim4{animation:fadeup .7s .45s ease both}
+
+  /* ── pulse arrow ── */
+  @keyframes parrow { 0%,100%{opacity:1;transform:translateX(0)} 50%{opacity:.4;transform:translateX(7px)} }
+  .parr { animation:parrow 1.6s infinite; color:var(--a1); }
+
+  /* ── scan lines ── */
+  .slide::after {
+    content:''; position:absolute; inset:0; pointer-events:none; z-index:0;
+    background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.07) 3px,rgba(0,0,0,.07) 4px);
+  }
+  .slide > * { position:relative; z-index:1; }
+
+  /* ── final evolution chain ── */
+  .evo {
+    display:flex; align-items:center; gap:12px;
+    flex-wrap:wrap; justify-content:center;
+    margin-top:20px;
+  }
+  .evo-node {
+    background:var(--panel);
+    border-radius:12px;
+    padding:18px 26px;
+    font-family:'Orbitron',sans-serif;
+    font-size:clamp(22px,1.9vw,30px);
+    font-weight:700;
+    line-height:1.2;
+    text-align:center;
+    border:1px solid var(--border);
+  }
+
+</style>
+</head>
+<body>
+<div id="stars"></div>
+<div id="deck"></div>
+<div id="pbar"></div>
+<div id="dots"></div>
+<div id="ctr"></div>
+<button class="nb" id="prev">&#8592;</button>
+<button class="nb" id="next">&#8594;</button>
+
+<script>
+const S = [
+
+/* 01 — TITLE */
+`<div class="eyebrow c1">The New Computing Paradigm</div>
+<div class="mega glow1">5 TRENDS.<br><span class="c3 glow3">ONE FUTURE.</span></div>
+<div class="body" style="font-size:clamp(23px,2.1vw,30px);">They look separate. They <strong>aren't</strong>. These five forces are converging into the most significant shift in computing since the internet.</div>`,
+
+/* 02 — THE 5 AT A GLANCE */
+`<div class="eyebrow c2">The Five Forces</div>
+<div class="title c1 glow1" style="margin-bottom:28px;">Meet the <span class="c2">Convergence</span></div>
+<div class="card-grid c5">
+  <div class="card"><div class="icon">🤖</div><div class="ctitle c1">Multi-Agents</div><div class="cdesc">Do the work</div></div>
+  <div class="card"><div class="icon">🧠</div><div class="ctitle c2">AI OS</div><div class="cdesc">Manages your life</div></div>
+  <div class="card"><div class="icon">🪄</div><div class="ctitle c3">Copilots</div><div class="cdesc">Embedded everywhere</div></div>
+  <div class="card"><div class="icon">🎨</div><div class="ctitle c4">Creative Pipelines</div><div class="cdesc">Content at scale</div></div>
+  <div class="card"><div class="icon">📱</div><div class="ctitle c5">On-Device AI</div><div class="cdesc">Personal & private</div></div>
+</div>`,
+
+/* 03 — TREND 1: MULTI-AGENTS */
+`<div class="eyebrow c1">Trend 01 / 05</div>
+<div class="title"><span class="c1 glow1">Multi-Agents</span> — The AI Workforce</div>
+<div class="rule"></div>
+<div class="body">Not one AI answering a question. <strong>Dozens of specialized agents</strong> working in parallel — researching, writing, coding, verifying, and shipping — while you sleep. The shift from AI as a <em>tool</em> to AI as a <em>team</em>.</div>`,
+
+/* 04 — AGENTS DETAIL */
+`<div class="eyebrow c1">Multi-Agents</div>
+<div class="title c1" style="margin-bottom:24px;">How Agent Swarms <span style="color:var(--t1)">Work</span></div>
+<div class="two-col">
+  <div class="col-box" style="border-color:rgba(56,189,248,.2)">
+    <h3 class="c1">Orchestrator</h3>
+    <p>A master agent breaks goals into sub-tasks, delegates to specialists, and assembles the final output — like a project manager that never sleeps.</p>
+  </div>
+  <div class="col-box" style="border-color:rgba(56,189,248,.2)">
+    <h3 class="c1">Sub-Agents</h3>
+    <p>Domain-specific agents handle research, coding, writing, QA, and deployment in parallel — each an expert, all synchronized.</p>
+  </div>
+</div>`,
+
+/* 05 — TREND 2: AI OS */
+`<div class="eyebrow c2">Trend 02 / 05</div>
+<div class="title"><span class="c2 glow2">AI OS</span> — The Intelligence Layer</div>
+<div class="rule o"></div>
+<div class="body">The operating system of the future doesn't just run apps — it <strong>understands context, anticipates needs, and coordinates your digital life</strong>. Your calendar, email, files, and apps stop being silos. They become <em>one intelligent surface</em>.</div>`,
+
+/* 06 — AI OS DETAIL */
+`<div class="eyebrow c2">AI OS</div>
+<div class="title c2" style="margin-bottom:24px;">What an AI OS <span style="color:var(--t1)">Actually Does</span></div>
+<ul class="vlist">
+  <li><span class="bul c2">▸</span>Reads your schedule and pre-drafts your morning briefing <span>automatically</span></li>
+  <li><span class="bul c2">▸</span>Coordinates apps on your behalf — <span>no manual switching</span></li>
+  <li><span class="bul c2">▸</span>Remembers every preference, context, and prior decision <span>across sessions</span></li>
+  <li><span class="bul c2">▸</span>Dispatches sub-agents to execute tasks while you stay in <span>high-level control</span></li>
+</ul>`,
+
+/* 07 — TREND 3: COPILOTS */
+`<div class="eyebrow c3">Trend 03 / 05</div>
+<div class="title"><span class="c3 glow3">Copilots</span> — AI in the Walls</div>
+<div class="rule v"></div>
+<div class="body">Copilots aren't products you open. They are <strong>invisible presences inside every tool</strong> — your IDE, spreadsheet, inbox, browser, design app, CRM. The interface disappears. The intelligence stays. Work becomes a <em>conversation</em>, not a click-path.</div>`,
+
+/* 08 — COPILOTS DETAIL */
+`<div class="eyebrow c3">Copilots — Embedded Everywhere</div>
+<div class="title c3" style="margin-bottom:22px;">From Apps to <span style="color:var(--t1)">Ambient Intelligence</span></div>
+<div class="pill-row">
+  <span class="pill v">Code editors</span>
+  <span class="pill v">Email clients</span>
+  <span class="pill v">Spreadsheets</span>
+  <span class="pill v">Design tools</span>
+  <span class="pill v">Browsers</span>
+  <span class="pill v">Slide decks</span>
+  <span class="pill v">CRMs</span>
+  <span class="pill v">ERPs</span>
+  <span class="pill v">Legal platforms</span>
+  <span class="pill v">Medical records</span>
+</div>
+<div class="body" style="margin-top:28px;font-size:clamp(22px,1.9vw,28px);">Every interface becomes a <strong style="color:var(--a3)">copilot surface</strong>. The AI meets you where you already work.</div>`,
+
+/* 09 — TREND 4: CREATIVE PIPELINES */
+`<div class="eyebrow c4">Trend 04 / 05</div>
+<div class="title"><span class="c4 glow4">Creative Pipelines</span> — Content at Scale</div>
+<div class="rule g"></div>
+<div class="body">A single human with a well-designed pipeline can now produce what required a <strong>full agency team</strong> — video, audio, copy, images, code, translation, and distribution — in hours. Creative output is no longer gated by <em>headcount</em>.</div>`,
+
+/* 10 — CREATIVE DETAIL */
+`<div class="eyebrow c4">Creative Pipelines</div>
+<div class="title c4" style="margin-bottom:24px;">The New <span style="color:var(--t1)">Production Stack</span></div>
+<div class="card-grid c3">
+  <div class="card"><div class="icon">✍️</div><div class="ctitle c4">Write</div><div class="cdesc">Long-form, copy, scripts, code docs at any scale</div></div>
+  <div class="card"><div class="icon">🎬</div><div class="ctitle c4">Generate</div><div class="cdesc">Video, image, audio, voice from text prompts</div></div>
+  <div class="card"><div class="icon">🚀</div><div class="ctitle c4">Distribute</div><div class="cdesc">Agents publish, post, translate, and adapt automatically</div></div>
+</div>`,
+
+/* 11 — TREND 5: ON-DEVICE AI */
+`<div class="eyebrow c5">Trend 05 / 05</div>
+<div class="title"><span class="c5 glow5">On-Device AI</span> — Personal & Private</div>
+<div class="rule p"></div>
+<div class="body">AI that runs <strong>entirely on your hardware</strong> — phone, laptop, wearable. No cloud. No latency. No data leaving your device. Intelligence becomes <em>intimate and sovereign</em>. Your AI knows everything about you — and tells no one.</div>`,
+
+/* 12 — ON-DEVICE DETAIL */
+`<div class="eyebrow c5">On-Device AI</div>
+<div class="title c5" style="margin-bottom:24px;">Why It <span style="color:var(--t1)">Changes Everything</span></div>
+<div class="two-col">
+  <div class="col-box" style="border-color:rgba(244,114,182,.2)">
+    <h3 class="c5">Privacy First</h3>
+    <p>Your most sensitive data — health, finance, relationships — never leaves the device. AI with zero surveillance surface.</p>
+  </div>
+  <div class="col-box" style="border-color:rgba(244,114,182,.2)">
+    <h3 class="c5">Always On</h3>
+    <p>No internet required. Works offline, in the field, at the edge. Intelligence as infrastructure, not a cloud subscription.</p>
+  </div>
+</div>`,
+
+/* 13 — THE CONNECTION */
+`<div class="eyebrow c6">The Convergence</div>
+<div class="title glow6 c6" style="margin-bottom:28px;">These Are Not <span style="color:var(--t1)">Separate Trends</span></div>
+<div class="rule y"></div>
+<div class="body">Each trend is a <strong>building block</strong>. Multi-agents do the work. The AI OS coordinates it. Copilots make it invisible. Creative pipelines scale the output. On-device AI makes it personal. Together, they form a <em>single new computing paradigm</em>.</div>`,
+
+/* 14 — HOW THEY COMBINE */
+`<div class="eyebrow c6">How They Combine</div>
+<div class="title" style="margin-bottom:26px;">The <span class="c6 glow6">Integration</span> Map</div>
+<div class="flow">
+  <div class="flow-node c5">📱 On-Device<br><span style="font-size:20px;color:var(--dim)">knows you</span></div>
+  <div class="flow-arr parr">→</div>
+  <div class="flow-node c2">🧠 AI OS<br><span style="font-size:20px;color:var(--dim)">decides</span></div>
+  <div class="flow-arr parr">→</div>
+  <div class="flow-node c3">🪄 Copilots<br><span style="font-size:20px;color:var(--dim)">assist</span></div>
+  <div class="flow-arr parr">→</div>
+  <div class="flow-node c1">🤖 Agents<br><span style="font-size:20px;color:var(--dim)">execute</span></div>
+  <div class="flow-arr parr">→</div>
+  <div class="flow-node c4">🎨 Pipelines<br><span style="font-size:20px;color:var(--dim)">produce</span></div>
+</div>`,
+
+/* 15 — WHAT THIS REPLACES */
+`<div class="eyebrow" style="color:var(--a2)">The Old vs New</div>
+<div class="title">From <span class="c2">Clicking Apps</span> to <span class="c1">Directing Intelligence</span></div>
+<div class="rule o"></div>
+<div class="two-col">
+  <div class="col-box" style="border-color:rgba(251,146,60,.18)">
+    <h3 class="c2">Old Paradigm</h3>
+    <p>You open apps. You click menus. You copy-paste between tools. You wait. You are the integrator. You are the bottleneck.</p>
+  </div>
+  <div class="col-box" style="border-color:rgba(56,189,248,.18)">
+    <h3 class="c1">New Paradigm</h3>
+    <p>You state intent. The AI OS routes it. Agents act. Copilots assist inline. Pipelines produce. You review and direct.</p>
+  </div>
+</div>`,
+
+/* 16 — QUOTE */
+`<div class="eyebrow c3">The Shift in Perspective</div>
+<div class="qt" style="margin-top:12px;">
+  <p>"The computer of the future isn't a device you use — it's an intelligence that works on your behalf, across every surface, every second."</p>
+  <cite>— The New Computing Paradigm</cite>
+</div>`,
+
+/* 17 — WHO BENEFITS */
+`<div class="eyebrow c4">Implications</div>
+<div class="title c4 glow4" style="margin-bottom:22px;">Who Gains the <span style="color:var(--t1)">Most?</span></div>
+<ul class="vlist">
+  <li><span class="bul c4">▸</span>Individuals who master <span>intent-setting</span> over task-doing</li>
+  <li><span class="bul c4">▸</span>Small teams that can now operate at <span>enterprise scale</span></li>
+  <li><span class="bul c4">▸</span>Creators who build <span>automated pipelines</span> around their voice</li>
+  <li><span class="bul c4">▸</span>Anyone who treats AI OS as a <span>strategic layer,</span> not a chatbot</li>
+</ul>`,
+
+/* 18 — THE HUMAN ROLE */
+`<div class="eyebrow c5">The Human Role</div>
+<div class="title">You Become the <span class="c5 glow5">Architect</span></div>
+<div class="rule p"></div>
+<div class="body">In this paradigm, your value isn't in execution — it's in <strong>judgment, taste, and direction</strong>. You define the goal. You set the values. You review the output. The intelligence does the rest. <em>You are the only non-replaceable node.</em></div>`,
+
+/* 19 — FINAL EVOLUTION */
+`<div class="eyebrow c6">Final Evolution</div>
+<div class="title c6 glow6" style="margin-bottom:28px;">The New Stack</div>
+<div class="evo">
+  <div class="evo-node" style="border-color:rgba(250,204,21,.25);color:var(--a6)">👤 Human</div>
+  <div class="flow-arr parr" style="font-size:32px;">→</div>
+  <div class="evo-node" style="border-color:rgba(251,146,60,.25);color:var(--a2)">🧠 AI OS</div>
+  <div class="flow-arr parr" style="font-size:32px;">→</div>
+  <div class="evo-node" style="border-color:rgba(56,189,248,.25);color:var(--a1)">🤖 Agent<br>Workforce</div>
+  <div class="flow-arr parr" style="font-size:32px;">→</div>
+  <div class="evo-node" style="border-color:rgba(52,211,153,.25);color:var(--a4)">⚡ Execution</div>
+</div>
+<div class="body" style="margin-top:28px;font-size:clamp(21px,1.8vw,26px);">Intent flows down. Results flow up. <strong>You stay at the top of the stack.</strong></div>`,
+
+/* 20 — CLOSE */
+`<div class="eyebrow c1">The Takeaway</div>
+<div class="mega" style="font-size:clamp(44px,6vw,72px);">
+  <span class="c1 glow1">AGENTS</span> DO.<br>
+  <span class="c2 glow2">AI OS</span> THINKS.<br>
+  <span class="c3 glow3">COPILOTS</span> ASSIST.<br>
+  <span class="c4 glow4">PIPELINES</span> CREATE.<br>
+  <span class="c5 glow5">DEVICE</span> PROTECTS.
+</div>
+<div class="body" style="margin-top:18px;font-size:clamp(22px,1.9vw,28px);">Together: the most powerful computing paradigm ever built. <em class="c6">Your job is to direct it.</em></div>`
+
+];
+
+// ── BUILD ────────────────────────────────────────
+const deck = document.getElementById('deck');
+const pbar = document.getElementById('pbar');
+const ctr  = document.getElementById('ctr');
+const dotsEl = document.getElementById('dots');
+let cur = 0, busy = false;
+
+S.forEach((html, i) => {
+  const el = document.createElement('div');
+  el.className = 'slide' + (i === 0 ? ' active' : '');
+  el.innerHTML = html;
+  deck.appendChild(el);
+
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' on' : '');
+  d.onclick = () => goTo(i);
+  dotsEl.appendChild(d);
+});
+
+const slides = deck.querySelectorAll('.slide');
+const dots   = dotsEl.querySelectorAll('.dot');
+
+function ui() {
+  ctr.textContent = `${cur+1} / ${S.length}`;
+  pbar.style.width = ((cur+1)/S.length*100) + '%';
+  dots.forEach((d,i) => d.classList.toggle('on', i===cur));
+}
+
+function goTo(n) {
+  if (busy || n === cur) return;
+  busy = true;
+  const old = cur; cur = n;
+  slides[old].classList.add('exiting');
+  slides[old].classList.remove('active');
+  setTimeout(() => {
+    slides[old].classList.remove('exiting');
+    slides[cur].classList.add('active');
+    ui();
+    setTimeout(() => { busy = false; }, 580);
+  }, 280);
+}
+
+document.getElementById('next').onclick = () => goTo((cur+1) % S.length);
+document.getElementById('prev').onclick = () => goTo((cur-1+S.length) % S.length);
+document.addEventListener('keydown', e => {
+  if (e.key==='ArrowRight'||e.key===' ') goTo((cur+1)%S.length);
+  if (e.key==='ArrowLeft') goTo((cur-1+S.length)%S.length);
+});
+let tx=0;
+document.addEventListener('touchstart', e => { tx=e.touches[0].clientX; });
+document.addEventListener('touchend',   e => {
+  const dx = e.changedTouches[0].clientX - tx;
+  if (dx < -50) goTo((cur+1)%S.length);
+  if (dx >  50) goTo((cur-1+S.length)%S.length);
+});
+ui();
+</script>
+</body>
+</html>

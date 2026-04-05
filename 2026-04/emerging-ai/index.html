@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>AI Paradigm Shift | The 5 Trends Convergence — Extensible Slideshow</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0a0c10;
+      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, 'Poppins', sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      color: #eef2ff;
+    }
+
+    /* main slideshow container */
+    .slideshow-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 10%, #10141c, #030507);
+      overflow: hidden;
+    }
+
+    /* animated background glow */
+    .bg-glow {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .bg-glow::before {
+      content: "";
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+      background: radial-gradient(ellipse at 40% 50%, rgba(60, 80, 140, 0.1) 0%, transparent 70%);
+      animation: slowDrift 24s infinite alternate ease-in-out;
+    }
+    @keyframes slowDrift {
+      0% { transform: translate(0%, 0%) rotate(0deg); opacity: 0.4; }
+      100% { transform: translate(5%, 8%) rotate(3deg); opacity: 0.8; }
+    }
+
+    /* slide wrapper */
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.85s cubic-bezier(0.2, 0.9, 0.4, 1.1), visibility 0s linear 0.85s;
+      z-index: 5;
+      backdrop-filter: blur(2px);
+      overflow-y: auto;
+      padding: 2rem;
+    }
+    .slide::-webkit-scrollbar {
+      width: 5px;
+    }
+    .slide::-webkit-scrollbar-track {
+      background: #1e1f2c;
+    }
+    .slide::-webkit-scrollbar-thumb {
+      background: #3b82f6;
+      border-radius: 10px;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.85s cubic-bezier(0.2, 0.9, 0.4, 1.1), visibility 0s linear 0s;
+      z-index: 10;
+    }
+
+    /* card style — extensible & image-ready */
+    .card {
+      max-width: 1200px;
+      width: 90%;
+      background: rgba(12, 18, 28, 0.75);
+      backdrop-filter: blur(14px);
+      border-radius: 2.5rem;
+      padding: 2.5rem 3rem;
+      border: 1px solid rgba(80, 120, 200, 0.3);
+      box-shadow: 0 30px 45px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(70, 130, 255, 0.1) inset;
+      transition: transform 0.3s ease;
+    }
+
+    /* flexible image slot */
+    .image-slot {
+      margin: 1.5rem 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 1.8rem;
+      padding: 0.8rem;
+      border: 1px dashed rgba(59,130,246,0.5);
+      min-height: 140px;
+    }
+    .image-slot img {
+      max-width: 100%;
+      max-height: 220px;
+      object-fit: contain;
+      border-radius: 1.2rem;
+      transition: transform 0.2s;
+    }
+    .image-slot img:hover {
+      transform: scale(1.01);
+    }
+    .placeholder-icon {
+      font-size: 2.8rem;
+      opacity: 0.6;
+      font-weight: 300;
+      letter-spacing: 2px;
+      background: rgba(59,130,246,0.15);
+      padding: 0.6rem 1.8rem;
+      border-radius: 2rem;
+      color: #9bb9ff;
+    }
+
+    /* typography — all larger than 20pt (1pt = 1/72 inch, 20pt ~ 26.67px, we use rem/vw) */
+    .main-title {
+      font-size: 3.4rem;    /* ~54px > 20pt */
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #FFFFFF, #b0c4ff);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    .trend-headline {
+      font-size: 2.2rem;    /* ~35px */
+      font-weight: 600;
+      color: #b9d0ff;
+      margin-bottom: 1rem;
+      border-left: 5px solid #3b82f6;
+      padding-left: 1.2rem;
+    }
+    .description {
+      font-size: 1.6rem;    /* ~25.6px */
+      line-height: 1.45;
+      font-weight: 450;
+      color: #eef2ffdd;
+      margin: 1rem 0;
+    }
+    .connective {
+      font-size: 1.5rem;
+      background: rgba(59,130,246,0.2);
+      padding: 0.7rem 1.6rem;
+      border-radius: 3rem;
+      display: inline-block;
+      margin: 0.8rem 0;
+      font-weight: 500;
+    }
+    .evolution-badge {
+      font-size: 1.7rem;
+      font-weight: 700;
+      background: linear-gradient(120deg, #2b2f4e, #13172b);
+      padding: 0.8rem 1.8rem;
+      border-radius: 3rem;
+      display: inline-block;
+      margin-top: 0.8rem;
+      border: 1px solid #3b82f6;
+      color: #e2eaff;
+    }
+    .small-note {
+      font-size: 1.2rem;
+      color: #9aa9c1;
+      margin-top: 0.8rem;
+    }
+    .flex-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .text-content {
+      flex: 2;
+      min-width: 200px;
+    }
+    .image-slot {
+      flex: 1;
+      min-width: 180px;
+    }
+
+    /* controls */
+    .controls {
+      position: fixed;
+      bottom: 28px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      z-index: 30;
+    }
+    button {
+      background: rgba(20, 28, 40, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(59,130,246,0.6);
+      color: white;
+      font-size: 1.4rem;
+      font-weight: 600;
+      padding: 10px 28px;
+      border-radius: 60px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    button:hover {
+      background: #1e2a4a;
+      border-color: #3b82f6;
+      transform: scale(1.02);
+    }
+    .slide-counter {
+      position: fixed;
+      top: 24px;
+      right: 28px;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      padding: 8px 18px;
+      border-radius: 80px;
+      font-size: 1.2rem;
+      font-weight: 500;
+      z-index: 30;
+      border: 1px solid #2d4059;
+      color: #bbd9ff;
+    }
+    .progress-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      height: 5px;
+      background: linear-gradient(90deg, #3b82f6, #a855f7);
+      width: 0%;
+      transition: width 0.2s linear;
+      z-index: 40;
+    }
+    @media (max-width: 750px) {
+      .card { padding: 1.5rem; }
+      .main-title { font-size: 2.4rem; }
+      .trend-headline { font-size: 1.7rem; }
+      .description { font-size: 1.3rem; }
+      .connective, .evolution-badge { font-size: 1.2rem; }
+      button { font-size: 1rem; padding: 6px 18px; }
+      .flex-row { flex-direction: column; }
+    }
+    .active .card {
+      animation: fadeUpIn 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+    }
+    @keyframes fadeUpIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="slideshow-container">
+  <div class="bg-glow"></div>
+  <div class="progress-bar" id="progressBar"></div>
+  <div class="slide-counter" id="slideCounter">1 / 24</div>
+  <div id="slidesWrapper"></div>
+  <div class="controls">
+    <button id="prevBtn">◀ PREV</button>
+    <button id="nextBtn">NEXT ▶</button>
+  </div>
+</div>
+
+<script>
+  // ======================== 24 SLIDES – FULLY EXTENSIBLE HTML CONTENT ========================
+  // Each slide includes image-slot containers (with placeholder or ready to replace).
+  // You can easily replace placeholder text with <img src="..."> inside .image-slot.
+  // Content preserves all original deep meaning about 5 trends convergence.
+  
+  const slidesHTML = [
+    { // 1: Opening
+      html: `
+        <div class="card">
+          <div class="main-title">The New Computing Paradigm</div>
+          <div class="description" style="font-size:1.9rem; text-align:center;">How 5 Frontier AI Trends Are Merging into One Unified Intelligence Layer</div>
+          <div class="connective">Not separate — a single convergent system.</div>
+          <div class="image-slot" data-slot="intro-img">
+            <span class="placeholder-icon">🖼️ [Image: Convergence metaphor]</span>
+          </div>
+        </div>
+      `
+    },
+    { // 2: Multi-agents
+      html: `
+        <div class="card">
+          <div class="trend-headline">⚡ Multi-agents → Do the Work</div>
+          <div class="description">Autonomous agents collaborate, delegate, and execute complex workflows. From coding to research, agent swarms replace monolithic apps, operating as a dynamic workforce that self-organizes.</div>
+          <div class="image-slot"><span class="placeholder-icon">🤖 [Diagram: Agent swarm]</span></div>
+          <div class="small-note">↳ foundational block of convergence</div>
+        </div>
+      `
+    },
+    { // 3: AI OS
+      html: `
+        <div class="card">
+          <div class="trend-headline">🧠 AI OS → Manages Your Life</div>
+          <div class="description">An intelligent operating system that understands context, preferences, and goals. It schedules, reminds, prioritizes, and orchestrates digital life — the central brain above all apps.</div>
+          <div class="image-slot"><span class="placeholder-icon">📱 [AI OS Dashboard]</span></div>
+        </div>
+      `
+    },
+    { // 4: Copilots
+      html: `
+        <div class="card">
+          <div class="trend-headline">🪄 Copilots → Embedded Everywhere</div>
+          <div class="description">AI assistants woven into every interface: browser, documents, design tools, terminals. Copilots augment human action in real-time, turning every click into a collaborative act.</div>
+          <div class="image-slot"><span class="placeholder-icon">🖥️ [Copilot UI examples]</span></div>
+        </div>
+      `
+    },
+    { // 5: Creative pipelines
+      html: `
+        <div class="card">
+          <div class="trend-headline">🎨 Creative Pipelines → Produce Content at Scale</div>
+          <div class="description">Generative pipelines (text, image, video, code) that operate continuously. Marketing, media, and product assets become infinite, personalized streams generated on demand.</div>
+          <div class="image-slot"><span class="placeholder-icon">✨ [Generative pipeline flow]</span></div>
+        </div>
+      `
+    },
+    { // 6: On-device AI
+      html: `
+        <div class="card">
+          <div class="trend-headline">📱 On-device AI → Makes It Personal & Private</div>
+          <div class="description">Local LLMs and edge models process sensitive data without cloud exposure. Enables personalized intelligence, low latency, and absolute privacy — the foundation of trust.</div>
+          <div class="image-slot"><span class="placeholder-icon">🔒 [Edge AI / device icon]</span></div>
+        </div>
+      `
+    },
+    { // 7: Connective – not separate
+      html: `
+        <div class="card">
+          <div class="main-title" style="font-size:2.8rem;">🔗 They Are NOT Separate</div>
+          <div class="description" style="font-size:1.7rem;">Each trend amplifies the others. On-device AI powers personalized copilots; AI OS orchestrates agent swarms; creative pipelines feed multi-agent outputs. A cohesive fabric, not a checklist.</div>
+          <div class="image-slot"><span class="placeholder-icon">🔄 [Venn diagram intersection]</span></div>
+          <div class="evolution-badge">⟷ Synergy Loop ⟷</div>
+        </div>
+      `
+    },
+    { // 8: Multi-agents + AI OS
+      html: `
+        <div class="card">
+          <div class="trend-headline">🔗 Multi-agents + AI OS</div>
+          <div class="description">AI OS assigns tasks to specialized agents (research, coding, planning). Agents report back, OS updates goals. Together they form a goal-driven autonomous loop.</div>
+          <div class="image-slot"><span class="placeholder-icon">⚙️ [Agent-OS integration]</span></div>
+          <div class="connective">+ system integration</div>
+        </div>
+      `
+    },
+    { // 9: AI OS + Copilots
+      html: `
+        <div class="card">
+          <div class="trend-headline">🔗 AI OS + Copilots</div>
+          <div class="description">Your AI OS understands your calendar, mood, and priorities. Copilots become the 'fingers' of the OS, appearing exactly where you need assistance — in mail, IDE, or meeting notes.</div>
+          <div class="image-slot"><span class="placeholder-icon">🖇️ [OS + copilot layers]</span></div>
+        </div>
+      `
+    },
+    { // 10: Copilots + Creative pipelines
+      html: `
+        <div class="card">
+          <div class="trend-headline">🔗 Copilots + Creative Pipelines</div>
+          <div class="description">Copilots trigger creative pipelines — a designer's copilot instantly generates assets; a writer's copilot drafts variations. Creative outputs become real-time suggestions, not batch processes.</div>
+          <div class="image-slot"><span class="placeholder-icon">🎬 [Real-time generation]</span></div>
+        </div>
+      `
+    },
+    { // 11: Creative Pipelines + On-device
+      html: `
+        <div class="card">
+          <div class="trend-headline">🔗 Creative Pipelines + On-device AI</div>
+          <div class="description">Local generative models produce custom media without sending data to servers. Your personal aesthetic, voice, and style stay on device — infinite creativity, zero privacy cost.</div>
+          <div class="image-slot"><span class="placeholder-icon">📸 [On-device generation icon]</span></div>
+        </div>
+      `
+    },
+    { // 12: On-device AI + Multi-agents
+      html: `
+        <div class="card">
+          <div class="trend-headline">🔗 On-device AI + Multi-agents</div>
+          <div class="description">Local agents run on edge devices, handling sensitive actions (finance, health). They collaborate with cloud agents when needed, creating a hybrid trust layer and ultra-responsive execution.</div>
+          <div class="image-slot"><span class="placeholder-icon">☁️↔️📱 [Hybrid agent architecture]</span></div>
+        </div>
+      `
+    },
+    { // 13: Synthesis
+      html: `
+        <div class="card">
+          <div class="main-title" style="font-size:2.8rem;">🧬 The Convergence Point</div>
+          <div class="description" style="font-size:1.65rem;">AI OS as conductor, agents as workforce, copilots as interface, pipelines as engine, on-device as secure substrate. No single trend dominates; the magic is in the union.</div>
+          <div class="image-slot"><span class="placeholder-icon">🌌 [Unified AI paradigm]</span></div>
+          <div class="evolution-badge">One Unified Paradigm</div>
+        </div>
+      `
+    },
+    { // 14: Evolution step 1
+      html: `
+        <div class="card">
+          <div class="trend-headline">📌 Step 1 — Human Intention</div>
+          <div class="description">You express a high-level goal: 'Plan a product launch campaign' or 'Optimize my investment portfolio'.</div>
+          <div class="image-slot"><span class="placeholder-icon">🧑‍💻 [User intention]</span></div>
+        </div>
+      `
+    },
+    { // 15: Step 2
+      html: `
+        <div class="card">
+          <div class="trend-headline">📌 Step 2 — AI OS Orchestrates</div>
+          <div class="description">AI OS decomposes the goal, retrieves context from your life (calendar, preferences, past behavior), and builds an execution blueprint.</div>
+          <div class="image-slot"><span class="placeholder-icon">📋 [Orchestration blueprint]</span></div>
+        </div>
+      `
+    },
+    { // 16: Step 3
+      html: `
+        <div class="card">
+          <div class="trend-headline">📌 Step 3 — Agent Workforce Deployed</div>
+          <div class="description">Multi-agent system: research agent gathers data, creative agent drafts content, coding agent builds micro-tools. Agents communicate via shared memory.</div>
+          <div class="image-slot"><span class="placeholder-icon">🐜 [Agent workforce swarm]</span></div>
+        </div>
+      `
+    },
+    { // 17: Step 4
+      html: `
+        <div class="card">
+          <div class="trend-headline">📌 Step 4 — Copilots Assist & Review</div>
+          <div class="description">You review agent outputs through embedded copilots, giving feedback. Copilots translate your edits back to the agent framework. Iterative refinement.</div>
+          <div class="image-slot"><span class="placeholder-icon">✍️ [Copilot review interface]</span></div>
+        </div>
+      `
+    },
+    { // 18: Step 5
+      html: `
+        <div class="card">
+          <div class="trend-headline">📌 Step 5 — Creative Pipelines Scale Output</div>
+          <div class="description">At scale, pipelines produce hundreds of variants, A/B test copies, and generate multi-format assets automatically. Human only validates final decisions.</div>
+          <div class="image-slot"><span class="placeholder-icon">📈 [Scalable creative pipeline]</span></div>
+        </div>
+      `
+    },
+    { // 19: Step 6
+      html: `
+        <div class="card">
+          <div class="trend-headline">📌 Step 6 — On-device AI Personalizes</div>
+          <div class="description">Everything is filtered through your local model — tone, preferences, private data never leave your device. The entire loop becomes yours alone, secure.</div>
+          <div class="image-slot"><span class="placeholder-icon">🔐 [Personalization & privacy]</span></div>
+        </div>
+      `
+    },
+    { // 20: Final Evolution Chain
+      html: `
+        <div class="card">
+          <div class="main-title" style="font-size:3rem;">✨ Final Evolution Chain ✨</div>
+          <div class="evolution-badge" style="font-size:2rem; background: linear-gradient(145deg,#111a2e,#050a14); margin: 1rem auto;">Human → AI OS → Agent Workforce → Execution</div>
+          <div class="description" style="font-size:1.7rem; margin-top: 1.5rem;">You define the 'why', AI OS manages the 'how', agents execute the 'what', and the world changes. Seamless, private, superhuman.</div>
+          <div class="image-slot"><span class="placeholder-icon">🏆 [Evolution chain diagram]</span></div>
+        </div>
+      `
+    },
+    { // 21: Beyond apps
+      html: `
+        <div class="card">
+          <div class="trend-headline">🌌 Beyond Today's Apps</div>
+          <div class="description">Traditional apps dissolve into functions. Your AI OS + agent workforce replace thousands of SaaS subscriptions. Dynamic, adaptive, personal.</div>
+          <div class="image-slot"><span class="placeholder-icon">📦 [App disintegration]</span></div>
+        </div>
+      `
+    },
+    { // 22: Real-time orchestration
+      html: `
+        <div class="card">
+          <div class="trend-headline">⚙️ Real-time Orchestration</div>
+          <div class="description">Copilots and creative pipelines respond in milliseconds. On-device AI ensures low-latency adaptation. The experience feels like an extension of your mind.</div>
+          <div class="image-slot"><span class="placeholder-icon">⚡ [Real-time processing]</span></div>
+        </div>
+      `
+    },
+    { // 23: Trust & Sovereignty
+      html: `
+        <div class="card">
+          <div class="trend-headline">🔒 Trust & Sovereignty</div>
+          <div class="description">On-device AI + encrypted agent coordination gives you total control. No data leaks, yet full power of swarm intelligence. The new standard for human-AI collaboration.</div>
+          <div class="image-slot"><span class="placeholder-icon">🛡️ [Data sovereignty shield]</span></div>
+        </div>
+      `
+    },
+    { // 24: Closing
+      html: `
+        <div class="card">
+          <div class="main-title">The Paradigm Is Here</div>
+          <div class="description" style="font-size:1.9rem;">These five trends are not future speculation — they're converging right now. The unified AI layer will redefine work, creativity, and personal agency. Welcome to the agentic era.</div>
+          <div class="image-slot"><span class="placeholder-icon">🚀 [Convergence horizon]</span></div>
+          <div class="connective">∞ The future is convergent ∞</div>
+        </div>
+      `
+    }
+  ];
+
+  // ----- Build slideshow with fully preserved HTML structure -----
+  const slidesContainer = document.getElementById('slidesWrapper');
+  let slideElements = [];
+  let currentIndex = 0;
+
+  function buildSlides() {
+    slidesContainer.innerHTML = '';
+    slidesHTML.forEach((slideData, idx) => {
+      const slideDiv = document.createElement('div');
+      slideDiv.className = 'slide';
+      if (idx === 0) slideDiv.classList.add('active');
+      // insert raw HTML (preserves all tags, image-slots, placeholders)
+      slideDiv.innerHTML = slideData.html;
+      slidesContainer.appendChild(slideDiv);
+      slideElements.push(slideDiv);
+    });
+  }
+
+  function updateProgressAndCounter() {
+    const percent = ((currentIndex + 1) / slideElements.length) * 100;
+    const progressBar = document.getElementById('progressBar');
+    if (progressBar) progressBar.style.width = `${percent}%`;
+    const counter = document.getElementById('slideCounter');
+    if (counter) counter.innerText = `${currentIndex + 1} / ${slideElements.length}`;
+  }
+
+  function showSlide(index) {
+    if (index < 0) index = 0;
+    if (index >= slideElements.length) index = slideElements.length - 1;
+    if (index === currentIndex) return;
+    slideElements[currentIndex].classList.remove('active');
+    currentIndex = index;
+    slideElements[currentIndex].classList.add('active');
+    updateProgressAndCounter();
+  }
+
+  function nextSlide() { showSlide(currentIndex + 1); }
+  function prevSlide() { showSlide(currentIndex - 1); }
+
+  // keyboard and touch support
+  function handleKeydown(e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+    else if (e.key === ' ' || e.key === 'Space') { e.preventDefault(); nextSlide(); }
+  }
+
+  let touchStartX = 0;
+  function onTouchStart(e) { touchStartX = e.changedTouches[0].screenX; }
+  function onTouchEnd(e) {
+    const endX = e.changedTouches[0].screenX;
+    const diff = touchStartX - endX;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) nextSlide();
+      else prevSlide();
+    }
+  }
+
+  function init() {
+    buildSlides();
+    updateProgressAndCounter();
+    document.getElementById('nextBtn').addEventListener('click', nextSlide);
+    document.getElementById('prevBtn').addEventListener('click', prevSlide);
+    window.addEventListener('keydown', handleKeydown);
+    const container = document.querySelector('.slideshow-container');
+    container.addEventListener('touchstart', onTouchStart, { passive: false });
+    container.addEventListener('touchend', onTouchEnd);
+  }
+
+  init();
+
+  // HELPER NOTE: To add images, simply select any .image-slot element and replace innerHTML with <img src="your-image.jpg" alt="...">.
+  // All slots are ready for extension. The HTML structure remains fully editable & readable.
+</script>
+</body>
+</html>

@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI On-Device — Edge Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Syne:wght@300;400;600;700&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #060a0f;
+    --surface:  #0c1420;
+    --border:   rgba(0,210,255,0.12);
+    --a1:       #00d2ff;   /* electric cyan */
+    --a2:       #ff6b35;   /* warm orange   */
+    --a3:       #39ff14;   /* neon green    */
+    --a4:       #c084fc;   /* soft purple   */
+    --text:     #ddeeff;
+    --muted:    #607080;
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  /* ═══════════════════════════════════════════
+     CIRCUIT BACKGROUND — SVG pattern via CSS
+  ═══════════════════════════════════════════ */
+  #bg-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ═══════════════════════════════════════════
+     DECK
+  ═══════════════════════════════════════════ */
+  #deck {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 56px 88px;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .55s cubic-bezier(.4,0,.2,1),
+                transform .55s cubic-bezier(.4,0,.2,1);
+    transform: scale(.97) translateY(20px);
+  }
+  .slide.active {
+    opacity: 1;
+    pointer-events: all;
+    transform: scale(1) translateY(0);
+  }
+  .slide.out {
+    opacity: 0;
+    transform: scale(1.03) translateY(-20px);
+  }
+  .slide > * { position: relative; z-index: 2; }
+
+  /* ═══════════════════════════════════════════
+     TYPOGRAPHY
+  ═══════════════════════════════════════════ */
+  .chip {               /* small label */
+    font-family: 'Fira Code', monospace;
+    font-size: 21px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--a1);
+    margin-bottom: 18px;
+    opacity: .85;
+  }
+
+  .title {              /* huge display */
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: clamp(46px, 7vw, 80px);
+    line-height: 1.05;
+    letter-spacing: -1px;
+    margin-bottom: 22px;
+  }
+
+  .heading {            /* slide headline */
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: clamp(34px, 4.5vw, 56px);
+    line-height: 1.15;
+    margin-bottom: 20px;
+  }
+
+  .body {
+    font-size: clamp(22px, 2.1vw, 32px);
+    line-height: 1.65;
+    max-width: 820px;
+    color: #bfd4e8;
+    font-weight: 300;
+  }
+  .body b  { color: var(--a1); font-weight: 600; }
+  .body em { color: var(--a2); font-style: normal; font-weight: 600; }
+  .body s  { color: var(--a3); text-decoration: none; font-weight: 600; }
+
+  .mono {
+    font-family: 'Fira Code', monospace;
+    font-size: clamp(21px, 1.8vw, 28px);
+  }
+
+  /* ═══════════════════════════════════════════
+     DIVIDER
+  ═══════════════════════════════════════════ */
+  .rule {
+    width: 64px; height: 3px;
+    background: var(--a1);
+    margin: 0 auto 28px;
+    border-radius: 2px;
+    box-shadow: 0 0 12px var(--a1);
+  }
+  .rule.orange { background: var(--a2); box-shadow: 0 0 12px var(--a2); }
+  .rule.green  { background: var(--a3); box-shadow: 0 0 12px var(--a3); }
+  .rule.purple { background: var(--a4); box-shadow: 0 0 12px var(--a4); }
+
+  /* ═══════════════════════════════════════════
+     GLASS CARD
+  ═══════════════════════════════════════════ */
+  .glass {
+    background: rgba(0,210,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 30px 36px;
+    backdrop-filter: blur(4px);
+  }
+
+  /* ═══════════════════════════════════════════
+     STAT GRID
+  ═══════════════════════════════════════════ */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 16px;
+    max-width: 960px;
+    width: 100%;
+    margin-top: 16px;
+  }
+  .stat-card {
+    background: rgba(0,210,255,0.05);
+    border: 1px solid rgba(0,210,255,0.15);
+    border-radius: 14px;
+    padding: 24px 14px;
+  }
+  .stat-num {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(36px, 4vw, 52px);
+    color: var(--a1);
+    line-height: 1;
+    margin-bottom: 8px;
+    text-shadow: 0 0 20px rgba(0,210,255,.5);
+  }
+  .stat-label {
+    font-size: clamp(20px, 1.5vw, 23px);
+    color: var(--muted);
+    line-height: 1.3;
+  }
+
+  /* ═══════════════════════════════════════════
+     BULLET LIST
+  ═══════════════════════════════════════════ */
+  .blist {
+    list-style: none;
+    text-align: left;
+    max-width: 780px;
+    width: 100%;
+  }
+  .blist li {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 13px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: clamp(22px, 1.9vw, 29px);
+    color: #c4d8ec;
+    line-height: 1.4;
+  }
+  .blist li::before {
+    content: '▸';
+    color: var(--a1);
+    font-size: 22px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .blist li span { color: var(--a3); }
+  .blist li em   { color: var(--a2); font-style: normal; }
+
+  /* ═══════════════════════════════════════════
+     TWO-COL
+  ═══════════════════════════════════════════ */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 960px;
+    width: 100%;
+    text-align: left;
+  }
+  .col-box {
+    background: rgba(255,255,255,0.03);
+    border-radius: 14px;
+    padding: 28px 26px;
+    border: 1px solid rgba(255,255,255,0.07);
+  }
+  .col-box h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(26px, 2.8vw, 38px);
+    margin-bottom: 14px;
+  }
+  .col-box p {
+    font-size: clamp(21px, 1.7vw, 26px);
+    color: #a8bece;
+    line-height: 1.55;
+  }
+
+  /* ═══════════════════════════════════════════
+     CODE BLOCK
+  ═══════════════════════════════════════════ */
+  .code-box {
+    background: #060d14;
+    border: 1px solid rgba(0,210,255,0.2);
+    border-radius: 14px;
+    padding: 28px 36px;
+    font-family: 'Fira Code', monospace;
+    font-size: clamp(21px, 1.7vw, 26px);
+    text-align: left;
+    max-width: 820px;
+    width: 100%;
+    line-height: 2;
+    color: #c8daf0;
+  }
+  .code-box .kw { color: var(--a2); }
+  .code-box .fn { color: var(--a1); }
+  .code-box .st { color: var(--a3); }
+  .code-box .cm { color: #445566; }
+
+  /* ═══════════════════════════════════════════
+     PLATFORM CARDS
+  ═══════════════════════════════════════════ */
+  .platform-grid {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 18px;
+    max-width: 860px;
+    width: 100%;
+    margin-top: 10px;
+  }
+  .p-card {
+    background: rgba(255,255,255,0.03);
+    border-radius: 14px;
+    padding: 22px 24px;
+    text-align: left;
+    border: 1px solid rgba(255,255,255,0.07);
+    transition: border-color .2s;
+  }
+  .p-card:hover { border-color: var(--a1); }
+  .p-card .p-name {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(24px, 2.4vw, 34px);
+    margin-bottom: 8px;
+  }
+  .p-card .p-desc {
+    font-size: clamp(21px, 1.6vw, 24px);
+    color: #8099b0;
+    line-height: 1.45;
+  }
+
+  /* ═══════════════════════════════════════════
+     PILL / TAG
+  ═══════════════════════════════════════════ */
+  .pill {
+    display: inline-block;
+    border-radius: 100px;
+    padding: 7px 20px;
+    font-family: 'Fira Code', monospace;
+    font-size: 21px;
+    margin: 5px 4px;
+    border: 1px solid;
+  }
+  .pill-c { color: var(--a1); border-color: rgba(0,210,255,.35); background: rgba(0,210,255,.08); }
+  .pill-o { color: var(--a2); border-color: rgba(255,107,53,.35); background: rgba(255,107,53,.08); }
+  .pill-g { color: var(--a3); border-color: rgba(57,255,20,.35);  background: rgba(57,255,20,.08); }
+  .pill-p { color: var(--a4); border-color: rgba(192,132,252,.35);background: rgba(192,132,252,.08); }
+
+  /* ═══════════════════════════════════════════
+     COMPARE TABLE
+  ═══════════════════════════════════════════ */
+  .compare {
+    width: 100%;
+    max-width: 860px;
+    border-collapse: collapse;
+    margin-top: 12px;
+  }
+  .compare th {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(22px, 2vw, 28px);
+    padding: 14px 20px;
+    border-bottom: 2px solid rgba(0,210,255,.3);
+  }
+  .compare th:first-child { color: var(--a2); }
+  .compare th:last-child  { color: var(--a1); }
+  .compare td {
+    font-size: clamp(21px, 1.7vw, 25px);
+    padding: 12px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    color: #a8bece;
+    line-height: 1.4;
+  }
+  .compare td:first-child { color: #c8d8e8; }
+  .compare tr:hover td { background: rgba(0,210,255,0.03); }
+
+  /* ═══════════════════════════════════════════
+     QUOTE
+  ═══════════════════════════════════════════ */
+  .quote {
+    border-left: 4px solid var(--a2);
+    background: rgba(255,107,53,.05);
+    border-radius: 0 14px 14px 0;
+    padding: 28px 34px;
+    text-align: left;
+    max-width: 820px;
+  }
+  .quote p {
+    font-size: clamp(26px, 2.5vw, 36px);
+    font-style: italic;
+    line-height: 1.55;
+    margin-bottom: 14px;
+  }
+  .quote cite {
+    font-family: 'Fira Code', monospace;
+    font-size: 22px;
+    color: var(--a2);
+  }
+
+  /* ═══════════════════════════════════════════
+     GLOW TEXT
+  ═══════════════════════════════════════════ */
+  .glow-c { text-shadow: 0 0 28px rgba(0,210,255,.6); }
+  .glow-o { text-shadow: 0 0 28px rgba(255,107,53,.6); }
+  .glow-g { text-shadow: 0 0 28px rgba(57,255,20,.6); }
+
+  /* ═══════════════════════════════════════════
+     DEVICE ICON
+  ═══════════════════════════════════════════ */
+  .device-wrap {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    margin: 24px 0;
+  }
+  .device-box {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(0,210,255,0.2);
+    border-radius: 20px;
+    padding: 24px 32px;
+    text-align: center;
+  }
+  .device-icon { font-size: clamp(52px, 6vw, 72px); line-height: 1; margin-bottom: 10px; }
+  .device-label { font-family: 'Fira Code', monospace; font-size: 22px; color: var(--a1); }
+
+  /* ═══════════════════════════════════════════
+     PROGRESS / NAV
+  ═══════════════════════════════════════════ */
+  #progress {
+    position: fixed;
+    bottom: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--a1), var(--a4));
+    box-shadow: 0 0 10px var(--a1);
+    transition: width .5s ease;
+    z-index: 50;
+  }
+
+  #counter {
+    position: fixed;
+    bottom: 18px; right: 24px;
+    font-family: 'Fira Code', monospace;
+    font-size: 21px;
+    color: var(--muted);
+    z-index: 50;
+  }
+
+  #dots {
+    position: fixed;
+    bottom: 20px; left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+    z-index: 50;
+  }
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--muted);
+    cursor: pointer;
+    transition: background .3s, width .3s;
+  }
+  .dot.on { background: var(--a1); width: 18px; border-radius: 3px; box-shadow: 0 0 8px var(--a1); }
+
+  .nav-btn {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    background: rgba(0,210,255,0.06);
+    border: 1px solid rgba(0,210,255,0.18);
+    color: var(--text);
+    font-size: 26px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 50;
+    transition: background .2s, border-color .2s;
+  }
+  .nav-btn:hover { background: rgba(0,210,255,.15); border-color: var(--a1); }
+  #prev { left: 18px; }
+  #next { right: 18px; }
+</style>
+</head>
+<body>
+
+<!-- Animated circuit SVG background -->
+<svg id="bg-canvas" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- Grid lines -->
+  <g stroke="rgba(0,210,255,0.04)" stroke-width="1">
+    <line x1="0" y1="150" x2="1440" y2="150"/>
+    <line x1="0" y1="300" x2="1440" y2="300"/>
+    <line x1="0" y1="450" x2="1440" y2="450"/>
+    <line x1="0" y1="600" x2="1440" y2="600"/>
+    <line x1="0" y1="750" x2="1440" y2="750"/>
+    <line x1="180" y1="0" x2="180" y2="900"/>
+    <line x1="360" y1="0" x2="360" y2="900"/>
+    <line x1="540" y1="0" x2="540" y2="900"/>
+    <line x1="720" y1="0" x2="720" y2="900"/>
+    <line x1="900" y1="0" x2="900" y2="900"/>
+    <line x1="1080" y1="0" x2="1080" y2="900"/>
+    <line x1="1260" y1="0" x2="1260" y2="900"/>
+  </g>
+  <!-- Circuit traces -->
+  <g stroke="rgba(0,210,255,0.09)" stroke-width="1.5" fill="none" filter="url(#glow)">
+    <path d="M0,450 H200 V300 H400 V450 H600 V150 H800 V300 H1000 V450 H1200 V600 H1440"/>
+    <path d="M0,200 H100 V350 H300 V200 H500 V500 H700 V200 H900 V400 H1100 V200 H1440"/>
+    <path d="M0,700 H150 V550 H350 V700 H550 V400 H750 V700 H950 V550 H1150 V700 H1440"/>
+  </g>
+  <!-- Node dots -->
+  <g fill="rgba(0,210,255,0.25)">
+    <circle cx="200" cy="300" r="4"/><circle cx="400" cy="450" r="4"/>
+    <circle cx="600" cy="150" r="4"/><circle cx="800" cy="300" r="4"/>
+    <circle cx="1000" cy="450" r="4"/><circle cx="1200" cy="600" r="4"/>
+    <circle cx="300" cy="200" r="4"/><circle cx="500" cy="500" r="4"/>
+    <circle cx="700" cy="200" r="4"/><circle cx="900" cy="400" r="4"/>
+    <circle cx="150" cy="550" r="4"/><circle cx="350" cy="700" r="4"/>
+    <circle cx="550" cy="400" r="4"/><circle cx="750" cy="700" r="4"/>
+    <circle cx="950" cy="550" r="4"/><circle cx="1150" cy="700" r="4"/>
+  </g>
+  <!-- Animated travel dot -->
+  <circle r="4" fill="var(--a1)" opacity=".8">
+    <animateMotion dur="8s" repeatCount="indefinite" path="M0,450 H200 V300 H400 V450 H600 V150 H800 V300 H1000 V450 H1200 V600 H1440"/>
+  </circle>
+  <circle r="3" fill="#39ff14" opacity=".7">
+    <animateMotion dur="11s" repeatCount="indefinite" path="M0,700 H150 V550 H350 V700 H550 V400 H750 V700 H950 V550 H1150 V700 H1440"/>
+  </circle>
+</svg>
+
+<div id="deck"></div>
+<div id="progress"></div>
+<div id="counter"></div>
+<div id="dots"></div>
+<button class="nav-btn" id="prev">&#8592;</button>
+<button class="nav-btn" id="next">&#8594;</button>
+
+<script>
+const slides = [
+
+/* 01 — TITLE */
+`<div class="chip">// edge_ai.init()</div>
+ <div class="title glow-c">AI ON-DEVICE<br><span style="color:var(--a2)" class="glow-o">EDGE INTELLIGENCE</span></div>
+ <div class="body" style="font-size:clamp(23px,2.2vw,32px)">The era of <b>personal AI</b> — running directly on your phone, laptop, and every device in between.</div>`,
+
+/* 02 — THE CORE IDEA */
+`<div class="chip">core_concept</div>
+ <div class="heading">AI That Lives <span style="color:var(--a1)">On Your Device</span></div>
+ <div class="rule"></div>
+ <div class="body">Instead of sending your data to a distant server and waiting for a response, <b>on-device AI</b> runs the model locally — on the same chip that powers your phone or laptop. <em>No cloud. No round-trip. No waiting.</em></div>`,
+
+/* 03 — CLOUD VS EDGE */
+`<div class="chip">cloud_vs_edge</div>
+ <div class="heading" style="margin-bottom:20px">The Old Way <span style="color:var(--a2)">vs</span> The New Way</div>
+ <div class="two-col">
+   <div class="col-box" style="border-color:rgba(255,107,53,.2)">
+     <h3 style="color:var(--a2)">☁ Cloud AI</h3>
+     <p>Your data travels to a data center, gets processed by a giant model, and a response is sent back. Fast internet required. Latency inevitable. Privacy unclear.</p>
+   </div>
+   <div class="col-box" style="border-color:rgba(0,210,255,.2)">
+     <h3 style="color:var(--a1)">📱 Edge AI</h3>
+     <p>The model runs on your own hardware. Data never leaves. Response is instant. Works offline. You own the computation entirely.</p>
+   </div>
+ </div>`,
+
+/* 04 — WHY IT MATTERS: PRIVACY */
+`<div class="chip">reason_01 // privacy</div>
+ <div class="heading">Your Data Never <span style="color:var(--a1)">Leaves Your Device</span></div>
+ <div class="rule"></div>
+ <div class="body">Every message you type, every photo you analyze, every document you summarize — stays <b>entirely on your hardware</b>. No server logs. No training data harvesting. No breach risk. <em>Privacy by architecture, not policy.</em></div>`,
+
+/* 05 — WHY IT MATTERS: SPEED */
+`<div class="chip">reason_02 // latency</div>
+ <div class="heading">Speed at the <span style="color:var(--a3)" class="glow-g">Speed of Thought</span></div>
+ <div class="rule green"></div>
+ <div class="stat-grid" style="grid-template-columns:repeat(2,1fr);max-width:700px;margin-top:20px">
+   <div class="stat-card">
+     <div class="stat-num" style="color:var(--a2)">200ms+</div>
+     <div class="stat-label">Typical cloud API round-trip latency</div>
+   </div>
+   <div class="stat-card">
+     <div class="stat-num" style="color:var(--a3)">~20ms</div>
+     <div class="stat-label">On-device inference latency (modern NPU)</div>
+   </div>
+ </div>
+ <div class="body" style="margin-top:20px;font-size:clamp(21px,1.8vw,27px)">10× faster. <em>No internet bottleneck.</em> The model thinks at hardware speed.</div>`,
+
+/* 06 — WHY IT MATTERS: OFFLINE */
+`<div class="chip">reason_03 // offline</div>
+ <div class="heading">Works Where <span style="color:var(--a1)">The Internet Doesn't</span></div>
+ <div class="rule"></div>
+ <div class="body">Airplane mode. Rural coverage gaps. Basement offices. Underground transit. On-device AI is always available — because <b>the model is already there</b>. No connectivity dependency. Ever.</div>
+ <div style="margin-top:28px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+   <span class="pill pill-c">✈ Airplane Mode</span>
+   <span class="pill pill-o">🏔 Remote Areas</span>
+   <span class="pill pill-g">🚇 Underground</span>
+   <span class="pill pill-p">🏭 Air-Gapped Networks</span>
+ </div>`,
+
+/* 07 — WHY IT MATTERS: COST */
+`<div class="chip">reason_04 // economics</div>
+ <div class="heading">Zero <span style="color:var(--a3)">API Cost.</span> Zero <span style="color:var(--a3)">Per-Token Fees.</span></div>
+ <div class="rule green"></div>
+ <div class="body">Cloud AI inference costs money — every query, every token, every month. On-device AI is a <b>one-time hardware investment</b>. Once the model is downloaded, inference is essentially <em>free forever</em>. No subscription. No rate limits. No surprise bills.</div>`,
+
+/* 08 — THE HARDWARE LAYER */
+`<div class="chip">hardware // NPU + GPU</div>
+ <div class="heading">The Silicon That Makes It <span style="color:var(--a1)">Possible</span></div>
+ <div class="rule"></div>
+ <ul class="blist" style="max-width:820px">
+   <li><b style="color:#fff">NPU (Neural Processing Unit)</b> — dedicated AI chip, billions of ops/sec with minimal power</li>
+   <li><b style="color:#fff">Unified Memory</b> — GPU + CPU share fast RAM, critical for large model weights</li>
+   <li><b style="color:#fff">Quantization</b> — models compressed from 32-bit to <span>4-bit weights</span>, 8× smaller</li>
+   <li><b style="color:#fff">Model Distillation</b> — <em>smaller models</em> trained to mimic large ones, nearly same quality</li>
+ </ul>`,
+
+/* 09 — KEY PLATFORM: GOOGLE GEMMA */
+`<div class="chip">platform_01</div>
+ <div class="heading" style="color:var(--a1)">Google <span style="color:#fff">Gemma</span></div>
+ <div class="rule"></div>
+ <div class="body">Gemma is Google's family of <b>open, lightweight models</b> built specifically for on-device deployment. Gemma 2B and 7B run on Android phones and laptops. <em>Same architecture as Gemini</em>, engineered for edge hardware. Fully open weights — run it anywhere.</div>
+ <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+   <span class="pill pill-c">2B params</span>
+   <span class="pill pill-c">7B params</span>
+   <span class="pill pill-g">Open Weights</span>
+   <span class="pill pill-o">Android / Desktop</span>
+ </div>`,
+
+/* 10 — KEY PLATFORM: APPLE INTELLIGENCE */
+`<div class="chip">platform_02</div>
+ <div class="heading"><span style="color:#fff">Apple</span> <span style="color:var(--a4)">Intelligence</span></div>
+ <div class="rule purple"></div>
+ <div class="body">Apple's on-device AI suite runs <b>entirely on the Neural Engine</b> inside A17 Pro / M-series chips. Writing tools, image generation, Siri upgrades — all processed locally. When cloud is needed, Apple uses <em>Private Cloud Compute</em>: your data is never stored or logged server-side.</div>`,
+
+/* 11 — KEY PLATFORM: QUALCOMM */
+`<div class="chip">platform_03</div>
+ <div class="heading"><span style="color:var(--a2)">Qualcomm</span> AI Engine</div>
+ <div class="rule orange"></div>
+ <div class="body">The Snapdragon 8 Gen 3 packs a <b>45 TOPS NPU</b> (trillion operations per second). Qualcomm powers most flagship Android devices globally and enables on-device LLMs like Llama 3 and Mistral to run at <em>real-time speed</em> on phones. Their AI Hub provides ready-to-deploy optimized models.</div>`,
+
+/* 12 — KEY PLATFORM: OLLAMA */
+`<div class="chip">platform_04</div>
+ <div class="heading" style="color:var(--a3)">Ollama</div>
+ <div class="rule green"></div>
+ <div class="body">Ollama is the <b>developer's gateway</b> to local AI. A single command pulls and runs models like Llama 3, Mistral, Phi-3, and Gemma on your Mac, Windows, or Linux machine. <em>No cloud account. No API key.</em> It abstracts all the complexity of local inference into a clean CLI and REST API.</div>
+ <div class="code-box" style="margin-top:20px;font-size:clamp(21px,1.7vw,25px)">
+   <span class="cm"># Run Llama 3 locally in one line</span><br>
+   <span class="fn">ollama</span> <span class="st">run llama3</span>
+ </div>`,
+
+/* 13 — USE CASE: OFFLINE ASSISTANT */
+`<div class="chip">use_case_01</div>
+ <div class="heading">Offline AI <span style="color:var(--a1)">Assistant</span></div>
+ <div class="rule"></div>
+ <div class="body">A fully functional AI assistant that works on a flight, in a blackout, or in a country with restricted internet. Ask questions, summarize documents, draft emails — <b>no connection required</b>. Your personal Siri/ChatGPT that works <em>anywhere, always</em>.</div>`,
+
+/* 14 — USE CASE: PRIVATE JOURNAL */
+`<div class="chip">use_case_02</div>
+ <div class="heading">Private <span style="color:var(--a4)">Journaling AI</span></div>
+ <div class="rule purple"></div>
+ <div class="body">Imagine an AI that reads your most personal thoughts, helps you process emotions, identifies patterns in your mood — and <b>stores everything only on your device</b>. No company reads your journal. No data is monetized. <em>Therapy-grade privacy by default.</em></div>`,
+
+/* 15 — USE CASE: LOCAL CODING */
+`<div class="chip">use_case_03</div>
+ <div class="heading">Local <span style="color:var(--a3)">Coding Assistant</span></div>
+ <div class="rule green"></div>
+ <div class="body">Run a coding copilot inside VS Code or Neovim — <b>no API key, no subscription</b>. Your proprietary codebase never touches external servers. Tools like <em>Continue.dev + Ollama</em> give you GitHub Copilot-quality autocomplete, entirely offline, for free.</div>`,
+
+/* 16 — USE CASE: KNOWLEDGE BASE */
+`<div class="chip">use_case_04</div>
+ <div class="heading">Personal <span style="color:var(--a2)">Knowledge Base</span></div>
+ <div class="rule orange"></div>
+ <div class="body">Ingest your notes, PDFs, books, and documents into a <b>local RAG system</b>. Ask questions, get answers sourced from your own knowledge. Tools like <em>AnythingLLM and LM Studio</em> make this possible on consumer hardware. Your second brain — private, offline, always on.</div>`,
+
+/* 17 — MODEL SIZES THAT FIT */
+`<div class="chip">technical_reality</div>
+ <div class="heading">What Actually <span style="color:var(--a1)">Fits On a Phone?</span></div>
+ <div class="rule"></div>
+ <table class="compare">
+   <tr><th>Model</th><th>Runs On</th></tr>
+   <tr><td>Gemma 2B (4-bit)</td><td style="color:var(--a1)">Mid-range Android</td></tr>
+   <tr><td>Phi-3 Mini 3.8B</td><td style="color:var(--a1)">iPhone 15 Pro / Pixel 8</td></tr>
+   <tr><td>Llama 3 8B (Q4)</td><td style="color:var(--a3)">MacBook Air M1, PC 16GB RAM</td></tr>
+   <tr><td>Mistral 7B (Q5)</td><td style="color:var(--a3)">MacBook M2, RTX 3060+</td></tr>
+   <tr><td>Llama 3 70B</td><td style="color:var(--a2)">Mac Studio / 64GB RAM PC</td></tr>
+ </table>`,
+
+/* 18 — LIMITATIONS */
+`<div class="chip">reality_check</div>
+ <div class="heading c2" style="color:var(--a2)">The Honest <span style="color:#fff">Trade-offs</span></div>
+ <div class="rule orange"></div>
+ <ul class="blist">
+   <li><em>Smaller models</em> — on-device LLMs are 2–70B params vs GPT-4's ~1T+</li>
+   <li><em>Battery drain</em> — sustained NPU inference draws significant power</li>
+   <li><em>Storage cost</em> — a 7B model requires 4–8GB of device storage</li>
+   <li><em>Setup friction</em> — still requires technical knowledge for self-hosting</li>
+ </ul>`,
+
+/* 19 — THE SHIFT VISUALIZED */
+`<div class="chip">paradigm_shift</div>
+ <div class="heading">The Architecture <span style="color:var(--a1)">Shift</span></div>
+ <div class="rule"></div>
+ <div class="code-box" style="font-size:clamp(21px,1.7vw,26px)">
+   <span class="cm">// Before — Cloud Dependency</span><br>
+   <span class="kw">User</span> → <span class="st">Internet</span> → <span class="fn">Data Center</span> → <span class="st">Response</span> → <span class="kw">User</span><br>
+   <br>
+   <span class="cm">// After — Personal AI Stack</span><br>
+   <span class="kw">User</span> → <span class="fn">Local Model</span> → <span class="st">Response</span> → <span class="kw">User</span><br>
+   <span class="cm">// Data never leaves the device</span>
+ </div>`,
+
+/* 20 — WHO IS BUILDING THIS */
+`<div class="chip">ecosystem</div>
+ <div class="heading">The Entire Industry Is <span style="color:var(--a1)">Converging</span></div>
+ <div class="rule"></div>
+ <div class="platform-grid">
+   <div class="p-card"><div class="p-name" style="color:var(--a1)">Google</div><div class="p-desc">Gemma, MediaPipe, on-device Gemini Nano in Pixel</div></div>
+   <div class="p-card"><div class="p-name" style="color:var(--a4)">Apple</div><div class="p-desc">Apple Intelligence, Core ML, Private Cloud Compute</div></div>
+   <div class="p-card"><div class="p-name" style="color:var(--a2)">Qualcomm</div><div class="p-desc">Snapdragon AI Engine, AI Hub, Windows on Snapdragon</div></div>
+   <div class="p-card"><div class="p-name" style="color:var(--a3)">Microsoft</div><div class="p-desc">Phi-3, Copilot+ PC NPU requirement, ONNX Runtime</div></div>
+ </div>`,
+
+/* 21 — THE BROADER VISION */
+`<div class="chip">vision</div>
+ <div class="quote">
+   <p>"The most personal computer is about to become the most personal AI. Intelligence will be embedded in every device, running silently, privately, at the edge of your life."</p>
+   <cite>— The Edge AI Thesis</cite>
+ </div>`,
+
+/* 22 — CLOSE */
+`<div class="chip">// summary</div>
+ <div class="heading" style="font-size:clamp(36px,4vw,52px)">From Cloud <span style="color:var(--a2)">Dependency</span><br>To Personal <span style="color:var(--a1)">Intelligence</span></div>
+ <div class="rule"></div>
+ <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:28px">
+   <span class="pill pill-c">🔒 Privacy</span>
+   <span class="pill pill-g">⚡ Speed</span>
+   <span class="pill pill-o">✈ Offline</span>
+   <span class="pill pill-p">💸 Zero Cost</span>
+ </div>
+ <div class="body" style="font-size:clamp(22px,1.9vw,28px)">The next era of AI is not bigger clouds.<br>It is <b>smaller models, closer to you</b> — running on silicon in your pocket.</div>`,
+
+];
+
+// ── RENDER ─────────────────────────────────────────
+const deck    = document.getElementById('deck');
+const bar     = document.getElementById('progress');
+const counter = document.getElementById('counter');
+const dotsEl  = document.getElementById('dots');
+let cur = 0, busy = false;
+
+slides.forEach((html, i) => {
+  const s = document.createElement('div');
+  s.className = 'slide' + (i === 0 ? ' active' : '');
+  s.innerHTML = html;
+  deck.appendChild(s);
+
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' on' : '');
+  d.onclick = () => goTo(i);
+  dotsEl.appendChild(d);
+});
+
+const allSlides = deck.querySelectorAll('.slide');
+const allDots   = dotsEl.querySelectorAll('.dot');
+
+function ui() {
+  counter.textContent = `${cur + 1} / ${slides.length}`;
+  bar.style.width = ((cur + 1) / slides.length * 100) + '%';
+  allDots.forEach((d, i) => d.classList.toggle('on', i === cur));
+}
+
+function goTo(n) {
+  if (busy || n === cur) return;
+  busy = true;
+  const prev = cur; cur = n;
+  allSlides[prev].classList.add('out');
+  allSlides[prev].classList.remove('active');
+  setTimeout(() => {
+    allSlides[prev].classList.remove('out');
+    allSlides[cur].classList.add('active');
+    ui();
+    setTimeout(() => { busy = false; }, 600);
+  }, 280);
+}
+
+const next = () => goTo((cur + 1) % slides.length);
+const prev = () => goTo((cur - 1 + slides.length) % slides.length);
+
+document.getElementById('next').onclick = next;
+document.getElementById('prev').onclick = prev;
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') next();
+  if (e.key === 'ArrowLeft') prev();
+});
+let tx = 0;
+document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; });
+document.addEventListener('touchend',   e => {
+  const dx = e.changedTouches[0].clientX - tx;
+  if (dx < -50) next(); else if (dx > 50) prev();
+});
+
+ui();
+</script>
+</body>
+</html>

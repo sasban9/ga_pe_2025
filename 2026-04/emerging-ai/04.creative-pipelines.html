@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Creative Pipelines — Text → Video → Distribution</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@300;400;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #05070d;
+  --bg2:      #0b0f1a;
+  --cyan:     #00e5ff;
+  --magenta:  #f72585;
+  --gold:     #f4c430;
+  --lime:     #b5ff4d;
+  --violet:   #9b72ff;
+  --text:     #dde8f5;
+  --muted:    #6a7d95;
+  --card:     rgba(255,255,255,0.04);
+  --border:   rgba(255,255,255,0.08);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Outfit',sans-serif;
+  overflow:hidden;
+  height:100vh;width:100vw;
+  cursor:default;
+}
+
+/* ── ANIMATED BG PARTICLES ── */
+#bg-canvas{
+  position:fixed;inset:0;
+  z-index:0;pointer-events:none;
+  opacity:0.35;
+}
+
+/* ── DECK ── */
+#deck{position:relative;width:100vw;height:100vh;z-index:1;}
+
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  padding:52px 72px;
+  opacity:0;pointer-events:none;
+  transition:opacity .55s cubic-bezier(.4,0,.2,1), transform .55s cubic-bezier(.4,0,.2,1);
+  transform:scale(0.97) translateY(18px);
+  text-align:center;
+}
+.slide.active{opacity:1;pointer-events:all;transform:scale(1) translateY(0);}
+.slide.exit{opacity:0;transform:scale(1.02) translateY(-18px);}
+
+/* NOISE OVERLAY */
+.slide::after{
+  content:'';position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size:200px;
+  pointer-events:none;z-index:0;opacity:.6;
+}
+.slide>*{position:relative;z-index:1;}
+
+/* ── TYPE SCALE ── */
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;
+  font-size:clamp(21px,1.6vw,26px);
+  letter-spacing:5px;text-transform:uppercase;
+  color:var(--cyan);margin-bottom:18px;opacity:.9;
+}
+.title-xl{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(48px,7.5vw,88px);
+  line-height:.95;letter-spacing:-1px;
+  margin-bottom:22px;
+}
+.title-lg{
+  font-family:'Syne',sans-serif;font-weight:700;
+  font-size:clamp(40px,5.5vw,66px);
+  line-height:1.05;margin-bottom:20px;
+}
+.title-md{
+  font-family:'Syne',sans-serif;font-weight:700;
+  font-size:clamp(34px,4vw,52px);
+  line-height:1.1;margin-bottom:18px;
+}
+.body{
+  font-size:clamp(22px,2.1vw,32px);
+  line-height:1.65;max-width:840px;
+  color:#c2d4e8;font-weight:300;
+}
+.body b{color:#fff;font-weight:500;}
+.body em{color:var(--lime);font-style:normal;font-weight:500;}
+.mono{font-family:'JetBrains Mono',monospace;font-size:clamp(21px,1.7vw,28px);}
+
+/* ── COLORS ── */
+.c-cyan{color:var(--cyan);}
+.c-mag{color:var(--magenta);}
+.c-gold{color:var(--gold);}
+.c-lime{color:var(--lime);}
+.c-vio{color:var(--violet);}
+
+/* ── DIVIDER ── */
+.rule{width:64px;height:3px;border-radius:2px;margin:0 auto 26px;background:var(--cyan);}
+.rule.mag{background:var(--magenta);}
+.rule.gold{background:var(--gold);}
+.rule.lime{background:var(--lime);}
+.rule.vio{background:var(--violet);}
+
+/* ── GLOW TEXT ── */
+.glow-c{text-shadow:0 0 40px rgba(0,229,255,.55);}
+.glow-m{text-shadow:0 0 40px rgba(247,37,133,.55);}
+.glow-g{text-shadow:0 0 36px rgba(244,196,48,.5);}
+.glow-l{text-shadow:0 0 36px rgba(181,255,77,.45);}
+
+/* ── PIPELINE FLOW ── */
+.pipeline{
+  display:flex;align-items:center;
+  gap:0;flex-wrap:nowrap;
+  max-width:960px;width:100%;
+  margin-top:12px;
+  overflow:visible;
+}
+.pip-step{
+  flex:1;background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;padding:18px 10px;
+  font-size:clamp(21px,1.6vw,24px);
+  font-weight:500;line-height:1.3;
+  transition:border-color .3s;
+}
+.pip-step:hover{border-color:var(--cyan);}
+.pip-step .num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:21px;color:var(--cyan);
+  display:block;margin-bottom:6px;
+}
+.pip-arrow{
+  font-size:clamp(22px,2vw,30px);
+  color:var(--cyan);padding:0 6px;
+  animation:arrowpulse 1.6s infinite;
+  flex-shrink:0;
+}
+@keyframes arrowpulse{0%,100%{opacity:1;transform:translateX(0);}50%{opacity:.4;transform:translateX(5px);}}
+
+/* ── STAT GRID ── */
+.stat-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:18px;width:100%;max-width:920px;margin-top:12px;
+}
+.stat-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:28px 18px;
+}
+.stat-num{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(44px,5.5vw,62px);
+  color:var(--lime);line-height:1;margin-bottom:8px;
+}
+.stat-desc{font-size:clamp(21px,1.5vw,24px);color:var(--muted);line-height:1.35;}
+
+/* ── LIST ── */
+.list{list-style:none;text-align:left;max-width:780px;width:100%;}
+.list li{
+  font-size:clamp(22px,1.9vw,29px);
+  padding:13px 0;border-bottom:1px solid var(--border);
+  align-items:flex-start;gap:14px;
+  line-height:1.45;color:#c2d4e8;
+}
+.list li::before{content:'▸';color:var(--cyan);font-size:22px;flex-shrink:0;margin-top:2px;}
+.list li span{color:var(--lime);}
+.list li b{color:#fff;}
+
+/* ── TWO COL ── */
+.two-col{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:24px;max-width:980px;width:100%;text-align:left;
+}
+.col-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px 26px;}
+.col-box h3{font-family:'Syne',sans-serif;font-size:clamp(28px,3vw,40px);margin-bottom:14px;}
+.col-box p{font-size:clamp(21px,1.7vw,26px);line-height:1.55;color:#aabcce;}
+
+/* ── TOOL CARD GRID ── */
+.tool-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:16px;max-width:920px;width:100%;
+}
+.tool-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:22px 18px;text-align:left;
+  transition:border-color .25s,background .25s;
+}
+.tool-card:hover{border-color:var(--magenta);background:rgba(247,37,133,.05);}
+.tool-name{
+  font-family:'Syne',sans-serif;font-weight:700;
+  font-size:clamp(26px,2.5vw,36px);
+  color:var(--cyan);margin-bottom:8px;
+}
+.tool-cat{font-family:'JetBrains Mono',monospace;font-size:21px;color:var(--muted);margin-bottom:10px;}
+.tool-desc{font-size:clamp(21px,1.6vw,24px);color:#9aacbe;line-height:1.45;}
+
+/* ── CODE BOX ── */
+.code-box{
+  background:#070b12;border:1px solid rgba(0,229,255,.18);
+  border-radius:12px;padding:26px 32px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:clamp(21px,1.6vw,26px);
+  text-align:left;max-width:840px;width:100%;
+  line-height:1.85;color:#cdd6f4;
+}
+.kw{color:var(--magenta);}
+.fn{color:var(--cyan);}
+.st{color:var(--lime);}
+.cm{color:var(--muted);}
+.num-lit{color:var(--gold);}
+
+/* ── QUOTE ── */
+.quote-box{
+  border-left:4px solid var(--gold);
+  padding:26px 32px;text-align:left;
+  max-width:820px;background:rgba(244,196,48,.05);
+  border-radius:0 12px 12px 0;
+}
+.quote-box p{font-size:clamp(26px,2.5vw,36px);line-height:1.5;font-style:italic;margin-bottom:14px;}
+.quote-box cite{font-family:'JetBrains Mono',monospace;font-size:21px;color:var(--gold);font-style:normal;}
+
+/* ── PILL ── */
+.pill{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;font-size:21px;
+  padding:7px 18px;border-radius:100px;margin:5px 4px;
+  border:1px solid rgba(0,229,255,.3);
+  background:rgba(0,229,255,.08);color:var(--cyan);
+}
+.pill.mag{border-color:rgba(247,37,133,.3);background:rgba(247,37,133,.08);color:var(--magenta);}
+.pill.gold{border-color:rgba(244,196,48,.3);background:rgba(244,196,48,.08);color:var(--gold);}
+.pill.lime{border-color:rgba(181,255,77,.3);background:rgba(181,255,77,.08);color:var(--lime);}
+.pill.vio{border-color:rgba(155,114,255,.3);background:rgba(155,114,255,.08);color:var(--violet);}
+
+/* ── ARROW TRANSFORM ── */
+.big-arrow{
+  display:flex;align-items:center;gap:28px;
+  margin:20px 0;flex-wrap:wrap;justify-content:center;
+}
+.big-arrow .word{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(38px,5.5vw,66px);letter-spacing:1px;
+}
+.big-arrow .arr{
+  font-size:clamp(34px,4vw,52px);
+  color:var(--cyan);animation:arrowpulse 1.8s infinite;
+}
+
+/* ── STAGE DIAGRAM ── */
+.stages{display:flex;flex-direction:column;gap:0;max-width:780px;width:100%;}
+.stage-row{
+  display:flex;align-items:center;gap:20px;
+  padding:14px 0;border-bottom:1px solid var(--border);
+}
+.stage-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:22px;color:var(--cyan);
+  min-width:36px;text-align:right;
+  flex-shrink:0;
+}
+.stage-label{
+  font-size:clamp(22px,2vw,30px);
+  color:#fff;font-weight:500;min-width:200px;
+}
+.stage-tool{
+  font-family:'JetBrains Mono',monospace;
+  font-size:clamp(21px,1.6vw,24px);
+  color:var(--muted);
+}
+.stage-tool em{color:var(--lime);font-style:normal;}
+
+/* ── COMPARISON TABLE ── */
+.compare{max-width:860px;width:100%;border-collapse:collapse;}
+.compare th{
+  font-family:'Syne',sans-serif;font-size:clamp(24px,2.2vw,32px);
+  padding:14px 20px;border-bottom:2px solid var(--border);
+  text-align:left;
+}
+.compare th:first-child{color:var(--magenta);}
+.compare th:last-child{color:var(--lime);}
+.compare td{
+  font-size:clamp(21px,1.8vw,27px);padding:13px 20px;
+  border-bottom:1px solid var(--border);color:#aabcce;
+  vertical-align:top;
+}
+.compare td:last-child{color:#c8e0c0;}
+
+/* ── PROGRESS BAR ── */
+#progress-bar{
+  position:fixed;bottom:0;left:0;height:3px;
+  background:linear-gradient(90deg,var(--cyan),var(--magenta),var(--lime));
+  transition:width .5s ease;z-index:100;
+}
+
+/* ── NAV ── */
+.nav-btn{
+  position:fixed;top:50%;transform:translateY(-50%);
+  background:rgba(255,255,255,.04);border:1px solid var(--border);
+  color:var(--text);font-size:26px;width:50px;height:50px;
+  border-radius:50%;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;z-index:100;transition:background .2s,border-color .2s;
+}
+.nav-btn:hover{background:rgba(0,229,255,.1);border-color:var(--cyan);}
+#prev{left:18px;}#next{right:18px;}
+
+/* ── COUNTER ── */
+#counter{
+  position:fixed;bottom:18px;right:24px;
+  font-family:'JetBrains Mono',monospace;font-size:21px;
+  color:var(--muted);z-index:100;
+}
+
+/* ── DOTS ── */
+#dots{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  display:flex;gap:5px;z-index:100;flex-wrap:wrap;
+  max-width:400px;justify-content:center;
+}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--muted);cursor:pointer;transition:all .3s;}
+.dot.on{background:var(--cyan);width:16px;border-radius:3px;}
+
+/* ── SLIDE LABEL TOP LEFT ── */
+.slide-tag{
+  position:fixed;top:20px;left:24px;
+  font-family:'JetBrains Mono',monospace;font-size:21px;
+  color:var(--muted);z-index:100;
+}
+
+/* ── SPINNING RING ── */
+.ring-wrap{position:relative;width:160px;height:160px;margin:0 auto 20px;flex-shrink:0;}
+.ring-wrap svg{animation:spin 8s linear infinite;}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.ring-inner{
+  position:absolute;inset:28px;
+  border-radius:50%;background:rgba(0,229,255,.07);
+  display:flex;align-items:center;justify-content:center;
+  font-size:clamp(42px,5vw,56px);
+}
+
+/* ── ICON ROW ── */
+.icon-row{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin:18px 0;}
+.icon-box{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:22px 28px;text-align:center;min-width:160px;
+  transition:border-color .25s;
+}
+.icon-box:hover{border-color:var(--cyan);}
+.icon-box .ico{font-size:clamp(38px,4vw,52px);display:block;margin-bottom:8px;}
+.icon-box .lbl{font-size:clamp(21px,1.6vw,25px);color:#aabcce;}
+
+/* ── TIMELINE ── */
+.timeline{display:flex;flex-direction:column;gap:0;max-width:760px;width:100%;text-align:left;}
+.tl-item{display:flex;gap:22px;padding:14px 0 14px 26px;border-left:2px solid rgba(0,229,255,.2);position:relative;}
+.tl-item::before{content:'';position:absolute;left:-7px;top:22px;width:12px;height:12px;border-radius:50%;background:var(--cyan);}
+.tl-yr{font-family:'JetBrains Mono',monospace;font-size:22px;color:var(--cyan);min-width:80px;flex-shrink:0;}
+.tl-tx{font-size:clamp(21px,1.8vw,26px);color:#aabcce;line-height:1.4;}
+
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+<div id="deck"></div>
+<div id="progress-bar"></div>
+<button class="nav-btn" id="prev">&#8592;</button>
+<button class="nav-btn" id="next">&#8594;</button>
+<div id="counter"></div>
+<div id="dots"></div>
+<div class="slide-tag" id="slide-tag"></div>
+
+<script>
+// ── PARTICLE BG ──────────────────────────────
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, pts = [];
+function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resize();
+window.addEventListener('resize', resize);
+for(let i=0;i<60;i++) pts.push({x:Math.random()*window.innerWidth, y:Math.random()*window.innerHeight, vx:(Math.random()-.5)*.4, vy:(Math.random()-.5)*.4, r:Math.random()*1.8+.5});
+function drawBG(){
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#00e5ff';
+  pts.forEach(p=>{
+    p.x+=p.vx; p.y+=p.vy;
+    if(p.x<0)p.x=W; if(p.x>W)p.x=0;
+    if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
+  });
+  pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{
+    const d=Math.hypot(a.x-b.x,a.y-b.y);
+    if(d<120){ctx.strokeStyle=`rgba(0,229,255,${.18*(1-d/120)})`;ctx.lineWidth=.6;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}
+  }));
+  requestAnimationFrame(drawBG);
+}
+drawBG();
+
+// ── SLIDES DATA ──────────────────────────────
+const slides = [
+
+// 01 TITLE
+{tag:'Introduction', html:`
+  <div class="eyebrow">The AI Content Revolution</div>
+  <div class="title-xl">
+    <span class="c-cyan glow-c">AI Creative</span><br>
+    <span class="c-mag glow-m">Pipelines</span>
+  </div>
+  <div class="title-md c-gold" style="margin-bottom:24px;">Text &nbsp;→&nbsp; Video &nbsp;→&nbsp; Distribution</div>
+  <div class="body" style="font-size:clamp(22px,2vw,29px);">Entire content production pipelines are now <b>automated end-to-end</b> — from a single prompt to a published video, with zero human editors.</div>
+`},
+
+// 02 CORE IDEA
+{tag:'Core Concept', html:`
+  <div class="eyebrow">Core Idea</div>
+  <div class="title-lg">From <span class="c-mag">One Prompt</span><br>to a <span class="c-lime">Published Video</span></div>
+  <div class="rule mag"></div>
+  <div class="body">A creator used to need a team: writers, designers, voice artists, editors, and a distribution manager. Today, a single AI pipeline replaces <em>all of them</em> — in minutes, not weeks.</div>
+`},
+
+// 03 THE OLD WAY
+{tag:'Old vs New', html:`
+  <div class="eyebrow">The Old World</div>
+  <div class="title-lg c-mag">Manual Creative <span class="c-text">Production</span></div>
+  <div class="rule mag"></div>
+  <div class="timeline">
+    <div class="tl-item"><span class="tl-yr" style="color:var(--magenta)">Week 1</span><span class="tl-tx">Brainstorm idea, research topic, write brief</span></div>
+    <div class="tl-item"><span class="tl-yr" style="color:var(--magenta)">Week 2</span><span class="tl-tx">Script writing, revisions, approvals</span></div>
+    <div class="tl-item"><span class="tl-yr" style="color:var(--magenta)">Week 3</span><span class="tl-tx">Record voiceover, source visuals, shoot footage</span></div>
+    <div class="tl-item"><span class="tl-yr" style="color:var(--magenta)">Week 4</span><span class="tl-tx">Edit, add subtitles, export, manually publish</span></div>
+  </div>
+`},
+
+// 04 THE NEW WAY
+{tag:'Old vs New', html:`
+  <div class="eyebrow">The New World</div>
+  <div class="title-lg c-lime">AI-Driven <span class="c-cyan">Content Factory</span></div>
+  <div class="rule lime"></div>
+  <div class="timeline">
+    <div class="tl-item" style="border-color:rgba(181,255,77,.3)"><span class="tl-yr">0:00</span><span class="tl-tx">Type your prompt or topic</span></div>
+    <div class="tl-item" style="border-color:rgba(181,255,77,.3)"><span class="tl-yr">0:30</span><span class="tl-tx">AI generates script + voiceover simultaneously</span></div>
+    <div class="tl-item" style="border-color:rgba(181,255,77,.3)"><span class="tl-yr">2:00</span><span class="tl-tx">Video scenes generated, subtitles auto-added</span></div>
+    <div class="tl-item" style="border-color:rgba(181,255,77,.3)"><span class="tl-yr">3:00</span><span class="tl-tx">Auto-published across all platforms</span></div>
+  </div>
+`},
+
+// 05 PIPELINE OVERVIEW
+{tag:'Pipeline Overview', html:`
+  <div class="eyebrow">End-to-End Workflow</div>
+  <div class="title-md" style="margin-bottom:28px;">The 6-Stage <span class="c-cyan">AI Pipeline</span></div>
+  <div class="pipeline">
+    <div class="pip-step"><span class="num">01</span>💡 Idea</div>
+    <div class="pip-arrow">→</div>
+    <div class="pip-step"><span class="num">02</span>📝 Script</div>
+    <div class="pip-arrow">→</div>
+    <div class="pip-step"><span class="num">03</span>🎨 Visuals</div>
+    <div class="pip-arrow">→</div>
+    <div class="pip-step"><span class="num">04</span>🔊 Voice</div>
+    <div class="pip-arrow">→</div>
+    <div class="pip-step"><span class="num">05</span>✂️ Edit</div>
+    <div class="pip-arrow">→</div>
+    <div class="pip-step"><span class="num">06</span>🚀 Publish</div>
+  </div>
+`},
+
+// 06 STAGE 1 IDEA
+{tag:'Stage 1 — Idea', html:`
+  <div class="eyebrow">Stage 1 of 6</div>
+  <div class="title-lg">💡 Idea <span class="c-cyan">Generation</span></div>
+  <div class="rule"></div>
+  <div class="body" style="margin-bottom:22px;">AI doesn't wait for inspiration. It <b>generates topic clusters</b>, trending angles, hooks, and titles — all optimized for the platform algorithm.</div>
+  <div class="icon-row">
+    <div class="icon-box"><span class="ico">🤖</span><span class="lbl">ChatGPT</span></div>
+    <div class="icon-box"><span class="ico">⚡</span><span class="lbl">Claude</span></div>
+    <div class="icon-box"><span class="ico">🔮</span><span class="lbl">Gemini</span></div>
+    <div class="icon-box"><span class="ico">🔍</span><span class="lbl">Perplexity</span></div>
+  </div>
+`},
+
+// 07 STAGE 2 SCRIPT
+{tag:'Stage 2 — Script', html:`
+  <div class="eyebrow">Stage 2 of 6</div>
+  <div class="title-lg">📝 Script <span class="c-lime">Writing</span></div>
+  <div class="rule lime"></div>
+  <div class="body" style="margin-bottom:22px;">AI writers produce full scripts in seconds — complete with <em>hook, structure, call-to-action</em>, and platform-optimized pacing. Short-form or long-form.</div>
+  <div class="code-box" style="font-size:clamp(21px,1.5vw,24px);">
+    <span class="cm">// Input prompt</span><br>
+    <span class="st">"Make a YouTube Short on AI replacing jobs"</span><br><br>
+    <span class="cm">// Output → Full script with:</span><br>
+    <span class="fn">Hook</span> + <span class="fn">3 key points</span> + <span class="fn">CTA</span><br>
+    <span class="kw">Tone:</span> <span class="st">urgent · conversational · shareable</span>
+  </div>
+`},
+
+// 08 STAGE 3 VISUALS
+{tag:'Stage 3 — Visuals', html:`
+  <div class="eyebrow">Stage 3 of 6</div>
+  <div class="title-lg">🎨 Visual <span class="c-mag">Generation</span></div>
+  <div class="rule mag"></div>
+  <div class="body" style="margin-bottom:24px;">From static images to full video scenes — AI generates every frame from text descriptions, <b>no camera needed</b>.</div>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
+    <span class="pill mag">Midjourney (images)</span>
+    <span class="pill mag">Runway (video)</span>
+    <span class="pill mag">Sora (cinematic video)</span>
+    <span class="pill mag">Pika (motion clips)</span>
+    <span class="pill mag">Kling (video gen)</span>
+    <span class="pill mag">Stable Diffusion</span>
+  </div>
+`},
+
+// 09 STAGE 4 VOICE
+{tag:'Stage 4 — Voiceover', html:`
+  <div class="eyebrow">Stage 4 of 6</div>
+  <div class="title-lg">🔊 AI <span class="c-gold">Voiceover</span></div>
+  <div class="rule gold"></div>
+  <div class="body" style="margin-bottom:22px;">Human-quality voice in <b>any accent, emotion, or language</b>. Clone your own voice once — use it forever, at any scale.</div>
+  <div class="two-col" style="margin-top:4px;">
+    <div class="col-box" style="border-color:rgba(244,196,48,.2)">
+      <h3 class="c-gold" style="font-size:clamp(26px,2.5vw,36px);">ElevenLabs</h3>
+      <p>Industry-leading voice cloning, 30+ languages, sub-100ms latency</p>
+    </div>
+    <div class="col-box" style="border-color:rgba(244,196,48,.2)">
+      <h3 class="c-gold" style="font-size:clamp(26px,2.5vw,36px);">HeyGen / Murf</h3>
+      <p>AI avatars + voice sync, perfect lip movement, studio quality output</p>
+    </div>
+  </div>
+`},
+
+// 10 STAGE 5 EDITING
+{tag:'Stage 5 — Editing', html:`
+  <div class="eyebrow">Stage 5 of 6</div>
+  <div class="title-lg">✂️ AI Video <span class="c-vio">Editing</span></div>
+  <div class="rule vio"></div>
+  <div class="body" style="margin-bottom:22px;">No timeline scrubbing. No manual cuts. AI assembles, paces, and styles the video automatically — then adds subtitles, effects, and music.</div>
+  <ul class="list">
+    <li><b>Descript</b> — edit video by editing <span>the transcript text</span></li>
+    <li><b>CapCut AI</b> — auto-cut, captions, <span>effects in one click</span></li>
+    <li><b>Opus Clip</b> — turns long video into <span>viral short clips</span></li>
+    <li><b>Submagic</b> — animated captions, <span>auto-generated</span></li>
+  </ul>
+`},
+
+// 11 STAGE 6 DISTRIBUTION
+{tag:'Stage 6 — Distribution', html:`
+  <div class="eyebrow">Stage 6 of 6</div>
+  <div class="title-lg">🚀 Automated <span class="c-lime">Distribution</span></div>
+  <div class="rule lime"></div>
+  <div class="body" style="margin-bottom:22px;">The pipeline doesn't stop at export. AI schedules, publishes, and adapts content across every platform — <em>simultaneously</em>.</div>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
+    <span class="pill lime">YouTube</span>
+    <span class="pill lime">TikTok</span>
+    <span class="pill lime">Instagram Reels</span>
+    <span class="pill lime">X / Twitter</span>
+    <span class="pill lime">LinkedIn</span>
+    <span class="pill lime">Facebook</span>
+    <span class="pill">Buffer · Later · Zapier</span>
+  </div>
+`},
+
+// 12 REAL EXAMPLE INPUT
+{tag:'Live Example', html:`
+  <div class="eyebrow">Example Pipeline in Action</div>
+  <div class="title-md" style="margin-bottom:24px;">Input: <span class="c-gold">One Sentence</span></div>
+  <div class="code-box" style="font-size:clamp(22px,2vw,30px);text-align:center;padding:36px 40px;">
+    <span class="cm">// The only human input needed:</span><br><br>
+    <span class="st" style="font-size:clamp(26px,2.5vw,36px);">"Make a YouTube Short on<br>AI replacing jobs"</span>
+  </div>
+`},
+
+// 13 REAL EXAMPLE OUTPUT
+{tag:'Live Example', html:`
+  <div class="eyebrow">Example Pipeline — Output</div>
+  <div class="title-md" style="margin-bottom:22px;">Output: <span class="c-lime">Complete Content Package</span></div>
+  <div class="stages">
+    <div class="stage-row"><span class="stage-num">✓</span><span class="stage-label">Script</span><span class="stage-tool">60-second hook-led script, <em>Claude/GPT</em></span></div>
+    <div class="stage-row"><span class="stage-num">✓</span><span class="stage-label">Voiceover</span><span class="stage-tool">Human-quality narration, <em>ElevenLabs</em></span></div>
+    <div class="stage-row"><span class="stage-num">✓</span><span class="stage-label">Video Scenes</span><span class="stage-tool">Cinematic clips per beat, <em>Runway / Pika</em></span></div>
+    <div class="stage-row"><span class="stage-num">✓</span><span class="stage-label">Subtitles</span><span class="stage-tool">Animated captions, <em>CapCut / Submagic</em></span></div>
+    <div class="stage-row"><span class="stage-num">✓</span><span class="stage-label">Auto-Upload</span><span class="stage-tool">Published to all platforms, <em>Buffer / Zapier</em></span></div>
+  </div>
+`},
+
+// 14 RUNWAY DEEP DIVE
+{tag:'Key Tool — Runway', html:`
+  <div class="eyebrow">Key Tool Spotlight</div>
+  <div class="title-lg c-cyan">Runway <span class="c-text">ML</span></div>
+  <div class="rule"></div>
+  <div class="body" style="margin-bottom:22px;">The professional standard for AI video generation. Text-to-video, image-to-video, video-to-video style transfer — all in one platform.</div>
+  <div class="stat-grid" style="grid-template-columns:repeat(3,1fr);">
+    <div class="stat-card"><div class="stat-num" style="font-size:clamp(36px,4vw,52px);">Gen-3</div><div class="stat-desc">Latest model, 10s cinematic clips</div></div>
+    <div class="stat-card"><div class="stat-num" style="font-size:clamp(36px,4vw,52px);">4K</div><div class="stat-desc">Output resolution support</div></div>
+    <div class="stat-card"><div class="stat-num" style="font-size:clamp(36px,4vw,52px);">API</div><div class="stat-desc">Plugs directly into pipelines</div></div>
+  </div>
+`},
+
+// 15 SORA
+{tag:'Key Tool — Sora', html:`
+  <div class="eyebrow">Key Tool Spotlight</div>
+  <div class="title-lg c-mag">OpenAI <span class="c-text">Sora</span></div>
+  <div class="rule mag"></div>
+  <div class="body">Sora generates <b>up to 60-second cinematic videos</b> from a text prompt with consistent characters, physics, and lighting — representing a step-change in AI video realism.</div>
+  <div class="quote-box" style="margin-top:24px;border-color:var(--magenta);background:rgba(247,37,133,.05);">
+    <p>"Sora can generate videos up to a minute long while maintaining visual quality and adherence to the user's prompt."</p>
+    <cite>— OpenAI, Sora Technical Report</cite>
+  </div>
+`},
+
+// 16 PIKA
+{tag:'Key Tool — Pika', html:`
+  <div class="eyebrow">Key Tool Spotlight</div>
+  <div class="title-lg c-vio">Pika <span class="c-text">Labs</span></div>
+  <div class="rule vio"></div>
+  <div class="body" style="margin-bottom:24px;">Pika specialises in <em>turning images into motion</em> and creating short, stylized video clips for social media. Fast, affordable, and consumer-friendly.</div>
+  <div class="two-col">
+    <div class="col-box" style="border-color:rgba(155,114,255,.2)"><h3 style="color:var(--violet);font-size:clamp(24px,2.5vw,34px);">Image → Video</h3><p>Animate any still image with natural motion in seconds</p></div>
+    <div class="col-box" style="border-color:rgba(155,114,255,.2)"><h3 style="color:var(--violet);font-size:clamp(24px,2.5vw,34px);">Style Transfer</h3><p>Apply cinematic looks: anime, 3D, photorealistic, illustration</p></div>
+  </div>
+`},
+
+// 17 ELEVENLABS
+{tag:'Key Tool — ElevenLabs', html:`
+  <div class="eyebrow">Key Tool Spotlight</div>
+  <div class="title-lg c-gold">ElevenLabs</div>
+  <div class="rule gold"></div>
+  <div class="body" style="margin-bottom:24px;">The voice infrastructure of the AI content economy. Clone any voice in <b>under one minute</b>. Generate narration that's indistinguishable from human speech.</div>
+  <ul class="list">
+    <li>Voice cloning from <span>just 60 seconds</span> of audio</li>
+    <li>29+ languages with <span>natural emotion</span> and prosody</li>
+    <li>API-first — pipes <span>directly into video tools</span></li>
+    <li>Real-time voice generation, <span>under 300ms latency</span></li>
+  </ul>
+`},
+
+// 18 DESCRIPT
+{tag:'Key Tool — Descript', html:`
+  <div class="eyebrow">Key Tool Spotlight</div>
+  <div class="title-lg c-lime">Descript</div>
+  <div class="rule lime"></div>
+  <div class="body" style="margin-bottom:22px;">Descript turns video editing into <em>document editing</em>. Delete a word in the transcript — the video cut happens automatically. AI removes filler words, silences, and mistakes.</div>
+  <div class="icon-row">
+    <div class="icon-box"><span class="ico">📄</span><span class="lbl">Text-based<br>editing</span></div>
+    <div class="icon-box"><span class="ico">🎙️</span><span class="lbl">AI voice<br>cloning</span></div>
+    <div class="icon-box"><span class="ico">✂️</span><span class="lbl">Auto-remove<br>filler words</span></div>
+    <div class="icon-box"><span class="ico">📤</span><span class="lbl">Direct<br>publish</span></div>
+  </div>
+`},
+
+// 19 FULL TOOL STACK
+{tag:'The Full Stack', html:`
+  <div class="eyebrow">Complete Toolchain</div>
+  <div class="title-md" style="margin-bottom:22px;">The <span class="c-cyan">Pipeline Stack</span></div>
+  <div class="tool-grid">
+    <div class="tool-card"><div class="tool-name">ChatGPT</div><div class="tool-cat">Ideation + Script</div><div class="tool-desc">Topic research & script drafts</div></div>
+    <div class="tool-card"><div class="tool-name">Claude</div><div class="tool-cat">Script + Strategy</div><div class="tool-desc">Long-form writing & refinement</div></div>
+    <div class="tool-card"><div class="tool-name">Runway</div><div class="tool-cat">Video Generation</div><div class="tool-desc">Cinematic scene creation</div></div>
+    <div class="tool-card"><div class="tool-name">Sora</div><div class="tool-cat">Video Generation</div><div class="tool-desc">60s photorealistic video</div></div>
+    <div class="tool-card"><div class="tool-name">ElevenLabs</div><div class="tool-cat">Voice</div><div class="tool-desc">Cloned human narration</div></div>
+    <div class="tool-card"><div class="tool-name">Descript</div><div class="tool-cat">Editing</div><div class="tool-desc">Text-driven video editing</div></div>
+  </div>
+`},
+
+// 20 SPEED COMPARISON
+{tag:'Impact', html:`
+  <div class="eyebrow">The Speed Revolution</div>
+  <div class="title-lg">From <span class="c-mag">Weeks</span> to <span class="c-lime">Minutes</span></div>
+  <div class="rule mag"></div>
+  <table class="compare">
+    <thead>
+      <tr><th>Manual Production</th><th>AI Pipeline</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Script: 2–3 days</td><td>Script: ~30 seconds</td></tr>
+      <tr><td>Voiceover booking: 1 week</td><td>Voice synthesis: ~60 seconds</td></tr>
+      <tr><td>Video shoot: 1–2 days</td><td>Video generation: 2–5 minutes</td></tr>
+      <tr><td>Editing: 3–5 days</td><td>AI editing: ~3 minutes</td></tr>
+      <tr><td>Publishing: manual per platform</td><td>Auto-publish: simultaneous</td></tr>
+    </tbody>
+  </table>
+`},
+
+// 21 COST COMPARISON
+{tag:'Impact', html:`
+  <div class="eyebrow">The Economics</div>
+  <div class="title-lg">Collapsing <span class="c-gold">Production Costs</span></div>
+  <div class="rule gold"></div>
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-num c-mag">$5K+</div>
+      <div class="stat-desc">Traditional cost per<br>produced video</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">$10</div>
+      <div class="stat-desc">AI pipeline cost per<br>equivalent video</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">500×</div>
+      <div class="stat-desc">Cost reduction factor<br>in AI content production</div>
+    </div>
+  </div>
+`},
+
+// 22 SCALE
+{tag:'Impact', html:`
+  <div class="eyebrow">The Scale Shift</div>
+  <div class="title-lg">One Person. <span class="c-lime">Infinite Content.</span></div>
+  <div class="rule lime"></div>
+  <div class="body">A solo creator using an AI pipeline can now produce <em>10–50 videos per day</em> across multiple niches, languages, and platforms — the output of an entire <b>traditional production studio</b>.</div>
+`},
+
+// 23 NEW CREATOR ECONOMY
+{tag:'New Economy', html:`
+  <div class="eyebrow">New Business Models</div>
+  <div class="title-md c-cyan">The AI <span class="c-mag">Content Factory</span></div>
+  <div class="rule"></div>
+  <ul class="list">
+    <li><b>Faceless channels</b> — monetized YouTube channels with <span>zero on-camera presence</span></li>
+    <li><b>Niche saturation</b> — dominate 10+ micro-niches <span>simultaneously</span></li>
+    <li><b>Language scaling</b> — same video <span>auto-dubbed in 20 languages</span></li>
+    <li><b>Trend hijacking</b> — detect trending topics, <span>publish in under 1 hour</span></li>
+    <li><b>B2B content ops</b> — agencies selling <span>AI video at scale</span></li>
+  </ul>
+`},
+
+// 24 QUALITY CONCERN
+{tag:'The Challenge', html:`
+  <div class="eyebrow">The Trade-Off</div>
+  <div class="title-lg c-mag">Speed vs. <span class="c-text">Soul</span></div>
+  <div class="rule mag"></div>
+  <div class="body">AI pipelines produce content at machine speed — but critics argue the output can feel <b>hollow, repetitive, and algorithmically optimized at the expense of genuine creativity.</b> The counter-argument: curation and taste become <em>the new creative skill</em>.</div>
+`},
+
+// 25 AUTHENTICITY CRISIS
+{tag:'The Challenge', html:`
+  <div class="eyebrow">The Trust Problem</div>
+  <div class="title-lg">The <span class="c-gold">Authenticity</span> Crisis</div>
+  <div class="rule gold"></div>
+  <div class="two-col">
+    <div class="col-box" style="border-color:rgba(247,37,133,.2)">
+      <h3 class="c-mag">The Problem</h3>
+      <p>Deepfake voices, synthetic faces, AI-generated "news" — audiences can no longer verify what is real vs. generated.</p>
+    </div>
+    <div class="col-box" style="border-color:rgba(0,229,255,.2)">
+      <h3 class="c-cyan">The Opportunity</h3>
+      <p>Real human presence and genuine expertise become <em>premium signals</em> in an ocean of synthetic content.</p>
+    </div>
+  </div>
+`},
+
+// 26 JOBS DISRUPTED
+{tag:'Disruption', html:`
+  <div class="eyebrow">Roles Being Disrupted</div>
+  <div class="title-md c-mag">Jobs <span class="c-text">in the Crosshairs</span></div>
+  <div class="rule mag"></div>
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;max-width:860px;">
+    <span class="pill mag">Videographers</span>
+    <span class="pill mag">Voiceover Artists</span>
+    <span class="pill mag">Video Editors</span>
+    <span class="pill mag">Scriptwriters</span>
+    <span class="pill mag">Motion Designers</span>
+    <span class="pill mag">Social Media Managers</span>
+    <span class="pill mag">Content Strategists</span>
+    <span class="pill mag">Translators</span>
+  </div>
+`},
+
+// 27 JOBS CREATED
+{tag:'New Opportunities', html:`
+  <div class="eyebrow">New Roles Emerging</div>
+  <div class="title-md c-lime">Jobs Being <span class="c-text">Created</span></div>
+  <div class="rule lime"></div>
+  <ul class="list">
+    <li><span>Pipeline Architects</span> — designers of end-to-end AI workflows</li>
+    <li><span>Prompt Directors</span> — craft precise prompts for each pipeline stage</li>
+    <li><span>AI Content Strategists</span> — human taste + algorithmic optimization</li>
+    <li><span>Synthetic Media Auditors</span> — quality control for AI outputs</li>
+    <li><span>AI Voice Producers</span> — engineer and direct voice synthesis</li>
+  </ul>
+`},
+
+// 28 WHERE THIS IS HEADING
+{tag:'Future Vision', html:`
+  <div class="eyebrow">What's Next</div>
+  <div class="title-lg">Fully <span class="c-cyan">Autonomous</span><br>Content Agents</div>
+  <div class="rule"></div>
+  <div class="body">The next evolution: AI agents that <em>monitor trends, decide topics, produce videos, publish, analyse performance, and optimise future content</em> — all without human input. The pipeline becomes self-improving.</div>
+`},
+
+// 29 THE BIG SHIFT
+{tag:'The Shift', html:`
+  <div class="eyebrow">The Fundamental Shift</div>
+  <div class="big-arrow">
+    <span class="word c-mag">MANUAL</span>
+    <span class="arr">→</span>
+    <span class="word c-lime">AUTOMATED</span>
+  </div>
+  <div class="big-arrow" style="margin-top:4px;">
+    <span class="word" style="font-size:clamp(28px,4vw,50px);color:var(--muted)">Creative Team</span>
+    <span class="arr">→</span>
+    <span class="word" style="font-size:clamp(28px,4vw,50px);color:var(--cyan)">AI Content Factory</span>
+  </div>
+  <div class="body" style="margin-top:22px;font-size:clamp(22px,1.9vw,28px);">The unit of creative work is no longer the <b>person</b> — it's the <em>pipeline</em>.</div>
+`},
+
+// 30 CLOSE
+{tag:'Conclusion', html:`
+  <div class="eyebrow">The Takeaway</div>
+  <div class="title-lg">Build <span class="c-cyan">Pipelines</span>,<br>Not Just <span class="c-mag">Content</span></div>
+  <div class="rule"></div>
+  <div class="body" style="margin-bottom:28px;">The creators who win in the AI era won't be those who make the best single video. They'll be those who design the best <em>system for making videos</em> — and then let the system run.</div>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:clamp(22px,1.9vw,28px);color:var(--muted);">
+    Prompt → Pipeline → <span style="color:var(--lime)">Publish → Repeat</span>
+  </div>
+`},
+
+];
+
+// ── RENDER ───────────────────────────────────
+const deck = document.getElementById('deck');
+const bar = document.getElementById('progress-bar');
+const counter = document.getElementById('counter');
+const dotsEl = document.getElementById('dots');
+const tagEl = document.getElementById('slide-tag');
+let current = 0, transitioning = false;
+
+slides.forEach((s, i) => {
+  const div = document.createElement('div');
+  div.className = 'slide';
+  div.innerHTML = s.html;
+  if(i === 0) div.classList.add('active');
+  deck.appendChild(div);
+
+  const dot = document.createElement('div');
+  dot.className = 'dot' + (i === 0 ? ' on' : '');
+  dot.onclick = () => goTo(i);
+  dotsEl.appendChild(dot);
+});
+
+const allSlides = deck.querySelectorAll('.slide');
+const allDots = dotsEl.querySelectorAll('.dot');
+
+function updateUI(){
+  counter.textContent = `${current+1} / ${slides.length}`;
+  bar.style.width = ((current+1)/slides.length*100)+'%';
+  tagEl.textContent = slides[current].tag || '';
+  allDots.forEach((d,i) => d.classList.toggle('on', i === current));
+}
+
+function goTo(n){
+  if(transitioning || n === current) return;
+  transitioning = true;
+  const prev = current;
+  current = n;
+  allSlides[prev].classList.add('exit');
+  allSlides[prev].classList.remove('active');
+  setTimeout(() => {
+    allSlides[prev].classList.remove('exit');
+    allSlides[current].classList.add('active');
+    updateUI();
+    setTimeout(() => { transitioning = false; }, 600);
+  }, 280);
+}
+
+function next(){ goTo((current+1) % slides.length); }
+function prev(){ goTo((current-1+slides.length) % slides.length); }
+
+document.getElementById('next').onclick = next;
+document.getElementById('prev').onclick = prev;
+
+document.addEventListener('keydown', e => {
+  if(e.key==='ArrowRight'||e.key===' ') next();
+  if(e.key==='ArrowLeft') prev();
+});
+
+let tx=0;
+document.addEventListener('touchstart', e => { tx=e.touches[0].clientX; });
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - tx;
+  if(dx < -50) next();
+  if(dx > 50) prev();
+});
+
+updateUI();
+</script>
+</body>
+</html>

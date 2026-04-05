@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 8 — Building an AI-Ready Organization</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inconsolata:wght@400;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #07090f;
+  --surface: #0e1220;
+  --border:  rgba(255,255,255,0.08);
+  --gold:    #f0c040;
+  --teal:    #38e8c8;
+  --coral:   #ff6b6b;
+  --sky:     #74b9ff;
+  --lime:    #a8e063;
+  --text:    #e4e8f0;
+  --muted:   #8899bb;
+  --card:    rgba(255,255,255,0.04);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Syne',sans-serif;
+  overflow:hidden;
+  height:100vh; width:100vw;
+  user-select:none;
+}
+
+/* ── NOISE OVERLAY ── */
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:999;opacity:0.4;
+}
+
+/* ── DECK ── */
+#deck{position:relative;width:100vw;height:100vh;}
+
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  padding:56px 80px;
+  opacity:0;pointer-events:none;
+  transition:opacity .55s cubic-bezier(.4,0,.2,1), transform .55s cubic-bezier(.4,0,.2,1);
+  transform:translateX(48px);
+  text-align:center;
+  overflow:hidden;
+}
+.slide.active{opacity:1;pointer-events:all;transform:translateX(0);}
+.slide.exit{opacity:0;transform:translateX(-48px);}
+
+/* decorative hex grid bg */
+.slide::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    radial-gradient(circle at 20% 80%, rgba(56,232,200,.06) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(240,192,64,.05) 0%, transparent 50%);
+  pointer-events:none;z-index:0;
+}
+.slide>*{position:relative;z-index:1;}
+
+/* ── SECTION BADGE ── */
+.badge{
+  font-family:'Inconsolata',monospace;
+  font-size:21px;
+  color:var(--teal);
+  letter-spacing:3px;
+  text-transform:uppercase;
+  margin-bottom:18px;
+  opacity:.85;
+}
+
+/* ── HEADINGS ── */
+.h-giant{
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-size:clamp(44px,7.5vw,80px);
+  line-height:1.05;
+  letter-spacing:-1px;
+  margin-bottom:22px;
+}
+.h-main{
+  font-family:'Syne',sans-serif;
+  font-weight:700;
+  font-size:clamp(36px,5.5vw,60px);
+  line-height:1.1;
+  margin-bottom:20px;
+  letter-spacing:-.5px;
+}
+.h-sub{
+  font-family:'Syne',sans-serif;
+  font-weight:600;
+  font-size:clamp(28px,3.5vw,44px);
+  line-height:1.2;
+  margin-bottom:16px;
+}
+
+/* ── BODY TEXT ── */
+.body{
+  font-family:'Lora',serif;
+  font-size:clamp(22px,2.1vw,32px);
+  line-height:1.65;
+  max-width:840px;
+  color:#ccd6e8;
+  font-weight:400;
+}
+.body strong{color:var(--gold);font-weight:600;}
+.body em{color:var(--teal);font-style:normal;font-weight:600;}
+
+/* ── ACCENT COLORS ── */
+.g{color:var(--gold);}
+.t{color:var(--teal);}
+.r{color:var(--coral);}
+.s{color:var(--sky);}
+.l{color:var(--lime);}
+
+/* ── RULE ── */
+.rule{width:64px;height:3px;background:var(--teal);border-radius:2px;margin:0 auto 26px;}
+.rule.g{background:var(--gold);}
+.rule.r{background:var(--coral);}
+.rule.s{background:var(--sky);}
+.rule.l{background:var(--lime);}
+
+/* ── LIST ── */
+.lst{list-style:none;text-align:left;max-width:820px;width:100%;}
+.lst li{
+  font-family:'Lora',serif;
+  font-size:clamp(22px,1.9vw,29px);
+  padding:11px 0;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  display:flex;align-items:flex-start;gap:14px;
+  line-height:1.45;color:#ccd4e8;
+}
+.lst li::before{content:'▸';color:var(--teal);font-size:22px;flex-shrink:0;margin-top:3px;}
+.lst li.r::before{color:var(--coral);}
+.lst li.g::before{color:var(--gold);}
+.lst li.s::before{color:var(--sky);}
+.lst li span{color:var(--gold);}
+
+/* ── 2-COL ── */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:980px;width:100%;text-align:left;}
+.box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px 26px;}
+.box h3{font-size:clamp(26px,2.8vw,38px);margin-bottom:14px;font-weight:700;}
+.box p, .box li{font-family:'Lora',serif;font-size:clamp(21px,1.7vw,26px);line-height:1.55;color:#b8ccd8;}
+.box ul{list-style:none;padding:0;}
+.box ul li{padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+.box ul li::before{content:'· ';color:var(--teal);}
+
+/* ── 3-COL ── */
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:980px;width:100%;}
+.scard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 20px;text-align:center;}
+.scard .big{font-size:clamp(38px,4.5vw,54px);font-weight:800;line-height:1;margin-bottom:10px;}
+.scard .desc{font-family:'Lora',serif;font-size:clamp(21px,1.6vw,24px);color:var(--muted);line-height:1.4;}
+
+/* ── 4-COL LEVEL ── */
+.four{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:1040px;width:100%;}
+.lcard{border-radius:12px;padding:22px 18px;text-align:left;border:1px solid var(--border);}
+.lcard .ln{font-size:clamp(30px,3.2vw,44px);font-weight:800;margin-bottom:8px;}
+.lcard .lt{font-size:clamp(21px,1.8vw,26px);font-weight:700;margin-bottom:10px;}
+.lcard .ld{font-family:'Lora',serif;font-size:clamp(20px,1.5vw,22px);color:var(--muted);line-height:1.4;}
+
+/* ── PHASE STRIP ── */
+.phase-row{display:flex;gap:16px;max-width:1020px;width:100%;align-items:stretch;}
+.ph{flex:1;background:var(--card);border-radius:12px;padding:22px 18px;border:1px solid var(--border);}
+.ph-label{font-size:clamp(21px,1.8vw,26px);font-weight:700;margin-bottom:10px;}
+.ph-days{font-family:'Inconsolata',monospace;font-size:22px;color:var(--teal);margin-bottom:12px;}
+.ph ul{list-style:none;padding:0;}
+.ph ul li{font-family:'Lora',serif;font-size:clamp(20px,1.5vw,22px);color:#b0c4d4;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+.ph ul li::before{content:'→ ';}
+
+/* ── QUOTE ── */
+.qblock{border-left:4px solid var(--gold);padding:26px 34px;text-align:left;max-width:840px;background:rgba(240,192,64,.05);border-radius:0 12px 12px 0;}
+.qblock p{font-family:'Lora',serif;font-size:clamp(26px,2.6vw,36px);line-height:1.55;font-style:italic;color:var(--text);margin-bottom:14px;}
+.qblock cite{font-size:22px;color:var(--gold);font-style:normal;font-family:'Inconsolata',monospace;}
+
+/* ── CODE BOX ── */
+.code{background:#080d16;border:1px solid rgba(56,232,200,.18);border-radius:12px;padding:26px 32px;font-family:'Inconsolata',monospace;font-size:clamp(21px,1.7vw,25px);text-align:left;max-width:840px;width:100%;line-height:1.9;color:#cdd6f4;}
+.code .kw{color:var(--coral);}
+.code .fn{color:var(--teal);}
+.code .st{color:var(--gold);}
+.code .cm{color:var(--muted);}
+
+/* ── PILL ── */
+.pill{display:inline-block;background:rgba(56,232,200,.1);border:1px solid rgba(56,232,200,.25);color:var(--teal);font-family:'Inconsolata',monospace;font-size:22px;padding:7px 18px;border-radius:100px;margin:5px 4px;}
+.pill.g{background:rgba(240,192,64,.1);border-color:rgba(240,192,64,.25);color:var(--gold);}
+.pill.r{background:rgba(255,107,107,.1);border-color:rgba(255,107,107,.25);color:var(--coral);}
+.pill.s{background:rgba(116,185,255,.1);border-color:rgba(116,185,255,.25);color:var(--sky);}
+.pill.l{background:rgba(168,224,99,.1);border-color:rgba(168,224,99,.25);color:var(--lime);}
+
+/* ── MATRIX ── */
+.matrix{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:900px;width:100%;text-align:left;}
+.mx{background:var(--card);border-radius:12px;padding:22px 22px;border:1px solid var(--border);}
+.mx h4{font-size:clamp(23px,2.2vw,30px);margin-bottom:10px;font-weight:700;}
+.mx p{font-family:'Lora',serif;font-size:clamp(21px,1.6vw,24px);color:var(--muted);line-height:1.45;}
+
+/* ── ICON ROW ── */
+.icon-row{display:flex;justify-content:center;gap:40px;margin:20px 0;}
+.icon-item{text-align:center;}
+.icon-item .ico{font-size:clamp(44px,5vw,58px);margin-bottom:10px;}
+.icon-item .ico-label{font-size:clamp(21px,1.7vw,24px);color:var(--muted);}
+
+/* ── KPI GRID ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:960px;width:100%;}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px 18px;text-align:center;}
+.kpi-n{font-size:clamp(38px,4.5vw,54px);font-weight:800;line-height:1;margin-bottom:8px;}
+.kpi-l{font-family:'Lora',serif;font-size:clamp(21px,1.6vw,23px);color:var(--muted);}
+
+/* ── TIMELINE ── */
+.tl{display:flex;flex-direction:column;gap:0;max-width:800px;width:100%;text-align:left;}
+.tl-item{display:flex;gap:22px;padding:14px 0 14px 28px;border-left:2px solid rgba(56,232,200,.22);position:relative;}
+.tl-item::before{content:'';position:absolute;left:-7px;top:22px;width:12px;height:12px;border-radius:50%;background:var(--teal);}
+.tl-yr{font-family:'Inconsolata',monospace;font-size:22px;color:var(--teal);min-width:80px;flex-shrink:0;}
+.tl-txt{font-family:'Lora',serif;font-size:clamp(22px,1.8vw,26px);color:#b8ccd8;line-height:1.4;}
+
+/* ── WARNING BOX ── */
+.warn{background:rgba(255,107,107,.07);border:1px solid rgba(255,107,107,.25);border-radius:12px;padding:24px 28px;max-width:820px;width:100%;text-align:left;}
+.warn h4{color:var(--coral);font-size:clamp(24px,2.2vw,30px);margin-bottom:12px;}
+.warn p{font-family:'Lora',serif;font-size:clamp(22px,1.8vw,26px);line-height:1.5;color:#e8c8c8;}
+
+/* ── PROGRESS / NAV ── */
+#progress-bar{position:fixed;bottom:0;left:0;height:3px;background:linear-gradient(90deg,var(--teal),var(--gold));transition:width .4s ease;z-index:200;}
+#counter{position:fixed;bottom:18px;right:26px;font-family:'Inconsolata',monospace;font-size:21px;color:var(--muted);z-index:200;}
+
+.nav-btn{position:fixed;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:var(--text);font-size:26px;width:50px;height:50px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:200;transition:background .2s,border-color .2s;}
+.nav-btn:hover{background:rgba(56,232,200,.12);border-color:var(--teal);}
+#prev{left:18px;}#next{right:18px;}
+
+#dots{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:200;flex-wrap:wrap;max-width:600px;justify-content:center;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--muted);transition:background .3s,width .3s;cursor:pointer;flex-shrink:0;}
+.dot.on{background:var(--teal);width:16px;border-radius:3px;}
+
+/* ── SECTION DIVIDER SLIDE ── */
+.divider-slide{background:linear-gradient(135deg,#0a1020 0%,#050810 100%);}
+.divider-slide::before{background-image:radial-gradient(circle at 30% 70%,rgba(56,232,200,.1) 0%,transparent 55%),radial-gradient(circle at 70% 30%,rgba(240,192,64,.08) 0%,transparent 55%);}
+.section-num{font-family:'Inconsolata',monospace;font-size:clamp(56px,9vw,90px);font-weight:600;color:rgba(56,232,200,.15);line-height:1;margin-bottom:8px;}
+
+/* ── GLOW ── */
+.glow{text-shadow:0 0 28px rgba(56,232,200,.45);}
+.glow-g{text-shadow:0 0 28px rgba(240,192,64,.45);}
+.glow-r{text-shadow:0 0 28px rgba(255,107,107,.45);}
+
+/* ── EXERCISE BOX ── */
+.ex{background:rgba(168,224,99,.06);border:1px solid rgba(168,224,99,.2);border-radius:12px;padding:22px 28px;max-width:820px;width:100%;text-align:left;}
+.ex-label{font-family:'Inconsolata',monospace;font-size:22px;color:var(--lime);margin-bottom:10px;letter-spacing:2px;}
+.ex p{font-family:'Lora',serif;font-size:clamp(22px,1.9vw,28px);color:#d0e8c8;line-height:1.5;}
+
+/* ── DELIVERABLE BOX ── */
+.del{background:rgba(116,185,255,.06);border:1px solid rgba(116,185,255,.2);border-radius:12px;padding:22px 28px;max-width:820px;width:100%;text-align:left;}
+.del-label{font-family:'Inconsolata',monospace;font-size:22px;color:var(--sky);margin-bottom:10px;letter-spacing:2px;}
+.del p{font-family:'Lora',serif;font-size:clamp(22px,1.9vw,28px);color:#c8d8f0;line-height:1.5;}
+
+</style>
+</head>
+<body>
+
+<div id="deck"></div>
+<div id="progress-bar"></div>
+<div id="counter"></div>
+<div id="dots"></div>
+<button class="nav-btn" id="prev">&#8592;</button>
+<button class="nav-btn" id="next">&#8594;</button>
+
+<script>
+const S = [
+
+/* ═══════════════════════════════════════════════
+   OPENING
+═══════════════════════════════════════════════ */
+{c:`
+  <div class="badge">Course Module 8</div>
+  <div class="h-giant g glow-g" style="font-size:clamp(42px,6.5vw,72px)">Building an<br><span class="t glow">AI-Ready</span><br>Organization</div>
+  <div class="body" style="margin-top:12px">Moving from <strong>individual AI usage</strong> to full <em>organizational transformation</em></div>
+`},
+
+{c:`
+  <div class="badge">What This Module Covers</div>
+  <div class="h-main">10 Critical Topics.<br><span class="t">One Blueprint.</span></div>
+  <div class="rule"></div>
+  <div class="three" style="margin-top:4px">
+    <div class="scard"><div class="big t">8.1</div><div class="desc">AI Maturity Levels</div></div>
+    <div class="scard"><div class="big g">8.2</div><div class="desc">High-ROI Use Cases</div></div>
+    <div class="scard"><div class="big" style="color:var(--coral)">8.3</div><div class="desc">Adoption Roadmap</div></div>
+  </div>
+  <div class="three" style="margin-top:16px">
+    <div class="scard"><div class="big s">8.4</div><div class="desc">Change Management</div></div>
+    <div class="scard"><div class="big l">8.5</div><div class="desc">Governance & Policy</div></div>
+    <div class="scard"><div class="big t">8.6–8.10</div><div class="desc">Playbook · Teams · KPIs · Pitfalls</div></div>
+  </div>
+`},
+
+{c:`
+  <div class="badge">The Core Challenge</div>
+  <div class="h-main">Why Most <span class="r">AI Initiatives Fail</span></div>
+  <div class="rule r"></div>
+  <div class="body" style="max-width:820px">Organizations deploy AI tools but see <strong>no sustained impact</strong> because they treat AI as a <em>tool problem</em> — not a <em>systems problem</em>. This module fixes that.</div>
+`},
+
+/* ═══════════════════════════════════════════════
+   8.1 MATURITY LEVELS
+═══════════════════════════════════════════════ */
+{c:`
+  <div class="divider-slide" style="position:absolute;inset:0;"></div>
+  <div class="section-num">8.1</div>
+  <div class="h-main t glow">Understanding AI<br>Maturity Levels</div>
+  <div class="body">The 0 → 1 → Scale journey</div>
+`,extra:'divider-slide'},
+
+{c:`
+  <div class="badge">8.1 — The Maturity Model</div>
+  <div class="h-main">Four Levels of <span class="t">AI Readiness</span></div>
+  <div class="rule"></div>
+  <div class="four">
+    <div class="lcard" style="background:rgba(255,107,107,.07);border-color:rgba(255,107,107,.2)">
+      <div class="ln r">L0</div>
+      <div class="lt r">Awareness</div>
+      <div class="ld">Informal experimentation. No structure. No measurement.</div>
+    </div>
+    <div class="lcard" style="background:rgba(240,192,64,.07);border-color:rgba(240,192,64,.2)">
+      <div class="ln g">L1</div>
+      <div class="lt g">Enablement</div>
+      <div class="ld">Leadership endorses. Training starts. First use cases tracked.</div>
+    </div>
+    <div class="lcard" style="background:rgba(56,232,200,.07);border-color:rgba(56,232,200,.2)">
+      <div class="ln t">L2</div>
+      <div class="lt t">Integration</div>
+      <div class="ld">AI embedded in workflows. Tools connected. Gains measurable.</div>
+    </div>
+    <div class="lcard" style="background:rgba(116,185,255,.07);border-color:rgba(116,185,255,.2)">
+      <div class="ln s">L3</div>
+      <div class="lt s">Transformation</div>
+      <div class="ld">Processes redesigned. Cross-functional AI. Dedicated leadership.</div>
+    </div>
+  </div>
+`},
+
+{c:`
+  <div class="badge">Level 0 — Awareness</div>
+  <div class="h-main r">Where Most<br>Organizations Start</div>
+  <div class="rule r"></div>
+  <ul class="lst">
+    <li class="r">Individuals use ChatGPT on their own — no oversight</li>
+    <li class="r">No tracking of outcomes or time saved</li>
+    <li class="r">Leadership neither approves nor prohibits</li>
+    <li class="r">No shared prompt libraries or standards</li>
+  </ul>
+`},
+
+{c:`
+  <div class="badge">Level 1 — Enablement</div>
+  <div class="h-main g">Getting Structure<br>Into Place</div>
+  <div class="rule g"></div>
+  <ul class="lst">
+    <li class="g">Leadership publicly endorses AI exploration</li>
+    <li class="g">Basic training rolled out to key teams</li>
+    <li class="g">First prompt libraries created and shared</li>
+    <li class="g">Early use cases documented with impact notes</li>
+  </ul>
+`},
+
+{c:`
+  <div class="badge">Level 2 — Integration</div>
+  <div class="h-main t">AI Becomes<br>Part of the Workflow</div>
+  <div class="rule"></div>
+  <ul class="lst">
+    <li>Microsoft Copilot, Notion AI, or equivalents deployed</li>
+    <li>Marketing, HR, Ops teams using AI in daily tasks</li>
+    <li>Productivity gains tracked and reported monthly</li>
+    <li>Tool integrations reduce friction across departments</li>
+  </ul>
+`},
+
+{c:`
+  <div class="badge">Level 3 — Transformation</div>
+  <div class="h-main s">The AI-First<br>Organization</div>
+  <div class="rule s"></div>
+  <ul class="lst">
+    <li class="s">Processes <em>redesigned from scratch</em> with AI at the core</li>
+    <li class="s">Cross-functional AI systems connecting sales, ops, support</li>
+    <li class="s">Chief AI Officer or dedicated AI team established</li>
+    <li class="s">Custom internal copilots and AI tools built in-house</li>
+  </ul>
+`},
+
+{c:`
+  <div class="badge">8.1 — Exercise</div>
+  <div class="h-sub t" style="margin-bottom:20px">Where Is Your Organization?</div>
+  <div class="ex">
+    <div class="ex-label">✏ EXERCISE</div>
+    <p>Map each department across the 4 maturity levels (L0–L3). Identify your <strong>lowest-maturity bottleneck</strong>. Define one concrete action to move each department one level up.</p>
+  </div>
+  <div class="body" style="margin-top:24px;font-size:clamp(22px,1.9vw,26px)">Most organizations are <em>mixed</em> — some teams at L1, others at L2. That asymmetry is your first governance problem.</div>
+`},
+
+/* ═══════════════════════════════════════════════
+   8.2 HIGH-ROI USE CASES
+═══════════════════════════════════════════════ */
+{c:`
+  <div class="section-num">8.2</div>
+  <div class="h-main g glow-g">Identifying<br>High-ROI AI Use Cases</div>
+  <div class="body">Not all automation is equal.<br><strong>Prioritize ruthlessly.</strong></div>
+`,extra:'divider-slide'},
+
+{c:`
+  <div class="badge">8.2 — The Evaluation Framework</div>
+  <div class="h-sub g" style="margin-bottom:20px">Score Every Task on Four Dimensions</div>
+  <div class="four">
+    <div class="lcard" style="background:rgba(240,192,64,.07);border-color:rgba(240,192,64,.2)">
+      <div class="lt g">Frequency</div>
+      <div class="ld">How often is this task performed? Daily beats monthly.</div>
+    </div>
+    <div class="lcard" style="background:rgba(56,232,200,.07);border-color:rgba(56,232,200,.2)">
+      <div class="lt t">Time Cost</div>
+      <div class="ld">Hours spent per week? High hours = high automation value.</div>
+    </div>
+    <div class="lcard" style="background:rgba(116,185,255,.07);border-color:rgba(116,185,255,.2)">
+      <div class="lt s">Repeatability</div>
+      <div class="ld">Is the task formulaic? Structured = AI-friendly.</div>
+    </div>
+    <div class="lcard" style="background:rgba(168,224,99,.07);border-color:rgba(168,224,99,.2)">
+      <div class="lt l">Business Impact</div>
+      <div class="ld">Revenue · Cost · Risk. Which lever does this touch?</div>
+    </div>
+  </div>
+`},
+
+{c:`
+  <div class="badge">8.2 — High-ROI Examples</div>
+  <div class="h-main t">Where the <span class="g">Wins</span> Are</div>
+  <div class="rule"></div>
+  <ul class="lst">
+    <li><span>Sales:</span> Personalized outreach emails at 10× volume</li>
+    <li><span>Support:</span> AI-drafted responses to common customer queries</li>
+    <li><span>Ops:</span> Internal dashboards and weekly reports auto-generated</li>
+    <li><span>HR:</span> Job descriptions, screening criteria, and offer letters</li>
+    <li><span>Legal:</span> Contract summaries and clause flagging</li>
+  </ul>
+`},
+
+{c:`
+  <div class="badge">8.2 — Low-ROI Traps</div>
+  <div class="h-main r">What to <span class="g">Avoid</span></div>
+  <div class="rule r"></div>
+  <ul class="lst">
+    <li class="r">Over-engineering tasks that take 10 minutes manually</li>
+    <li class="r">Using AI for novelty — demos that never enter production</li>
+    <li class="r">Automating decisions that require high human judgment</li>
+    <li class="r">Building custom AI when an off-the-shelf tool exists</li>
+    <li class="r">Replacing trust relationships with automated responses</li>
+  </ul>
+`},
+
+{c:`
+  <div class="badge">8.2 — Exercise</div>
+  <div class="h-sub g" style="margin-bottom:20px">The Opportunity List</div>
+  <div class="ex">
+    <div class="ex-label">✏ EXERCISE</div>
+    <p>Create your <strong>Top 10 AI Opportunities List</strong>. Score each on Frequency (1–5), Time Cost (1–5), Repeatability (1–5), and Business Impact (1–5). Rank by total score. Start with the top 3.</p>
+  </div>
+`},
+
+/* ═══════════════════════════════════════════════
+   8.3 ROADMAP
+═══════════════════════════════════════════════ */
+{c:`
+  <div class="section-num">8.3</div>
+  <div class="h-main" style="color:var(--coral)">Designing an AI<br>Adoption Roadmap</div>
+  <div class="body">90 days. Three phases. <strong>Real momentum.</strong></div>
+`,extra:'divider-slide'},
+
+{c:`
+  <div class="badge">8.3 — The 90-Day Framework</div>
+  <div class="h-sub" style="margin-bottom:20px;color:var(--coral)">Three Phases of Rollout</div>
+  <div class="phase-row">
+    <div class="ph" style="border-color:rgba(240,192,64,.25)">
+      <div class="ph-label g">Phase 1</div>
+      <div class="ph-days">0–30 days</div>
+      <ul><li>Train leadership team</li><li>Deploy 3–5 use cases</li><li>Build prompt repository</li></ul>
+    </div>
+    <div class="ph" style="border-color:rgba(56,232,200,.25)">
+      <div class="ph-label t">Phase 2</div>
+      <div class="ph-days">30–90 days</div>
+      <ul><li>Roll out to all teams</li><li>Standardize workflows</li><li>Measure productivity gains</li></ul>
+    </div>
+    <div class="ph" style="border-color:rgba(116,185,255,.25)">
+      <div class="ph-label s">Phase 3</div>
+      <div class="ph-days">90+ days</div>
+      <ul><li>Integrate with CRM/ERP</li><li>Build internal AI tools</li><li>Establish governance</li></ul>
+    </div>
+  </div>
+`},
+
+{c:`
+  <div class="badge">Phase 1 — Quick Wins (0–30 Days)</div>
+  <div class="h-main g">Start Fast.<br>Build Belief.</div>
+  <div class="rule g"></div>
+  <ul class="lst">
+    <li class="g">Identify 3 champions — one per key department</li>
+    <li class="g">Run a 2-hour AI orientation for leadership</li>
+    <li class="g">Launch first use case with measurable baseline</li>
+    <li class="g">Create shared prompt library (Notion / Confluence)</li>
+    <li class="g">Document first wins with time-saved metrics</li>
+  </ul>
+`},
+
+{c:`
+  <div class="badge">Phase 2 — Expansion (30–90 Days)</div>
+  <div class="h-main t">Build the<br>Habit Infrastructure</div>
+  <div class="rule"></div>
+  <ul class="lst">
+    <li>Roll out tools organization-wide with structured onboarding</li>
+    <li>Standardize 5–10 AI-powered workflows per function</li>
+    <li>Weekly AI wins newsletter shared internally</li>
+    <li>Measure and publish productivity improvement data</li>
+    <li>Address resistance through forums and 1:1 coaching</li>
+  </ul>
+`},
+
+{c:`
+  <div class="badge">Phase 3 — Scale (90+ Days)</div>
+  <div class="h-main s">Embed AI into<br>the Organization's DNA</div>
+  <div class="rule s"></div>
+  <ul class="lst">
+    <li class="s">Integrate AI with CRM, ERP, HRMS systems</li>
+    <li class="s">Build internal copilots for high-frequency workflows</li>
+    <li class="s">Establish formal AI governance committee</li>
+    <li class="s">Set annual AI KPI targets per department head</li>
+    <li class="s">Evaluate and sunset underperforming tools quarterly</li>
+  </ul>
+`},
+
+{c:`
+  <div class="badge">8.3 — Deliverable</div>
+  <div class="h-sub" style="color:var(--coral);margin-bottom:20px">Your 90-Day Blueprint</div>
+  <div class="del">
+    <div class="del-label">📋 DELIVERABLE</div>
+    <p>Create a <strong>90-Day AI Rollout Plan</strong> with: Week-by-week milestones, named owners per action, tools to deploy per phase, and a measurement cadence. This becomes your organizational commitment document.</p>
+  </div>
+`},
+
+/* ═══════════════════════════════════════════════
+   8.4 CHANGE MANAGEMENT
+═══════════════════════════════════════════════ */
+{c:`
+  <div class="section-num">8.4</div>
+  <div class="h-main s glow" style="text-shadow:0 0 28px rgba(116,185,255,.4)">Change Management:<br>Driving Adoption</div>
+  <div class="body">Tools don't fail. <em>Adoption fails.</em></div>
+`,extra:'divider-slide'},
+
+{c:`
+  <div class="badge">8.4 — The Human Barriers</div>
+  <div class="h-main r">What Gets in the Way</div>
+  <div class="rule r"></div>
+  <ul class="lst">
+    <li class="r">Fear of job loss — the #1 adoption killer</li>
+    <li class="r">Lack of understanding — "I don't know how to use it"</li>
+    <li class="r">Tool overwhelm — too many options, no clear guidance</li>
+    <li class="r">Cultural resistance — "we've always done it this way"</li>
+    <li class="r">Perception of extra work — not seeing the time benefit</li>
+  </ul>
+`},
+
+{c:`
+  <div class="badge">8.4 — Leadership Response</div>
+  <div class="h-main t">What Leaders<br>Must Do</div>
+  <div class="rule"></div>
+  <ul class="lst">
+    <li>Frame AI as <em>augmentation</em>, never replacement — visibly and repeatedly</li>
+    <li>Tie AI adoption to KPIs and performance recognition</li>
+    <li>Provide structured, role-specific training paths</li>
+    <li>Celebrate and share internal success stories publicly</li>
+    <li>Give employees agency — let them suggest use cases</li>
+  </ul>
+`},
+
+{c:`
+  <div class="badge">8.4 — Communication Strategy</div>
+  <div class="h-sub g" style="margin-bottom:20px">Building an Internal AI Culture</div>
+  <div class="two">
+    <div class="box" style="border-color:rgba(240,192,64,.2)">
+      <h3 class="g">Channels</h3>
+      <ul><li>Weekly AI wins email / Slack digest</li><li>Monthly all-hands AI spotlight</li><li>Open Q&amp;A forums for concerns</li></ul>
+    </div>
+    <div class="box" style="border-color:rgba(56,232,200,.2)">
+      <h3 class="t">Roles</h3>
+      <ul><li>AI Champion per team (part-time)</li><li>Central AI task force</li><li>Executive AI sponsor</li></ul>
+    </div>
+  </div>
+`},
+
+{c:`
+  <div class="badge">8.4 — The Fear Conversation</div>
+  <div class="qblock" style="margin-top:8px">
+    <p>"AI won't take your job. But someone who knows how to use AI might. The best thing we can do for every employee is make sure they're the one who knows how."</p>
+    <cite>— Reframe for leadership communication</cite>
+  </div>
+`},
+
+{c:`
+  <div class="badge">8.4 — Incentive Design</div>
+  <div class="h-main t">Make Adoption<br><span class="g">Worth It</span></div>
+  <div class="rule g"></div>
+  <ul class="lst">
+    <li>Add "AI literacy" as a formal competency in performance reviews</li>
+    <li>Recognize AI champions publicly in all-hands meetings</li>
+    <li>Let teams keep a portion of time saved for innovation sprints</li>
+    <li>Create an internal "AI case study" submission program</li>
+  </ul>
+`},
+
+/* ═══════════════════════════════════════════════
+   8.5 GOVERNANCE
+═══════════════════════════════════════════════ */
+{c:`
+  <div class="section-num">8.5</div>
+  <div class="h-main l" style="text-shadow:0 0 28px rgba(168,224,99,.35)">AI Governance<br>& Policy Design</div>
+  <div class="body">Freedom within <strong>guardrails</strong>.</div>
+`,extra:'divider-slide'},
+
+{c:`
+  <div class="badge">8.5 — Core Governance Areas</div>
+  <div class="h-main g">What Your Policy<br>Must Cover</div>
+  <div class="rule g"></div>
+  <ul class="lst">
+    <li class="g">Data privacy — what can and cannot enter AI tools</li>
+    <li class="g">Output verification — mandatory review standards</li>
+    <li class="g">Responsible use — ethical guidelines and bias awareness</li>
+    <li class="g">Vendor approvals — sanctioned tools vs. shadow AI</li>
+    <li class="g">Audit logging — recording AI-generated outputs</li>
+  </ul>
+`},
+
+{c:`
+  <div class="badge">8.5 — Example Policies</div>
+  <div class="h-sub t" style="margin-bottom:20px">Three Non-Negotiables</div>
+  <div class="three">
+    <div class="scard" style="border-color:rgba(255,107,107,.25);background:rgba(255,107,107,.05)">
+      <div class="big r">🔒</div>
+      <div class="desc" style="font-size:22px;color:#e8c8c8">No sensitive customer data in public AI tools</div>
+    </div>
+    <div class="scard" style="border-color:rgba(240,192,64,.25);background:rgba(240,192,64,.05)">
+      <div class="big g">👁</div>
+      <div class="desc" style="font-size:22px;color:#e8d8a8">Human review required for all external AI-generated communication</div>
+    </div>
+    <div class="scard" style="border-color:rgba(56,232,200,.25);background:rgba(56,232,200,.05)">
+      <div class="big t">📋</div>
+      <div class="desc" style="font-size:22px;color:#b8e8d8">Log all AI-generated outputs for compliance audit trail</div>
+    </div>
+  </div>
+`},
+
+{c:`
+  <div class="badge">8.5 — Shadow AI Risk</div>
+  <div class="h-main r">The Danger of<br><span class="g">Unmanaged AI</span></div>
+  <div class="rule r"></div>
+  <div class="body">Employees will use AI tools with or without policy. <strong>Shadow AI</strong> — unauthorized tools processing sensitive data — is a <em>compliance and security crisis</em> waiting to happen. Governance isn't restriction. It's protection.</div>
+`},
+
+{c:`
+  <div class="badge">8.5 — Tools for Governance</div>
+  <div class="h-sub t" style="margin-bottom:20px">Enterprise-Grade Options</div>
+  <div class="two">
+    <div class="box" style="border-color:rgba(56,232,200,.2)">
+      <h3 class="t">Controlled Environments</h3>
+      <p>Microsoft Copilot with data boundaries, Notion AI with access controls, Google Workspace AI with admin policies</p>
+    </div>
+    <div class="box" style="border-color:rgba(240,192,64,.2)">
+      <h3 class="g">Internal Sandboxes</h3>
+      <p>Private LLM deployments, local model instances for sensitive workflows, air-gapped environments for regulated industries</p>
+    </div>
+  </div>
+`},
+
+/* ═══════════════════════════════════════════════
+   8.6 PLAYBOOK
+═══════════════════════════════════════════════ */
+{c:`
+  <div class="section-num">8.6</div>
+  <div class="h-main" style="color:var(--sky)">Building an Internal<br>AI Playbook</div>
+  <div class="body">Your organization's <em>single source of AI truth</em>.</div>
+`,extra:'divider-slide'},
+
+{c:`
+  <div class="badge">8.6 — What Goes in the Playbook</div>
+  <div class="h-main s">Six Essential<br>Components</div>
+  <div class="rule s"></div>
+  <ul class="lst">
+    <li class="s">Approved tools list with access levels and use cases</li>
+    <li class="s">Prompt templates by function: HR · Sales · Ops · Legal</li>
+    <li class="s">Best practices and real internal case studies</li>
+    <li class="s">Clear Do's and Don'ts with examples</li>
+    <li class="s">Training resources and certification paths</li>
+    <li class="s">Governance policies and escalation contacts</li>
+  </ul>
+`},
+
+{c:`
+  <div class="badge">8.6 — Playbook Structure</div>
+  <div class="h-sub g" style="margin-bottom:20px">By Function, Not by Tool</div>
+  <div class="two">
+    <div class="box" style="border-color:rgba(240,192,64,.2)">
+      <h3 class="g">Sales Playbook Section</h3>
+      <ul><li>Outreach email templates</li><li>Objection handling prompts</li><li>CRM summary generation</li><li>Competitor research prompts</li></ul>
+    </div>
+    <div class="box" style="border-color:rgba(56,232,200,.2)">
+      <h3 class="t">HR Playbook Section</h3>
+      <ul><li>Job description generation</li><li>Interview question banks</li><li>Onboarding document drafts</li><li>Policy Q&amp;A chatbot setup</li></ul>
+    </div>
+  </div>
+`},
+
+{c:`
+  <div class="badge">8.6 — Format Options</div>
+  <div class="h-sub t" style="margin-bottom:20px">Where to Host Your Playbook</div>
+  <div class="three">
+    <div class="scard"><div class="big" style="color:var(--sky)">📘</div><div class="desc" style="font-size:22px">Notion Workspace — best for collaborative editing and linking</div></div>
+    <div class="scard"><div class="big g">📗</div><div class="desc" style="font-size:22px">Internal Wiki (Confluence, Slab) — version control and search</div></div>
+    <div class="scard"><div class="big" style="color:var(--lime)">🎓</div><div class="desc" style="font-size:22px">LMS Hub — structured learning paths and completion tracking</div></div>
+  </div>
+`},
+
+/* ═══════════════════════════════════════════════
+   8.7 AI LEADERSHIP
+═══════════════════════════════════════════════ */
+{c:`
+  <div class="section-num">8.7</div>
+  <div class="h-main g glow-g">Structuring AI<br>Leadership & Teams</div>
+  <div class="body">Who owns AI <strong>owns the future</strong>.</div>
+`,extra:'divider-slide'},
+
+{c:`
+  <div class="badge">8.7 — Three Structural Models</div>
+  <div class="h-main t">Choose Your<br>AI Leadership Model</div>
+  <div class="rule"></div>
+  <div class="three">
+    <div class="scard" style="border-color:rgba(240,192,64,.25)">
+      <div class="big g" style="font-size:clamp(32px,3.5vw,44px)">🏆</div>
+      <div class="desc" style="font-size:23px;color:var(--gold);margin-bottom:8px;font-weight:700">AI Champions</div>
+      <div class="desc">Part-time role per team. Best for small to mid-size orgs starting out.</div>
+    </div>
+    <div class="scard" style="border-color:rgba(56,232,200,.25)">
+      <div class="big t" style="font-size:clamp(32px,3.5vw,44px)">⚡</div>
+      <div class="desc" style="font-size:23px;color:var(--teal);margin-bottom:8px;font-weight:700">AI Task Force</div>
+      <div class="desc">Central team of 3–7 people. Cross-functional. Drives org-wide adoption.</div>
+    </div>
+    <div class="scard" style="border-color:rgba(116,185,255,.25)">
+      <div class="big s" style="font-size:clamp(32px,3.5vw,44px)">🎯</div>
+      <div class="desc" style="font-size:23px;color:var(--sky);margin-bottom:8px;font-weight:700">Chief AI Officer</div>
+      <div class="desc">C-suite role for large orgs with $5M+ AI investment. Strategic authority.</div>
+    </div>
+  </div>
+`},
+
+{c:`
+  <div class="badge">8.7 — Responsibilities</div>
+  <div class="h-main s">What AI Leaders<br>Actually Do</div>
+  <div class="rule s"></div>
+  <ul class="lst">
+    <li class="s">Track, document, and scale internal use cases</li>
+    <li class="s">Ensure policy compliance and data governance</li>
+    <li class="s">Drive adoption — training, coaching, troubleshooting</li>
+    <li class="s">Evaluate new tools and vendors quarterly</li>
+    <li class="s">Report AI ROI to executive leadership monthly</li>
+  </ul>
+`},
+
+{c:`
+  <div class="badge">8.7 — The AI Champion Role</div>
+  <div class="h-sub g" style="margin-bottom:20px">The Most Practical First Step</div>
+  <div class="two">
+    <div class="box" style="border-color:rgba(240,192,64,.2)">
+      <h3 class="g">Who They Are</h3>
+      <p>An enthusiastic, credible team member who uses AI naturally and helps others. Not necessarily technical — just capable and trusted.</p>
+    </div>
+    <div class="box" style="border-color:rgba(56,232,200,.2)">
+      <h3 class="t">What They Do (5 hrs/week)</h3>
+      <ul><li>Run weekly AI tip sessions</li><li>Collect use case ideas</li><li>Flag policy concerns</li><li>Report wins upward</li></ul>
+    </div>
+  </div>
+`},
+
+/* ═══════════════════════════════════════════════
+   8.8 MEASURING SUCCESS
+═══════════════════════════════════════════════ */
+{c:`
+  <div class="section-num">8.8</div>
+  <div class="h-main" style="color:var(--coral)">Measuring Success:<br>AI KPIs</div>
+  <div class="body">What gets <strong>measured</strong> gets <em>improved</em>.</div>
+`,extra:'divider-slide'},
+
+{c:`
+  <div class="badge">8.8 — The KPI Framework</div>
+  <div class="h-main g">Five Dimensions<br>of AI Impact</div>
+  <div class="rule g"></div>
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-n t">⏱</div><div class="kpi-l">Time Saved<br>per Employee / Week</div></div>
+    <div class="kpi"><div class="kpi-n g">💰</div><div class="kpi-l">Cost Reduction<br>vs. Previous Period</div></div>
+    <div class="kpi"><div class="kpi-n" style="color:var(--coral)">📈</div><div class="kpi-l">Output Quality<br>Score (Peer Review)</div></div>
+    <div class="kpi"><div class="kpi-n s">🚀</div><div class="kpi-l">Revenue Impact<br>Attributed to AI</div></div>
+    <div class="kpi"><div class="kpi-n l">👥</div><div class="kpi-l">Adoption Rate<br>% Active Users</div></div>
+    <div class="kpi"><div class="kpi-n g">⭐</div><div class="kpi-l">Employee NPS<br>on AI Tools</div></div>
+  </div>
+`},
+
+{c:`
+  <div class="badge">8.8 — Real Examples</div>
+  <div class="h-main t">Numbers That<br><span class="g">Tell the Story</span></div>
+  <div class="rule"></div>
+  <ul class="lst">
+    <li><em>Operations:</em> Report creation time down <span>60%</span> using AI drafting</li>
+    <li><em>Sales:</em> Outbound email volume up <span>3×</span> with same headcount</li>
+    <li><em>Support:</em> First-response time reduced from <span>4 hrs → 22 min</span></li>
+    <li><em>HR:</em> Job posting creation from <span>3 days → 45 minutes</span></li>
+    <li><em>Legal:</em> Contract review time cut by <span>70%</span> per document</li>
+  </ul>
+`},
+
+{c:`
+  <div class="badge">8.8 — Measurement Cadence</div>
+  <div class="h-sub g" style="margin-bottom:20px">When to Measure What</div>
+  <div class="tl">
+    <div class="tl-item"><span class="tl-yr">Weekly</span><span class="tl-txt">Adoption rate, new use cases submitted, AI wins shared</span></div>
+    <div class="tl-item"><span class="tl-yr">Monthly</span><span class="tl-txt">Time saved, productivity improvements, cost metrics per department</span></div>
+    <div class="tl-item"><span class="tl-yr">Quarterly</span><span class="tl-txt">Revenue impact, tool ROI audit, governance compliance review</span></div>
+    <div class="tl-item" style="border-color:rgba(240,192,64,.4)"><span class="tl-yr" style="color:var(--gold)">Annually</span><span class="tl-txt" style="color:var(--text)">Full AI maturity re-assessment, strategy update, new tool evaluation</span></div>
+  </div>
+`},
+
+{c:`
+  <div class="badge">8.8 — The Baseline Trap</div>
+  <div class="warn">
+    <h4>⚠ Critical Mistake: No Baseline</h4>
+    <p>You cannot prove AI ROI if you never measured the "before" state. Before deploying any AI use case, document the <strong>current time, cost, and output quality</strong>. Without a baseline, every gain is invisible.</p>
+  </div>
+`},
+
+/* ═══════════════════════════════════════════════
+   8.9 PITFALLS
+═══════════════════════════════════════════════ */
+{c:`
+  <div class="section-num">8.9</div>
+  <div class="h-main r glow-r">Common Pitfalls in<br>AI Transformation</div>
+  <div class="body">Knowing what <strong>not to do</strong> is half the strategy.</div>
+`,extra:'divider-slide'},
+
+{c:`
+  <div class="badge">8.9 — The Fatal Five</div>
+  <div class="h-main r">Mistakes That<br>Kill Programs</div>
+  <div class="rule r"></div>
+  <ul class="lst">
+    <li class="r">Treating AI as a side experiment with no strategic home</li>
+    <li class="r">Lacking visible, consistent leadership buy-in</li>
+    <li class="r">Deploying tools with no success metrics defined</li>
+    <li class="r">Over-relying on AI output without human validation</li>
+    <li class="r">Ignoring cultural resistance until it becomes sabotage</li>
+  </ul>
+`},
+
+{c:`
+  <div class="badge">8.9 — The Pilot Graveyard</div>
+  <div class="h-sub t" style="margin-bottom:18px">Why Pilots Never Scale</div>
+  <div class="body" style="margin-bottom:24px">Most organizations run successful pilots that <em>never leave the pilot stage</em>. The reasons are always the same:</div>
+  <div class="two">
+    <div class="box" style="border-color:rgba(255,107,107,.2)">
+      <h3 class="r">Root Causes</h3>
+      <ul><li>No named owner for scaling</li><li>Success not documented</li><li>Budget not allocated post-pilot</li><li>No integration plan</li></ul>
+    </div>
+    <div class="box" style="border-color:rgba(56,232,200,.2)">
+      <h3 class="t">The Fix</h3>
+      <ul><li>Assign a scale owner on Day 1</li><li>Define "scale criteria" upfront</li><li>Lock in Phase 2 budget before pilot ends</li><li>Build the integration plan in Phase 1</li></ul>
+    </div>
+  </div>
+`},
+
+{c:`
+  <div class="badge">8.9 — Over-Reliance Warning</div>
+  <div class="warn">
+    <h4>⚠ The Automation Complacency Trap</h4>
+    <p>As AI quality improves, humans reduce verification effort. This creates a compounding risk: <strong>errors propagate undetected</strong> through workflows. Build mandatory human checkpoints into every high-stakes AI process — and never remove them.</p>
+  </div>
+`},
+
+{c:`
+  <div class="badge">8.9 — Cultural Resistance</div>
+  <div class="h-main g">When the Culture<br><span class="r">Fights Back</span></div>
+  <div class="rule r"></div>
+  <div class="body">Resistance is rational. Employees protecting their expertise, their identity, their job security. <strong>Do not dismiss it — diagnose it.</strong> Every resistant employee has a valid concern that leadership hasn't addressed. Find it. Fix it. Publicly.</div>
+`},
+
+/* ═══════════════════════════════════════════════
+   8.10 CAPSTONE
+═══════════════════════════════════════════════ */
+{c:`
+  <div class="section-num">8.10</div>
+  <div class="h-main g glow-g">Capstone:<br>Your AI Blueprint</div>
+  <div class="body">Everything comes together here.</div>
+`,extra:'divider-slide'},
+
+{c:`
+  <div class="badge">8.10 — The AI Blueprint</div>
+  <div class="h-main t">Five Documents.<br><span class="g">One Strategy.</span></div>
+  <div class="rule"></div>
+  <ul class="lst">
+    <li>Current <em>AI Maturity Assessment</em> across all departments</li>
+    <li>Your <em>Top 5 Use Cases</em> ranked by ROI score</li>
+    <li>A detailed <em>90-Day Roadmap</em> with owners and milestones</li>
+    <li>A <em>Governance Policy Draft</em> ready for legal review</li>
+    <li>An <em>AI KPI Dashboard</em> with baselines established</li>
+  </ul>
+`},
+
+{c:`
+  <div class="badge">8.10 — Maturity Assessment Template</div>
+  <div class="h-sub g" style="margin-bottom:20px">Rate Each Department</div>
+  <div class="code">
+    <span class="cm">// Maturity Scorecard Template</span><br>
+    <span class="kw">Department:</span> <span class="st">_______________</span><br>
+    <span class="kw">Current Level:</span> <span class="fn">L0 / L1 / L2 / L3</span><br>
+    <span class="kw">Top Blocker:</span> <span class="st">_______________</span><br>
+    <span class="kw">Next Action:</span> <span class="st">_______________</span><br>
+    <span class="kw">Owner:</span> <span class="fn">_______________</span><br>
+    <span class="kw">Target Level by:</span> <span class="st">90 days → _______</span>
+  </div>
+`},
+
+{c:`
+  <div class="badge">8.10 — KPI Dashboard Design</div>
+  <div class="h-sub t" style="margin-bottom:20px">Build It Before You Need It</div>
+  <div class="del">
+    <div class="del-label">📊 DELIVERABLE</div>
+    <p>Set up a live KPI dashboard (Notion, Sheets, or BI tool) tracking: time saved per team, adoption %, cost impact, and output quality scores. Update it weekly. Share it monthly. <strong>Make AI ROI visible to everyone.</strong></p>
+  </div>
+`},
+
+/* ═══════════════════════════════════════════════
+   SYNTHESIS & OUTCOMES
+═══════════════════════════════════════════════ */
+{c:`
+  <div class="section-num" style="color:rgba(240,192,64,.15)">📍</div>
+  <div class="h-main g glow-g">Module Outcomes</div>
+  <div class="body">What you can now do that you couldn't before.</div>
+`,extra:'divider-slide'},
+
+{c:`
+  <div class="badge">Module 8 — What You've Gained</div>
+  <div class="h-main t">You Can Now</div>
+  <div class="rule"></div>
+  <ul class="lst">
+    <li>Assess your org's AI maturity and close the gaps</li>
+    <li>Identify and rank high-ROI use cases with a replicable framework</li>
+    <li>Build a phased 90-day adoption roadmap with accountability</li>
+    <li>Manage human resistance with structured change programs</li>
+    <li>Design governance policies that enable without restricting</li>
+  </ul>
+`},
+
+{c:`
+  <div class="badge">Module 8 — Extended Outcomes</div>
+  <div class="h-main g">And Beyond</div>
+  <div class="rule g"></div>
+  <ul class="lst">
+    <li class="g">Build a centralized AI playbook that scales with your org</li>
+    <li class="g">Structure AI leadership roles appropriate for your org size</li>
+    <li class="g">Measure AI impact with real KPIs and visible dashboards</li>
+    <li class="g">Avoid the 5 pitfalls that kill most AI programs</li>
+    <li class="g">Deliver a complete, actionable AI Blueprint to leadership</li>
+  </ul>
+`},
+
+{c:`
+  <div class="badge">The Bigger Picture</div>
+  <div class="h-main">This Is an <span class="t">Organizational</span><br>Design Problem</div>
+  <div class="rule"></div>
+  <div class="body">AI transformation fails at the <strong>systems level</strong> — not the tool level. The organizations that win won't have better AI. They'll have better <em>processes, governance, people, and measurement</em> around the same AI.</div>
+`},
+
+{c:`
+  <div class="badge">What Comes Next</div>
+  <div class="h-sub g" style="margin-bottom:20px">Three Optional Extensions</div>
+  <div class="three">
+    <div class="scard" style="border-color:rgba(240,192,64,.25)">
+      <div class="big g">📋</div>
+      <div class="desc" style="font-size:22px">Workshop format with<br>templates &amp; worksheets</div>
+    </div>
+    <div class="scard" style="border-color:rgba(56,232,200,.25)">
+      <div class="big t">🏢</div>
+      <div class="desc" style="font-size:22px">Real company case<br>study simulation</div>
+    </div>
+    <div class="scard" style="border-color:rgba(116,185,255,.25)">
+      <div class="big s">📗</div>
+      <div class="desc" style="font-size:22px">Playbook PDF for<br>immediate implementation</div>
+    </div>
+  </div>
+`},
+
+{c:`
+  <div class="badge">The Non-Negotiables</div>
+  <div class="h-main r">Three Things Every<br><span class="t">AI Leader Must Do</span></div>
+  <div class="rule"></div>
+  <ul class="lst">
+    <li><strong style="color:#fff">Own the narrative</strong> — define AI for your organization before fear does</li>
+    <li><strong style="color:#fff">Measure everything</strong> — invisible wins are ignored wins</li>
+    <li><strong style="color:#fff">Build the system</strong> — one-off tools don't compound; systems do</li>
+  </ul>
+`},
+
+{c:`
+  <div class="badge">Final Thought</div>
+  <div class="qblock">
+    <p>"The question is not whether your organization will use AI. It already does. The question is whether that usage is structured, strategic, and compounding — or scattered, siloed, and stalling."</p>
+    <cite>— Module 8 Core Principle</cite>
+  </div>
+`},
+
+{c:`
+  <div class="badge">Module 8 Complete</div>
+  <div class="h-giant t glow" style="font-size:clamp(40px,6.5vw,72px)">Build the<br><span class="g glow-g">AI-Ready</span><br>Organization</div>
+  <div class="body" style="margin-top:16px">Maturity · Use Cases · Roadmap · Change Management<br>Governance · Playbook · Leadership · KPIs · Blueprint</div>
+  <div style="margin-top:28px;font-family:'Inconsolata',monospace;font-size:22px;color:var(--muted)">Press <span style="color:var(--teal)">→</span> to review · <span style="color:var(--teal)">Space</span> to advance</div>
+`},
+
+];/* end slides array */
+
+// ── RENDER ──────────────────────────────────────────
+const deck=document.getElementById('deck');
+const bar=document.getElementById('progress-bar');
+const counter=document.getElementById('counter');
+const dotsEl=document.getElementById('dots');
+let cur=0, busy=false;
+
+S.forEach((s,i)=>{
+  const d=document.createElement('div');
+  d.className='slide'+(s.extra?' '+s.extra:'');
+  d.innerHTML=s.c;
+  if(i===0)d.classList.add('active');
+  deck.appendChild(d);
+  const dot=document.createElement('div');
+  dot.className='dot'+(i===0?' on':'');
+  dot.onclick=()=>go(i);
+  dotsEl.appendChild(dot);
+});
+
+const allS=deck.querySelectorAll('.slide');
+const allD=dotsEl.querySelectorAll('.dot');
+
+function upd(){
+  counter.textContent=`${cur+1} / ${S.length}`;
+  bar.style.width=((cur+1)/S.length*100)+'%';
+  allD.forEach((d,i)=>d.classList.toggle('on',i===cur));
+}
+
+function go(n){
+  if(busy||n===cur)return; busy=true;
+  const p=cur; cur=n;
+  allS[p].classList.add('exit');
+  allS[p].classList.remove('active');
+  setTimeout(()=>{
+    allS[p].classList.remove('exit');
+    allS[cur].classList.add('active');
+    upd();
+    setTimeout(()=>{busy=false;},600);
+  },300);
+}
+
+document.getElementById('next').onclick=()=>go((cur+1)%S.length);
+document.getElementById('prev').onclick=()=>go((cur-1+S.length)%S.length);
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ')go((cur+1)%S.length);
+  if(e.key==='ArrowLeft')go((cur-1+S.length)%S.length);
+});
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;});
+document.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(dx<-50)go((cur+1)%S.length);
+  if(dx>50)go((cur-1+S.length)%S.length);
+});
+upd();
+</script>
+</body>
+</html>
