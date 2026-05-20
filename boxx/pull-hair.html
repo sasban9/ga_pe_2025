@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Principle</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <img class="bounce" src="https://sasban.online/sasban.jpg" alt="">
+    <a class="linktree" href="http://linktr.ee/sasban9">linktr.ee/sasban9</a>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-container">
+        <div class="slide active">
+            <!-- <em>B2B professionals are wasting hours navigating the AI tool maze...</em> -->
+            <h3>TierTester: The Pricing Compass<br>for Solo Founders ($1M+ ARR)</h3>
+            <p>⏰ Perfect Timing | 🌍 Massive Market | ⚡ Unfair Advantage</p>
+            <em>The pricing secret that's costing solo SaaS founders thousands monthly...</em>
+        </div>
+        <div class="slide">
+            <table>
+                <tr>
+                    <td>
+                        01AUG train SCL to NJP<br>05AUG train NJP to SDAH<br>12AUG fly CCU to BLR =======<br>31AUG fly BLR to IXS<br><u>05SEP fly BLR to DEL</u><br><u>23SEP fly DEL to IXS</u>
+                    </td>
+                    <td>
+                        02AUG train SCL to SDAH<br><br>06AUG fly CCU to BLR<br><br>31AUG fly BLR to DEL<br>15SEP fly DEL to IXS
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="slide" style="background: url(https://www.between-legs.com/content/galleries/15/9515/full/016.jpg) 50% no-repeat;background-size: cover;">
+        </div>
+        <div class="slide" style="background: url(https://www.between-legs.com/content/galleries/91/8991/full/017.jpg) 50% no-repeat;background-size: cover;">
+        </div>
+        <div class="slide" style="background: url(https://www.between-legs.com/content/galleries/45/9545/full/016.jpg) 50% no-repeat;background-size: cover;">
+        </div>
+        <div class="slide" style="background: url(https://www.between-legs.com/content/galleries/13/9513/full/021.jpg) 50% no-repeat;background-size: cover;">
+        </div>
+        <div class="slide" style="background: url(https://www.between-legs.com/content/galleries/88/9488/full/012.jpg) 50% no-repeat;background-size: cover;">
+        </div>
+        <div class="slide" style="background: url(https://www.between-legs.com/content/galleries/90/8990/full/005.jpg) 50% no-repeat;background-size: cover;transform: rotateY(180deg);">
+        </div>
+        <div class="slide" style="background: url(https://www.between-legs.com/content/galleries/88/7688/full/015.jpg) 50% no-repeat;background-size: cover;">
+        </div>
+        <div class="slide" style="background: url(https://www.between-legs.com/content/galleries/72/7572/full/016.jpg) 50% no-repeat;background-size: cover;">
+        </div>
+        <div class="slide" style="background: url(https://www.between-legs.com/content/galleries/3/7303/full/016.jpg) 50% no-repeat;background-size: cover;">
+        </div>
+        <div class="slide" style="background: url(https://www.between-legs.com/content/galleries/53/5653/full/007.jpg) 50% no-repeat;background-size: cover;transform: scaleX(-1);">
+        </div>
+        <div class="slide" style="background: url(https://www.between-legs.com/content/galleries/52/5652/full/016.jpg) 50% no-repeat;background-size: cover;">
+        </div>
+        <div class="slide" style="background: url(https://www.between-legs.com/content/galleries/96/5496/full/016.jpg) 50% no-repeat;background-size: cover;">
+        </div>
+        <div class="slide" style="background: url() 50% no-repeat;background-size: contain;">
+        </div>
+        <div class="slide" style="background: url() 50% no-repeat;background-size: contain;">
+        </div>
+        <div class="slide">
+        </div>
+        <div class="slide">
+        </div>
+        <div class="slide">
+        </div>
+        <div class="slide">
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            const progress = ((index + 1) / slides.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            }
+            if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+
+</html>
